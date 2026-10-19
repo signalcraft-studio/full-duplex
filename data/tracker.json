@@ -1,0 +1,273 @@
+{
+ "last_checked": "17 Oct 2026",
+ "note": "Single source of truth for tracker.html (table + map). Edit here, then run: python3 scripts/build_tracker.py. iso_n3 = ISO 3166-1 numeric code for the map; null = multi-country/non-country row, listed under the map.",
+ "rows": [
+  {
+   "country": "United States",
+   "iso_n3": "840",
+   "operator": "T-Mobile",
+   "satellite": "Starlink",
+   "status": "live",
+   "services": "SMS, data for selected apps, emergency texts",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://www.t-mobile.com/news/un-carrier/reaching-for-the-stars-with-t-satellite"
+    }
+   ],
+   "checked": "17 Oct 2026"
+  },
+  {
+   "country": "Canada",
+   "iso_n3": "124",
+   "operator": "Rogers",
+   "satellite": "Starlink",
+   "status": "live",
+   "services": "Texting, text-to-911 and selected apps (WhatsApp, Google Maps, AccuWeather, X, CalTopo) since 9 Dec 2025, after a beta from July 2025; C$15/month for all Canadians; data and voice planned",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://about.rogers.com/news/rogers-first-to-launch-satellite-to-mobile-service-with-must-have-apps/"
+    },
+    {
+     "label": "Provider",
+     "url": "https://www.cbc.ca/news/canada/toronto/rogers-launching-new-satellite-mobile-text-trial-1.7585401"
+    }
+   ],
+   "checked": "17 Oct 2026"
+  },
+  {
+   "country": "United Kingdom",
+   "iso_n3": "826",
+   "operator": "Virgin Media O2",
+   "satellite": "Starlink",
+   "status": "live",
+   "services": "Messaging; data, voice and video via apps",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://news.virginmediao2.co.uk/virgin-media-o2-becomes-the-first-uk-mobile-network-to-switch-on-direct-to-device-satellite-connectivity-with-the-launch-of-o2-satellite/"
+    }
+   ],
+   "checked": "17 Oct 2026"
+  },
+  {
+   "country": "United Kingdom",
+   "iso_n3": "826",
+   "operator": "VodafoneThree",
+   "satellite": "AST SpaceMobile (via Satellite Connect Europe)",
+   "status": "trial",
+   "services": "Beta testing now targeted for early 2027, once AST has about 45 satellites in orbit; targeting data, voice, SMS",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://www.ispreview.co.uk/index.php/2026/07/vodafone-uk-says-space-5g-mobile-service-still-on-track-for-early-2027-beta.html"
+    }
+   ],
+   "checked": "17 Oct 2026"
+  },
+  {
+   "country": "New Zealand",
+   "iso_n3": "554",
+   "operator": "One NZ",
+   "satellite": "Starlink",
+   "status": "live",
+   "services": "Satellite texting (since Dec 2024)",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://www.ookla.com/articles/d2d-comes-of-age-in-apac-2026"
+    }
+   ],
+   "checked": "17 Oct 2026"
+  },
+  {
+   "country": "Japan",
+   "iso_n3": "392",
+   "operator": "KDDI (au)",
+   "satellite": "Starlink",
+   "status": "live",
+   "services": "Messaging; data for SAT-enabled apps",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://newsroom.kddi.com/english/news/detail/kddi_nr-1135_4686.html"
+    }
+   ],
+   "checked": "17 Oct 2026"
+  },
+  {
+   "country": "Japan",
+   "iso_n3": "392",
+   "operator": "SoftBank; NTT docomo",
+   "satellite": "Starlink",
+   "status": "live",
+   "services": "Messaging",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://www.ookla.com/articles/d2d-comes-of-age-in-apac-2026"
+    }
+   ],
+   "checked": "17 Oct 2026"
+  },
+  {
+   "country": "Australia",
+   "iso_n3": "036",
+   "operator": "Telstra",
+   "satellite": "Starlink",
+   "status": "live",
+   "services": "Satellite texting (postpaid plans)",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://www.ookla.com/articles/d2d-comes-of-age-in-apac-2026"
+    }
+   ],
+   "checked": "17 Oct 2026"
+  },
+  {
+   "country": "Australia",
+   "iso_n3": "036",
+   "operator": "Optus",
+   "satellite": "Starlink",
+   "status": "announced",
+   "services": "Signed July 2023; SMS was due late 2024. Delayed and re-evaluating its timeline; no launch date",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://blog.voiceplus.com.au/en-au/satellite-to-mobile-in-australia-market-and-regulatory-update-august-2026"
+    }
+   ],
+   "checked": "17 Oct 2026"
+  },
+  {
+   "country": "Philippines",
+   "iso_n3": "608",
+   "operator": "Globe",
+   "satellite": "Starlink",
+   "status": "live",
+   "services": "Commercial launch June 2026 (see source)",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://www.ookla.com/articles/d2d-comes-of-age-in-apac-2026"
+    }
+   ],
+   "checked": "17 Oct 2026"
+  },
+  {
+   "country": "Ukraine",
+   "iso_n3": "804",
+   "operator": "Kyivstar",
+   "satellite": "Starlink",
+   "status": "live",
+   "services": "SMS; voice and data planned",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://investors.kyivstar.ua/news-releases/news-release-details/kyivstar-launches-starlink-direct-cell-satellite-connectivity"
+    }
+   ],
+   "checked": "17 Oct 2026"
+  },
+  {
+   "country": "Chile",
+   "iso_n3": "152",
+   "operator": "Entel",
+   "satellite": "Starlink",
+   "status": "live",
+   "services": "Messaging; data planned",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://informacioncorporativa.entel.cl/comunicados-de-prensa/chile-es-el-primer-pais-de-latinoamerica-en-ofrecer-comercialmente-el-servicio-satelital-directo-al-celular-de-entel-y-starlink"
+    }
+   ],
+   "checked": "17 Oct 2026"
+  },
+  {
+   "country": "Peru",
+   "iso_n3": "604",
+   "operator": "Entel",
+   "satellite": "Starlink",
+   "status": "live",
+   "services": "SMS since Dec 2025; data for selected apps (WhatsApp, Google Maps, X, AccuWeather, AllTrails) since Apr 2026; postpaid plans",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://www.entel.pe/noticias/entel-starlink-conectividad-satelital-datos-whatsapp"
+    }
+   ],
+   "checked": "17 Oct 2026"
+  },
+  {
+   "country": "Switzerland",
+   "iso_n3": "756",
+   "operator": "Salt",
+   "satellite": "Starlink",
+   "status": "trial",
+   "services": "Test SMS; launch subject to Swiss approvals",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://www.telecoms.com/satellite/salt-sends-direct-to-cell-message-with-starlink"
+    }
+   ],
+   "checked": "17 Oct 2026"
+  },
+  {
+   "country": "Spain",
+   "iso_n3": "724",
+   "operator": "Orange España (formerly MasOrange)",
+   "satellite": "Starlink",
+   "status": "trial",
+   "services": "Technical pilot in Valladolid (announced Feb 2026); opened temporarily, free, during the July 2026 wildfires; no commercial service as of 7 Oct 2026",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://www.orange.es/static/pdf/260202_Nota-de-prensa-MasOrange_Starlink_ESP.pdf"
+    },
+    {
+     "label": "Update",
+     "url": "https://selectra.es/internet-telefono/noticias/movil-satelite-2026-cobertura-incendios"
+    },
+    {
+     "label": "Rename",
+     "url": "https://www.orange.es/static/pdf/260922_Nota_Prensa_Orange_Espana.pdf"
+    }
+   ],
+   "checked": "17 Oct 2026"
+  },
+  {
+   "country": "41 countries",
+   "iso_n3": null,
+   "operator": "Various MNOs, MVNOs and device partners",
+   "satellite": "Skylo",
+   "status": "live",
+   "services": "Standards-based NTN services (see source)",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://www.abiresearch.com/blog/top-d2c-satellite-service-providers-2027"
+    }
+   ],
+   "checked": "17 Oct 2026"
+  },
+  {
+   "country": "60+ countries (contracts)",
+   "iso_n3": null,
+   "operator": "56 MNO and distribution contracts",
+   "satellite": "Elveo Mobile (Lynk + Omnispace)",
+   "status": "announced",
+   "services": "Commercial service targeted early 2028",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://www.lightreading.com/satellite/lynk-and-omnispace-merger-creates-d2d-challenger-elveo-mobile"
+    }
+   ],
+   "checked": "17 Oct 2026"
+  }
+ ]
+}
