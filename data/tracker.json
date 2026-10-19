@@ -1,5 +1,5 @@
 {
- "last_checked": "17 Oct 2026",
+ "last_checked": "19 Oct 2026",
  "note": "Single source of truth for tracker.html (table + map). Edit here, then run: python3 scripts/build_tracker.py. iso_n3 = ISO 3166-1 numeric code for the map; null = multi-country/non-country row, listed under the map.",
  "rows": [
   {
@@ -35,6 +35,21 @@
     }
    ],
    "checked": "17 Oct 2026"
+  },
+  {
+   "country": "Canada",
+   "iso_n3": "124",
+   "operator": "Telus",
+   "satellite": "AST SpaceMobile",
+   "status": "trial",
+   "services": "First network integration test completed Oct 2026; targeting broadband data, voice and text; service expected for customers within the next year",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://www.lightreading.com/satellite/telus-ast-spacemobile-complete-integration-test"
+    }
+   ],
+   "checked": "19 Oct 2026"
   },
   {
    "country": "United Kingdom",
@@ -268,6 +283,59 @@
     }
    ],
    "checked": "17 Oct 2026"
+  },
+  {
+   "country": "Bangladesh",
+   "iso_n3": "050",
+   "operator": "Banglalink (VEON)",
+   "satellite": "Starlink",
+   "status": "live",
+   "services": "Launched 9 Oct 2026, first in South Asia; essential apps and location services beyond terrestrial coverage; needs a 4G phone and Banglalink SIM, accessed via the MyBL app",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://www.veon.com/newsroom/press-releases/veon-brings-starlinks-satellite-to-mobile-service-to-south-asia-with-banglalink-launch"
+    }
+   ],
+   "checked": "19 Oct 2026"
+  },
+  {
+   "country": "Kazakhstan",
+   "iso_n3": "398",
+   "operator": "Beeline Kazakhstan (VEON)",
+   "satellite": "Starlink",
+   "status": "live",
+   "services": "Launched 28 Sep 2026, first in Central Asia; SMS and basic internet/messaging apps (up to 2 Mbit/s) beyond terrestrial coverage; LTE Android phones for now; free promo until 30 Nov 2026",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://beeline.kz/ru/events/news/280926"
+    },
+    {
+     "label": "Update",
+     "url": "https://www.veon.com/newsroom/press-releases/veons-beeline-kazakhstan-becomes-first-operator-in-country-to-launch-starlinks-satellite-to-mobile-service"
+    },
+    {
+     "label": "Provider",
+     "url": "https://beeline.kz/ru/starlink"
+    }
+   ],
+   "checked": "19 Oct 2026"
+  },
+  {
+   "country": "Uganda",
+   "iso_n3": "800",
+   "operator": "Airtel Uganda",
+   "satellite": "Starlink",
+   "status": "live",
+   "services": "Launched 24 Sep 2026; SMS and selected light-data apps (incl. WhatsApp) on compatible smartphones beyond Airtel's terrestrial network",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://ict.go.ug/media/news/airtel-uganda-launches-satellite-to-mobile-service-with-starlink-to-expand-connectivity"
+    }
+   ],
+   "checked": "19 Oct 2026"
   }
  ]
 }
