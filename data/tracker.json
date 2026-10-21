@@ -1,5 +1,5 @@
 {
- "last_checked": "19 Oct 2026",
+ "last_checked": "21 Oct 2026",
  "note": "Single source of truth for tracker.html (table + map). Edit here, then run: python3 scripts/build_tracker.py. iso_n3 = ISO 3166-1 numeric code for the map; null = multi-country/non-country row, listed under the map.",
  "rows": [
   {
@@ -42,14 +42,18 @@
    "operator": "Telus",
    "satellite": "AST SpaceMobile",
    "status": "trial",
-   "services": "First network integration test completed Oct 2026; targeting broadband data, voice and text; service expected for customers within the next year",
+   "services": "First network integration test completed Oct 2026; targeting broadband data, voice and text; Telus expects service for customers within the next year; AST (20 Oct 2026) targets initial, intermittent Canada coverage before end-2026",
    "sources": [
     {
      "label": "Source",
      "url": "https://www.lightreading.com/satellite/telus-ast-spacemobile-complete-integration-test"
+    },
+    {
+     "label": "Update",
+     "url": "https://www.businesswire.com/news/home/20261020527793/en/AST-SpaceMobile-Advances-Service-Readiness-Ahead-of-Initial-Space-Based-Cellular-Broadband-Coverage-in-Key-Global-Markets"
     }
    ],
-   "checked": "19 Oct 2026"
+   "checked": "21 Oct 2026"
   },
   {
    "country": "United Kingdom",
@@ -57,14 +61,22 @@
    "operator": "Virgin Media O2",
    "satellite": "Starlink",
    "status": "live",
-   "services": "Messaging; data, voice and video via apps",
+   "services": "O2 Satellite: £3/month Bolt On (pay monthly, compatible phone) or included with Ultimate plans; data-only, so messaging and app-based data/voice/video work, but no native voice calls (including emergency calls)",
    "sources": [
     {
      "label": "Source",
      "url": "https://news.virginmediao2.co.uk/virgin-media-o2-becomes-the-first-uk-mobile-network-to-switch-on-direct-to-device-satellite-connectivity-with-the-launch-of-o2-satellite/"
+    },
+    {
+     "label": "Provider",
+     "url": "https://www.o2.co.uk/satellite"
+    },
+    {
+     "label": "Update",
+     "url": "https://www.lightreading.com/satellite/virgin-media-o2-feels-highs-and-lows-of-starlink-in-wales"
     }
    ],
-   "checked": "17 Oct 2026"
+   "checked": "21 Oct 2026"
   },
   {
    "country": "United Kingdom",
@@ -72,14 +84,18 @@
    "operator": "VodafoneThree",
    "satellite": "AST SpaceMobile (via Satellite Connect Europe)",
    "status": "trial",
-   "services": "Beta testing now targeted for early 2027, once AST has about 45 satellites in orbit; targeting data, voice, SMS",
+   "services": "AST (20 Oct 2026) targets initial, intermittent UK coverage before end-2026; Vodafone's earlier guidance was beta testing in early 2027, once AST has about 45 satellites in orbit; targeting data, voice, SMS",
    "sources": [
     {
      "label": "Source",
      "url": "https://www.ispreview.co.uk/index.php/2026/07/vodafone-uk-says-space-5g-mobile-service-still-on-track-for-early-2027-beta.html"
+    },
+    {
+     "label": "Update",
+     "url": "https://www.businesswire.com/news/home/20261020527793/en/AST-SpaceMobile-Advances-Service-Readiness-Ahead-of-Initial-Space-Based-Cellular-Broadband-Coverage-in-Key-Global-Markets"
     }
    ],
-   "checked": "17 Oct 2026"
+   "checked": "21 Oct 2026"
   },
   {
    "country": "New Zealand",
@@ -177,14 +193,18 @@
    "operator": "Kyivstar",
    "satellite": "Starlink",
    "status": "live",
-   "services": "SMS; voice and data planned",
+   "services": "Launched 24 Nov 2025; messaging via apps and SMS, satellite-ready apps and location sharing on existing LTE phones; free to all ~15.5m Kyivstar 4G smartphone users",
    "sources": [
     {
      "label": "Source",
      "url": "https://investors.kyivstar.ua/news-releases/news-release-details/kyivstar-launches-starlink-direct-cell-satellite-connectivity"
+    },
+    {
+     "label": "Update",
+     "url": "https://www.veon.com/newsroom/press-releases/in-less-than-one-year-starlink-mobile-connects-11-million-people-across-veons-three-high-growth-markets"
     }
    ],
-   "checked": "17 Oct 2026"
+   "checked": "21 Oct 2026"
   },
   {
    "country": "Chile",
