@@ -9,7 +9,17 @@ cls = {'live':'live','trial':'trial','announced':'ann'}
 rows = ["<tr><th>Country</th><th>Operator partner</th><th>Satellite provider</th><th>Status</th><th>Services</th><th>Source</th><th>Last checked</th></tr>"]
 for r in d['rows']:
     src = ' · '.join(f"<a href='{s['url']}'>{s['label']}</a>" for s in r['sources'])
-    rows.append(f"<tr><td>{r['country']}</td><td>{r['operator']}</td><td>{r['satellite']}</td><td class={cls[r['status']]}>{r['status']}</td><td>{r['services']}</td><td>{src}</td><td>{r['checked']}</td></tr>")
+    rows.append(
+        "<tr>"
+        f"<td data-label='Country'>{r['country']}</td>"
+        f"<td data-label='Operator partner'>{r['operator']}</td>"
+        f"<td data-label='Satellite provider'>{r['satellite']}</td>"
+        f"<td data-label='Status' class={cls[r['status']]}>{r['status']}</td>"
+        f"<td data-label='Services'>{r['services']}</td>"
+        f"<td data-label='Source'>{src}</td>"
+        f"<td data-label='Last checked'>{r['checked']}</td>"
+        "</tr>"
+    )
 p = root/'tracker.html'
 s = p.read_text()
 new = "<!-- TRACKER-TABLE:START (generated from data/tracker.json by scripts/build_tracker.py; do not edit by hand) --><table id=tracker-table>" + ''.join(rows) + "</table><!-- TRACKER-TABLE:END -->"
