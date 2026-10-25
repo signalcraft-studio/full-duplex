@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Constellation — deploy D2C satellites | Full Duplex</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  main{max-width:720px;padding:1rem 4vw 2rem}
+  .game-wrap{position:relative;background:#070d18;border:1px solid #1d2a40;border-radius:12px;overflow:hidden;touch-action:none}
+  canvas{display:block;width:100%;height:auto;vertical-align:middle;cursor:crosshair}
+  .hud{display:flex;justify-content:space-between;gap:.75rem;flex-wrap:wrap;font-size:.9rem;color:#8aa;margin:.75rem 0}
+  .hud b{color:#5ec8ff}
+  .hint{font-size:.85rem;color:#8aa;margin:.5rem 0 0}
+  #overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(7,13,24,.88);padding:1.25rem;text-align:center}
+  #overlay.hidden{display:none}
+  #overlay h2{margin:.2em 0;font-size:clamp(1.4rem,5vw,2rem);color:#fff}
+  #overlay p{color:#cfe;max-width:28rem;margin:.6rem auto}
+  #overlay .cta{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;margin-top:1rem}
+  #overlay button,#overlay a.btn{padding:.75rem 1.2rem;border:0;border-radius:8px;background:#5ec8ff;color:#0b1220;font-weight:700;text-decoration:none;cursor:pointer;font-size:1rem}
+  #overlay a.ghost{background:transparent;border:1px solid #5ec8ff;color:#5ec8ff}
+  .back{display:inline-block;margin-bottom:.75rem;color:#8aa;text-decoration:none;font-size:.9rem}
+  .back:hover{color:#5ec8ff}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="../index.html">Full<span>Duplex</span></a>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../tracker.html">Tracker</a>
+    <a href="../about.html">About</a>
+    <a href="../sponsor.html">Sponsor</a>
+  </nav>
+</header>
+<main>
+  <a class="back" href="../index.html">← Full Duplex</a>
+  <h1 style="margin:.2em 0 .4em;font-size:clamp(1.5rem,4vw,2rem)">Constellation</h1>
+  <p style="margin:0 0 .75rem;color:#8aa">Deploy direct-to-cell satellites into orbit. Hit the slots. Miss and they tumble.</p>
+  <div class="hud">
+    <span>On station: <b id="score">0</b></span>
+    <span>Sats left: <b id="sats">12</b></span>
+    <span>Time: <b id="time">75</b>s</span>
+  </div>
+  <div class="game-wrap" id="wrap">
+    <canvas id="c" width="720" height="540" aria-label="Constellation game canvas"></canvas>
+    <div id="overlay">
+      <div>
+        <h2 id="title">Constellation</h2>
+        <p id="blurb">Fly the stack left and right. Tap, click or press Space to deploy when a glowing slot lines up above you. 75 seconds. Score = satellites on station.</p>
+        <div class="cta"><button type="button" id="start">Deploy</button></div>
+      </div>
+    </div>
+  </div>
+  <p class="hint">Desktop: ← → or A/D to move · Space / click to deploy. Phone: drag to move · tap to deploy.</p>
+</main>
+<footer>
+  <span>© 2026 Full Duplex. Independent analysis of satellite-to-phone and mobile networks.</span>
+  <span>Made in the UK · <a href="../privacy.html">Privacy</a></span>
+</footer>
+<script>
+(function () {
+  const W = 720, H = 540, ROUND = 75, MAX_SATS = 12, SLOT_R = 28;
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  const overlay = document.getElementById('overlay');
+  const titleEl = document.getElementById('title');
+  const blurbEl = document.getElementById('blurb');
+  const startBtn = document.getElementById('start');
+  const scoreEl = document.getElementById('score');
+  const satsEl = document.getElementById('sats');
+  const timeEl = document.getElementById('time');
+
+  let running = false, score = 0, satsLeft = MAX_SATS, tLeft = ROUND;
+  let shipX = W / 2, targetX = W / 2, keys = {}, pointers = {};
+  let slots = [], sats = [], tumblers = [], stars = [], last = 0, spawnAcc = 0;
+
+  for (let i = 0; i < 60; i++) {
+    stars.push({ x: Math.random() * W, y: Math.random() * H * 0.7, r: Math.random() * 1.4 + 0.3 });
+  }
+
+  function reset() {
+    score = 0; satsLeft = MAX_SATS; tLeft = ROUND;
+    shipX = targetX = W / 2;
+    slots = []; sats = []; tumblers = [];
+    spawnAcc = 0; last = 0;
+    scoreEl.textContent = '0';
+    satsEl.textContent = String(MAX_SATS);
+    timeEl.textContent = String(ROUND);
+  }
+
+  function spawnSlot() {
+    const x = 60 + Math.random() * (W - 120);
+    const y = 70 + Math.random() * 160;
+    const drift = (Math.random() - 0.5) * 40;
+    slots.push({ x, y, drift, life: 4.5 + Math.random() * 2, hit: false });
+  }
+
+  function endGame() {
+    running = false;
+    titleEl.textContent = score === 0 ? 'No sats on station' : score + ' on station';
+    blurbEl.innerHTML =
+      'Today\'s live D2C fleets are still hundreds, not thousands. ' +
+      'See who\'s actually live on the <a href="../tracker.html">tracker</a>, ' +
+      'or get the weekly briefing.';
+    startBtn.textContent = 'Fly again';
+    const cta = startBtn.parentElement;
+    cta.querySelectorAll('a.btn').forEach(a => a.remove());
+    const a1 = document.createElement('a');
+    a1.className = 'btn ghost'; a1.href = '../tracker.html'; a1.textContent = 'Tracker';
+    const a2 = document.createElement('a');
+    a2.className = 'btn ghost'; a2.href = 'https://fullduplexhq.beehiiv.com/subscribe';
+    a2.target = '_blank'; a2.rel = 'noopener'; a2.textContent = 'Subscribe';
+    cta.appendChild(a1); cta.appendChild(a2);
+    overlay.classList.remove('hidden');
+  }
+
+  function startGame() {
+    reset();
+    overlay.classList.add('hidden');
+    const cta = startBtn.parentElement;
+    cta.querySelectorAll('a.btn').forEach(a => a.remove());
+    running = true;
+    last = performance.now();
+    requestAnimationFrame(loop);
+  }
+
+  startBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    startGame();
+  });
+
+  function canvasPos(e) {
+    const r = canvas.getBoundingClientRect();
+    const sx = canvas.width / r.width, sy = canvas.height / r.height;
+    const src = e.touches ? e.touches[0] || e.changedTouches[0] : e;
+    return { x: (src.clientX - r.left) * sx, y: (src.clientY - r.top) * sy };
+  }
+
+  function deploy() {
+    if (!running || satsLeft <= 0) return;
+    satsLeft--;
+    satsEl.textContent = String(satsLeft);
+    sats.push({ x: shipX, y: H - 70, vy: -320, alive: true });
+  }
+
+  window.addEventListener('keydown', e => {
+    keys[e.key] = true;
+    if (e.key === ' ' || e.key === 'Enter') {
+      e.preventDefault();
+      if (!running && !overlay.classList.contains('hidden')) startGame();
+      else deploy();
+    }
+  });
+  window.addEventListener('keyup', e => { keys[e.key] = false; });
+
+  canvas.addEventListener('pointerdown', e => {
+    if (!running) return;
+    canvas.setPointerCapture(e.pointerId);
+    const p = canvasPos(e);
+    pointers[e.pointerId] = { x: p.x, y: p.y, moved: false };
+    targetX = p.x;
+  });
+  canvas.addEventListener('pointermove', e => {
+    if (!pointers[e.pointerId]) return;
+    const p = canvasPos(e);
+    const d = pointers[e.pointerId];
+    if (Math.abs(p.x - d.x) + Math.abs(p.y - d.y) > 8) d.moved = true;
+    targetX = p.x;
+  });
+  canvas.addEventListener('pointerup', e => {
+    const d = pointers[e.pointerId];
+    delete pointers[e.pointerId];
+    if (!running || !d) return;
+    if (!d.moved) deploy();
+  });
+  canvas.addEventListener('pointercancel', e => { delete pointers[e.pointerId]; });
+
+  function update(dt) {
+    tLeft -= dt;
+    if (tLeft <= 0) { tLeft = 0; timeEl.textContent = '0'; endGame(); return; }
+    timeEl.textContent = String(Math.ceil(tLeft));
+
+    if (keys['ArrowLeft'] || keys['a'] || keys['A']) targetX -= 280 * dt;
+    if (keys['ArrowRight'] || keys['d'] || keys['D']) targetX += 280 * dt;
+    targetX = Math.max(36, Math.min(W - 36, targetX));
+    shipX += (targetX - shipX) * Math.min(1, 12 * dt);
+
+    spawnAcc += dt;
+    const need = slots.filter(s => !s.hit).length < 3;
+    if (need && spawnAcc > 0.9) { spawnSlot(); spawnAcc = 0; }
+    else if (spawnAcc > 1.8) { spawnSlot(); spawnAcc = 0; }
+
+    for (const s of slots) {
+      s.life -= dt;
+      s.x += s.drift * dt;
+      if (s.x < 40 || s.x > W - 40) s.drift *= -1;
+    }
+    slots = slots.filter(s => s.life > 0 && !s.hit);
+
+    for (const sat of sats) {
+      if (!sat.alive) continue;
+      sat.y += sat.vy * dt;
+      let hit = false;
+      for (const slot of slots) {
+        if (slot.hit) continue;
+        const dx = sat.x - slot.x, dy = sat.y - slot.y;
+        if (dx * dx + dy * dy < SLOT_R * SLOT_R) {
+          slot.hit = true; sat.alive = false; hit = true;
+          score++; scoreEl.textContent = String(score);
+          break;
+        }
+      }
+      if (!hit && sat.y < 40) {
+        sat.alive = false;
+        tumblers.push({ x: sat.x, y: sat.y, vx: (Math.random() - 0.5) * 80, vy: 40, rot: 0, life: 1.4 });
+      }
+    }
+    sats = sats.filter(s => s.alive);
+
+    for (const t of tumblers) {
+      t.life -= dt; t.x += t.vx * dt; t.y += t.vy * dt; t.rot += 4 * dt;
+    }
+    tumblers = tumblers.filter(t => t.life > 0);
+
+    if (satsLeft <= 0 && sats.length === 0) endGame();
+  }
+
+  function drawShip(x, y) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.fillStyle = '#cfe3f7';
+    ctx.beginPath();
+    ctx.moveTo(0, -36); ctx.lineTo(14, 18); ctx.lineTo(-14, 18); ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = '#5ec8ff';
+    ctx.fillRect(-6, 18, 12, 10);
+    ctx.fillStyle = '#f5a26b';
+    ctx.beginPath();
+    ctx.moveTo(-8, 28); ctx.lineTo(0, 42); ctx.lineTo(8, 28); ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function draw() {
+    ctx.fillStyle = '#0b1220';
+    ctx.fillRect(0, 0, W, H);
+    for (const st of stars) {
+      ctx.globalAlpha = 0.35 + (st.r / 2) * 0.4;
+      ctx.fillStyle = '#fff';
+      ctx.beginPath(); ctx.arc(st.x, st.y, st.r, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    // Earth limb
+    ctx.fillStyle = '#132238';
+    ctx.beginPath();
+    ctx.ellipse(W / 2, H + 80, W * 0.7, 120, 0, Math.PI, 0);
+    ctx.fill();
+    ctx.strokeStyle = '#1d3a28';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.ellipse(W / 2, H + 80, W * 0.7, 120, 0, Math.PI, 0);
+    ctx.stroke();
+
+    // Orbit guide
+    ctx.strokeStyle = 'rgba(94,200,255,0.15)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.ellipse(W / 2, 180, W * 0.42, 90, 0, 0, Math.PI * 2);
+    ctx.stroke();
+
+    for (const slot of slots) {
+      const pulse = 0.6 + 0.4 * Math.sin(performance.now() / 200 + slot.x);
+      ctx.strokeStyle = 'rgba(94,200,255,' + pulse + ')';
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(slot.x, slot.y, SLOT_R, 0, Math.PI * 2); ctx.stroke();
+      ctx.fillStyle = 'rgba(94,200,255,0.12)';
+      ctx.beginPath(); ctx.arc(slot.x, slot.y, SLOT_R - 4, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#5ec8ff';
+      ctx.beginPath(); ctx.arc(slot.x, slot.y, 3, 0, Math.PI * 2); ctx.fill();
+    }
+
+    for (const sat of sats) {
+      ctx.fillStyle = '#e8eef7';
+      ctx.fillRect(sat.x - 5, sat.y - 5, 10, 10);
+      ctx.strokeStyle = '#5ec8ff';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(sat.x - 12, sat.y); ctx.lineTo(sat.x + 12, sat.y);
+      ctx.stroke();
+    }
+
+    for (const t of tumblers) {
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, t.life);
+      ctx.translate(t.x, t.y);
+      ctx.rotate(t.rot);
+      ctx.fillStyle = '#f5c26b';
+      ctx.fillRect(-4, -4, 8, 8);
+      ctx.restore();
+    }
+    ctx.globalAlpha = 1;
+
+    drawShip(shipX, H - 55);
+
+    // deploy reticle
+    ctx.strokeStyle = 'rgba(94,200,255,0.35)';
+    ctx.setLineDash([4, 6]);
+    ctx.beginPath();
+    ctx.moveTo(shipX, H - 95);
+    ctx.lineTo(shipX, 50);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  function loop(now) {
+    if (!running) return;
+    const dt = Math.min(0.05, (now - last) / 1000 || 0);
+    last = now;
+    update(dt);
+    draw();
+    if (running) requestAnimationFrame(loop);
+  }
+
+  // Idle draw
+  draw();
+})();
+</script>
+</body>
+</html>
