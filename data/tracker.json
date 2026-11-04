@@ -1,5 +1,5 @@
 {
- "last_checked": "21 Oct 2026",
+ "last_checked": "4 Nov 2026",
  "note": "Single source of truth for tracker.html (table + map). Edit here, then run: python3 scripts/build_tracker.py. iso_n3 = ISO 3166-1 numeric code for the map; null = multi-country/non-country row, listed under the map.",
  "rows": [
   {
@@ -18,6 +18,21 @@
    "checked": "17 Oct 2026"
   },
   {
+   "country": "United States",
+   "iso_n3": "840",
+   "operator": "AT&T",
+   "satellite": "AST SpaceMobile",
+   "status": "trial",
+   "services": "First handoff between a ground-based cellular network and a direct-to-device satellite network, 21 Oct 2026 near Granite Falls, Washington (Ericsson and Nokia kit); builds on earlier voice, text and video calls; moving towards beta, no commercial launch date",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://about.att.com/story/2026/att-ast-spacemobile-engineering-connected-world.html"
+    }
+   ],
+   "checked": "4 Nov 2026"
+  },
+  {
    "country": "Canada",
    "iso_n3": "124",
    "operator": "Rogers",
@@ -34,7 +49,7 @@
      "url": "https://www.cbc.ca/news/canada/toronto/rogers-launching-new-satellite-mobile-text-trial-1.7585401"
     }
    ],
-   "checked": "17 Oct 2026"
+   "checked": "4 Nov 2026"
   },
   {
    "country": "Canada",
@@ -53,7 +68,7 @@
      "url": "https://www.businesswire.com/news/home/20261020527793/en/AST-SpaceMobile-Advances-Service-Readiness-Ahead-of-Initial-Space-Based-Cellular-Broadband-Coverage-in-Key-Global-Markets"
     }
    ],
-   "checked": "21 Oct 2026"
+   "checked": "4 Nov 2026"
   },
   {
    "country": "United Kingdom",
@@ -76,7 +91,7 @@
      "url": "https://www.lightreading.com/satellite/virgin-media-o2-feels-highs-and-lows-of-starlink-in-wales"
     }
    ],
-   "checked": "21 Oct 2026"
+   "checked": "4 Nov 2026"
   },
   {
    "country": "United Kingdom",
@@ -110,7 +125,7 @@
      "url": "https://www.ookla.com/articles/d2d-comes-of-age-in-apac-2026"
     }
    ],
-   "checked": "17 Oct 2026"
+   "checked": "4 Nov 2026"
   },
   {
    "country": "Japan",
@@ -125,7 +140,7 @@
      "url": "https://newsroom.kddi.com/english/news/detail/kddi_nr-1135_4686.html"
     }
    ],
-   "checked": "17 Oct 2026"
+   "checked": "4 Nov 2026"
   },
   {
    "country": "Japan",
@@ -140,7 +155,7 @@
      "url": "https://www.ookla.com/articles/d2d-comes-of-age-in-apac-2026"
     }
    ],
-   "checked": "17 Oct 2026"
+   "checked": "4 Nov 2026"
   },
   {
    "country": "Australia",
@@ -155,7 +170,7 @@
      "url": "https://www.ookla.com/articles/d2d-comes-of-age-in-apac-2026"
     }
    ],
-   "checked": "17 Oct 2026"
+   "checked": "4 Nov 2026"
   },
   {
    "country": "Australia",
@@ -170,7 +185,7 @@
      "url": "https://blog.voiceplus.com.au/en-au/satellite-to-mobile-in-australia-market-and-regulatory-update-august-2026"
     }
    ],
-   "checked": "17 Oct 2026"
+   "checked": "4 Nov 2026"
   },
   {
    "country": "Philippines",
@@ -185,7 +200,7 @@
      "url": "https://www.ookla.com/articles/d2d-comes-of-age-in-apac-2026"
     }
    ],
-   "checked": "17 Oct 2026"
+   "checked": "4 Nov 2026"
   },
   {
    "country": "Ukraine",
@@ -219,7 +234,7 @@
      "url": "https://informacioncorporativa.entel.cl/comunicados-de-prensa/chile-es-el-primer-pais-de-latinoamerica-en-ofrecer-comercialmente-el-servicio-satelital-directo-al-celular-de-entel-y-starlink"
     }
    ],
-   "checked": "17 Oct 2026"
+   "checked": "4 Nov 2026"
   },
   {
    "country": "Peru",
@@ -302,7 +317,7 @@
      "url": "https://www.lightreading.com/satellite/lynk-and-omnispace-merger-creates-d2d-challenger-elveo-mobile"
     }
    ],
-   "checked": "17 Oct 2026"
+   "checked": "4 Nov 2026"
   },
   {
    "country": "Bangladesh",
@@ -317,7 +332,7 @@
      "url": "https://www.veon.com/newsroom/press-releases/veon-brings-starlinks-satellite-to-mobile-service-to-south-asia-with-banglalink-launch"
     }
    ],
-   "checked": "19 Oct 2026"
+   "checked": "4 Nov 2026"
   },
   {
    "country": "Kazakhstan",
@@ -340,7 +355,7 @@
      "url": "https://beeline.kz/ru/starlink"
     }
    ],
-   "checked": "19 Oct 2026"
+   "checked": "4 Nov 2026"
   },
   {
    "country": "Uganda",
@@ -355,7 +370,49 @@
      "url": "https://ict.go.ug/media/news/airtel-uganda-launches-satellite-to-mobile-service-with-starlink-to-expand-connectivity"
     }
    ],
-   "checked": "19 Oct 2026"
+   "checked": "4 Nov 2026"
+  },
+  {
+   "country": "Brazil",
+   "iso_n3": "076",
+   "operator": "Vivo (Telefônica Brasil)",
+   "satellite": "Starlink",
+   "status": "live",
+   "services": "Vivo Satélite live since 26 Oct 2026 on eligible plans with compatible 4G/5G phones: WhatsApp (messages and voice calls), SMS, MMS, RCS, iMessage, Google Messages, Google Maps, Apple Maps and the Vivo app; free promotional period for business customers until 26 Jan 2027",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://vivo.com.br/para-voce/produtos-e-servicos/para-o-celular/vivo-satelite"
+    },
+    {
+     "label": "Terms",
+     "url": "https://vivo.com.br/content/dam/vivo-sites/vivo-com-br/para-empresas/pdf/produtos-e-servicos/servicos-essenciais/ultrabanda-larga/vivo-empresas-satelite-termos-e-condicoes.pdf"
+    }
+   ],
+   "checked": "4 Nov 2026"
+  },
+  {
+   "country": "France",
+   "iso_n3": "250",
+   "operator": "Orange",
+   "satellite": "Skylo",
+   "status": "live",
+   "services": "Message Satellite: SMS and location sharing when there's no mobile or Wi-Fi coverage, since 11 Dec 2025 (consumers); Orange 5G/5G+ plans on Google Pixel 9 (not 9a), 10 and 11 only; no voice or data; free until 31 Dec 2026 for sign-ups up to 18 Nov 2026, paid after; Orange Business option €5 excl. VAT/month",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://newsroom.orange.com/orange-becomes-the-first-european-operator-to-offer-satellite-sms-service-using-direct-to-device-technology/?lang=eng"
+    },
+    {
+     "label": "Provider",
+     "url": "https://boutique.orange.fr/options/message-satellite"
+    },
+    {
+     "label": "Business",
+     "url": "https://smartmobility.orange-business.com/nos-solutions/forfaits-et-connectivite/message-satellite/"
+    }
+   ],
+   "checked": "4 Nov 2026"
   }
  ]
 }
