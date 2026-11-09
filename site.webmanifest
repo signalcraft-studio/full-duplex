@@ -1,0 +1,2 @@
+{"name":"Full Duplex","short_name":"Full Duplex","start_url":"/full-duplex/","scope":"/full-duplex/","display":"browser","background_color":"#070b14","theme_color":"#070b14",
+"icons":[{"src":"assets/icon-192.png","sizes":"192x192","type":"image/png"},{"src":"assets/icon-512.png","sizes":"512x512","type":"image/png"},{"src":"assets/favicon.svg","sizes":"any","type":"image/svg+xml"}]}
