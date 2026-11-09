@@ -275,8 +275,8 @@ footer.site p{margin:.4rem 0}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 .card.feature p.meta{font-family:var(--f-mono);font-size:.82rem;color:var(--dim)}
 .logo{display:inline-flex;align-items:center}
-.logo .mark{flex:none;display:block;margin-right:.45rem}
-footer.site .logo .mark{width:22px;height:22px}
+.logo .mark{flex:none;display:block;margin-right:.4rem}
+footer.site .logo .mark{width:40px;height:40px}
 
 /* Approved artwork (9 Nov 2026) */
 .hero-art{position:absolute;z-index:-1;top:0;bottom:0;left:calc(50% - 50vw);width:100vw;overflow:hidden;pointer-events:none}

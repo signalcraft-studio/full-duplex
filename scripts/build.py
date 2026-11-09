@@ -12,7 +12,7 @@ search-index.json, sitemap.xml, robots.txt, feed.xml.
 The tracker change log is rebuilt from the git history of data/tracker.json when git is
 available, and otherwise read back from data/tracker-changes.json.
 
-IMAGES (approved by Sam, 9 Nov 2026): logo mark (inline SVG, LOGO_MARK), favicons, home hero, article header plate,
+IMAGES (approved by Sam, 9 Nov 2026): logo A (assets/logo.svg, inlined as LOGO_MARK), favicon A, home hero, article header plate,
 tracker backdrop, sponsor plate and per-page OG share cards. Responsive files come from scripts/images.py (Pillow);
 OG cards (assets/og/*.jpg) are generated here at build time when Pillow is installed, and kept as committed otherwise.
 New artwork still needs Sam's approval of a preview before it goes on the site.
@@ -86,10 +86,8 @@ def signal_block(root, surface, variant='full', heading_level=2, heading=None, i
 # ---------------------------------------------------------------- chrome
 NAV = [('index.html', 'Home'), ('articles/index.html', 'Articles'), ('tracker.html', 'Tracker'), ('search.html', 'Search'), ('about.html', 'About'), ('sponsor.html', 'Sponsor')]
 
-LOGO_MARK = ('<svg class=mark viewBox="8 8 48 48" width="26" height="26" aria-hidden="true" focusable="false">'
-             '<path d="M13 37a19 19 0 0 1 31-19" fill="none" stroke="#5ec8ff" stroke-width="7" stroke-linecap="round"/>'
-             '<path d="M51 27a19 19 0 0 1-31 19" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/>'
-             '<circle cx="32" cy="32" r="5.5" fill="#5ec8ff"/></svg>')  # approved by Sam 9 Nov 2026 (logo option A)
+LOGO_MARK = ('<svg class=mark viewBox="254 250 516 516" width="44" height="44" aria-hidden="true" focusable="false">'
+             '<g fill="none" stroke-width="32" stroke-linecap="round"><path d="M279 505A233 233 0 0 1 644.3 313.2" stroke="#00cfff"/><path d="M744.9 511.9A233 233 0 0 1 383.7 699.5" stroke="#fff"/></g><circle cx="423" cy="432" r="10" fill="#00cfff"/><path transform="translate(426 517.5) rotate(-15)" fill="#00cfff" fill-rule="evenodd" d="M-23.5 -57.5h47a5 5 0 0 1 5 5v105a5 5 0 0 1 -5 5h-47a5 5 0 0 1 -5 -5v-105a5 5 0 0 1 5 -5zM-8.5 -48h17.0a5.5 5.5 0 0 1 5.5 5.5v0.0a5.5 5.5 0 0 1 -5.5 5.5h-17.0a5.5 5.5 0 0 1 -5.5 -5.5v-0.0a5.5 5.5 0 0 1 5.5 -5.5z"/><g fill="#fff"><path d="M583 488h21l33 32-22 22-32-32z"/><path d="M620 492l20-21 15 14-21 22z"/><path d="M567 545l21-21 14 14-20 20z"/><circle cx="635" cy="541" r="8"/></g>' + '</svg>')  # logo A, approved by Sam 9 Nov 2026 (same as assets/logo.svg)
 
 def header(root, current):
     links = ''.join(f'<a href="{root}{h}"{" aria-current=page" if h == current else ""}>{t}</a>' for h, t in NAV)

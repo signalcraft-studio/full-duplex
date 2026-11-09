@@ -62,9 +62,10 @@ def og_card(out, kicker, title, foot='signalcraft-studio.github.io/full-duplex  
     global _plate
     if _plate is None: _plate = fit(Image.open(SRC / 'og-plate.jpg').convert('RGB'), 1200, 630)
     im = _plate.copy(); d = ImageDraw.Draw(im)
-    im.paste(m := draw_mark(56, bg=False), (72, 60), m)
+    logo = Image.open(SRC / 'logo-a-512.png').convert('RGBA').resize((76, 76), Image.LANCZOS)  # logo A (rendered from assets/logo.svg)
+    im.paste(logo, (64, 50), logo)
     fh = font('InterTight-600.woff2', 40)
-    d.text((140, 66), 'Full', font=fh, fill=WHITE); d.text((140 + d.textlength('Full', font=fh), 66), 'Duplex', font=fh, fill=CYAN)
+    d.text((148, 66), 'Full', font=fh, fill=WHITE); d.text((148 + d.textlength('Full', font=fh), 66), 'Duplex', font=fh, fill=CYAN)
     d.text((72, 200), kicker.upper(), font=font('JetBrainsMono-500.woff2', 26), fill=CYAN)
     for size in (76, 68, 60, 52):
         ft = font('InterTight-600.woff2', size); lines = wrap(d, title, ft, 1000)
