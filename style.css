@@ -269,3 +269,6 @@ footer.site p{margin:.4rem 0}
 }
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 .card.feature p.meta{font-family:var(--f-mono);font-size:.82rem;color:var(--dim)}
+.logo{display:inline-flex;align-items:center}
+.logo .mark{flex:none;display:block;margin-right:.45rem}
+footer.site .logo .mark{width:22px;height:22px}

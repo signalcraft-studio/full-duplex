@@ -12,8 +12,8 @@ search-index.json, sitemap.xml, robots.txt, feed.xml.
 The tracker change log is rebuilt from the git history of data/tracker.json when git is
 available, and otherwise read back from data/tracker-changes.json.
 
-IMAGES: no image is referenced anywhere yet. Every place an approved image will go is
-marked "TODO(image-approval)". Do not add one until Sam approves a preview.
+IMAGES: only the approved logo mark (inline SVG, LOGO_MARK) and favicon (assets/favicon.svg) are used.
+Every place another image will go is marked "TODO(image-approval)". Do not add one until Sam approves a preview.
 """
 import csv, html, io, json, math, pathlib, re, subprocess, sys, urllib.parse
 from datetime import date
@@ -79,16 +79,21 @@ def signal_block(root, surface, variant='full', heading_level=2, heading=None, i
 # ---------------------------------------------------------------- chrome
 NAV = [('index.html', 'Home'), ('articles/index.html', 'Articles'), ('tracker.html', 'Tracker'), ('search.html', 'Search'), ('about.html', 'About'), ('sponsor.html', 'Sponsor')]
 
+LOGO_MARK = ('<svg class=mark viewBox="8 8 48 48" width="26" height="26" aria-hidden="true" focusable="false">'
+             '<path d="M13 37a19 19 0 0 1 31-19" fill="none" stroke="#5ec8ff" stroke-width="7" stroke-linecap="round"/>'
+             '<path d="M51 27a19 19 0 0 1-31 19" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/>'
+             '<circle cx="32" cy="32" r="5.5" fill="#5ec8ff"/></svg>')  # approved by Sam 9 Nov 2026 (logo option A)
+
 def header(root, current):
     links = ''.join(f'<a href="{root}{h}"{" aria-current=page" if h == current else ""}>{t}</a>' for h, t in NAV)
-    return (f'<a class=skip href="#main">Skip to content</a><header class=site><div class=wrap><a class=logo href="{root}index.html">Full<span>Duplex</span></a>'
+    return (f'<a class=skip href="#main">Skip to content</a><header class=site><div class=wrap><a class=logo href="{root}index.html">{LOGO_MARK}Full<span>Duplex</span></a>'
             f'<nav aria-label="Main">{links}</nav><div class=hdr-cta><a class=xlink href="https://x.com/{X}" target=_blank rel="noopener me">Follow @{X}</a>'
             f'<a class="btn pill" href="{esc(sub_url("header"))}">Subscribe</a></div></div></header>')
 
 def footer(root, sticky=True):
     bar = (f'<div class=stickybar hidden role=region aria-label="Subscribe to Signal"><p><strong>Signal</strong> · the weekly direct-to-cell briefing</p>'
            f'<a class="btn pill" href="{esc(sub_url("sticky-bar"))}">Subscribe free</a><button class=x type=button aria-label="Dismiss">×</button></div>') if sticky else ''
-    return (f'<footer class=site><div class=wrap><div><a class=logo href="{root}index.html">Full<span>Duplex</span></a><p>Independent analysis of satellite-to-phone and mobile networks. Made in the UK.</p>'
+    return (f'<footer class=site><div class=wrap><div><a class=logo href="{root}index.html">{LOGO_MARK}Full<span>Duplex</span></a><p>Independent analysis of satellite-to-phone and mobile networks. Made in the UK.</p>'
             f'<p class=copy>© 2026 Full Duplex.</p></div>'
             f'<nav aria-label="Footer"><a href="{esc(sub_url("footer"))}">Subscribe to Signal</a><a href="https://x.com/{X}" target=_blank rel="noopener me">Follow @{X} on X</a>'
             f'<a href="{root}articles/index.html">Articles</a><a href="{root}tracker.html">Tracker</a><a href="{root}tracker/changes/">Tracker changes</a>'
@@ -106,7 +111,7 @@ def page(*, path, title, description, body, root='', current='', og_type='websit
     head = (f'<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="{viewport}">'
             f'<title>{esc(ft)}</title><meta name="description" content="{esc(description)}"><link rel="canonical" href="{url}">'
             + ('' if index else '<meta name="robots" content="noindex">') +
-            f'<meta name="theme-color" content="#070b14"><meta name="color-scheme" content="dark">'
+            f'<link rel="icon" href="{root}assets/favicon.svg" type="image/svg+xml"><meta name="theme-color" content="#070b14"><meta name="color-scheme" content="dark">'
             f'<meta property="og:site_name" content="Full Duplex"><meta property="og:locale" content="en_GB"><meta property="og:type" content="{og_type}">'
             f'<meta property="og:title" content="{esc(title)}"><meta property="og:description" content="{esc(description)}"><meta property="og:url" content="{url}">'
             f'<!-- TODO(image-approval): add og:image (1200x630) + og:image:alt and switch twitter:card to summary_large_image once Sam approves the OG card preview. -->'

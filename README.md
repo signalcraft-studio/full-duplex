@@ -12,4 +12,4 @@ Live site: https://signalcraft-studio.github.io/full-duplex/ (GitHub Pages, serv
 - Fonts (Inter Tight, Newsreader, JetBrains Mono; SIL OFL, see `assets/fonts/OFL.txt`) are embedded in `assets/fonts.css` and load without blocking the page.
 
 ## Images
-No images are used yet. Places where approved artwork will go are marked `TODO(image-approval)`. Nothing is added until Sam approves a preview.
+Only the approved logo mark (inline SVG in the header and footer) and `assets/favicon.svg` are used. Places where other artwork will go are marked `TODO(image-approval)`. Nothing is added until Sam approves a preview.
