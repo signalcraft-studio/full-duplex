@@ -1,11 +1,4 @@
-<!doctype html>
-<html lang="en-GB">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Constellation — deploy D2C satellites | Full Duplex</title>
-<link rel="stylesheet" href="../style.css">
-<style>
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Constellation — deploy D2C satellites | Full Duplex</title><meta name="description" content="Constellation: a 75-second browser game. Deploy direct-to-cell satellites into orbit slots before time runs out."><link rel="canonical" href="https://signalcraft-studio.github.io/full-duplex/play/constellation.html"><meta name="theme-color" content="#0b1220"><meta name="color-scheme" content="dark"><meta property="og:site_name" content="Full Duplex"><meta property="og:locale" content="en_GB"><meta property="og:type" content="website"><meta property="og:title" content="Constellation: deploy D2C satellites"><meta property="og:description" content="Constellation: a 75-second browser game. Deploy direct-to-cell satellites into orbit slots before time runs out."><meta property="og:url" content="https://signalcraft-studio.github.io/full-duplex/play/constellation.html"><!-- TODO(image-approval): add og:image (1200x630), og:image:alt and switch twitter:card to summary_large_image once Sam approves the OG card preview. --><meta name="twitter:card" content="summary"><meta name="twitter:site" content="@FullDuplexHQ"><meta name="twitter:title" content="Constellation: deploy D2C satellites"><meta name="twitter:description" content="Constellation: a 75-second browser game. Deploy direct-to-cell satellites into orbit slots before time runs out."><link rel="alternate" type="application/rss+xml" title="Full Duplex" href="https://signalcraft-studio.github.io/full-duplex/feed.xml"><link rel="stylesheet" href="../style.css"><style>
   main{max-width:720px;padding:1rem 4vw 2rem}
   .game-wrap{position:relative;background:#070d18;border:1px solid #1d2a40;border-radius:12px;overflow:hidden;touch-action:none}
   canvas{display:block;width:100%;height:auto;vertical-align:middle;cursor:crosshair}
@@ -21,44 +14,25 @@
   #overlay a.ghost{background:transparent;border:1px solid #5ec8ff;color:#5ec8ff}
   .back{display:inline-block;margin-bottom:.75rem;color:#8aa;text-decoration:none;font-size:.9rem}
   .back:hover{color:#5ec8ff}
-</style>
-</head>
-<body>
-<header>
-  <a class="logo" href="../index.html">Full<span>Duplex</span></a>
-  <nav>
-    <a href="../index.html">Home</a>
-    <a href="../tracker.html">Tracker</a>
-    <a href="../about.html">About</a>
-    <a href="../sponsor.html">Sponsor</a>
-  </nav>
-</header>
-<main>
-  <a class="back" href="../index.html">← Full Duplex</a>
-  <h1 style="margin:.2em 0 .4em;font-size:clamp(1.5rem,4vw,2rem)">Constellation</h1>
-  <p style="margin:0 0 .75rem;color:#8aa">Deploy direct-to-cell satellites into orbit. Hit the slots. Miss and they tumble.</p>
-  <div class="hud">
-    <span>On station: <b id="score">0</b></span>
-    <span>Sats left: <b id="sats">12</b></span>
-    <span>Time: <b id="time">75</b>s</span>
-  </div>
-  <div class="game-wrap" id="wrap">
-    <canvas id="c" width="720" height="540" aria-label="Constellation game canvas"></canvas>
-    <div id="overlay">
-      <div>
-        <h2 id="title">Constellation</h2>
-        <p id="blurb">Fly the stack left and right. Tap, click or press Space to deploy when a glowing slot lines up above you. 75 seconds. Score = satellites on station.</p>
-        <div class="cta"><button type="button" id="start">Deploy</button></div>
-      </div>
-    </div>
-  </div>
-  <p class="hint">Desktop: ← → or A/D to move · Space / click to deploy. Phone: drag to move · tap to deploy.</p>
-</main>
-<footer>
-  <span>© 2026 Full Duplex. Independent analysis of satellite-to-phone and mobile networks.</span>
-  <span>Made in the UK · <a href="../privacy.html">Privacy</a></span>
-</footer>
-<script>
+</style></head><body><a class=skip href="#main">Skip to content</a><header class=site><a class=logo href="../index.html" aria-label="Full Duplex home">Full<span>Duplex</span></a><nav aria-label="Main"><a href="../index.html">Home</a><a href="../tracker.html">Tracker</a><a href="../about.html">About</a><a href="../sponsor.html">Sponsor</a></nav><div class=hdr-cta><a class="xlink" href="https://x.com/FullDuplexHQ" target=_blank rel="noopener me">Follow @FullDuplexHQ</a><a class="btn pill" href="https://fullduplexhq.beehiiv.com/subscribe?utm_source=fullduplex-site&amp;utm_medium=header&amp;utm_campaign=signal">Subscribe</a></div></header><main id=main><a class="back" href="../index.html">← Full Duplex</a>
+<h1 style="margin:.2em 0 .4em;font-size:clamp(1.5rem,4vw,2rem)">Constellation</h1>
+<p style="margin:0 0 .75rem;color:#8aa">Deploy direct-to-cell satellites into orbit. Hit the slots. Miss and they tumble.</p>
+<div class="hud">
+<span>On station: <b id="score">0</b></span>
+<span>Sats left: <b id="sats">12</b></span>
+<span>Time: <b id="time">75</b>s</span>
+</div>
+<div class="game-wrap" id="wrap">
+<canvas aria-label="Constellation game canvas" height="540" id="c" width="720"></canvas>
+<div id="overlay">
+<div>
+<h2 id="title">Constellation</h2>
+<p id="blurb">Fly the stack left and right. Tap, click or press Space to deploy when a glowing slot lines up above you. 75 seconds. Score = satellites on station.</p>
+<div class="cta"><button id="start" type="button">Deploy</button></div>
+</div>
+</div>
+</div>
+<p class="hint">Desktop: ← → or A/D to move · Space / click to deploy. Phone: drag to move · tap to deploy.</p><div class=share-end><p>Beat your score? Challenge someone.</p><a class="btn ghost share" href="https://x.com/intent/post?text=I+just+played+Constellation%3A+deploy+direct-to-cell+satellites+before+time+runs+out.&amp;url=https%3A%2F%2Fsignalcraft-studio.github.io%2Ffull-duplex%2Fplay%2Fconstellation.html&amp;via=FullDuplexHQ" target=_blank rel="noopener">Share the game on X</a><a class="btn ghost" href="https://x.com/FullDuplexHQ" target=_blank rel="noopener me">Follow @FullDuplexHQ</a></div><section class=signal aria-label="Subscribe to Signal"><p class=kicker>Signal · free weekly briefing</p><h2 class=signal-h>Get Signal: what changed in satellite-to-phone this week</h2><p>One email a week on direct-to-cell, mobile networks and what it means for you, from an 11-year mobile network insider. Recent issues:</p><ul class=issues aria-label="Recent issues of Signal"><li><a href="https://fullduplexhq.beehiiv.com/p/signal-003-starlink-mobile-just-ordered-the-towers"><span class=ino>#003</span> Starlink Mobile just ordered the towers</a></li><li><a href="https://fullduplexhq.beehiiv.com/p/signal-002-the-fcc-just-tried-to-make-room-in-the-sky"><span class=ino>#002</span> The FCC just tried to make room in the sky</a></li><li><a href="https://fullduplexhq.beehiiv.com/p/signal-001-your-phone-is-about-to-connect-to-space"><span class=ino>#001</span> Your phone is about to connect to space</a></li></ul><div class=bh-slot data-form="9901d011-3067-4813-a277-b9cc01a364a6" data-surface="game"></div><p class=signal-cta><a class=btn href="https://fullduplexhq.beehiiv.com/subscribe?utm_source=fullduplex-site&amp;utm_medium=game&amp;utm_campaign=signal">Send me Signal</a> <a class=more href="https://fullduplexhq.beehiiv.com/">Read past issues</a></p><p class=fine>Free. Your email is managed by beehiiv and used only to send Signal. Unsubscribe any time. See our <a href="../privacy.html">privacy notice</a>.</p></section></main><footer class=site><div><a class=logo href="../index.html">Full<span>Duplex</span></a><p>Independent analysis of satellite-to-phone and mobile networks. Made in the UK.</p></div><nav aria-label="Footer"><a href="https://fullduplexhq.beehiiv.com/subscribe?utm_source=fullduplex-site&amp;utm_medium=footer&amp;utm_campaign=signal">Subscribe to Signal</a><a href="https://x.com/FullDuplexHQ" target=_blank rel="noopener me">Follow @FullDuplexHQ on X</a><a href="../tracker.html">Tracker</a><a href="../feed.xml">RSS</a><a href="../sponsor.html">Sponsor</a><a href="../privacy.html">Privacy</a></nav><p class=copy>© 2026 Full Duplex.</p></footer><div class=stickybar hidden role=region aria-label="Subscribe to Signal"><p><strong>Signal</strong> · the weekly direct-to-cell briefing</p><a class="btn pill" href="https://fullduplexhq.beehiiv.com/subscribe?utm_source=fullduplex-site&amp;utm_medium=sticky-bar&amp;utm_campaign=signal">Subscribe free</a><button class=x type=button aria-label="Dismiss">×</button></div><script src="../assets/site.js" defer></script><script>
 (function () {
   const W = 720, H = 540, ROUND = 75, MAX_SATS = 12, SLOT_R = 28;
   const canvas = document.getElementById('c');
@@ -326,6 +300,4 @@
   // Idle draw
   draw();
 })();
-</script>
-</body>
-</html>
+</script></body></html>
