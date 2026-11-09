@@ -1,5 +1,119 @@
 [
  {
+  "date": "2026-11-09",
+  "commit": "working-tree",
+  "items": [
+   {
+    "type": "updated",
+    "status": "live",
+    "country": "United States",
+    "text": "Updated details for United States: T-Mobile + Starlink."
+   },
+   {
+    "type": "updated",
+    "status": "trial",
+    "country": "United States",
+    "text": "Updated details for United States: AT&T + AST SpaceMobile."
+   },
+   {
+    "type": "updated",
+    "status": "live",
+    "country": "New Zealand",
+    "text": "Updated details for New Zealand: One NZ + Starlink."
+   },
+   {
+    "type": "added",
+    "status": "live",
+    "country": "New Zealand",
+    "text": "Added New Zealand: Spark + Starlink (live)."
+   },
+   {
+    "type": "added",
+    "status": "trial",
+    "country": "New Zealand",
+    "text": "Added New Zealand: 2degrees + AST SpaceMobile (trial)."
+   },
+   {
+    "type": "updated",
+    "status": "live",
+    "country": "Japan",
+    "text": "Updated details for Japan: SoftBank; NTT docomo + Starlink."
+   },
+   {
+    "type": "added",
+    "status": "trial",
+    "country": "Japan",
+    "text": "Added Japan: Rakuten Mobile + AST SpaceMobile (trial)."
+   },
+   {
+    "type": "updated",
+    "status": "live",
+    "country": "Australia",
+    "text": "Updated details for Australia: Telstra + Starlink."
+   },
+   {
+    "type": "updated",
+    "status": "live",
+    "country": "Philippines",
+    "text": "Updated details for Philippines: Globe + Starlink."
+   },
+   {
+    "type": "updated",
+    "status": "live",
+    "country": "Ukraine",
+    "text": "Updated details for Ukraine: Kyivstar + Starlink."
+   },
+   {
+    "type": "updated",
+    "status": "live",
+    "country": "Chile",
+    "text": "Updated details for Chile: Entel + Starlink."
+   },
+   {
+    "type": "updated",
+    "status": "trial",
+    "country": "Switzerland",
+    "text": "Updated details for Switzerland: Salt + Starlink."
+   },
+   {
+    "type": "updated",
+    "status": "live",
+    "country": "41 countries",
+    "text": "Updated details for 41 countries: Various MNOs, MVNOs and device partners + Skylo."
+   },
+   {
+    "type": "added",
+    "status": "live",
+    "country": "DR Congo",
+    "text": "Added DR Congo: Airtel DRC (Airtel Africa) + Starlink (live)."
+   },
+   {
+    "type": "added",
+    "status": "trial",
+    "country": "Kenya",
+    "text": "Added Kenya: Airtel Kenya (Airtel Africa) + Starlink (trial)."
+   },
+   {
+    "type": "updated",
+    "status": "live",
+    "country": "Brazil",
+    "text": "Updated details for Brazil: Vivo (Telefônica Brasil) + Starlink."
+   },
+   {
+    "type": "added",
+    "status": "announced",
+    "country": "Brazil",
+    "text": "Added Brazil: Brisanet; Unifique; Iez! Telecom; Amazônia 5G + AST SpaceMobile (announced)."
+   },
+   {
+    "type": "added",
+    "status": "announced",
+    "country": "Saudi Arabia",
+    "text": "Added Saudi Arabia: stc + AST SpaceMobile (announced)."
+   }
+  ]
+ },
+ {
   "date": "2026-11-04",
   "commit": "bcc32d5a60671ffabd2685f593465f29239d86e7",
   "items": [

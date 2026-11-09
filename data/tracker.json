@@ -1,5 +1,5 @@
 {
- "last_checked": "4 Nov 2026",
+ "last_checked": "9 Nov 2026",
  "note": "Single source of truth for tracker.html (table + map). Edit here, then run: python3 scripts/build_tracker.py. iso_n3 = ISO 3166-1 numeric code for the map; null = multi-country/non-country row, listed under the map.",
  "rows": [
   {
@@ -8,14 +8,18 @@
    "operator": "T-Mobile",
    "satellite": "Starlink",
    "status": "live",
-   "services": "SMS, data for selected apps, emergency texts",
+   "services": "Texts incl. photos and audio (SMS/MMS/RCS), location sharing, text to 911, selected satellite-ready apps and WhatsApp voice chat on compatible phones; covers continental US, Puerto Rico, Hawaii, parts of southern Alaska and select countries abroad; included on qualifying plans or $10/month, open to other carriers' customers",
    "sources": [
     {
      "label": "Source",
+     "url": "https://www.t-mobile.com/coverage/satellite-phone-service"
+    },
+    {
+     "label": "Update",
      "url": "https://www.t-mobile.com/news/un-carrier/reaching-for-the-stars-with-t-satellite"
     }
    ],
-   "checked": "17 Oct 2026"
+   "checked": "9 Nov 2026"
   },
   {
    "country": "United States",
@@ -28,9 +32,13 @@
     {
      "label": "Source",
      "url": "https://about.att.com/story/2026/att-ast-spacemobile-engineering-connected-world.html"
+    },
+    {
+     "label": "Update",
+     "url": "https://www.satellitetoday.com/connectivity/2026/11/03/att-and-ast-spacemobile-demonstrate-handoff-between-cellular-d2d-networks/"
     }
    ],
-   "checked": "4 Nov 2026"
+   "checked": "9 Nov 2026"
   },
   {
    "country": "Canada",
@@ -49,7 +57,7 @@
      "url": "https://www.cbc.ca/news/canada/toronto/rogers-launching-new-satellite-mobile-text-trial-1.7585401"
     }
    ],
-   "checked": "4 Nov 2026"
+   "checked": "9 Nov 2026"
   },
   {
    "country": "Canada",
@@ -68,7 +76,7 @@
      "url": "https://www.businesswire.com/news/home/20261020527793/en/AST-SpaceMobile-Advances-Service-Readiness-Ahead-of-Initial-Space-Based-Cellular-Broadband-Coverage-in-Key-Global-Markets"
     }
    ],
-   "checked": "4 Nov 2026"
+   "checked": "9 Nov 2026"
   },
   {
    "country": "United Kingdom",
@@ -91,7 +99,7 @@
      "url": "https://www.lightreading.com/satellite/virgin-media-o2-feels-highs-and-lows-of-starlink-in-wales"
     }
    ],
-   "checked": "4 Nov 2026"
+   "checked": "9 Nov 2026"
   },
   {
    "country": "United Kingdom",
@@ -110,7 +118,7 @@
      "url": "https://www.businesswire.com/news/home/20261020527793/en/AST-SpaceMobile-Advances-Service-Readiness-Ahead-of-Initial-Space-Based-Cellular-Broadband-Coverage-in-Key-Global-Markets"
     }
    ],
-   "checked": "21 Oct 2026"
+   "checked": "9 Nov 2026"
   },
   {
    "country": "New Zealand",
@@ -118,14 +126,52 @@
    "operator": "One NZ",
    "satellite": "Starlink",
    "status": "live",
-   "services": "Satellite texting (since Dec 2024)",
+   "services": "Satellite texting since Dec 2024; since 2 Feb 2026, data for selected apps (e.g. weather, maps) and WhatsApp voice calling on eligible phones and plans",
    "sources": [
     {
      "label": "Source",
+     "url": "https://media.one.nz/satellite-data-whatsapp-calling"
+    },
+    {
+     "label": "Update",
      "url": "https://www.ookla.com/articles/d2d-comes-of-age-in-apac-2026"
     }
    ],
-   "checked": "4 Nov 2026"
+   "checked": "9 Nov 2026"
+  },
+  {
+   "country": "New Zealand",
+   "iso_n3": "554",
+   "operator": "Spark",
+   "satellite": "Starlink",
+   "status": "live",
+   "services": "Spark Satellite since 1 Apr 2026: texting and data for selected apps (WhatsApp, Messenger, AccuWeather, Plan my Walk, Google Maps); included on eligible plans (consumer pay monthly and prepaid from NZ$75), add-on from NZ$10 for others",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://www.spark.co.nz/online/about/our-company/news/The-best-network-coverage-just-got-better-as-Spark-launches-data-and-text-satellite-to-mobile-services-powered-by-Starlink"
+    },
+    {
+     "label": "Update",
+     "url": "https://www.reseller.co.nz/article/4153392/mobile-space-race-is-on-as-spark-launches-starlink-satellite-to-mobile-services.html"
+    }
+   ],
+   "checked": "9 Nov 2026"
+  },
+  {
+   "country": "New Zealand",
+   "iso_n3": "554",
+   "operator": "2degrees",
+   "satellite": "AST SpaceMobile",
+   "status": "trial",
+   "services": "Marton ground station opened 26 Aug 2026; voice calls, video calls and data tested on standard smartphones in August 2026; customer trial and launch dates to be confirmed",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://www.2degrees.nz/media-release/2degrees-opens-ast-spacemobile-ground-station"
+    }
+   ],
+   "checked": "9 Nov 2026"
   },
   {
    "country": "Japan",
@@ -140,7 +186,7 @@
      "url": "https://newsroom.kddi.com/english/news/detail/kddi_nr-1135_4686.html"
     }
    ],
-   "checked": "4 Nov 2026"
+   "checked": "9 Nov 2026"
   },
   {
    "country": "Japan",
@@ -148,14 +194,49 @@
    "operator": "SoftBank; NTT docomo",
    "satellite": "Starlink",
    "status": "live",
-   "services": "Messaging",
+   "services": "SoftBank Starlink Direct since 10 Apr 2026 (SoftBank, Y!mobile, LINEMO) and docomo Starlink Direct since 27 Apr 2026: text messaging, data for selected apps, location sharing and emergency alerts; no voice calls; free on eligible SoftBank/Y!mobile plans and on all docomo plans",
    "sources": [
     {
      "label": "Source",
+     "url": "https://www.softbank.jp/en/sbnews/entry/20260414_01"
+    },
+    {
+     "label": "Provider",
+     "url": "https://www.docomo.ne.jp/service/starlink_direct/"
+    },
+    {
+     "label": "Update",
      "url": "https://www.ookla.com/articles/d2d-comes-of-age-in-apac-2026"
     }
    ],
-   "checked": "4 Nov 2026"
+   "checked": "9 Nov 2026"
+  },
+  {
+   "country": "Japan",
+   "iso_n3": "392",
+   "operator": "Rakuten Mobile",
+   "satellite": "AST SpaceMobile",
+   "status": "trial",
+   "services": "First broadband video call on unmodified phones (23 Apr 2025, experimental licence); Rakuten Saikyo Satellite Service (700 MHz) to begin a free test in the commercial environment before end-2026, open to all users but only at limited times while about 13 satellites are in orbit. Separately, the Rakuten AST joint venture (agreed 6 Nov 2026, up to ¥148bn from MIC's J-LEO) targets a mid-band domestic service by end-March 2029",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://corp.mobile.rakuten.co.jp/english/news/press/2025/0423_01/"
+    },
+    {
+     "label": "Update",
+     "url": "https://global.rakuten.com/corp/news/press/2026/1109_01.html"
+    },
+    {
+     "label": "Test",
+     "url": "https://k-tai.watch.impress.co.jp/docs/news/2154875.html"
+    },
+    {
+     "label": "Trade",
+     "url": "https://www.lightreading.com/satellite/rakuten-and-ast-form-d2d-joint-venture-in-japan"
+    }
+   ],
+   "checked": "9 Nov 2026"
   },
   {
    "country": "Australia",
@@ -163,14 +244,18 @@
    "operator": "Telstra",
    "satellite": "Starlink",
    "status": "live",
-   "services": "Satellite texting (postpaid plans)",
+   "services": "Satellite Messaging since mid-2025; Select Satellite Apps (e.g. WhatsApp, iMessage, Google/Apple Maps, AllTrails, weather apps) since 28 Jul 2026 on eligible Upfront Mobile and Business plans with iPhone 13 or newer or Galaxy S26; no Triple Zero calls or texts",
    "sources": [
     {
      "label": "Source",
+     "url": "https://www.telstra.com.au/exchange/satellite-to-mobile-lite-data-"
+    },
+    {
+     "label": "Update",
      "url": "https://www.ookla.com/articles/d2d-comes-of-age-in-apac-2026"
     }
    ],
-   "checked": "4 Nov 2026"
+   "checked": "9 Nov 2026"
   },
   {
    "country": "Australia",
@@ -185,7 +270,7 @@
      "url": "https://blog.voiceplus.com.au/en-au/satellite-to-mobile-in-australia-market-and-regulatory-update-august-2026"
     }
    ],
-   "checked": "4 Nov 2026"
+   "checked": "9 Nov 2026"
   },
   {
    "country": "Philippines",
@@ -193,14 +278,18 @@
    "operator": "Globe",
    "satellite": "Starlink",
    "status": "live",
-   "services": "Commercial launch June 2026 (see source)",
+   "services": "Commercial launch 29 Jun 2026 after NTC approval: SMS, messaging, navigation and light data on compatible LTE phones; from ₱99 for Globe Prepaid and TM, included on Platinum and postpaid Plan 1499 and up",
    "sources": [
     {
      "label": "Source",
-     "url": "https://www.ookla.com/articles/d2d-comes-of-age-in-apac-2026"
+     "url": "https://www.globe.com.ph/about-us/newsroom/corporate/globe-launches-starlink-satellite-to-mobile-in-ph"
+    },
+    {
+     "label": "Update",
+     "url": "https://bworldonline.com/corporate/2026/06/30/759947/globe-launches-starlink-direct-to-cell-service-after-ntc-approval/"
     }
    ],
-   "checked": "4 Nov 2026"
+   "checked": "9 Nov 2026"
   },
   {
    "country": "Ukraine",
@@ -208,7 +297,7 @@
    "operator": "Kyivstar",
    "satellite": "Starlink",
    "status": "live",
-   "services": "Launched 24 Nov 2025; messaging via apps and SMS, satellite-ready apps and location sharing on existing LTE phones; free to all ~15.5m Kyivstar 4G smartphone users",
+   "services": "Launched 24 Nov 2025 with SMS, free to all ~15.5m Kyivstar 4G smartphone users; light data for Viber, WhatsApp and Google Maps nationwide since 16 Jun 2026 on 4G Android phones; no voice calls yet",
    "sources": [
     {
      "label": "Source",
@@ -216,10 +305,14 @@
     },
     {
      "label": "Update",
+     "url": "https://investors.kyivstar.ua/news-releases/news-release-details/kyivstar-expands-satellite-connectivity-launch-light-data"
+    },
+    {
+     "label": "Group",
      "url": "https://www.veon.com/newsroom/press-releases/in-less-than-one-year-starlink-mobile-connects-11-million-people-across-veons-three-high-growth-markets"
     }
    ],
-   "checked": "21 Oct 2026"
+   "checked": "9 Nov 2026"
   },
   {
    "country": "Chile",
@@ -227,14 +320,18 @@
    "operator": "Entel",
    "satellite": "Starlink",
    "status": "live",
-   "services": "Messaging; data planned",
+   "services": "SMS since Nov 2025; data for selected apps (WhatsApp, Google Maps, AccuWeather, X) since 25 Mar 2026; compatible phone with roaming and VoLTE switched on",
    "sources": [
     {
      "label": "Source",
      "url": "https://informacioncorporativa.entel.cl/comunicados-de-prensa/chile-es-el-primer-pais-de-latinoamerica-en-ofrecer-comercialmente-el-servicio-satelital-directo-al-celular-de-entel-y-starlink"
+    },
+    {
+     "label": "Update",
+     "url": "https://informacioncorporativa.entel.cl/comunicados-de-prensa/entel-amplia-su-servicio-con-starlink-d2c-y-ahora-incluye-aplicaciones-como-whatsapp-y-google-maps"
     }
    ],
-   "checked": "4 Nov 2026"
+   "checked": "9 Nov 2026"
   },
   {
    "country": "Peru",
@@ -257,14 +354,18 @@
    "operator": "Salt",
    "satellite": "Starlink",
    "status": "trial",
-   "services": "Test SMS; launch subject to Swiss approvals",
+   "services": "Test SMS via Starlink (Interlaken, July 2025); no commercial service: Salt's CEO said on 31 Mar 2026 a launch is more likely in 2027 than 2026, pending Swiss approval to use mobile spectrum from space",
    "sources": [
     {
      "label": "Source",
      "url": "https://www.telecoms.com/satellite/salt-sends-direct-to-cell-message-with-starlink"
+    },
+    {
+     "label": "Update",
+     "url": "https://www.nau.ch/news/wirtschaft/salt-chef-rechnet-mit-handy-satellitenverbindung-nicht-mehr-2026-67112348"
     }
    ],
-   "checked": "17 Oct 2026"
+   "checked": "9 Nov 2026"
   },
   {
    "country": "Spain",
@@ -300,9 +401,13 @@
     {
      "label": "Source",
      "url": "https://www.abiresearch.com/blog/top-d2c-satellite-service-providers-2027"
+    },
+    {
+     "label": "Update",
+     "url": "https://rcrwireless.com/20261029/networks/direct-to-device-orange-kyivstar"
     }
    ],
-   "checked": "17 Oct 2026"
+   "checked": "9 Nov 2026"
   },
   {
    "country": "60+ countries (contracts)",
@@ -317,7 +422,7 @@
      "url": "https://www.lightreading.com/satellite/lynk-and-omnispace-merger-creates-d2d-challenger-elveo-mobile"
     }
    ],
-   "checked": "4 Nov 2026"
+   "checked": "9 Nov 2026"
   },
   {
    "country": "Bangladesh",
@@ -332,7 +437,7 @@
      "url": "https://www.veon.com/newsroom/press-releases/veon-brings-starlinks-satellite-to-mobile-service-to-south-asia-with-banglalink-launch"
     }
    ],
-   "checked": "4 Nov 2026"
+   "checked": "9 Nov 2026"
   },
   {
    "country": "Kazakhstan",
@@ -355,7 +460,7 @@
      "url": "https://beeline.kz/ru/starlink"
     }
    ],
-   "checked": "4 Nov 2026"
+   "checked": "9 Nov 2026"
   },
   {
    "country": "Uganda",
@@ -370,7 +475,45 @@
      "url": "https://ict.go.ug/media/news/airtel-uganda-launches-satellite-to-mobile-service-with-starlink-to-expand-connectivity"
     }
    ],
-   "checked": "4 Nov 2026"
+   "checked": "9 Nov 2026"
+  },
+  {
+   "country": "DR Congo",
+   "iso_n3": "180",
+   "operator": "Airtel DRC (Airtel Africa)",
+   "satellite": "Starlink",
+   "status": "live",
+   "services": "Launched Aug 2026, Africa's first commercial satellite-to-mobile service: SMS and light-data apps incl. WhatsApp on compatible LTE Android phones; needs an active Airtel data bundle or roaming; 30-day free trial via the MyAirtel app",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://www.zawya.com/en/press-release/companies-news/airtel-africa-becomes-the-first-operator-in-africa-to-commercially-launch-starlink-mobile-in-drc-457471"
+    },
+    {
+     "label": "Update",
+     "url": "https://techafricanews.com/2026/10/15/from-towers-to-satellites-what-airtels-starlink-rollouts-actually-change/"
+    }
+   ],
+   "checked": "9 Nov 2026"
+  },
+  {
+   "country": "Kenya",
+   "iso_n3": "404",
+   "operator": "Airtel Kenya (Airtel Africa)",
+   "satellite": "Starlink",
+   "status": "trial",
+   "services": "Starlink Mobile data and messaging tested in March 2026 (WhatsApp, maps, mobile money); commercial launch subject to local regulatory approval",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://www.zawya.com/en/press-release/companies-news/airtel-africa-becomes-the-first-operator-in-africa-to-commercially-launch-starlink-mobile-in-drc-457471"
+    },
+    {
+     "label": "Update",
+     "url": "https://techafricanews.com/2026/10/15/from-towers-to-satellites-what-airtels-starlink-rollouts-actually-change/"
+    }
+   ],
+   "checked": "9 Nov 2026"
   },
   {
    "country": "Brazil",
@@ -378,10 +521,14 @@
    "operator": "Vivo (Telefônica Brasil)",
    "satellite": "Starlink",
    "status": "live",
-   "services": "Vivo Satélite live since 26 Oct 2026 on eligible plans with compatible 4G/5G phones: WhatsApp (messages and voice calls), SMS, MMS, RCS, iMessage, Google Messages, Google Maps, Apple Maps and the Vivo app; free promotional period for business customers until 26 Jan 2027",
+   "services": "Vivo Satélite live since 26 Oct 2026 for ~50m eligible postpaid, Controle, Lite and prepaid (top-ups over R$30) customers with compatible 4G/5G phones: WhatsApp (messages and calls), SMS, RCS, iMessage, Google Messages, Google Maps, Apple Maps and the Vivo app; free for 12 months for consumers and 3 months for business customers",
    "sources": [
     {
      "label": "Source",
+     "url": "https://www.telefonica.com.br/noticias/2026/novembro/em-parceria-com-a-starlink-mobile--vivo-lanca-o-vivo-satelite"
+    },
+    {
+     "label": "Provider",
      "url": "https://vivo.com.br/para-voce/produtos-e-servicos/para-o-celular/vivo-satelite"
     },
     {
@@ -389,7 +536,26 @@
      "url": "https://vivo.com.br/content/dam/vivo-sites/vivo-com-br/para-empresas/pdf/produtos-e-servicos/servicos-essenciais/ultrabanda-larga/vivo-empresas-satelite-termos-e-condicoes.pdf"
     }
    ],
-   "checked": "4 Nov 2026"
+   "checked": "9 Nov 2026"
+  },
+  {
+   "country": "Brazil",
+   "iso_n3": "076",
+   "operator": "Brisanet; Unifique; Iez! Telecom; Amazônia 5G",
+   "satellite": "AST SpaceMobile",
+   "status": "announced",
+   "services": "Agreements announced Oct 2026: the four regional operators lend AST up to 10+10 MHz of 700 MHz spectrum (secondary use), alongside AST's 15+15 MHz S-band authorisation from Anatel (9 Oct 2026); four ground gateways being built; no launch date",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://www.businesswire.com/news/home/20261026540919/en/AST-SpaceMobile-Advances-Brazil-Expansion-with-Anatels-Approval-for-S-band-Spectrum-and-Secondary-Use-of-the-700-MHz-Band-Agreements-with-Four-Regional-Operators-and-Planned-Ground-Infrastructure"
+    },
+    {
+     "label": "Update",
+     "url": "https://exame.com/invest/mercados/rival-da-starlink-avanca-no-brasil-e-quer-levar-satelite-a-200-milhoes-de-celulares/"
+    }
+   ],
+   "checked": "9 Nov 2026"
   },
   {
    "country": "France",
@@ -412,7 +578,26 @@
      "url": "https://smartmobility.orange-business.com/nos-solutions/forfaits-et-connectivite/message-satellite/"
     }
    ],
-   "checked": "4 Nov 2026"
+   "checked": "9 Nov 2026"
+  },
+  {
+   "country": "Saudi Arabia",
+   "iso_n3": "682",
+   "operator": "stc",
+   "satellite": "AST SpaceMobile",
+   "status": "announced",
+   "services": "10-year commercial agreement (Oct 2025) with a $175m prepayment; three gateways and a Riyadh operations centre; AST targets initial, intermittent coverage before end-2026, subject to CST approval",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://www.sec.gov/Archives/edgar/data/1780312/000149315225020005/ex99-1.htm"
+    },
+    {
+     "label": "Update",
+     "url": "https://www.businesswire.com/news/home/20261020527793/en/AST-SpaceMobile-Advances-Service-Readiness-Ahead-of-Initial-Space-Based-Cellular-Broadband-Coverage-in-Key-Global-Markets"
+    }
+   ],
+   "checked": "9 Nov 2026"
   }
  ]
 }
