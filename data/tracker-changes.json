@@ -1,0 +1,96 @@
+[
+ {
+  "date": "2026-11-04",
+  "commit": "bcc32d5a60671ffabd2685f593465f29239d86e7",
+  "items": [
+   {
+    "type": "added",
+    "status": "trial",
+    "country": "United States",
+    "text": "Added United States: AT&T + AST SpaceMobile (trial)."
+   },
+   {
+    "type": "added",
+    "status": "live",
+    "country": "Brazil",
+    "text": "Added Brazil: Vivo (Telefônica Brasil) + Starlink (live)."
+   },
+   {
+    "type": "added",
+    "status": "live",
+    "country": "France",
+    "text": "Added France: Orange + Skylo (live)."
+   }
+  ]
+ },
+ {
+  "date": "2026-10-21",
+  "commit": "f7bcbc9added460974b43e2e846e7809c5182537",
+  "items": [
+   {
+    "type": "updated",
+    "status": "trial",
+    "country": "Canada",
+    "text": "Updated details for Canada: Telus + AST SpaceMobile."
+   },
+   {
+    "type": "updated",
+    "status": "live",
+    "country": "United Kingdom",
+    "text": "Updated details for United Kingdom: Virgin Media O2 + Starlink."
+   },
+   {
+    "type": "updated",
+    "status": "trial",
+    "country": "United Kingdom",
+    "text": "Updated details for United Kingdom: VodafoneThree + AST SpaceMobile (via Satellite Connect Europe)."
+   },
+   {
+    "type": "updated",
+    "status": "live",
+    "country": "Ukraine",
+    "text": "Updated details for Ukraine: Kyivstar + Starlink."
+   }
+  ]
+ },
+ {
+  "date": "2026-10-19",
+  "commit": "1979521508636022a8de84aa2b5b79bb43fc08c3",
+  "items": [
+   {
+    "type": "added",
+    "status": "trial",
+    "country": "Canada",
+    "text": "Added Canada: Telus + AST SpaceMobile (trial)."
+   },
+   {
+    "type": "added",
+    "status": "live",
+    "country": "Bangladesh",
+    "text": "Added Bangladesh: Banglalink (VEON) + Starlink (live)."
+   },
+   {
+    "type": "added",
+    "status": "live",
+    "country": "Kazakhstan",
+    "text": "Added Kazakhstan: Beeline Kazakhstan (VEON) + Starlink (live)."
+   },
+   {
+    "type": "added",
+    "status": "live",
+    "country": "Uganda",
+    "text": "Added Uganda: Airtel Uganda + Starlink (live)."
+   }
+  ]
+ },
+ {
+  "date": "2026-10-19",
+  "commit": "ddee0ebdbf85d6bc07f92c7ff8b3a27c8b24bc7b",
+  "items": [
+   {
+    "type": "baseline",
+    "text": "Tracker published with 17 entries."
+   }
+  ]
+ }
+]
