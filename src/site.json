@@ -7,9 +7,53 @@
  "beehiiv_form": "9901d011-3067-4813-a277-b9cc01a364a6",
  "home_description": "Full Duplex explains direct-to-cell satellites, GSM and the shake-up coming to mobile networks: the weekly Signal briefing, a live D2C tracker and analysis.",
  "issues": [
-  {"no": "003", "title": "Starlink Mobile just ordered the towers", "date": "2026-11-06", "url": "https://fullduplexhq.beehiiv.com/p/signal-003-starlink-mobile-just-ordered-the-towers"},
-  {"no": "002", "title": "The FCC just tried to make room in the sky", "date": "2026-10-30", "url": "https://fullduplexhq.beehiiv.com/p/signal-002-the-fcc-just-tried-to-make-room-in-the-sky"},
-  {"no": "001", "title": "Your phone is about to connect to space", "date": "2026-10-20", "url": "https://fullduplexhq.beehiiv.com/p/signal-001-your-phone-is-about-to-connect-to-space"}
+  {
+   "no": "003",
+   "title": "Starlink Mobile just ordered the towers",
+   "date": "2026-11-06",
+   "url": "https://fullduplexhq.beehiiv.com/p/signal-003-starlink-mobile-just-ordered-the-towers"
+  },
+  {
+   "no": "002",
+   "title": "The FCC just tried to make room in the sky",
+   "date": "2026-10-30",
+   "url": "https://fullduplexhq.beehiiv.com/p/signal-002-the-fcc-just-tried-to-make-room-in-the-sky"
+  },
+  {
+   "no": "001",
+   "title": "Your phone is about to connect to space",
+   "date": "2026-10-20",
+   "url": "https://fullduplexhq.beehiiv.com/p/signal-001-your-phone-is-about-to-connect-to-space"
+  }
  ],
- "article_order": ["why-starship-is-a-telco-story", "roaming-vs-esim-vs-satellite", "where-satellite-phones-are-used", "2g-3g-switch-off", "how-phone-talks-to-satellite", "d2c-and-mvnos", "o2-satellite-uk", "t-satellite-reality-check", "uk-d2d-race"]
+ "article_order": [
+  "why-starship-is-a-telco-story",
+  "roaming-vs-esim-vs-satellite",
+  "where-satellite-phones-are-used",
+  "2g-3g-switch-off",
+  "how-phone-talks-to-satellite",
+  "d2c-and-mvnos",
+  "o2-satellite-uk",
+  "t-satellite-reality-check",
+  "uk-d2d-race"
+ ],
+ "regions": {
+  "United States": "North America",
+  "Canada": "North America",
+  "United Kingdom": "Europe",
+  "Switzerland": "Europe",
+  "Spain": "Europe",
+  "France": "Europe",
+  "Ukraine": "Europe",
+  "New Zealand": "Oceania",
+  "Australia": "Oceania",
+  "Japan": "Asia",
+  "Philippines": "Asia",
+  "Bangladesh": "Asia",
+  "Kazakhstan": "Asia",
+  "Chile": "Latin America",
+  "Peru": "Latin America",
+  "Brazil": "Latin America",
+  "Uganda": "Africa"
+ }
 }
