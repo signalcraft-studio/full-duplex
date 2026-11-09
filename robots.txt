@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://signalcraft-studio.github.io/full-duplex/sitemap.xml
