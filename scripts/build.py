@@ -182,7 +182,7 @@ def tracker_table(root=''):
 sys.dont_write_bytecode = True; sys.path.insert(0, str(ROOT / 'scripts')); import globe_dots; globe_dots.build(ROOT)
 
 # CSV
-buf = io.StringIO(); w = csv.writer(buf)
+buf = io.StringIO(); w = csv.writer(buf, lineterminator='\n')
 w.writerow(['country', 'iso_n3', 'region', 'operator', 'satellite_provider', 'provider_group', 'status', 'services', 'sources', 'last_checked'])
 for r in ROWS:
     w.writerow([r['country'], r['iso_n3'] or '', region(r), r['operator'], r['satellite'], provider(r['satellite']), r['status'], r['services'],
