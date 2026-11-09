@@ -1,4 +1,9 @@
-/* Full Duplex design system: "night-side orbit". No images; depth from translucency and gradients. */
+/* Full Duplex design system: "night-side orbit". Depth from translucency and gradients, plus approved artwork (assets/img). */
+/* Self-hosted fonts (latin subsets, Fontsource 5.3.0, SIL OFL 1.1: assets/fonts/OFL.txt). */
+@font-face{font-family:'Inter Tight';font-style:normal;font-weight:600;font-display:swap;src:url(assets/fonts/InterTight-600.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Newsreader';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/Newsreader-400.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Newsreader';font-style:italic;font-weight:400;font-display:swap;src:url(assets/fonts/Newsreader-400-italic.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:500;font-display:swap;src:url(assets/fonts/JetBrainsMono-500.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 :root{
   --bg:#070b14;--surface:#0f1626;--surface-2:#131d31;--line:rgba(255,255,255,.08);--line-2:rgba(255,255,255,.14);
   --text:#e8eef7;--muted:#9fb0c3;--dim:#7f93a8;--cyan:#5ec8ff;--cyan-2:#8fdbff;--live:#6ee79a;--trial:#f5c26b;--ann:#7f93a8;
@@ -85,7 +90,7 @@ main{display:block;max-width:var(--wide);margin:auto;padding:1.5rem 5vw 3rem}
 .sec{margin-top:3rem}
 
 /* home */
-.hero{display:grid;gap:2rem;align-items:center;padding:2rem 0 1rem}
+.hero{position:relative;isolation:isolate;display:grid;gap:2rem;align-items:center;padding:2rem 0 1rem}
 @media (min-width:900px){.hero{grid-template-columns:1.15fr .85fr;padding:3.5rem 0 1.5rem}}
 .hero h1{font-size:clamp(2.4rem,6.4vw,4.6rem);max-width:12ch;margin:.1em 0 .3em}
 .byl{color:var(--muted);font-size:.95rem}
@@ -272,3 +277,16 @@ footer.site p{margin:.4rem 0}
 .logo{display:inline-flex;align-items:center}
 .logo .mark{flex:none;display:block;margin-right:.45rem}
 footer.site .logo .mark{width:22px;height:22px}
+
+/* Approved artwork (9 Nov 2026) */
+.hero-art{position:absolute;z-index:-1;top:0;bottom:0;left:calc(50% - 50vw);width:100vw;overflow:hidden;pointer-events:none}
+.hero-art img{width:100%;height:100%;object-fit:cover;object-position:70% 60%;opacity:.6;-webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.2),#000 55%);mask-image:linear-gradient(90deg,rgba(0,0,0,.2),#000 55%)}
+.hero-art::after{content:"";position:absolute;inset:0;background:linear-gradient(var(--bg),transparent 16%,transparent 62%,var(--bg))}
+.hero .globe{background:radial-gradient(circle at 62% 35%,rgba(20,35,61,.82),rgba(10,18,34,.72) 70%)}
+@media (max-width:899px){.hero-art img{opacity:.35;object-position:80% 100%}}
+.art-plate{margin:1.4rem 0 1.8rem;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);aspect-ratio:5/2;background:var(--surface)}
+.art-plate img{display:block;width:100%;height:100%;object-fit:cover}
+.is-tracker main{position:relative;isolation:isolate}
+.is-tracker main::before{content:"";position:absolute;z-index:-1;top:-1rem;left:calc(50% - 50vw);width:100vw;height:560px;background:url(assets/img/tracker-map-640.webp) center top/cover no-repeat;opacity:.16;-webkit-mask-image:linear-gradient(#000 40%,transparent);mask-image:linear-gradient(#000 40%,transparent);pointer-events:none}
+.sponsor-card{background:linear-gradient(90deg,rgba(15,22,38,.92) 30%,rgba(15,22,38,.55)),url(assets/img/sponsor-plate-960.webp) center/cover no-repeat,var(--surface)}
+@media (min-width:700px){.is-tracker main::before{background-image:url(assets/img/tracker-map-1280.webp)}}

@@ -12,4 +12,9 @@ Live site: https://signalcraft-studio.github.io/full-duplex/ (GitHub Pages, serv
 - Fonts (Inter Tight, Newsreader, JetBrains Mono; SIL OFL, see `assets/fonts/OFL.txt`) are embedded in `assets/fonts.css` and load without blocking the page.
 
 ## Images
-Only the approved logo mark (inline SVG in the header and footer) and `assets/favicon.svg` are used. Places where other artwork will go are marked `TODO(image-approval)`. Nothing is added until Sam approves a preview.
+All artwork below was approved by Sam on 9 Nov 2026. New artwork needs a preview approved before it goes on the site.
+
+- Logo mark: inline SVG (`LOGO_MARK` in `scripts/build.py`); favicon `assets/favicon.svg` plus PNG fallbacks (`favicon-32.png`, `apple-touch-icon.png`, `icon-192/512.png`, `site.webmanifest`).
+- Home hero, article header plate, tracker backdrop (decorative only, faint) and sponsor card plate: originals in `src/img/`, responsive WebP in `assets/img/`. Regenerate with `python3 scripts/images.py` (needs Pillow).
+- Share cards: `assets/og/<page>.jpg` (1200x630) are drawn per page by `scripts/build.py` when Pillow is installed (`pip install pillow`); without Pillow the committed cards are kept.
+- Fonts: self-hosted WOFF2 in `assets/fonts/`, declared at the top of `style.css`.
