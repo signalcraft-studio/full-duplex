@@ -29,15 +29,37 @@
       var cal=card.querySelector('.nl-links a[download]'); if(cal)cal.remove();
     }
   }
-  var cds=[].slice.call(document.querySelectorAll('[data-countdown]'));
+  var cds=[].slice.call(document.querySelectorAll('[data-countdown]')), main=card&&card.querySelector('.nl-cd'), prevMs=null;
   function tick(){
     roll(); var now=Date.now();
+    if(main){ // launch moment: tell the orbit view (assets/orbits.js) when the countdown reaches zero
+      var mm=new Date(main.getAttribute('data-countdown')).getTime()-now;
+      if(prevMs!==null&&prevMs>0&&mm<=0){try{document.dispatchEvent(new CustomEvent('fd:liftoff',{detail:{net:main.getAttribute('data-countdown')}}));}catch(e){}}
+      prevMs=mm;
+    }
     cds.forEach(function(el){
       var ms=new Date(el.getAttribute('data-countdown')).getTime()-now;
       el.textContent= ms>0 ? left(ms) : (ms>-3*3600e3 ? 'Launch window open: check the status' : 'Launched or moved: data refreshes several times a day');
     });
   }
   if(cds.length){tick(); setInterval(tick,1000);}
+  // "What's on board": flip a launch card to its payload side (button, keyboard and screen-reader friendly).
+  var flips=[].slice.call(document.querySelectorAll('.flip'));
+  if(flips.length){
+    document.body.classList.add('flipready');
+    flips.forEach(function(f){
+      var front=f.querySelector('.front'), back=f.querySelector('.back'), open=f.querySelector('.flipbtn'), close=f.querySelector('.flipback');
+      open.setAttribute('aria-controls',back.id);
+      function set(on){
+        f.classList.toggle('on',on); open.setAttribute('aria-expanded',String(on));
+        back.inert=!on; front.inert=on; back.setAttribute('aria-hidden',String(!on)); front.setAttribute('aria-hidden',String(on));
+        (on?close:open).focus({preventScroll:true});
+      }
+      back.inert=true; back.setAttribute('aria-hidden','true');
+      open.addEventListener('click',function(){set(true);}); close.addEventListener('click',function(){set(false);});
+      f.addEventListener('keydown',function(e){if(e.key==='Escape'&&f.classList.contains('on'))set(false);});
+    });
+  }
   // Filters on /launches/
   var list=document.getElementById('launch-list'); if(!list)return;
   var chips=[].slice.call(document.querySelectorAll('.chip[data-who]')), items=[].slice.call(list.querySelectorAll('li.launch')), more=document.getElementById('launch-more');

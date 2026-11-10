@@ -102,7 +102,7 @@ def footer(root, sticky=True):
     return (f'<footer class=site><div class=wrap><div><a class=logo href="{root}index.html">{LOGO_MARK}Full<span>Duplex</span></a><p>Independent analysis of satellite-to-phone and mobile networks. Made in the UK.</p>'
             f'<p class=copy>© 2026 Full Duplex.</p></div>'
             f'<nav aria-label="Footer"><a href="{esc(sub_url("footer"))}">Subscribe to Signal</a><a href="https://x.com/{X}" target=_blank rel="noopener me">Follow @{X} on X</a>'
-            f'<a href="{root}articles/index.html">Articles</a><a href="{root}tracker.html">Tracker</a><a href="{root}tracker/changes/">Tracker changes</a><a href="{root}launches/">Launches</a>'
+            f'<a href="{root}articles/index.html">Articles</a><a href="{root}tracker.html">Tracker</a><a href="{root}tracker/changes/">Tracker changes</a><a href="{root}launches/">Launches</a><a href="{root}journey/">What happens when you hit send</a>'
             f'<a href="{root}play/constellation.html">Constellation</a><a href="{root}search.html">Search</a><a href="{root}feed.xml">RSS</a>'
             f'<a href="{root}about.html">About</a><a href="{root}sponsor.html">Sponsor</a><a href="{root}privacy.html">Privacy</a></nav></div></footer>{bar}')
 
@@ -489,15 +489,72 @@ def local_time(l):
 def cal_btn(l, root):
     if l['precision'] not in PRECISE + ('Day',): return ''
     return f'<a class="btn ghost sm" href="{root}launches/cal/{ics_name(l)}" download>Add to calendar<span class=sr> ({esc(l.get("mission") or l["name"])})</span></a>'
+# ---- "What's on board" (card back). Only what Launch Library 2's mission text says, or a sourced fact below.
+BB2_AREA = {'text': 'Each Block 2 BlueBird’s antenna array is about 2,400 sq ft (223 m²) when unfolded.',
+            'src': ('Space.com, 5 Aug 2026', 'https://www.space.com/space-exploration/launches-spacecraft/spacex-launches-ast-spacemobile-11-13-direct-to-cell-satellites')}
+def first_sentence(t, n=220):
+    t = re.sub(r'\s+', ' ', (t or '')).strip()
+    if not t: return ''
+    m = re.match(r'(.+?[.!?])(\s|$)', t); t = m.group(1) if m else t
+    return t if len(t) <= n else t[:n].rsplit(' ', 1)[0] + '…'
+def payload(l):
+    """-> (headline, detail, extra_fact_or_None). Never guesses a number."""
+    name = l.get('mission') or l['name']; desc = l.get('mission_description') or ''; mt = l.get('mission_type') or ''
+    m = re.search(r'BlueBirds? (\d+)\s*[-–]\s*(\d+)', name)
+    if m and 'Block 2' in name:
+        a, b = int(m[1]), int(m[2])
+        return f'{b - a + 1} BlueBird Block 2 satellites (BlueBirds {a}–{b})', 'AST SpaceMobile phone-capable satellites, built to give 4G and 5G phones broadband from space.', BB2_AREA
+    if re.search(r'BlueBird', name):
+        return 'BlueBird Block 2 satellites · number not disclosed yet', 'AST SpaceMobile phone-capable satellites.', BB2_AREA
+    m = re.search(r'\(x\s*(\d+)\)', name)
+    if m and 'Globalstar' in name:
+        return f'{m[1]} Globalstar replacement satellites', 'They top up the network behind satellite messaging on recent iPhones.', None
+    m = re.search(r'\bbatch of (\d+) satellites for the (Starlink|OneWeb)', desc) or re.match(r'(\d+) satellites for (Rivada)', desc)
+    if m:
+        kind = {'Starlink': 'Starlink broadband', 'OneWeb': 'OneWeb broadband', 'Rivada': 'Rivada'}[m[2]]
+        return f'{m[1]} {kind} satellites', first_sentence(desc), None
+    if 'Starlink' in name:
+        return 'Starlink satellites · number not disclosed', first_sentence(desc), None
+    if 'Amazon Leo' in name:
+        return 'Amazon Leo broadband satellites · number not disclosed in the launch data', 'Broadband for dishes and terminals, not phones.', None
+    if mt == 'Government/Top Secret':
+        return 'Classified payload', first_sentence(desc) or 'Details not disclosed.', None
+    s = first_sentence(desc)
+    if not s: return 'Payload not disclosed', '', None
+    return (f'{mt} mission' if mt and mt != 'Unknown' else 'Mission'), s, None
+def payload_html(l):
+    h, d, fact = payload(l)
+    fx = (f'<p class=pb-fact>{esc(fact["text"])} <a href="{esc(fact["src"][1])}">{esc(fact["src"][0])}</a></p>') if fact else ''
+    src = f'<a href="{esc(l["ll2_url"])}">Launch Library 2</a>' if l.get('ll2_url') else 'Launch Library 2'
+    orbit = {'LEO': 'low Earth orbit', 'PO': 'polar orbit', 'SSO': 'sun-synchronous orbit', 'GTO': 'geostationary transfer orbit', 'Direct-GEO': 'geostationary orbit', 'LO': 'lunar orbit'}.get(l.get('orbit') or '', '')
+    return (f'<p class=kicker>What’s on board</p><p class=pb-h>{esc(h)}</p>' + (f'<p class=pb-d>{esc(d)}</p>' if d else '') + fx +
+            f'<p class=pb-meta>{("Heading to " + orbit + " · ") if orbit else ""}Source: {src}</p>')
+
+# Launch sites for the orbit view's launch moment (lat, lon; public pad coordinates, rounded) and an illustrative ascent heading.
+PADS = {'Cape Canaveral SFS, FL, USA': (28.56, -80.58, 45), 'Kennedy Space Center, FL, USA': (28.61, -80.60, 45),
+        'Vandenberg SFB, CA, USA': (34.63, -120.61, 190), 'SpaceX Starbase, TX, USA': (26.0, -97.16, 95),
+        'Guiana Space Centre, French Guiana': (5.24, -52.77, 85)}
+def pad_of(l):
+    if l.get('pad_lat') is not None: return (l['pad_lat'], l['pad_lon'], PADS.get(l.get('location'), (0, 0, 60))[2])
+    return PADS.get(l.get('location'))
+def liftoff(l):
+    """Data for the launch-moment animation: where it goes up from, how many satellites to drop (if known) and whose."""
+    pd = pad_of(l)
+    if not pd: return None
+    h = payload(l)[0]; m = re.match(r'(\d+) ', h); n = int(m[1]) if m else 0
+    who = {'starlink-dtc': 'starlink-dtc', 'ast': 'ast'}.get(l['tag']) or ('globalstar' if 'Globalstar' in (l.get('mission') or '') else 'lynk' if 'lynk' in l['who'] else 'other')
+    return {'m': l.get('mission') or l['name'], 'r': l.get('rocket'), 'p': l.get('location'), 'lat': pd[0], 'lon': pd[1], 'az': pd[2], 'n': min(n, 30), 'c': who, 'net': l['net']}
+
 def launch_item(l, root):
     cd = f'<p class=lcd data-countdown="{l["net"]}" aria-hidden=true></p>' if l['precision'] in PRECISE else ''
     status = l.get('status') or ''
     st = f'<span class="lst{" go" if (l.get("status_abbrev") == "Go") else ""}">{esc(status)}</span>' if status else ''
     return (f'<li class="launch t-{TAG[l["tag"]][1]}" data-who="{" ".join(l["who"])}"><div class=l-when>{local_time(l)}{cd}</div>'
-            f'<div class=l-body><div class=l-top>{tag_pill(l["tag"])}{st}</div><h3>{esc(l.get("mission") or l["name"])}</h3>'
+            f'<div class=l-body><div class=flip><div class="face front"><div class=l-top>{tag_pill(l["tag"])}{st}</div><h3>{esc(l.get("mission") or l["name"])}</h3>'
             f'<p class=l-meta>{esc(l.get("rocket") or "")} · {esc(l.get("provider") or "")} · {esc(l.get("location") or "")}</p>'
             f'<p class=l-why><strong>Why it matters for your phone:</strong> {esc(TAG[l["tag"]][2])}</p>'
-            f'<div class=l-act>{cal_btn(l, root)}</div></div></li>')
+            f'<div class=l-act><button type=button class="btn ghost sm flipbtn" aria-expanded=false>What’s on board<span class=sr> {esc(l.get("mission") or l["name"])}</span></button>{cal_btn(l, root)}</div></div>'
+            f'<div class="face back" id="pb-{l["id"][:8]}">{payload_html(l)}<p class=l-act><button type=button class="btn ghost sm flipback">Back to launch<span class=sr> details</span></button></p></div></div></div></li>')
 def human_dt(iso):
     d = iso_dt(iso); return d.strftime('%-d %b %Y, %H:%M UTC')
 def next_launches(n=6):
@@ -541,6 +598,65 @@ def glance(root):
     asof = max(i['as_of'] for i in items)
     return (f'<div class="stats glance"><p class=kicker>Phone-capable satellites in orbit</p><ul aria-label="Phone-capable satellites in orbit by network">{li}</ul>'
             f'<p class=checked>As of {human(asof)}, with sources. <a href="#cnt-h">Compare them, plus broadband-only networks</a>.</p></div>')
+# ---- orbit view (assets/orbits.js): one dot per phone-capable satellite, real totals from data/constellations.json
+OCOL = {'starlink-dtc': '#00cfff', 'ast': '#ff9a3c', 'globalstar': '#b58cff', 'lynk': '#6ee79a', 'other': '#e8eef7'}
+# Illustrative shells: inclination (deg) and height (km) from McDowell's catalogue/stats; split of Starlink DTC per data/constellations.json note.
+OSHELLS = {'starlink-dtc': [(310 / 637, 53, 360, 24), (327 / 637, 43, 360, 24)], 'ast': [(1, 53, 520, 3)],
+           'globalstar': [(1, 52, 1414, 8)], 'lynk': [(1, 97.5, 510, 4)]}
+def orbit_panel(root):
+    items = [i for i in CONST['direct_to_device'] if i['count'] and i['id'] in OSHELLS]
+    cfg = [{'id': i['id'], 'n': i['count'], 'c': OCOL[i['id']], 's': [[round(f, 4), inc, alt, planes] for f, inc, alt, planes in OSHELLS[i['id']]]} for i in items]
+    total = sum(i['count'] for i in items)
+    li = ''.join(f'<li class="o-{i["id"]}"><i style="background:{OCOL[i["id"]]}" aria-hidden=true></i><b data-count="{i["count"]}">{i["count"]:,}</b><span>{esc(i["short"])}</span></li>' for i in items)
+    asof = max(i['as_of'] for i in items)
+    ups = [x for x in (liftoff(l) for l in UPCOMING) if x]
+    demo = next((liftoff(l) for l in UPCOMING if l['tag'] in ('starlink-dtc', 'ast', 'd2d-other') and liftoff(l)), ups[0] if ups else None)
+    queue = [x for x in (liftoff(l) for l in next_launches()) if x]
+    desc = (f'Illustrative globe with {total:,} dots, one for each phone-capable satellite in orbit: '
+            + ', '.join(f'{i["count"]:,} {i["short"]}' for i in items) + '. Dots circle the Earth on representative orbits.')
+    return (f'<section class=orbit aria-labelledby=ov-h data-base="{root}" data-orbits="{esc(json.dumps(cfg, separators=(",", ":")))}"'
+            f' data-demo="{esc(json.dumps(demo, ensure_ascii=False, separators=(",", ":")))}" data-queue="{esc(json.dumps(queue, ensure_ascii=False, separators=(",", ":")))}">'
+            f'<div class=ov-copy><p class=kicker>Orbit view</p><h2 id=ov-h>Every phone-capable satellite, one dot each</h2>'
+            f'<p class=ov-intro>{total:,} satellites can talk straight to ordinary phones today. Starlink has the numbers; AST’s BlueBirds are far fewer but each one is huge.</p>'
+            f'<ul class=ov-legend aria-label="Phone-capable satellites in orbit by network">{li}</ul>'
+            f'<p class=ov-scale><strong>1 dot = 1 satellite.</strong> Heights are to scale; the orbits are illustrative, not live positions.</p>'
+            f'<p class=ov-act><button type=button class="btn sm" id=ov-launch>Watch a launch moment</button></p>'
+            f'<p class=ov-status id=ov-status role=status aria-live=polite></p>'
+            f'<p class=checked>Counts as of {human(asof)}, with sources <a href="#cnt-h">below</a>.</p></div>'
+            f'<figure class=ov-fig><div id=orbitview class="globe ov-globe" role=img aria-label="{esc(desc)}"></div>'
+            f'<figcaption>Illustrative. Real satellites fly in many more orbital planes. Drag to spin.</figcaption></figure></section>')
+
+# ---- race chart (assets/race.js) from data/race.json (scripts/race_data.py)
+RACE = json.loads((ROOT / 'data/race.json').read_text()) if (ROOT / 'data/race.json').exists() else None
+def race_section(root):
+    if not RACE: return ''
+    R = RACE; fin = R['frames'][-1]; ser = {x['id']: x for x in R['series']}
+    top = max(fin['v'].values()) * 1.12
+    order = sorted(ser, key=lambda k: -fin['v'][k])
+    rows = ''.join(f'<div class="rrow r-{k}" data-id="{k}" style="--c:{ser[k]["color"]};transform:translateY({i * 100}%)"><span class=rlab>{esc(ser[k]["label"])}</span>'
+                   f'<span class=rbar><i style="width:{100 * fin["v"][k] / top:.2f}%"></i><b class=rval>{fin["v"][k]:,}</b></span></div>' for i, k in enumerate(order))
+    t = R['target']
+    tl = f'<div class=rtarget style="left:{100 * t["value"] / top:.2f}%"><span>{esc(t["label"])}</span></div>'
+    q = [f for f in R['frames'] if f['d'][5:7] in ('03', '06', '09', '12') or f.get('final')]
+    thead = '<tr><th scope=col>Date</th>' + ''.join(f'<th scope=col>{esc(ser[k]["label"])}</th>' for k in ser) + '</tr>'
+    trows = ''.join(f'<tr><th scope=row>{human(f["d"], False)}{" (today, working)" if f.get("final") else ""}</th>' + ''.join(f'<td>{f["v"][k]:,}</td>' for k in ser) + '</tr>' for f in q)
+    srcs = ''.join(f'<li><strong>{esc(x["label"])}:</strong> ' + ' · '.join(f'<a href="{esc(y["url"])}">{esc(y["label"])}</a>' for y in x['sources']) + (f'. {esc(x["note"])}' if x.get('note') else '') + '</li>' for x in R['series'])
+    evs = ''.join(f'<li><time datetime="{e["d"]}">{human(e["d"], False)}</time> {esc(e["t"])} (<a href="{esc(e["src"]["url"])}">{esc(e["src"]["label"])}</a>)</li>' for e in R['events'])
+    data = {'f': [[f['d'], [f['v'][k] for k in ser]] for f in R['frames']], 'k': list(ser), 't': t['value'], 'e': [[e['d'], e['t'], e['s']] for e in R['events']]}
+    first = R['frames'][0]['d']
+    summary = (f'From {human(first)} to {human(fin["d"])}: ' + ', '.join(f'{ser[k]["label"]} went from {R["frames"][0]["v"][k]:,} to {fin["v"][k]:,}' for k in ser) + f'. AST’s target is about {t["value"]} BlueBirds by mid-2027.')
+    return (f'<section class=race aria-labelledby=race-h data-race="{esc(json.dumps(data, ensure_ascii=False, separators=(",", ":")))}">'
+            f'<p class=kicker>The race so far</p><h2 id=race-h>Phone-capable satellites in orbit, month by month</h2>'
+            f'<p class=l-intro>Starlink raced ahead in 2024 and has held about 640 direct-to-cell satellites since. AST is now launching three big BlueBirds at a time towards its target of about 45.</p>'
+            f'<div class=race-chart aria-hidden=true><p class=race-date>{human(fin["d"], False)}</p><div class=race-plot>{rows}{tl}</div><p class=race-event>Today, working satellites</p></div>'
+            f'<p class=sr>{esc(summary)}</p>'
+            f'<div class=race-ctl><button type=button class="btn sm" id=race-play>Replay the race</button>'
+            f'<button type=button class="btn ghost sm" id=race-zoom aria-pressed=false>Zoom in on the smaller networks</button>'
+            f'<label class=race-scrub>Month <input id=race-range type=range min=0 max="{len(R["frames"]) - 1}" value="{len(R["frames"]) - 1}" step=1 aria-valuetext="{human(fin["d"], False)}"></label></div>'
+            f'<details class=race-data><summary>Data and sources</summary><p class=l-credit>{esc(R["metric"])} Bars move smoothly between month ends for the animation only; every month-end value comes from the sources below.</p>'
+            f'<div class=tablewrap><table><caption class=sr>Phone-capable satellites in orbit, by quarter</caption><thead>{thead}</thead><tbody>{trows}</tbody></table></div>'
+            f'<p class=l-credit>Every month end is in <a href="{root}data/race.json">race.json</a>.</p><ul class=race-src>{srcs}</ul><h3 class=bb-h>Milestones</h3><ul class=race-src>{evs}</ul></details></section>')
+
 def launches_page():
     root = '../'
     fetched = LDATA.get('fetched_at')
@@ -555,13 +671,14 @@ def launches_page():
     upd = (f'Launch data from <a href="https://thespacedevs.com/llapi">The Space Devs Launch Library 2</a>, refreshed <time datetime="{fetched}">{human_dt(fetched)}</time>.' if fetched else 'Launch data from The Space Devs Launch Library 2.')
     body = (f'<header class=page-head><p class=kicker>Launches</p><h1>Launch tracker</h1>'
             f'<p class=lede>What SpaceX and its rivals are launching next, and what each launch means for the phone in your pocket.</p></header>'
-            + next_card(root) + glance(root) +
+            + next_card(root) + orbit_panel(root) +
             f'<section aria-labelledby=up-h><h2 id=up-h>Upcoming launches</h2>'
             f'<p class=l-intro>{len(UPCOMING)} upcoming launches from SpaceX, AST SpaceMobile, Amazon Leo and other satellite-to-phone players, {n_phone} of them carrying phone-capable satellites. Each one is tagged by what it means for mobile.</p>'
             f'<div class=filters role=search aria-label="Filter launches"><div class=f-row><div class=chips role=group aria-label="Show launches for">{chips}</div>'
             f'<p id=l-count class=t-count role=status aria-live=polite>{len(UPCOMING)} launches</p></div></div>'
             f'<div id=launch-list><ol class=launches>{items}</ol>{more}</div><p id=l-empty class=l-empty hidden{empty} data-empty="No upcoming launches match this filter right now.">No upcoming launches match this filter right now.</p>'
             f'<p class=l-credit>{upd} Times are shown in UTC, or your local time where your browser allows. Launch dates slip often, so check again on the day. We tag a Starlink launch as Direct to Cell only when the launch data or a reliable source says it carries direct-to-cell satellites.</p></section>'
+            + race_section(root) +
             f'<section aria-labelledby=cnt-h class=countsec><h2 id=cnt-h>Phone satellites in orbit: who has how many</h2>'
             f'<p class=l-intro>Satellites that can connect to ordinary phones, by operator. Every number has a source and a date. If a company doesn’t publish a figure and we can’t find a reliable independent one, we say so rather than guess.</p>'
             + count_rows(CONST['direct_to_device'], root) +
@@ -571,6 +688,7 @@ def launches_page():
             f'<section class="card tlink" aria-labelledby=tl-h><p class=kicker>From the tracker</p><h2 id=tl-h><a href="{root}tracker.html">Where these satellites already reach phones</a></h2>'
             f'<p>{C["live"]} live direct-to-cell services in {NLIVE_C} countries, plus {C["trial"]} trials and {C["announced"]} announced. See who’s live, country by country, with sources.</p>'
             f'<p class=row-cta><a class="btn ghost" href="{root}tracker.html">Open the tracker</a><a class="btn ghost" href="{root}articles/why-starship-is-a-telco-story.html">Why Starship is a telco story</a></p></section>'
+            + journey_card(root)
             + signal_block(root, 'launches', heading='Get launch alerts in Signal', intro='Signal is our free weekly direct-to-cell briefing. Subscribe for the launches that matter for your phone and what changed in the tracker, in one email a week.'))
     ld = [crumbs([('Home', ''), ('Launches', 'launches/')]),
           {'@context': 'https://schema.org', '@type': 'Dataset', 'name': 'Full Duplex: phone-capable satellites in orbit by operator', 'description': 'Direct-to-device satellite counts by operator, each with a source and an as-of date, kept separate from broadband-only constellations.',
@@ -580,9 +698,29 @@ def launches_page():
          full_title='Launch tracker: SpaceX, AST SpaceMobile and phone-satellite launches | Full Duplex',
          description='Upcoming SpaceX, AST SpaceMobile, Amazon Leo and direct-to-cell launches, tagged by what they mean for your phone, plus a sourced count of phone-capable satellites in orbit.',
          body=body, root=root, current='launches/index.html', jsonld=ld, cls='is-launches', lastmod=(fetched or BUILD_NOW.isoformat())[:10],
-         scripts=f'<script defer src="{root}assets/launches.js"></script>',
+         scripts=f'<script defer src="{root}assets/launches.js"></script><script defer src="{root}assets/orbits.js"></script><script defer src="{root}assets/race.js"></script>',
          search_text='Launch tracker. ' + ' '.join(f"{l.get('mission')} {l.get('rocket')} {TAG[l['tag']][0]}." for l in UPCOMING) + ' ' + ' '.join(f"{i['network']} {i['operator']} {i['note']}" for i in CONST['direct_to_device'] + CONST['broadband_only']))
+# ---------------------------------------------------------------- journey explainer (src/pages/journey.html; animations in style.css + assets/journey.js)
+JOURNEY_MINI = ('<svg viewBox="0 0 150 90" aria-hidden=true focusable=false><rect width=150 height=90 rx=12 fill="#0c1830"/><path d="M0 78C30 62 60 58 90 64S130 80 150 76V90H0z" fill="#16243d"/>'
+                '<path d="M40 64L75 18 116 70" fill=none stroke="#00cfff" stroke-width=1.6 stroke-dasharray="3 4"/><rect x=64 y=12 width=22 height=10 rx=2 fill="#e8eef7"/><rect x=50 y=14 width=12 height=6 fill="#06324a" stroke="#00cfff"/><rect x=88 y=14 width=12 height=6 fill="#06324a" stroke="#00cfff"/>'
+                '<rect x=34 y=56 width=10 height=17 rx=2 fill="#1b2840" stroke="#8fdbff"/><path d="M108 74h16M112 74l4-10 4 10" stroke="#7f93a8" stroke-width=1.6 fill="none"/></svg>')
+def journey_card(root):
+    return (f'<section class="card jcard" aria-labelledby=jc-h>{JOURNEY_MINI}<div><p class=kicker>Explainer</p><h2 id=jc-h><a href="{root}journey/">What happens when you hit send</a></h2>'
+            f'<p>Follow one text from a hillside with no signal, up to a satellite, through the mobile network and on to the person you’re texting. Six short animated scenes.</p></div></section>')
+def journey_page():
+    meta, body, _ = read_src(SRC / 'pages' / 'journey.html'); root = '../'; url = BASE + 'journey/'
+    share = share_btn('What happens when you hit send from a phone with no signal: one text message, via satellite, in six scenes.', url)
+    body = body.replace('<!--SHARE-TOP-->', f'<p class=row-cta>{share}{follow_btn()}</p>')
+    body += (f'<div class=share-end><p>Know someone who still thinks satellite phones need a brick-sized handset? Send them this.</p>{share}{follow_btn()}</div>'
+             + signal_block(root, 'journey', heading='Get Signal: the weekly direct-to-cell briefing', intro='One email a week on satellite-to-phone, mobile networks and what it means for you, from an 11-year mobile network insider. Plain English, with sources.'))
+    ld = [crumbs([('Home', ''), ('What happens when you hit send', 'journey/')]),
+          {'@context': 'https://schema.org', '@type': 'Article', 'headline': meta['title'], 'description': meta['description'], 'author': AUTHOR, 'publisher': PUBLISHER,
+           'mainEntityOfPage': url, 'inLanguage': 'en-GB', 'image': [f'{BASE}assets/og/journey.jpg'], 'datePublished': '2026-11-10'}]
+    page(og=('Explainer', 'What happens when you hit send: one text, via satellite'), path='journey/index.html', title=meta['title'], description=meta['description'],
+         body=body, root=root, current='', jsonld=ld, cls='is-journey', lastmod='2026-11-10', scripts=f'<script defer src="{root}assets/journey.js"></script>',
+         full_title='What happens when you hit send: a text via satellite | Full Duplex')
 launches_page()
+journey_page()
 
 # ---------------------------------------------------------------- search + 404
 body = ('<header class=page-head><p class=kicker>Search</p><h1>Search Full Duplex</h1></header>'
@@ -616,6 +754,7 @@ home = (f'<section class=hero><div class=hero-art aria-hidden=true><img src="ass
           f'<div class=cclist>{"".join(f"<a class=\"cc s-{CLS[best(rs)]}\" href=\"tracker/{country_slug(c)}/\">{esc(c)}</a>" for c, rs in sorted(COUNTRIES.items(), key=lambda kv: -RANK[best(kv[1])])[:8])}</div></div></div></section>'
         + f'<section aria-labelledby=more-h><h2 id=more-h class=sec>More analysis</h2><div class=list>{"".join(art_card(a, "", 3, "row") for a in rest[3:])}</div><p><a href="articles/index.html">All articles</a></p></section>'
         + '<section aria-labelledby=play-h class="card play"><p class=kicker>Play</p><h2 id=play-h><a href="play/constellation.html">Constellation</a></h2><p>Deploy direct-to-cell satellites into orbit. A 75-second browser game: hit the slots before time runs out.</p></section>'
+        + journey_card('')
         + '<aside class=sponsor-card aria-label="Sponsorship"><p class=kicker>Presented by · slot available</p><h2>Put your brand in front of the people building satellite-to-phone</h2>'
           '<p>Engineers, operator teams, investors and early adopters read Full Duplex. One sponsor at a time, always clearly labelled.</p>'
           '<p><a class="btn ghost" href="sponsor.html">See sponsor options</a></p></aside>')

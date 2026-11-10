@@ -45,6 +45,7 @@ def slim(r):
         'orbit': ((m.get('orbit') or {}).get('abbrev')),
         'mission_agencies': [a.get('name') for a in (m.get('agencies') or [])],
         'pad': pad.get('name'), 'location': (pad.get('location') or {}).get('name'),
+        'pad_lat': float(pad['latitude']) if pad.get('latitude') not in (None, '') else None, 'pad_lon': float(pad['longitude']) if pad.get('longitude') not in (None, '') else None,
         'webcast_live': r.get('webcast_live'), 'last_updated': r.get('last_updated'),
         'll2_url': r.get('url'),
     }

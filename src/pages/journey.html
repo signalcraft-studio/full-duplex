@@ -1,0 +1,125 @@
+<!--meta
+{
+ "slug": "journey",
+ "title": "What happens when you hit send",
+ "short_title": "What happens when you hit send",
+ "description": "Follow one text message from a phone with no signal, up to a satellite, down to a ground station, through the mobile network and on to the person you're texting. In six short scenes.",
+ "summary": "One text message, from a hillside with no signal to the person you're texting, via a satellite. Six short scenes."
+}
+-->
+<svg class=jdefs width=0 height=0 aria-hidden=true focusable=false>
+<defs>
+<linearGradient id=j-sky x1=0 y1=0 x2=0 y2=1><stop offset=0 stop-color="#050913"/><stop offset=.65 stop-color="#0c1830"/><stop offset=1 stop-color="#16274a"/></linearGradient>
+<linearGradient id=j-hill x1=0 y1=0 x2=0 y2=1><stop offset=0 stop-color="#16243d"/><stop offset=1 stop-color="#0a1222"/></linearGradient>
+<linearGradient id=j-beam x1=0 y1=0 x2=0 y2=1><stop offset=0 stop-color="#00cfff" stop-opacity=".55"/><stop offset=1 stop-color="#00cfff" stop-opacity=".04"/></linearGradient>
+<radialGradient id=j-glow><stop offset=0 stop-color="#8fdbff" stop-opacity=".9"/><stop offset=1 stop-color="#00cfff" stop-opacity="0"/></radialGradient>
+<symbol id=j-sat viewBox="-44 -22 88 44" overflow=visible><g stroke="#00cfff" stroke-width="1.4"><rect x=-42 y=-8 width=28 height=16 rx=1.5 fill="#06324a"/><rect x=14 y=-8 width=28 height=16 rx=1.5 fill="#06324a"/><path d="M-35 -8v16M-28 -8v16M-21 -8v16M21 -8v16M28 -8v16M35 -8v16" stroke-opacity=".5" stroke-width=".8"/><path d="M-14 0h4M10 0h4"/></g><rect x=-10 y=-10 width=20 height=20 rx=4 fill="#e8eef7"/><circle cx=0 cy=0 r=3.5 fill="#00cfff"/><path d="M0 10v6" stroke="#e8eef7" stroke-width="2"/><circle cx=0 cy=18 r=2.5 fill="#e8eef7"/></symbol>
+<symbol id=j-phone viewBox="-17 -30 34 60" overflow=visible><rect x=-16 y=-29 width=32 height=58 rx=6 fill="#1b2840" stroke="#8fdbff" stroke-width="1.6"/><rect x=-13 y=-24 width=26 height=46 rx=3 fill="#060c18"/><rect x=-4 y=24.5 width=8 height=1.6 rx=.8 fill="#8fdbff" opacity=".6"/></symbol>
+<symbol id=j-dish viewBox="-40 -50 80 70" overflow=visible><path d="M-26 18h52" stroke="#3a5680" stroke-width=3 stroke-linecap="round"/><path d="M-8 18l8-26 8 26" fill="none" stroke="#7f93a8" stroke-width=2.4 stroke-linejoin="round"/><path d="M-30 -28a34 34 0 0 0 52 24z" fill="#dfe8f3" transform="rotate(-20 0 -10)"/><path d="M-6 -12l14 -18" stroke="#7f93a8" stroke-width="2"/><circle cx=9 cy=-31 r=3 fill="#00cfff"/></symbol>
+<symbol id=j-mast viewBox="-20 -60 40 80" overflow=visible><path d="M-14 18L0 -50 14 18M-10 0h20M-6 -18h12M-3 -34h6M-10 0L6 -18M10 0L-6 -18M-6 -18L3 -34M6 -18L-3 -34" fill="none" stroke="#7f93a8" stroke-width=1.8 stroke-linejoin="round"/><rect x=-5 y=-58 width=10 height=8 rx=1.5 fill="#7f93a8"/></symbol>
+<g id=j-stars fill="#cfe6ff"><circle cx=40 cy=30 r="1.1"/><circle cx=120 cy=70 r=".8"/><circle cx=210 cy=24 r="1.2"/><circle cx=300 cy=58 r=".7"/><circle cx=380 cy=20 r="1"/><circle cx=460 cy=64 r=".8"/><circle cx=540 cy=34 r="1.3"/><circle cx=610 cy=80 r=".8"/><circle cx=80 cy=130 r=".7"/><circle cx=590 cy=140 r=".9"/><circle cx=250 cy=110 r=".6"/><circle cx=500 cy=118 r=".7"/></g>
+</defs>
+</svg>
+
+<header class="page-head jhead"><p class=kicker>Explainer · satellite to phone</p><h1>What happens when you hit send</h1>
+<p class=lede>You’re on a hillside with no signal. You type a text and press send. Here’s the trip it takes, in six short scenes.</p>
+<p class=jcred>Explained by <a href="../about.html">Sam Beer</a>, an 11-year mobile network insider who has worked on how calls and messages get routed.</p>
+<!--SHARE-TOP-->
+</header>
+
+<ol class=jscenes>
+<li class=scene id=scene-1 aria-labelledby=s1-h>
+<figure class=scene-art><svg viewBox="150 90 480 270" role=img aria-labelledby=s1-t><title id=s1-t>A hiker’s phone on a hilltop shows no service. Signal from a distant mast fades out before it reaches the hill.</title>
+<rect width=640 height=360 fill="url(#j-sky)"/><use href="#j-stars"/>
+<path d="M0 300C90 250 170 238 250 214S390 196 430 214 560 270 640 262V360H0z" fill="url(#j-hill)"/>
+<path d="M440 360C500 300 560 284 640 290V360z" fill="#0d1729"/>
+<use href="#j-mast" x=547 y=178 width=56 height="112"/>
+<g class="anim waves" fill=none stroke="#7f93a8" stroke-width=2 stroke-linecap=round><path class=w1 d="M556 214a26 26 0 0 0 0 30"/><path class=w2 d="M540 204a44 44 0 0 0 0 50"/><path class=w3 d="M524 194a62 62 0 0 0 0 70"/></g>
+<path d="M496 214l14 14M510 214l-14 14" stroke="#ff9a3c" stroke-width=2.6 stroke-linecap=round class="anim blink"/>
+<use href="#j-phone" x=300 y=146 width=34 height="60"/>
+<g transform="translate(317 176) scale(1.35)" font-family="JetBrains Mono,monospace"><g class="anim bars" fill=none stroke="#7f93a8" stroke-width=1.2><rect x=-9 y=-2 width=3 height="4"/><rect x=-4.5 y=-5 width=3 height="7"/><rect x=0 y=-8 width=3 height="10"/><rect x=4.5 y=-11 width=3 height="13"/></g><text y=12 text-anchor=middle font-size=3.6 fill="#ff9a3c">NO SERVICE</text></g>
+<g class=jlabel transform="translate(350 122)"><rect width=160 height=32 rx=16 fill="#0f1626" stroke="rgba(255,255,255,.14)"/><text x=80 y=21 text-anchor=middle>Typing a text…</text></g>
+</svg></figure>
+<div class=scene-copy><p class=snum>1 / 6</p><h2 id=s1-h>No signal on the hill</h2><p>Your phone loses signal on a hillside. The nearest mast is too far away, or the hill is in the way.</p></div>
+</li>
+
+<li class=scene id=scene-2 aria-labelledby=s2-h>
+<figure class=scene-art><svg viewBox="120 10 500 281" role=img aria-labelledby=s2-t><title id=s2-t>A satellite passes overhead and shines a beam down to the phone, which now shows your network’s name. A label says same SIM, same number.</title>
+<rect width=640 height=360 fill="url(#j-sky)"/><use href="#j-stars"/>
+<path d="M0 300C90 250 170 238 250 214S390 196 430 214 560 270 640 262V360H0z" fill="url(#j-hill)"/>
+<g class="anim drift"><path class="anim pulse" d="M302 84L246 206H388L332 84z" fill="url(#j-beam)"/><use href="#j-sat" x=257 y=36 width=120 height="60"/><circle cx=317 cy=66 r=32 fill="url(#j-glow)" class="anim pulse"/></g>
+<use href="#j-phone" x=294 y=135 width=46 height="82"/>
+<g transform="translate(317 176) scale(1.35)" font-family="JetBrains Mono,monospace"><g fill="#00cfff"><rect x=-9 y=-2 width=3 height="4"/><rect x=-4.5 y=-5 width=3 height="7"/><rect x=0 y=-8 width=3 height="10"/><rect x=4.5 y=-11 width=3 height=13 opacity=".35"/></g><text y=10 text-anchor=middle font-size=4.6 fill="#8fdbff">YOUR NETWORK</text><text y=16 text-anchor=middle font-size=4.2 fill="#8fdbff">· SAT ·</text></g>
+<g class=jlabel transform="translate(362 222)"><rect width=220 height=32 rx=16 fill="#0f1626" stroke="rgba(0,207,255,.45)"/><text x=110 y=21 text-anchor=middle>Same SIM · same number</text></g>
+<g class=jlabel transform="translate(420 36)"><rect width=170 height=32 rx=16 fill="#0f1626" stroke="rgba(255,255,255,.14)"/><text x=85 y=21 text-anchor=middle>A mast in space</text></g>
+</svg></figure>
+<div class=scene-copy><p class=snum>2 / 6</p><h2 id=s2-h>A mast in space</h2><p>It finds a satellite overhead. The satellite acts like a mobile mast in space, so a compatible phone connects with your normal SIM and number. No app, no special handset.</p></div>
+</li>
+
+<li class=scene id=scene-3 aria-labelledby=s3-h>
+<figure class=scene-art><svg viewBox="0 0 640 360" role=img aria-labelledby=s3-t><title id=s3-t>The text travels up from the phone to the satellite, then down to a ground station dish. A dotted laser link connects to a second satellite.</title>
+<rect width=640 height=360 fill="url(#j-sky)"/><use href="#j-stars"/>
+<path d="M0 300C90 250 170 238 250 214S390 196 430 214 560 270 640 262V360H0z" fill="url(#j-hill)"/>
+<path d="M120 236L250 76M268 76L520 262" stroke="#00cfff" stroke-opacity=".35" stroke-width=1.6 stroke-dasharray="5 6" fill="none"/>
+<path d="M290 60H470" stroke="#ff9a3c" stroke-opacity=".5" stroke-width=1.4 stroke-dasharray="2 5"/>
+<use href="#j-sat" x=204 y=32 width=110 height="55"/><use href="#j-sat" x=452 y=40 width=70 height=35 opacity=".55"/>
+<use href="#j-phone" x=100 y=198 width=40 height="70"/>
+<use href="#j-dish" x=470 y=205 width=100 height="88"/>
+<g class="anim packet p3" transform="translate(390 160)"><rect x=-14 y=-9 width=28 height=18 rx=4 fill="#00cfff"/><path d="M-14 -8l14 9 14-9" fill=none stroke="#06101c" stroke-width="1.4"/></g>
+<g class=jlabel transform="translate(440 304)"><rect width=160 height=32 rx=16 fill="#0f1626" stroke="rgba(255,255,255,.14)"/><text x=80 y=21 text-anchor=middle>Ground station</text></g>
+<g class=jlabel transform="translate(318 72)"><rect width=130 height=32 rx=16 fill="#0f1626" stroke="rgba(255,154,60,.4)"/><text x=65 y=21 text-anchor=middle>Laser link</text></g>
+</svg></figure>
+<div class=scene-copy><p class=snum>3 / 6</p><h2 id=s3-h>Down to Earth</h2><p>The satellite relays your text down to a ground station, sometimes hopping across other satellites by laser first.</p></div>
+</li>
+
+<li class=scene id=scene-4 aria-labelledby=s4-h>
+<figure class=scene-art><svg viewBox="0 0 640 360" role=img aria-labelledby=s4-t><title id=s4-t>The text enters your mobile network’s core, where three stations light up in turn: billing, emergency location and routing.</title>
+<rect width=640 height=360 fill="#070b14"/>
+<rect x=40 y=36 width=560 height=290 rx=22 fill="#0f1626" stroke="rgba(94,200,255,.3)"/>
+<text x=66 y=82 class=jtag>YOUR MOBILE NETWORK’S CORE</text>
+<path d="M0 200H600" stroke="#00cfff" stroke-opacity=".3" stroke-width=2 stroke-dasharray="6 7"/>
+<g class="anim node n1"><rect x=70 y=120 width=150 height=150 rx=18 fill="#131d31" stroke="rgba(255,255,255,.14)"/><circle cx=145 cy=172 r=26 fill=none stroke="#f5c26b" stroke-width="2.6"/><text x=145 y=182 text-anchor=middle font-size=28 fill="#f5c26b" font-family="Inter Tight,sans-serif">£</text><text x=145 y=238 text-anchor=middle class=jnode>Billing</text></g>
+<g class="anim node n2"><rect x=245 y=120 width=150 height=150 rx=18 fill="#131d31" stroke="rgba(255,255,255,.14)"/><path d="M320 146c-13 0-22 10-22 21 0 15 22 34 22 34s22-19 22-34c0-11-9-21-22-21z" fill=none stroke="#ff9a3c" stroke-width="2.6"/><circle cx=320 cy=167 r=7 fill="#ff9a3c"/><text x=320 y=230 text-anchor=middle class=jnode>Emergency</text><text x=320 y=252 text-anchor=middle class=jnode>location</text></g>
+<g class="anim node n3"><rect x=420 y=120 width=150 height=150 rx=18 fill="#131d31" stroke="rgba(255,255,255,.14)"/><path d="M470 162h46l-11-10M516 162l-11 10M520 188h-46l11-10M474 188l11 10" fill=none stroke="#6ee79a" stroke-width=2.6 stroke-linecap=round stroke-linejoin="round"/><text x=495 y=238 text-anchor=middle class=jnode>Routing</text></g>
+<g class="anim packet p4" transform="translate(479 200)"><rect x=-14 y=-9 width=28 height=18 rx=4 fill="#00cfff"/><path d="M-14 -8l14 9 14-9" fill=none stroke="#06101c" stroke-width="1.4"/></g>
+<text x=574 y=305 text-anchor=end class=jsmall>Same system as every other text</text>
+</svg></figure>
+<div class=scene-copy><p class=snum>4 / 6</p><h2 id=s4-h>Into your network’s core</h2><p>From the ground station it goes into your mobile network’s core, the same system that handles every text. That’s where it’s billed to your plan, where an emergency text picks up location information, and where routing works out where it’s going.</p></div>
+</li>
+
+<li class=scene id=scene-5 aria-labelledby=s5-h>
+<figure class=scene-art><svg viewBox="0 0 640 360" role=img aria-labelledby=s5-t><title id=s5-t>The text crosses from your network to the other person’s network along a link between the two.</title>
+<rect width=640 height=360 fill="#070b14"/>
+<g><rect x=40 y=110 width=200 height=140 rx=22 fill="#0f1626" stroke="rgba(0,207,255,.45)"/><text x=140 y=172 text-anchor=middle class=jnode>Your network</text><text x=140 y=196 text-anchor=middle class=jsmall>looks up the number</text></g>
+<g><rect x=400 y=110 width=200 height=140 rx=22 fill="#0f1626" stroke="rgba(110,231,154,.45)"/><text x=500 y=172 text-anchor=middle class=jnode>Their network</text><text x=500 y=196 text-anchor=middle class=jsmall>finds their phone</text></g>
+<path d="M240 180C300 120 340 120 400 180" fill=none stroke="#5ec8ff" stroke-opacity=".45" stroke-width=2 stroke-dasharray="6 6"/>
+<g class="anim packet p5" transform="translate(320 135)"><rect x=-14 y=-9 width=28 height=18 rx=4 fill="#00cfff"/><path d="M-14 -8l14 9 14-9" fill=none stroke="#06101c" stroke-width="1.4"/></g>
+<text x=320 y=290 text-anchor=middle class=jsmall>Just like any other text</text>
+</svg></figure>
+<div class=scene-copy><p class=snum>5 / 6</p><h2 id=s5-h>Across to their network</h2><p>Your network looks up who the number belongs to and hands the text across to the other person’s network, the same way as any other text.</p></div>
+</li>
+
+<li class=scene id=scene-6 aria-labelledby=s6-h>
+<figure class=scene-art><svg viewBox="0 0 640 360" role=img aria-labelledby=s6-t><title id=s6-t>The other person’s phone shows the message. Above the hill, your satellite slides towards the horizon and the next satellite takes over the beam.</title>
+<rect width=640 height=360 fill="url(#j-sky)"/><use href="#j-stars"/>
+<path d="M0 300C90 250 170 238 250 214S390 196 430 214 560 270 640 262V360H0z" fill="url(#j-hill)"/>
+<g class="anim leave"><use href="#j-sat" x=380 y=40 width=70 height="35"/></g>
+<g class="anim arrive"><path d="M180 82L130 226H270L222 82z" fill="url(#j-beam)" class="anim pulse"/><use href="#j-sat" x=157 y=56 width=88 height="44"/></g>
+<use href="#j-phone" x=186 y=174 width=28 height="50"/>
+<g transform="translate(470 120)"><use href="#j-phone" x=-28 y=0 width=56 height="100"/>
+<g class="anim pop"><rect x=-20 y=26 width=40 height=26 rx=6 fill="#00cfff"/><text x=0 y=37 text-anchor=middle font-size=6.6 fill="#06101c" font-family="Inter Tight,sans-serif" font-weight=600>Made it to</text><text x=0 y=46 text-anchor=middle font-size=6.6 fill="#06101c" font-family="Inter Tight,sans-serif" font-weight=600>the top!</text></g></g>
+<g class=jlabel transform="translate(405 236)"><rect width=130 height=32 rx=16 fill="#0f1626" stroke="rgba(110,231,154,.5)"/><text x=65 y=21 text-anchor=middle>Delivered</text></g>
+<g class=jlabel transform="translate(80 12)"><rect width=250 height=32 rx=16 fill="#0f1626" stroke="rgba(255,255,255,.14)"/><text x=125 y=21 text-anchor=middle>Next satellite takes over</text></g>
+</svg></figure>
+<div class=scene-copy><p class=snum>6 / 6</p><h2 id=s6-h>Delivered, and handed over</h2><p>Their phone buzzes. Meanwhile your satellite, moving at about 27,000 km/h, is already sliding towards the horizon, so the next one takes over.</p></div>
+</li>
+</ol>
+
+<section class="card jknow" aria-labelledby=jk-h><h2 id=jk-h>Good to know</h2>
+<ul>
+<li><strong>Texts first.</strong> Most satellite-to-phone services today handle texts, plus a few apps in some places. Calls and fuller data are coming as more, bigger satellites go up.</li>
+<li><strong>You need the sky.</strong> It works outdoors with a clear view of the sky, and it can take a little longer than a normal text.</li>
+<li><strong>It depends on your network.</strong> Your mobile operator needs a satellite partner, and your phone and plan need to support it. See <a href="../tracker.html">who’s live where</a>.</li>
+</ul>
+<p>Want the engineering? Read <a href="../articles/how-phone-talks-to-satellite.html">how an ordinary phone talks to a satellite</a>, or see <a href="../launches/">what’s launching next</a>.</p>
+</section>
