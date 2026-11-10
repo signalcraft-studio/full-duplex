@@ -1,0 +1,151 @@
+{
+ "_readme": "Satellite counts for the /launches/ comparison panel. Every number needs a source URL and an as_of date (YYYY-MM-DD). If a number cannot be sourced, set count to null and it shows as 'Not disclosed'. Never estimate. Phone-capable (direct-to-device) networks and broadband-only constellations are kept in separate lists on purpose.",
+ "last_checked": "2026-11-10",
+ "direct_to_device": [
+  {
+   "id": "starlink-dtc",
+   "filter": "spacex",
+   "operator": "SpaceX",
+   "network": "Starlink Direct to Cell (Starlink Mobile)",
+   "short": "Starlink Direct to Cell",
+   "count": 637,
+   "count_label": "satellites in orbit and working",
+   "as_of": "2026-11-09",
+   "source": {
+    "label": "Jonathan McDowell, Starlink statistics (DTC shells 1 and 2)",
+    "url": "https://planet4589.org/space/con/star/stats.html"
+   },
+   "note": "First-generation direct-to-cell satellites in two low shells: 310 at 53° and 327 at 43°. 674 were launched; 37 have come down. Works with ordinary 4G phones through partner operators such as T-Mobile and One NZ.",
+   "planned": null
+  },
+  {
+   "id": "ast",
+   "filter": "ast",
+   "operator": "AST SpaceMobile",
+   "network": "BlueBird",
+   "short": "AST SpaceMobile",
+   "count": 12,
+   "count_label": "BlueBirds unfolded and in operation",
+   "as_of": "2026-11-09",
+   "source": {
+    "label": "AST SpaceMobile Q3 2026 business update (SEC filing, 9 Nov 2026)",
+    "url": "https://www.sec.gov/Archives/edgar/data/1780312/000119312526453758/asts-ex99_2.htm"
+   },
+   "note": "BlueBirds 1–6 and 8–13. BlueBird 7 was lost after an April 2026 launch left it in too low an orbit. Far fewer satellites than Starlink, but each one is much larger: a Block 2 BlueBird's antenna is about 2,400 sq ft.",
+   "planned": {
+    "text": "About 45 BlueBirds in orbit by mid-2027, and 100+ under launch contracts for 2027–28 (company target)",
+    "source": {
+     "label": "AST SpaceMobile Q3 2026 business update",
+     "url": "https://www.sec.gov/Archives/edgar/data/1780312/000119312526453758/asts-ex99_2.htm"
+    }
+   }
+  },
+  {
+   "id": "globalstar",
+   "filter": "others",
+   "operator": "Globalstar",
+   "network": "Globalstar (satellite features on recent iPhones)",
+   "short": "Globalstar (iPhone)",
+   "count": 32,
+   "count_label": "second-generation satellites working",
+   "as_of": "2026-11-09",
+   "source": {
+    "label": "Jonathan McDowell, Globalstar statistics",
+    "url": "https://planet4589.org/space/con/gbl/stats.html"
+   },
+   "note": "24 in the operational orbit plus 8 replacements launched in August 2026 that are still moving into position. Uses Globalstar's own satellite spectrum, so only phones built for it, such as recent iPhones, can connect. Globalstar has agreed to be bought by Amazon; the deal is expected to close in 2027.",
+   "extra_sources": [
+    {
+     "label": "Globalstar Form 10-Q, filed 5 Nov 2026",
+     "url": "https://investors.globalstar.com/static-files/73b0a2f1-37e6-4cb5-b464-1ec2b3cc9fb8"
+    }
+   ],
+   "planned": null
+  },
+  {
+   "id": "lynk",
+   "filter": "lynk",
+   "operator": "Elveo Mobile (Lynk + Omnispace)",
+   "network": "Lynk",
+   "short": "Lynk / Elveo",
+   "count": 8,
+   "count_label": "Lynk satellites in orbit (independent catalogue)",
+   "as_of": "2026-11-09",
+   "source": {
+    "label": "Jonathan McDowell, Lynk statistics",
+    "url": "https://www.planet4589.org/space/con/lynk/stats.html"
+   },
+   "note": "Lynk merged with Omnispace in August 2026 to form Elveo Mobile. At the merger, Elveo said it had 9 satellites: 6 Lynk satellites in low orbit, plus 2 low-orbit and 1 medium-orbit satellite from Omnispace. The independent count includes small Lynk test satellites, so the two figures differ.",
+   "extra_sources": [
+    {
+     "label": "Light Reading, 14 Aug 2026",
+     "url": "https://www.lightreading.com/satellite/lynk-and-omnispace-merger-creates-d2d-challenger-elveo-mobile"
+    }
+   ],
+   "planned": {
+    "text": "320 low-orbit satellites, deployment from Q4 2027, commercial service from early 2028 (company target)",
+    "source": {
+     "label": "Light Reading, 14 Aug 2026",
+     "url": "https://www.lightreading.com/satellite/lynk-and-omnispace-merger-creates-d2d-challenger-elveo-mobile"
+    }
+   }
+  },
+  {
+   "id": "skylo",
+   "filter": "others",
+   "operator": "Skylo",
+   "network": "Skylo",
+   "short": "Skylo",
+   "count": null,
+   "count_display": "No own satellites",
+   "count_label": "uses partners' satellites",
+   "as_of": "2026-11-10",
+   "source": {
+    "label": "Skylo: introduction",
+    "url": "https://www.skylo.tech/knowledge-base/skylo-introduction"
+   },
+   "note": "Skylo doesn't own or launch satellites. It runs its network over partners' geostationary satellites (for example Viasat/Inmarsat), and powers satellite messaging on some Android phones, such as Google Pixel. It won't appear in the launch list.",
+   "planned": null
+  }
+ ],
+ "broadband_only": [
+  {
+   "id": "starlink-broadband",
+   "filter": "spacex",
+   "operator": "SpaceX",
+   "network": "Starlink broadband",
+   "short": "Starlink broadband",
+   "count": 10553,
+   "count_label": "satellites working, not counting the 637 direct-to-cell satellites",
+   "as_of": "2026-11-09",
+   "source": {
+    "label": "Jonathan McDowell, Starlink statistics (11,190 working in total, minus 637 DTC)",
+    "url": "https://planet4589.org/space/con/star/stats.html"
+   },
+   "note": "Serves Starlink dishes, not phones directly. Includes 26 new V3 satellites still raising their orbits.",
+   "planned": null
+  },
+  {
+   "id": "amazon-leo",
+   "filter": "amazon-leo",
+   "operator": "Amazon",
+   "network": "Amazon Leo (formerly Project Kuiper)",
+   "short": "Amazon Leo",
+   "count": 392,
+   "count_label": "satellites in orbit and working",
+   "as_of": "2026-11-09",
+   "source": {
+    "label": "Jonathan McDowell, Amazon Leo (Kuiper) statistics",
+    "url": "https://planet4589.org/space/con/kp/stats.html"
+   },
+   "note": "Broadband for dishes, not phones. Amazon is building a first-generation network of 3,232 satellites. Amazon has also agreed to buy Globalstar (see above).",
+   "planned": null,
+   "extra_sources": [
+    {
+     "label": "SatNews, 3 Nov 2026",
+     "url": "https://satnews.com/2026/11/03/amazon-navigates-launch-delays-with-under-400-satellites-in-orbit-ahead-of-nov-13-vulcan-return/"
+    }
+   ]
+  }
+ ]
+}

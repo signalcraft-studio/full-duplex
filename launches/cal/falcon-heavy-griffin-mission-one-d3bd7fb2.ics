@@ -1,0 +1,19 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Full Duplex//Launch tracker//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:d3bd7fb2-fac6-49fc-ae52-cee07d2fde67@fullduplex
+DTSTAMP:20261110T112945Z
+DTSTART;VALUE=DATE:20270106
+DTEND;VALUE=DATE:20270107
+SUMMARY:Launch: Griffin Mission One (Falcon Heavy)
+DESCRIPTION:Falcon Heavy from Launch Complex 39A\, Kennedy Space Center\, 
+ FL\, USA. Other: Not a phone-satellite launch. Listed so you can see ever
+ ything SpaceX and its rivals are flying. Launch times move: check https:/
+ /signalcraft-studio.github.io/full-duplex/launches/ before you watch.
+LOCATION:Launch Complex 39A\, Kennedy Space Center\, FL\, USA
+URL:https://signalcraft-studio.github.io/full-duplex/launches/
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,21 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Full Duplex//Launch tracker//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:ef9850ad-1096-425b-9d27-f7bbd186e61a@fullduplex
+DTSTAMP:20261110T112945Z
+DTSTART:20261113T175400Z
+DTEND:20261113T182400Z
+SUMMARY:Launch: Amazon Leo (LV-01) (Vulcan VC6L)
+DESCRIPTION:Vulcan VC6L from Space Launch Complex 41\, Cape Canaveral SFS\
+ , FL\, USA. Amazon Leo · broadband: Amazon Leo is broadband for dishes\,
+  not phones. It matters to telcos as a rival to Starlink for backhaul and
+  business links\, not as a phone-to-satellite service. Launch times move:
+  check https://signalcraft-studio.github.io/full-duplex/launches/ before 
+ you watch.
+LOCATION:Space Launch Complex 41\, Cape Canaveral SFS\, FL\, USA
+URL:https://signalcraft-studio.github.io/full-duplex/launches/
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,21 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Full Duplex//Launch tracker//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:7bdc412b-c965-4517-a131-f57a01189803@fullduplex
+DTSTAMP:20261110T112945Z
+DTSTART;VALUE=DATE:20261123
+DTEND;VALUE=DATE:20261124
+SUMMARY:Launch: Amazon Leo (LE-04) (Ariane 64 Block 2)
+DESCRIPTION:Ariane 64 Block 2 from Ariane Launch Area 4\, Guiana Space Cen
+ tre\, French Guiana. Amazon Leo · broadband: Amazon Leo is broadband for
+  dishes\, not phones. It matters to telcos as a rival to Starlink for bac
+ khaul and business links\, not as a phone-to-satellite service. Launch ti
+ mes move: check https://signalcraft-studio.github.io/full-duplex/launches
+ / before you watch.
+LOCATION:Ariane Launch Area 4\, Guiana Space Centre\, French Guiana
+URL:https://signalcraft-studio.github.io/full-duplex/launches/
+END:VEVENT
+END:VCALENDAR

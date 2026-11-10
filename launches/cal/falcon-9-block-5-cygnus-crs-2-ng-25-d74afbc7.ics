@@ -1,0 +1,20 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Full Duplex//Launch tracker//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:d74afbc7-0de5-491c-be05-4e9c31f736ac@fullduplex
+DTSTAMP:20261110T112945Z
+DTSTART:20261129T154900Z
+DTEND:20261129T164900Z
+SUMMARY:Launch: Cygnus CRS-2 NG-25 (Falcon 9 Block 5)
+DESCRIPTION:Falcon 9 Block 5 from Space Launch Complex 40\, Cape Canaveral
+  SFS\, FL\, USA. Other: Not a phone-satellite launch. Listed so you can s
+ ee everything SpaceX and its rivals are flying. Launch times move: check 
+ https://signalcraft-studio.github.io/full-duplex/launches/ before you wat
+ ch.
+LOCATION:Space Launch Complex 40\, Cape Canaveral SFS\, FL\, USA
+URL:https://signalcraft-studio.github.io/full-duplex/launches/
+END:VEVENT
+END:VCALENDAR

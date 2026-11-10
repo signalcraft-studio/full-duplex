@@ -1,0 +1,4 @@
+{
+ "_readme": "Manual telco tags for launches, keyed by Launch Library 2 launch id. Use only with a primary or reliable source, e.g. to mark a Starlink launch as carrying Direct to Cell satellites when Launch Library's mission text doesn't say so. Tags: starlink-dtc, starlink, ast, amazon-leo, d2d-other, other.",
+ "overrides": {}
+}

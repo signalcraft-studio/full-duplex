@@ -1,0 +1,2080 @@
+{
+ "fetched_at": "2026-11-10T11:29:45Z",
+ "source": "The Space Devs Launch Library 2 (https://ll.thespacedevs.com/2.3.0/launches/upcoming/)",
+ "launches": [
+  {
+   "id": "6aa7b90b-e5ed-45d8-a52e-04fbf399d178",
+   "slug": "falcon-9-block-5-ussf-627",
+   "name": "Falcon 9 Block 5 | USSF-627",
+   "net": "2026-11-11T02:49:00Z",
+   "window_start": "2026-11-11T02:49:00Z",
+   "window_end": "2026-11-11T06:49:00Z",
+   "precision": "Minute",
+   "status": "Go for Launch",
+   "status_abbrev": "Go",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "USSF-627",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "A classified mission for the United States Space Force. It is possibly a batch of classified LEO satellites based on SpaceX’s Starshield satellite bus, based on locations of rocket stage drop zones being exact fits with previous Starlink Group 15 launches.",
+   "orbit": "LEO",
+   "mission_agencies": [
+    "United States Space Force"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2026-11-09T21:22:26Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/6aa7b90b-e5ed-45d8-a52e-04fbf399d178/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "ef9850ad-1096-425b-9d27-f7bbd186e61a",
+   "slug": "vulcan-vc6l-amazon-leo-lv-01",
+   "name": "Vulcan VC6L | Amazon Leo (LV-01)",
+   "net": "2026-11-13T17:54:00Z",
+   "window_start": "2026-11-13T17:54:00Z",
+   "window_end": "2026-11-13T18:24:00Z",
+   "precision": "Minute",
+   "status": "Go for Launch",
+   "status_abbrev": "Go",
+   "provider": "United Launch Alliance",
+   "rocket": "Vulcan VC6L",
+   "mission": "Amazon Leo (LV-01)",
+   "mission_type": "Communications",
+   "mission_description": "Amazon Leo, formerly known as Project Kuiper, is a mega constellation of satellites in Low Earth Orbit that will offer broadband internet access, this constellation will be managed by Kuiper Systems LLC, a subsidiary of Amazon. This constellation is planned to be composed of 3,276 satellites. The satellites are projected to be placed in 98 orbital planes in three orbital layers, one at 590 km, 610 km and 630 km altitude.\r\n\r\n45 satellites will be carried on each Vulcan launch.",
+   "orbit": "LEO",
+   "mission_agencies": [
+    "Amazon Leo"
+   ],
+   "pad": "Space Launch Complex 41",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-11-06T14:36:43Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/ef9850ad-1096-425b-9d27-f7bbd186e61a/",
+   "queries": [
+    "amazon-leo"
+   ]
+  },
+  {
+   "id": "0f867f0c-5422-4d44-93b8-d7faaae7019b",
+   "slug": "starship-starlink-group-31-2-starship-flight-15",
+   "name": "Starship | Starlink Group 31-2 (Starship Flight 15)",
+   "net": "2026-11-13T22:45:00Z",
+   "window_start": "2026-11-13T22:45:00Z",
+   "window_end": "2026-11-14T00:00:00Z",
+   "precision": "Minute",
+   "status": "To Be Confirmed",
+   "status_abbrev": "TBC",
+   "provider": "SpaceX",
+   "rocket": "Starship V3",
+   "mission": "Starlink Group 31-2 (Starship Flight 15)",
+   "mission_type": "Communications",
+   "mission_description": "15th test flight of the two-stage Starship launch vehicle and 4th flight of Starship V3. Second Starship flight to deploy satellites (a group of Starlink satellites known as Starlink Group 31-2) into stable Low Earth Orbit and first ever to attempt returning the Starship 2nd stage back to the launch site.\r\n\r\nThe ship is expected to fly at an altitude approximately 275 km above Earth and complete approximately 14 orbits around the planet for more than 22 hours, with the ship expected to attempt returning back to Starbase, Texas on its launch pad by pad arms catching.\r\n\r\nThe booster’s primary test objective on Flight 15 will be executing a successful launch, ascent, stage separation, boostback burn, and landing by pad arms catching. This will also be the 1st Starship V3 booster to attempt returning to its launch site.\r\n\r\nStarship will deliver 26 Starlink V3 satellites to orbit for the second time, which aim to greatly expand the network's capacity and user speeds. Each Starlink V3 satellite will add 1 Tbps of capacity to the constellation. 3 of the satellites have been modified with a suite of cameras to scan Starship’s heatshield and transmit imagery down to operators.",
+   "orbit": "LEO",
+   "mission_agencies": [
+    "SpaceX"
+   ],
+   "pad": "Orbital Launch Pad 2",
+   "location": "SpaceX Starbase, TX, USA",
+   "webcast_live": false,
+   "last_updated": "2026-11-09T23:06:16Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "76617033-4dc0-4448-b50c-e5b0d5a18539",
+   "slug": "falcon-9-block-5-ussf-317",
+   "name": "Falcon 9 Block 5 | USSF-317",
+   "net": "2026-11-14T04:09:00Z",
+   "window_start": "2026-11-14T04:09:00Z",
+   "window_end": "2026-11-14T08:09:00Z",
+   "precision": "Minute",
+   "status": "Go for Launch",
+   "status_abbrev": "Go",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "USSF-317",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "A classified mission for the United States Space Force. It is possibly a batch of classified LEO satellites based on SpaceX’s Starshield satellite bus, based on locations of rocket stage drop zones being exact fits with previous Starlink Group 15 launches.",
+   "orbit": "LEO",
+   "mission_agencies": [
+    "United States Space Force"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2026-11-09T21:55:20Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/76617033-4dc0-4448-b50c-e5b0d5a18539/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "460d9db7-eaf6-4cd9-b095-cff433534c09",
+   "slug": "falcon-9-block-5-ussf-266",
+   "name": "Falcon 9 Block 5 | USSF-266",
+   "net": "2026-11-17T16:58:00Z",
+   "window_start": "2026-11-17T16:58:00Z",
+   "window_end": "2026-11-17T20:58:00Z",
+   "precision": "Minute",
+   "status": "Go for Launch",
+   "status_abbrev": "Go",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "USSF-266",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "A classified mission for the United States Space Force. It is possibly a batch of classified LEO satellites based on SpaceX’s Starshield satellite bus, based on locations of ascent rocket stage drop zones being fits with previous SDA Transport Layer launches.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "United States Space Force"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2026-11-09T21:55:20Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/460d9db7-eaf6-4cd9-b095-cff433534c09/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "7bdc412b-c965-4517-a131-f57a01189803",
+   "slug": "ariane-64-block-2-amazon-leo-le-04",
+   "name": "Ariane 64 Block 2 | Amazon Leo (LE-04)",
+   "net": "2026-11-23T00:00:00Z",
+   "window_start": "2026-11-23T00:00:00Z",
+   "window_end": "2026-11-23T00:00:00Z",
+   "precision": "Day",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "Arianespace",
+   "rocket": "Ariane 64 Block 2",
+   "mission": "Amazon Leo (LE-04)",
+   "mission_type": "Communications",
+   "mission_description": "Amazon Leo, formerly known as Project Kuiper, is a mega constellation of satellites in Low Earth Orbit that will offer broadband internet access, this constellation will be managed by Kuiper Systems LLC, a subsidiary of Amazon. This constellation is planned to be composed of 3,276 satellites. The satellites are projected to be placed in 98 orbital planes in three orbital layers, one at 590 km, 610 km and 630 km altitude.\r\n\r\n35-40 satellites will be carried on each Ariane 6 launch.",
+   "orbit": "LEO",
+   "mission_agencies": [
+    "Amazon Leo"
+   ],
+   "pad": "Ariane Launch Area 4",
+   "location": "Guiana Space Centre, French Guiana",
+   "webcast_live": false,
+   "last_updated": "2026-10-15T05:35:18Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/7bdc412b-c965-4517-a131-f57a01189803/",
+   "queries": [
+    "amazon-leo"
+   ]
+  },
+  {
+   "id": "d74afbc7-0de5-491c-be05-4e9c31f736ac",
+   "slug": "falcon-9-block-5-cygnus-crs-2-ng-25",
+   "name": "Falcon 9 Block 5 | Cygnus CRS-2 NG-25",
+   "net": "2026-11-29T15:49:00Z",
+   "window_start": "2026-11-29T15:49:00Z",
+   "window_end": "2026-11-29T15:49:00Z",
+   "precision": "Minute",
+   "status": "Go for Launch",
+   "status_abbrev": "Go",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Cygnus CRS-2 NG-25",
+   "mission_type": "Resupply",
+   "mission_description": "This is the 25th flight of the Orbital ATK's uncrewed resupply spacecraft Cygnus and its 24th flight to the International Space Station under the Commercial Resupply Services contract with NASA.",
+   "orbit": "LEO",
+   "mission_agencies": [],
+   "pad": "Space Launch Complex 40",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-11-04T20:05:35Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/d74afbc7-0de5-491c-be05-4e9c31f736ac/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "56ca6058-7ccc-4ec0-b1b0-fb49f3bfee49",
+   "slug": "falcon-9-block-5-nrol-195",
+   "name": "Falcon 9 Block 5 | NROL-195",
+   "net": "2026-11-30T00:00:00Z",
+   "window_start": "2026-11-30T00:00:00Z",
+   "window_end": "2026-11-30T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "NROL-195",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Fifteenth batch of satellites for a reconnaissance satellite constellation built by SpaceX and Northrop Grumman for the National Reconnaissance Office to provide imaging and other reconnaissance capabilities.",
+   "orbit": "LEO",
+   "mission_agencies": [
+    "National Reconnaissance Office"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2026-10-26T17:58:53Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/56ca6058-7ccc-4ec0-b1b0-fb49f3bfee49/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "b0dc988c-ea4a-423f-81b6-6b0fbe7cc17c",
+   "slug": "falcon-9-block-5-oneweb-21",
+   "name": "Falcon 9 Block 5 | OneWeb 21",
+   "net": "2026-11-30T00:00:00Z",
+   "window_start": "2026-11-30T00:00:00Z",
+   "window_end": "2026-11-30T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "OneWeb 21",
+   "mission_type": "Communications",
+   "mission_description": "A batch of 32 satellites for the OneWeb satellite constellation, which is intended to provide global Internet broadband service for individual consumers. The constellation is planned to have around 648 microsatellites (of which 60 are spares), around 150 kg each, operating in Ku-band from low Earth orbit.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Eutelsat OneWeb"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2026-10-29T06:09:06Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/b0dc988c-ea4a-423f-81b6-6b0fbe7cc17c/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "3cdb9dee-b5cb-406c-bbd1-06a219930fb7",
+   "slug": "falcon-9-block-5-starlink-group-15-21",
+   "name": "Falcon 9 Block 5 | Starlink Group 15-21",
+   "net": "2026-11-30T00:00:00Z",
+   "window_start": "2026-11-30T00:00:00Z",
+   "window_end": "2026-11-30T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Starlink Group 15-21",
+   "mission_type": "Communications",
+   "mission_description": "A batch of 27 satellites for the Starlink mega-constellation - SpaceX's project for space-based Internet communication system.",
+   "orbit": "LEO",
+   "mission_agencies": [
+    "SpaceX"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2026-11-03T21:40:38Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/3cdb9dee-b5cb-406c-bbd1-06a219930fb7/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "8bf5f61e-a7e1-41e6-aede-7b87e4beebab",
+   "slug": "falcon-9-block-5-chorus",
+   "name": "Falcon 9 Block 5 | CHORUS",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "CHORUS",
+   "mission_type": "Earth Science",
+   "mission_description": "CHORUS is MDA's next generation Earth observation constellation, consisting of 2 radar satellites (C-band SAR and X-band SAR), in a 53.5 degree 600 km altitude LEO, with the X-band trailing the C-band by 60 minutes. A collaborative multi-sensor constellation, CHORUS will bring together diverse and unique imagery and data sources and provide a new level of near real-time insight and innovative Earth observation services. Operating in a unique mid-inclination orbit, CHORUS will be able to image day or night, regardless of weather conditions, with daily access of up to 95% of the coverage area. From an industry-leading 700km-wide imaging swath down to sub-metre high resolution, CHORUS will provide the most extensive and unrivalled Earth observation radar imaging capacity available on the market in a single mission.",
+   "orbit": "LEO",
+   "mission_agencies": [],
+   "pad": "Unknown Pad",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-11-05T18:00:50Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/8bf5f61e-a7e1-41e6-aede-7b87e4beebab/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "e61d353c-db55-4a57-8184-0fab187231e6",
+   "slug": "falcon-9-block-5-globalstar-2-r-mission-2-x-9",
+   "name": "Falcon 9 Block 5 | Globalstar 2-R Mission 2 (x 9)",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Globalstar 2-R Mission 2 (x 9)",
+   "mission_type": "Communications",
+   "mission_description": "The Globalstar global mobile communications network offers global, digital real time voice, data and fax services via its Low Earth Orbit satellite constellation. The constellation operates in a 1410 km orbit inclined at 52 degrees.\r\n\r\nIn early 2022, Globalstar contracted with MDA for the construction of 17 new 2nd generation refresh satellites to replenish the existing constellation. Rocket Lab is sub-contracted to build the satellites' buses and the launch dispensers.",
+   "orbit": "LEO",
+   "mission_agencies": [
+    "Globalstar"
+   ],
+   "pad": "Space Launch Complex 40",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-11-05T18:03:47Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/e61d353c-db55-4a57-8184-0fab187231e6/",
+   "queries": [
+    "spacex",
+    "globalstar"
+   ]
+  },
+  {
+   "id": "71df1dd0-d658-4762-b0bc-0fca6886aea7",
+   "slug": "falcon-9-block-5-sda-tranche-2-transport-layer-d",
+   "name": "Falcon 9 Block 5 | SDA Tranche 2 Transport Layer D",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "SDA Tranche 2 Transport Layer D",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Classified mission launched by the Space Development Agency (SDA) for Tranche 2 Transport Layer.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Space Development Agency"
+   ],
+   "pad": "Unknown Pad",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-10-17T08:28:07Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/71df1dd0-d658-4762-b0bc-0fca6886aea7/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "71ed4649-8d71-42e8-8548-d42ffa2c5a6e",
+   "slug": "falcon-9-block-5-sda-tranche-2-transport-layer-e",
+   "name": "Falcon 9 Block 5 | SDA Tranche 2 Transport Layer E",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "SDA Tranche 2 Transport Layer E",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Classified mission launched by the Space Development Agency (SDA) for Tranche 2 Transport Layer.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Space Development Agency"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2026-10-17T08:28:47Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/71ed4649-8d71-42e8-8548-d42ffa2c5a6e/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "11b218b1-5e40-4b9d-854e-50320299239d",
+   "slug": "falcon-9-block-5-bluebird-14-16-block-2-9-11",
+   "name": "Falcon 9 Block 5 | BlueBird 14-16 (Block 2 #9-11)",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Quarter 4",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "BlueBird 14-16 (Block 2 #9-11)",
+   "mission_type": "Communications",
+   "mission_description": "AST SpaceMobile’s Block 2 BlueBird satellites are designed to deliver up to 10 times the bandwidth capacity of the BlueBird Block 1 satellites, required to achieve 24/7 continuous cellular broadband service coverage in the United States, with beams designed to support a capacity of up to 40 MHz, enabling peak data transmission speeds up to 120 Mbps, supporting voice, full data and video applications. The Block 2 BlueBirds, featuring as large as 2400 square foot communications arrays, will be the largest satellites ever commercially deployed in Low Earth orbit once launched.\r\n\r\nThis launch will feature 3 satellites.",
+   "orbit": "LEO",
+   "mission_agencies": [],
+   "pad": "Space Launch Complex 40",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-10-15T12:12:53Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/11b218b1-5e40-4b9d-854e-50320299239d/",
+   "queries": [
+    "spacex",
+    "ast"
+   ]
+  },
+  {
+   "id": "2d0472b9-463d-49c8-afb1-7925e49a3368",
+   "slug": "falcon-9-block-5-sda-tranche-1-tracking-layer-a",
+   "name": "Falcon 9 Block 5 | SDA Tranche 1 Tracking Layer A",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Quarter 4",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "SDA Tranche 1 Tracking Layer A",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Tranche 1 Tracking Layer A is one of five missions by the United States Space Force Space Development Agency (SDA) for the Proliferated Warfighter Space Architecture (PWSA) Tranche 1 Tracking Layer constellation, which will provide global indications, warning, tracking, and targeting of advanced missile threats, including hypersonic missile systems.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Space Development Agency"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2026-08-27T15:58:58Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/2d0472b9-463d-49c8-afb1-7925e49a3368/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "dca8749f-1552-485a-8061-f1ad79055b8d",
+   "slug": "falcon-9-block-5-sda-tranche-1-tracking-layer-c",
+   "name": "Falcon 9 Block 5 | SDA Tranche 1 Tracking Layer C",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Quarter 4",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "SDA Tranche 1 Tracking Layer C",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Tranche 1 Tracking Layer C is one of five missions by the United States Space Force Space Development Agency (SDA) for the Proliferated Warfighter Space Architecture (PWSA) Tranche 1 Tracking Layer constellation, which will provide global indications, warning, tracking, and targeting of advanced missile threats, including hypersonic missile systems.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Space Development Agency"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2026-08-27T16:02:56Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/dca8749f-1552-485a-8061-f1ad79055b8d/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "a9ee8337-127d-4f17-9e3a-a07999f80099",
+   "slug": "falcon-9-block-5-sda-tranche-1-tracking-layer-d",
+   "name": "Falcon 9 Block 5 | SDA Tranche 1 Tracking Layer D",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Quarter 4",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "SDA Tranche 1 Tracking Layer D",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Tranche 1 Tracking Layer D is one of five missions by the United States Space Force Space Development Agency (SDA) for the Proliferated Warfighter Space Architecture (PWSA) Tranche 1 Tracking Layer constellation, which will provide global indications, warning, tracking, and targeting of advanced missile threats, including hypersonic missile systems.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Space Development Agency"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2026-10-25T04:56:36Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/a9ee8337-127d-4f17-9e3a-a07999f80099/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "4541ce85-0e38-42ac-a9a0-20474bb5f2cd",
+   "slug": "falcon-9-block-5-sda-tranche-1-transport-layer-d",
+   "name": "Falcon 9 Block 5 | SDA Tranche 1 Transport Layer D",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Quarter 4",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "SDA Tranche 1 Transport Layer D",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Tranche 1 Transport Layer D is one of six missions by the United States Space Force Space Development Agency (SDA) for the Proliferated Warfighter Space Architecture (PWSA) Tranche 1 Transport Layer constellation, which will provide assured, resilient, low-latency military data and connectivity worldwide to the full range of warfighter platforms from Low Earth Orbit satellites.\r\n\r\nThe constellation will be interconnected with Optical Inter-Satellite Links (OISLs) which have significantly increased performance over existing radio frequency crosslinks. It is expected to operate over Ka band, have stereo coverage and be dynamically networked for simpler hand-offs, greater bandwidth and fault tolerance.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Space Development Agency"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2026-08-27T16:00:47Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/4541ce85-0e38-42ac-a9a0-20474bb5f2cd/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "c5783e2b-d458-4b99-9936-4043c236190b",
+   "slug": "falcon-9-block-5-sda-tranche-1-transport-layer-f",
+   "name": "Falcon 9 Block 5 | SDA Tranche 1 Transport Layer F",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Quarter 4",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "SDA Tranche 1 Transport Layer F",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Tranche 1 Transport Layer F is one of six missions by the United States Space Force Space Development Agency (SDA) for the Proliferated Warfighter Space Architecture (PWSA) Tranche 1 Transport Layer constellation, which will provide assured, resilient, low-latency military data and connectivity worldwide to the full range of warfighter platforms from Low Earth Orbit satellites.\r\n\r\nThe constellation will be interconnected with Optical Inter-Satellite Links (OISLs) which have significantly increased performance over existing radio frequency crosslinks. It is expected to operate over Ka band, have stereo coverage and be dynamically networked for simpler hand-offs, greater bandwidth and fault tolerance.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Space Development Agency"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2026-08-27T16:01:25Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/c5783e2b-d458-4b99-9936-4043c236190b/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "dfd444f9-ddda-4b35-8f51-cda7cd801809",
+   "slug": "falcon-9-block-5-rivada-1",
+   "name": "Falcon 9 Block 5 | Rivada 1",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Year",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Rivada 1",
+   "mission_type": "Communications",
+   "mission_description": "24 satellites for Rivada's internet constellation.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Rivada Space Networks"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2025-11-14T13:55:36Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/dfd444f9-ddda-4b35-8f51-cda7cd801809/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "511a3ef8-799e-4723-9293-b954d9d2eb83",
+   "slug": "falcon-9-block-5-rivada-10",
+   "name": "Falcon 9 Block 5 | Rivada 10",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Year",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Rivada 10",
+   "mission_type": "Communications",
+   "mission_description": "24 satellites for Rivada's internet constellation.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Rivada Space Networks"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2026-05-06T23:21:39Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/511a3ef8-799e-4723-9293-b954d9d2eb83/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "d08d8b46-353b-4eee-ab5e-e1385b329008",
+   "slug": "falcon-9-block-5-rivada-11",
+   "name": "Falcon 9 Block 5 | Rivada 11",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Year",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Rivada 11",
+   "mission_type": "Communications",
+   "mission_description": "24 satellites for Rivada's internet constellation.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Rivada Space Networks"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2026-05-06T23:21:54Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/d08d8b46-353b-4eee-ab5e-e1385b329008/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "bf5c6fa2-3add-49ff-aad6-c6450148cd89",
+   "slug": "falcon-9-block-5-rivada-12",
+   "name": "Falcon 9 Block 5 | Rivada 12",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Year",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Rivada 12",
+   "mission_type": "Communications",
+   "mission_description": "24 satellites for Rivada's internet constellation.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Rivada Space Networks"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2026-05-06T23:22:11Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/bf5c6fa2-3add-49ff-aad6-c6450148cd89/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "20fa8dc4-8cab-41cf-b452-98a2620f7e86",
+   "slug": "falcon-9-block-5-rivada-2",
+   "name": "Falcon 9 Block 5 | Rivada 2",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Year",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Rivada 2",
+   "mission_type": "Communications",
+   "mission_description": "24 satellites for Rivada's internet constellation.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Rivada Space Networks"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2025-11-14T13:55:53Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/20fa8dc4-8cab-41cf-b452-98a2620f7e86/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "ab932c60-d808-4825-ab71-b6fe0a745f15",
+   "slug": "falcon-9-block-5-rivada-3",
+   "name": "Falcon 9 Block 5 | Rivada 3",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Year",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Rivada 3",
+   "mission_type": "Communications",
+   "mission_description": "24 satellites for Rivada's internet constellation.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Rivada Space Networks"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2025-11-14T13:56:06Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/ab932c60-d808-4825-ab71-b6fe0a745f15/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "2f31a7f0-968a-448d-b447-333bf0341078",
+   "slug": "falcon-9-block-5-rivada-4",
+   "name": "Falcon 9 Block 5 | Rivada 4",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Year",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Rivada 4",
+   "mission_type": "Communications",
+   "mission_description": "24 satellites for Rivada's internet constellation.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Rivada Space Networks"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2025-11-14T13:56:21Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/2f31a7f0-968a-448d-b447-333bf0341078/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "fa895702-687b-4ba3-95fb-9462a2c9844b",
+   "slug": "falcon-9-block-5-rivada-5",
+   "name": "Falcon 9 Block 5 | Rivada 5",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Year",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Rivada 5",
+   "mission_type": "Communications",
+   "mission_description": "24 satellites for Rivada's internet constellation.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Rivada Space Networks"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2025-11-14T13:56:38Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/fa895702-687b-4ba3-95fb-9462a2c9844b/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "46d6822b-82aa-452c-aa34-80b6f052de84",
+   "slug": "falcon-9-block-5-rivada-6",
+   "name": "Falcon 9 Block 5 | Rivada 6",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Year",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Rivada 6",
+   "mission_type": "Communications",
+   "mission_description": "24 satellites for Rivada's internet constellation.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Rivada Space Networks"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2025-11-14T13:56:53Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/46d6822b-82aa-452c-aa34-80b6f052de84/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "1fa3741c-3339-4954-a026-2cd9d36161c0",
+   "slug": "falcon-9-block-5-rivada-7",
+   "name": "Falcon 9 Block 5 | Rivada 7",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Year",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Rivada 7",
+   "mission_type": "Communications",
+   "mission_description": "24 satellites for Rivada's internet constellation.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Rivada Space Networks"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2026-05-06T23:20:50Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/1fa3741c-3339-4954-a026-2cd9d36161c0/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "7d77bd89-af23-4a5a-b632-de0034003a64",
+   "slug": "falcon-9-block-5-rivada-8",
+   "name": "Falcon 9 Block 5 | Rivada 8",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Year",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Rivada 8",
+   "mission_type": "Communications",
+   "mission_description": "24 satellites for Rivada's internet constellation.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Rivada Space Networks"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2026-05-06T23:21:05Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/7d77bd89-af23-4a5a-b632-de0034003a64/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "5ce7e9b6-b471-4a88-891f-2a6f21cb369f",
+   "slug": "falcon-9-block-5-rivada-9",
+   "name": "Falcon 9 Block 5 | Rivada 9",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Year",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Rivada 9",
+   "mission_type": "Communications",
+   "mission_description": "24 satellites for Rivada's internet constellation.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Rivada Space Networks"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2026-05-06T23:21:22Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/5ce7e9b6-b471-4a88-891f-2a6f21cb369f/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "0a07a23e-606a-4589-bf3e-c3e41bd4de51",
+   "slug": "falcon-9-block-5-sda-tranche-2-tracking-layer-a",
+   "name": "Falcon 9 Block 5 | SDA Tranche 2 Tracking Layer A",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Year",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "SDA Tranche 2 Tracking Layer A",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Classified mission launched by the Space Development Agency (SDA) for Tranche 2 Tracking Layer.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Space Development Agency"
+   ],
+   "pad": "Unknown Pad",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-07-17T13:37:48Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/0a07a23e-606a-4589-bf3e-c3e41bd4de51/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "cb1762f0-90f4-4902-a5f6-655a7ade25bf",
+   "slug": "falcon-9-block-5-sda-tranche-2-tracking-layer-b",
+   "name": "Falcon 9 Block 5 | SDA Tranche 2 Tracking Layer B",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Year",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "SDA Tranche 2 Tracking Layer B",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Classified mission launched by the Space Development Agency (SDA) for Tranche 2 Tracking Layer.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Space Development Agency"
+   ],
+   "pad": "Unknown Pad",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-07-17T13:38:06Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/cb1762f0-90f4-4902-a5f6-655a7ade25bf/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "c703fab3-2ce4-4cf1-861d-754da3f3ad42",
+   "slug": "falcon-9-block-5-sda-tranche-2-transport-layer-a",
+   "name": "Falcon 9 Block 5 | SDA Tranche 2 Transport Layer A",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Year",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "SDA Tranche 2 Transport Layer A",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Classified mission launched by the Space Development Agency (SDA) for Tranche 2 Transport Layer.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Space Development Agency"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2026-07-17T13:35:07Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/c703fab3-2ce4-4cf1-861d-754da3f3ad42/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "4c78e865-8f03-4f47-a081-b507da270d19",
+   "slug": "falcon-9-block-5-ussf-31",
+   "name": "Falcon 9 Block 5 | USSF-31",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Year",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "USSF-31",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Classified US Space Force carrying two payloads directly to geostationary orbit.",
+   "orbit": "Direct-GEO",
+   "mission_agencies": [
+    "United States Space Force"
+   ],
+   "pad": "Unknown Pad",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2025-12-17T00:01:28Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/4c78e865-8f03-4f47-a081-b507da270d19/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "fc1bd321-e502-4d0f-81f4-1926dece81c6",
+   "slug": "falcon-9-block-5-victus-surgo",
+   "name": "Falcon 9 Block 5 | VICTUS SURGO",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Year",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "VICTUS SURGO",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "A new Tactically Responsive Space (TacRS) mission by the United States Space Force Space Systems Command to deliver responsive space delivery. The mission consists of an Impulse Space Mira orbital transfer vehicle that will operate in Geosynchronous Transfer Orbit (GTO), which would be transferred from Low Earth Orbit (LEO) on an Impulse Space Helios kick stage. A Helios rideshare payload will also be delivered to GEO.",
+   "orbit": "LEO",
+   "mission_agencies": [],
+   "pad": "Unknown Pad",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2024-10-05T03:22:08Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/fc1bd321-e502-4d0f-81f4-1926dece81c6/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "c1bd775a-2fff-45bb-9726-765b69817c19",
+   "slug": "falcon-heavy-ussf-75",
+   "name": "Falcon Heavy | USSF-75",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Year",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon Heavy",
+   "mission": "USSF-75",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Classified payload for the United States Space Force",
+   "orbit": "Direct-GEO",
+   "mission_agencies": [
+    "United States Space Force"
+   ],
+   "pad": "Launch Complex 39A",
+   "location": "Kennedy Space Center, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2023-11-01T20:35:10Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/c1bd775a-2fff-45bb-9726-765b69817c19/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "f0460950-3cb6-4889-8cbe-707f063d0565",
+   "slug": "new-glenn-bluebird-block-2",
+   "name": "New Glenn | BlueBird Block 2",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Year",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "Blue Origin",
+   "rocket": "New Glenn",
+   "mission": "BlueBird Block 2",
+   "mission_type": "Communications",
+   "mission_description": "AST SpaceMobile’s Block 2 BlueBird satellites are designed to deliver up to 10 times the bandwidth capacity of the BlueBird Block 1 satellites, required to achieve 24/7 continuous cellular broadband service coverage in the United States, with beams designed to support a capacity of up to 40 MHz, enabling peak data transmission speeds up to 120 Mbps, supporting voice, full data and video applications. The Block 2 BlueBirds, featuring as large as 2400 square foot communications arrays, will be the largest satellites ever commercially deployed in Low Earth orbit once launched.\r\n\r\nThis launch will feature 8 satellites.",
+   "orbit": "LEO",
+   "mission_agencies": [],
+   "pad": "Launch Complex 36A",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-05-28T23:52:24Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/f0460950-3cb6-4889-8cbe-707f063d0565/",
+   "queries": [
+    "ast"
+   ]
+  },
+  {
+   "id": "ca3d56b7-2175-48e4-9a6a-2ecc9996d96b",
+   "slug": "new-glenn-amazon-leo-ln-01",
+   "name": "New Glenn | Amazon Leo (LN-01)",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Year",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "Blue Origin",
+   "rocket": "New Glenn",
+   "mission": "Amazon Leo (LN-01)",
+   "mission_type": "Communications",
+   "mission_description": "Amazon Leo, formerly known as Project Kuiper, is a mega constellation of satellites in Low Earth Orbit that will offer broadband internet access, this constellation will be managed by Kuiper Systems LLC, a subsidiary of Amazon. This constellation is planned to be composed of 3,276 satellites. The satellites are projected to be placed in 98 orbital planes in three orbital layers, one at 590 km, 610 km and 630 km altitude.\r\n\r\n48 satellites will be carried on this New Glenn launch.",
+   "orbit": "LEO",
+   "mission_agencies": [
+    "Amazon Leo"
+   ],
+   "pad": "Launch Complex 36A",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-05-29T11:16:01Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/ca3d56b7-2175-48e4-9a6a-2ecc9996d96b/",
+   "queries": [
+    "amazon-leo"
+   ]
+  },
+  {
+   "id": "d3bd7fb2-fac6-49fc-ae52-cee07d2fde67",
+   "slug": "falcon-heavy-griffin-mission-one",
+   "name": "Falcon Heavy | Griffin Mission One",
+   "net": "2027-01-06T00:00:00Z",
+   "window_start": "2027-01-06T00:00:00Z",
+   "window_end": "2027-01-06T00:00:00Z",
+   "precision": "Day",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon Heavy",
+   "mission": "Griffin Mission One",
+   "mission_type": "Lunar Exploration",
+   "mission_description": "Demonstration flight of the Astrobotic Griffin lander and its engines, initially contracted for the NASA VIPER (Volatiles Investigating Polar Exploration Rover) mission. The vacated payload spot will now host the FLIP (FLEX Lunar Innovation Platform) lunar rover from Astrolab.",
+   "orbit": "LO",
+   "mission_agencies": [
+    "Voyager Technologies"
+   ],
+   "pad": "Launch Complex 39A",
+   "location": "Kennedy Space Center, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-11-09T18:22:21Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/d3bd7fb2-fac6-49fc-ae52-cee07d2fde67/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "de3d5d91-f115-4a86-b923-203a91a08735",
+   "slug": "falcon-9-block-5-axiom-space-mission-5",
+   "name": "Falcon 9 Block 5 | Axiom Space Mission 5",
+   "net": "2027-01-31T00:00:00Z",
+   "window_start": "2027-01-31T00:00:00Z",
+   "window_end": "2027-01-31T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Axiom Space Mission 5",
+   "mission_type": "Tourism",
+   "mission_description": "This is a Crew Dragon flight for a private company Axiom Space. The mission will carry a professionally trained commander alongside three private astronauts to and from the International Space Station for a month.",
+   "orbit": "LEO",
+   "mission_agencies": [],
+   "pad": "Space Launch Complex 40",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-01-30T23:49:40Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/de3d5d91-f115-4a86-b923-203a91a08735/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "542a51bb-2351-48b9-98c5-9db130fb4c29",
+   "slug": "falcon-9-block-5-sda-tranche-2-transport-layer-c",
+   "name": "Falcon 9 Block 5 | SDA Tranche 2 Transport Layer C",
+   "net": "2027-01-31T00:00:00Z",
+   "window_start": "2027-01-31T00:00:00Z",
+   "window_end": "2027-01-31T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "SDA Tranche 2 Transport Layer C",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Classified mission launched by the Space Development Agency (SDA) for Tranche 2 Transport Layer.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Space Development Agency"
+   ],
+   "pad": "Unknown Pad",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-02-24T17:09:27Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/542a51bb-2351-48b9-98c5-9db130fb4c29/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "5276b922-e440-466b-9b19-5851a2d67e75",
+   "slug": "falcon-9-block-5-sda-tranche-2-transport-layer-f",
+   "name": "Falcon 9 Block 5 | SDA Tranche 2 Transport Layer F",
+   "net": "2027-01-31T00:00:00Z",
+   "window_start": "2027-01-31T00:00:00Z",
+   "window_end": "2027-01-31T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "SDA Tranche 2 Transport Layer F",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Classified mission launched by the Space Development Agency (SDA) for Tranche 2 Transport Layer.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Space Development Agency"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2025-04-10T05:43:50Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/5276b922-e440-466b-9b19-5851a2d67e75/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "3624047e-9891-420b-820f-7db4a7570383",
+   "slug": "falcon-9-block-5-sda-tranche-2-transport-layer-g",
+   "name": "Falcon 9 Block 5 | SDA Tranche 2 Transport Layer G",
+   "net": "2027-02-28T00:00:00Z",
+   "window_start": "2027-02-28T00:00:00Z",
+   "window_end": "2027-02-28T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "SDA Tranche 2 Transport Layer G",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Classified mission launched by the Space Development Agency (SDA) for Tranche 2 Transport Layer.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Space Development Agency"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2025-04-10T05:45:58Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/3624047e-9891-420b-820f-7db4a7570383/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "8d066e3a-ed12-4997-a5f4-3bc13cf5c8a2",
+   "slug": "falcon-9-block-5-sicral-3a",
+   "name": "Falcon 9 Block 5 | SICRAL 3A",
+   "net": "2027-02-28T00:00:00Z",
+   "window_start": "2027-02-28T00:00:00Z",
+   "window_end": "2027-02-28T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "SICRAL 3A",
+   "mission_type": "Communications",
+   "mission_description": "SICRAL 3A and 3B are next generation communication satellites for the Italian Ministry of Defence, providing UHF and SHF communications services in replacement of SICRAL 2 and adding Ka-band capacities. One of the satellites will provide UHF and SHF band communications, while the other carries a Ka-band payload. These 2 geostationary satellites will provide confidential strategic and tactical communications, to support defense missions both in Italy and abroad, as well as supporting security, public rescue and civil protection services. The new SICRAL 3 system is designed to meet Italian defense communications and interoperability requirements.",
+   "orbit": "GTO",
+   "mission_agencies": [],
+   "pad": "Unknown Pad",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-03-16T21:04:19Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/8d066e3a-ed12-4997-a5f4-3bc13cf5c8a2/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "22023c17-c196-4b56-bfd4-7fc5e9db84c0",
+   "slug": "falcon-9-block-5-transporter-19-dedicated-sso-ride",
+   "name": "Falcon 9 Block 5 | Transporter 19 (Dedicated SSO Rideshare)",
+   "net": "2027-02-28T00:00:00Z",
+   "window_start": "2027-02-28T00:00:00Z",
+   "window_end": "2027-02-28T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Transporter 19 (Dedicated SSO Rideshare)",
+   "mission_type": "Dedicated Rideshare",
+   "mission_description": "Dedicated rideshare flight to a sun-synchronous orbit with dozens of small microsatellites and nanosatellites for commercial and government customers.",
+   "orbit": "SSO",
+   "mission_agencies": [
+    "SpaceX"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2026-09-30T06:39:42Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/22023c17-c196-4b56-bfd4-7fc5e9db84c0/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "a5556e79-a01f-48c6-b822-69bbadb4460d",
+   "slug": "falcon-9-block-5-crew-14",
+   "name": "Falcon 9 Block 5 | Crew-14",
+   "net": "2027-03-31T00:00:00Z",
+   "window_start": "2027-03-31T00:00:00Z",
+   "window_end": "2027-03-31T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Crew-14",
+   "mission_type": "Human Exploration",
+   "mission_description": "SpaceX Crew-14 is the fourteenth crewed operational flight of a Crew Dragon spacecraft to the International Space Station as part of NASA's Commercial Crew Program.",
+   "orbit": "LEO",
+   "mission_agencies": [
+    "Japan Aerospace Exploration Agency",
+    "National Aeronautics and Space Administration",
+    "Russian Federal Space Agency (ROSCOSMOS)"
+   ],
+   "pad": "Space Launch Complex 40",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-09-25T01:40:15Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/a5556e79-a01f-48c6-b822-69bbadb4460d/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "cedcc397-f2c2-439f-9bed-b983669fc205",
+   "slug": "falcon-9-block-5-sda-tranche-2-transport-layer-h",
+   "name": "Falcon 9 Block 5 | SDA Tranche 2 Transport Layer H",
+   "net": "2027-03-31T00:00:00Z",
+   "window_start": "2027-03-31T00:00:00Z",
+   "window_end": "2027-03-31T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "SDA Tranche 2 Transport Layer H",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Classified mission launched by the Space Development Agency (SDA) for Tranche 2 Transport Layer.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Space Development Agency"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2025-04-10T05:47:42Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/cedcc397-f2c2-439f-9bed-b983669fc205/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "9bfa0324-db74-444f-8dc3-1c7d373ca659",
+   "slug": "falcon-9-block-5-5x-astranis-microgeo",
+   "name": "Falcon 9 Block 5 | 5x Astranis MicroGEO",
+   "net": "2027-03-31T00:00:00Z",
+   "window_start": "2027-03-31T00:00:00Z",
+   "window_end": "2027-03-31T00:00:00Z",
+   "precision": "Quarter 1",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "5x Astranis MicroGEO",
+   "mission_type": "Communications",
+   "mission_description": "Five Astranis MicroGEO communications satellite to be inserted in a custom geostationary orbit, from where they conduct on-orbit maneuvers to reach their individual slots.\r\n\r\nThe 5 satellites include:\r\n\r\n* Apco 1 & Apco 2 (Mexico)\r\n\r\n* Thaicom-9 (Thailand)\r\n\r\n* 1x for Chunghwa Telecom (Taiwan)\r\n\r\n* 1x for MB Group (Oman)",
+   "orbit": "GTO",
+   "mission_agencies": [],
+   "pad": "Unknown Pad",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-09-20T02:11:19Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/9bfa0324-db74-444f-8dc3-1c7d373ca659/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "4cc61288-6f94-41de-8fd5-7fe4d72aedfb",
+   "slug": "falcon-9-block-5-haven-1",
+   "name": "Falcon 9 Block 5 | Haven-1",
+   "net": "2027-03-31T00:00:00Z",
+   "window_start": "2027-03-31T00:00:00Z",
+   "window_end": "2027-03-31T00:00:00Z",
+   "precision": "Quarter 1",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Haven-1",
+   "mission_type": "Human Exploration",
+   "mission_description": "Commercial space station developed by Vast",
+   "orbit": "LEO",
+   "mission_agencies": [],
+   "pad": "Unknown Pad",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-01-20T20:07:01Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/4cc61288-6f94-41de-8fd5-7fe4d72aedfb/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "0c26b3d4-43e3-4c1a-8976-592ff319bc51",
+   "slug": "falcon-9-block-5-nova-c-im-3",
+   "name": "Falcon 9 Block 5 | Nova-C IM-3",
+   "net": "2027-03-31T00:00:00Z",
+   "window_start": "2027-03-31T00:00:00Z",
+   "window_end": "2027-03-31T00:00:00Z",
+   "precision": "Quarter 1",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Nova-C IM-3",
+   "mission_type": "Lunar Exploration",
+   "mission_description": "This is the third mission to the Moon for Intuitive Machines with its Nova-C lunar lander. It is to deliver 130 kg of payloads to the lunar surface. This mission also includes a rideshare possibility due to available excess capacity on the launch vehicle.",
+   "orbit": "LO",
+   "mission_agencies": [
+    "Intuitive Machines"
+   ],
+   "pad": "Unknown Pad",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-08-13T20:57:20Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/0c26b3d4-43e3-4c1a-8976-592ff319bc51/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "bb34dbf6-9b46-400a-94d6-a0b6dbd6cb03",
+   "slug": "falcon-9-block-5-wsf-m2-blaze-2-ussf-178",
+   "name": "Falcon 9 Block 5 | WSF-M2 & BLAZE-2 (USSF-178)",
+   "net": "2027-03-31T00:00:00Z",
+   "window_start": "2027-03-31T00:00:00Z",
+   "window_end": "2027-03-31T00:00:00Z",
+   "precision": "Quarter 1",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "WSF-M2 & BLAZE-2 (USSF-178)",
+   "mission_type": "Earth Science",
+   "mission_description": "Second Weather System Follow-on (WSF) satellite.\r\n\r\nWSF-M (Weather System Follow-on - Microwave) is the next-generation operational environmental satellite system for the Department of Defense (DoD), to replace the microwave wavelength weather forecasting capabilities of the DMSP satellites.\r\n\r\nBall Aerospace has been selected in late November 2017 to be the prime contractor for 2 Low Earth Orbit (LEO) weather satellites with a passive microwave imaging radiometer instrument and hosted Government furnished energetic charged particle (ECP) sensor space weather payload developed by the Air Force Research Laboratory. The radiometer leverages the Ball-built Global Precipitation Measurement (GPM) Microwave Imager (GMI) instrument. \r\n\r\nThis mission will improve weather forecasting over maritime regions by taking global measurements of the atmosphere and ocean surface.\r\n\r\nThe launch will also include BLAZE-2, a launch opportunity for operational, research, development, and prototype small satellites from across the DoD.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "United States Space Force"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2026-08-20T20:12:53Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/bb34dbf6-9b46-400a-94d6-a0b6dbd6cb03/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "d89815f1-7cc8-4dad-b3c4-5db80a9f4c01",
+   "slug": "falcon-9-block-5-bandwagon-6-dedicated-mid-inclina",
+   "name": "Falcon 9 Block 5 | Bandwagon 6 (Dedicated Mid-Inclination Rideshare)",
+   "net": "2027-04-30T00:00:00Z",
+   "window_start": "2027-04-30T00:00:00Z",
+   "window_end": "2027-04-30T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Bandwagon 6 (Dedicated Mid-Inclination Rideshare)",
+   "mission_type": "Dedicated Rideshare",
+   "mission_description": "Dedicated rideshare flight to a mid-inclination orbit with dozens of small microsatellites and nanosatellites for commercial and government customers.",
+   "orbit": "LEO",
+   "mission_agencies": [
+    "SpaceX"
+   ],
+   "pad": "Space Launch Complex 40",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-09-30T06:31:06Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/d89815f1-7cc8-4dad-b3c4-5db80a9f4c01/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "0d7dd3ae-0750-49be-a6ef-db40fd6ec5a5",
+   "slug": "falcon-9-block-5-turkish-lunar-mission-1-tlm-1",
+   "name": "Falcon 9 Block 5 | Turkish Lunar Mission-1 (TLM-1)",
+   "net": "2027-04-30T00:00:00Z",
+   "window_start": "2027-04-30T00:00:00Z",
+   "window_end": "2027-04-30T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Turkish Lunar Mission-1 (TLM-1)",
+   "mission_type": "Planetary Science",
+   "mission_description": "Turkish Lunar Mission-1 (TLM-1) is the first Turkish lunar exploration spacecraft mission. The TLM-1 spacecraft will operate for at least 3 months (possibly extended to 6) in a 100-km circular lunar orbit above the lunar surface before concluding its mission with a controlled crash landing. It will test the 1st Turkish spacecraft hybrid propulsion system and collect data about the Moon's water, magnetic activity and radiation.\r\n\r\nScientific payload are as follows:\r\n* Lunar Neutrals Telescope (LNT)\r\n* Lunar Narrow Field of View Radiometer (LNR)\r\n* Radiation Calorimeter\r\n* Radiation Dosimeter\r\n* High Resolution Camera\r\n* Wide Angle Video Camera\r\n* Vision Based Navigation System.",
+   "orbit": "LO",
+   "mission_agencies": [],
+   "pad": "Space Launch Complex 40",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-11-09T18:35:26Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/0d7dd3ae-0750-49be-a6ef-db40fd6ec5a5/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "71f2a458-f872-4f82-80d7-c07f9e0a1f97",
+   "slug": "falcon-9-block-5-sda-tranche-2-transport-layer-i",
+   "name": "Falcon 9 Block 5 | SDA Tranche 2 Transport Layer I",
+   "net": "2027-05-31T00:00:00Z",
+   "window_start": "2027-05-31T00:00:00Z",
+   "window_end": "2027-05-31T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "SDA Tranche 2 Transport Layer I",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Classified mission launched by the Space Development Agency (SDA) for Tranche 2 Transport Layer.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Space Development Agency"
+   ],
+   "pad": "Unknown Pad",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-02-24T17:09:53Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/71f2a458-f872-4f82-80d7-c07f9e0a1f97/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "9642cfef-4687-495a-af2e-2ac81fa1e12a",
+   "slug": "falcon-9-block-5-kompsat-7a",
+   "name": "Falcon 9 Block 5 | KOMPSAT-7A",
+   "net": "2027-06-30T00:00:00Z",
+   "window_start": "2027-06-30T00:00:00Z",
+   "window_end": "2027-06-30T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "KOMPSAT-7A",
+   "mission_type": "Earth Science",
+   "mission_description": "KOMPSAT-7 and 7A are the follow-up satellites of KOMPSAT-3A, whose mission is to provide high-resolution satellite images to satisfy South-Korea's governmental and institutional needs.",
+   "orbit": "SSO",
+   "mission_agencies": [
+    "Korea Aerospace Research Institute"
+   ],
+   "pad": "Unknown Pad",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-07-08T00:28:01Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/9642cfef-4687-495a-af2e-2ac81fa1e12a/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "f3763818-4d71-403d-a10d-aa549c859b5d",
+   "slug": "falcon-9-block-5-sda-tranche-2-transport-layer-j",
+   "name": "Falcon 9 Block 5 | SDA Tranche 2 Transport Layer J",
+   "net": "2027-06-30T00:00:00Z",
+   "window_start": "2027-06-30T00:00:00Z",
+   "window_end": "2027-06-30T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "SDA Tranche 2 Transport Layer J",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Classified mission launched by the Space Development Agency (SDA) for Tranche 2 Transport Layer.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Space Development Agency"
+   ],
+   "pad": "Unknown Pad",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-02-24T17:10:19Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/f3763818-4d71-403d-a10d-aa549c859b5d/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "7e8171b8-5c83-4cac-85a3-fe83f276034c",
+   "slug": "falcon-9-block-5-transporter-20-dedicated-sso-ride",
+   "name": "Falcon 9 Block 5 | Transporter 20 (Dedicated SSO Rideshare)",
+   "net": "2027-06-30T00:00:00Z",
+   "window_start": "2027-06-30T00:00:00Z",
+   "window_end": "2027-06-30T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Transporter 20 (Dedicated SSO Rideshare)",
+   "mission_type": "Dedicated Rideshare",
+   "mission_description": "Dedicated rideshare flight to a sun-synchronous orbit with dozens of small microsatellites and nanosatellites for commercial and government customers.",
+   "orbit": "SSO",
+   "mission_agencies": [
+    "SpaceX"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2026-09-30T06:41:20Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/7e8171b8-5c83-4cac-85a3-fe83f276034c/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "b97ec300-56b8-49b1-9a17-43b06bcae6f1",
+   "slug": "starship-spacex-hls-leo-demo",
+   "name": "Starship | SpaceX HLS LEO Demo",
+   "net": "2027-06-30T00:00:00Z",
+   "window_start": "2027-06-30T00:00:00Z",
+   "window_end": "2027-06-30T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Starship",
+   "mission": "SpaceX HLS LEO Demo",
+   "mission_type": "Human Exploration",
+   "mission_description": "The Starship HLS pathfinder spacecraft in support of NASA's Artemis III mission in Low Earth Orbit will be a Version 3 vehicle equipped with a docking mechanism, but with no crew cabin or environmental control systems on board. This Starship HLS will launch after the Artemis III Orion has launched into LEO aboard SLS, and has completed its demonstrations with Blue Origin's Blue Moon lander. Once docked, Orion and Starship will spend about a day connected for checkouts and testing.",
+   "orbit": "LEO",
+   "mission_agencies": [
+    "SpaceX"
+   ],
+   "pad": "Launch Complex 39A Starship Pad",
+   "location": "Kennedy Space Center, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-08-22T00:37:57Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/b97ec300-56b8-49b1-9a17-43b06bcae6f1/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "104004ff-a363-441a-8aa5-9b363080d05b",
+   "slug": "falcon-9-block-5-sda-tranche-2-tracking-layer-c",
+   "name": "Falcon 9 Block 5 | SDA Tranche 2 Tracking Layer C",
+   "net": "2027-06-30T00:00:00Z",
+   "window_start": "2027-06-30T00:00:00Z",
+   "window_end": "2027-06-30T00:00:00Z",
+   "precision": "Quarter 2",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "SDA Tranche 2 Tracking Layer C",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Classified mission launched by the Space Development Agency (SDA) for Tranche 2 Tracking Layer.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Space Development Agency"
+   ],
+   "pad": "Unknown Pad",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-01-11T10:39:33Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/104004ff-a363-441a-8aa5-9b363080d05b/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "870f6e2b-c440-48c2-9f5a-4b9b9fbc4dd7",
+   "slug": "falcon-9-block-5-sda-tranche-2-tracking-layer-d",
+   "name": "Falcon 9 Block 5 | SDA Tranche 2 Tracking Layer D",
+   "net": "2027-06-30T00:00:00Z",
+   "window_start": "2027-06-30T00:00:00Z",
+   "window_end": "2027-06-30T00:00:00Z",
+   "precision": "Quarter 2",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "SDA Tranche 2 Tracking Layer D",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Classified mission launched by the Space Development Agency (SDA) for Tranche 2 Tracking Layer.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Space Development Agency"
+   ],
+   "pad": "Unknown Pad",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-01-11T10:40:29Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/870f6e2b-c440-48c2-9f5a-4b9b9fbc4dd7/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "02e34864-4363-4056-b884-9d4a7a9cd5e8",
+   "slug": "falcon-9-block-5-trinity",
+   "name": "Falcon 9 Block 5 | Trinity",
+   "net": "2027-06-30T00:00:00Z",
+   "window_start": "2027-06-30T00:00:00Z",
+   "window_end": "2027-06-30T00:00:00Z",
+   "precision": "Quarter 2",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Trinity",
+   "mission_type": "Technology",
+   "mission_description": "Trinity is a three-spacecraft mission from US satellite manufacturer K2 Space, with each satellite deploying to a different orbital regime to prove out K2 Space’s multi-orbit satellite platform. 2 satellites will be dropped off in LEO, 1 remaining in LEO for a period before raising itself to MEO, while the other will immediately begin climbing to MEO and will aim to complete orbit raising within 90 days. The 3rd satellite will be launched directly into a geostationary transfer orbit.",
+   "orbit": "GTO",
+   "mission_agencies": [],
+   "pad": "Unknown Pad",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-09-11T11:50:40Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/02e34864-4363-4056-b884-9d4a7a9cd5e8/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "e30e5e42-5612-4352-a99c-3168b75160e0",
+   "slug": "falcon-9-block-5-dragon-crs-2-spx-36",
+   "name": "Falcon 9 Block 5 | Dragon CRS-2 SpX-36",
+   "net": "2027-06-30T00:00:00Z",
+   "window_start": "2027-06-30T00:00:00Z",
+   "window_end": "2027-06-30T00:00:00Z",
+   "precision": "Year Half 1",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Dragon CRS-2 SpX-36",
+   "mission_type": "Resupply",
+   "mission_description": "36th commercial resupply services mission to the International Space Station operated by SpaceX. The flight will be conducted under the second Commercial Resupply Services contract with NASA.\r\n\r\nCargo Dragon 2 brings supplies and payloads, including critical materials to directly support science and research investigations that occur onboard the orbiting laboratory.",
+   "orbit": "LEO",
+   "mission_agencies": [
+    "National Aeronautics and Space Administration"
+   ],
+   "pad": "Space Launch Complex 40",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-10-08T17:47:17Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/e30e5e42-5612-4352-a99c-3168b75160e0/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "c75c006e-43f7-4abd-9c48-2252c2284586",
+   "slug": "falcon-9-block-5-ussf-149",
+   "name": "Falcon 9 Block 5 | USSF-149",
+   "net": "2027-06-30T00:00:00Z",
+   "window_start": "2027-06-30T00:00:00Z",
+   "window_end": "2027-06-30T00:00:00Z",
+   "precision": "Fiscal Year",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "USSF-149",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Classified payload for the US Space Force.",
+   "orbit": "N/A",
+   "mission_agencies": [
+    "United States Space Force"
+   ],
+   "pad": "Unknown Pad",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2025-10-04T03:08:35Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/c75c006e-43f7-4abd-9c48-2252c2284586/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "11e5e716-ba29-4472-815b-0ebf4a126c6e",
+   "slug": "falcon-heavy-nrol-86",
+   "name": "Falcon Heavy | NROL-86",
+   "net": "2027-06-30T00:00:00Z",
+   "window_start": "2027-06-30T00:00:00Z",
+   "window_end": "2027-06-30T00:00:00Z",
+   "precision": "Fiscal Year",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon Heavy",
+   "mission": "NROL-86",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Classified payload for the US National Reconnaissance Office",
+   "orbit": "N/A",
+   "mission_agencies": [
+    "National Reconnaissance Office"
+   ],
+   "pad": "Launch Complex 39A",
+   "location": "Kennedy Space Center, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2025-10-04T17:45:36Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/11e5e716-ba29-4472-815b-0ebf4a126c6e/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "1c4ac109-3f35-42a0-9105-3205ae4a38d4",
+   "slug": "falcon-heavy-ussf-155",
+   "name": "Falcon Heavy | USSF-155",
+   "net": "2027-06-30T00:00:00Z",
+   "window_start": "2027-06-30T00:00:00Z",
+   "window_end": "2027-06-30T00:00:00Z",
+   "precision": "Fiscal Year",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon Heavy",
+   "mission": "USSF-155",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Classified payload for the US Space Force.",
+   "orbit": "N/A",
+   "mission_agencies": [
+    "United States Space Force"
+   ],
+   "pad": "Launch Complex 39A",
+   "location": "Kennedy Space Center, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2025-10-04T17:44:47Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/1c4ac109-3f35-42a0-9105-3205ae4a38d4/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "06648c69-704b-439b-bcf5-cb394809b3b0",
+   "slug": "falcon-heavy-wgs-12-ussf-206",
+   "name": "Falcon Heavy | WGS-12 (USSF-206)",
+   "net": "2027-06-30T00:00:00Z",
+   "window_start": "2027-06-30T00:00:00Z",
+   "window_end": "2027-06-30T00:00:00Z",
+   "precision": "Fiscal Year",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon Heavy",
+   "mission": "WGS-12 (USSF-206)",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Twelfth Wideband Global SATCOM (WGS) encrypted military communication satellite",
+   "orbit": "GTO",
+   "mission_agencies": [
+    "United States Space Force"
+   ],
+   "pad": "Launch Complex 39A",
+   "location": "Kennedy Space Center, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2025-10-04T17:46:23Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/06648c69-704b-439b-bcf5-cb394809b3b0/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "99875c7b-400c-40e2-b16c-bb9b2a02a0d8",
+   "slug": "falcon-9-block-5-haven-1-crew-1",
+   "name": "Falcon 9 Block 5 | Haven-1 Crew-1",
+   "net": "2027-07-31T00:00:00Z",
+   "window_start": "2027-07-31T00:00:00Z",
+   "window_end": "2027-07-31T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Haven-1 Crew-1",
+   "mission_type": "Human Exploration",
+   "mission_description": "First crewed mission of VAST Space's future commercial space station Haven-1. The crew of four will remain in orbit for 10 days.\r\n\r\nThe crew will include ESA/CNES astronaut Arnaud Prost, as well as potentially ESA/UKSA astronaut John McFall.",
+   "orbit": "LEO",
+   "mission_agencies": [],
+   "pad": "Space Launch Complex 40",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-09-09T22:22:18Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/99875c7b-400c-40e2-b16c-bb9b2a02a0d8/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "50a054f3-4e03-4158-af80-18f0b25ad644",
+   "slug": "falcon-9-block-5-cosi-compton-spectrometer-and-ima",
+   "name": "Falcon 9 Block 5 | COSI (Compton Spectrometer and Imager)",
+   "net": "2027-08-31T00:00:00Z",
+   "window_start": "2027-08-31T00:00:00Z",
+   "window_end": "2027-08-31T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "COSI (Compton Spectrometer and Imager)",
+   "mission_type": "Astrophysics",
+   "mission_description": "Wide-field gamma-ray telescope designed to study energetic phenomena in the Milky Way and beyond, including the creation and destruction of matter and antimatter and the final stages of the lives of stars. The mission is a collaboration between the University of California, Berkeley’s Space Sciences Laboratory, the University of California, San Diego, the Naval Research Laboratory, NASA’s Goddard Space Flight Center, and Northrop Grumman.",
+   "orbit": "LEO",
+   "mission_agencies": [
+    "National Aeronautics and Space Administration"
+   ],
+   "pad": "Space Launch Complex 40",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2024-07-02T20:27:11Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/50a054f3-4e03-4158-af80-18f0b25ad644/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "ce1317de-ec94-4479-9b28-38ebf11f13ae",
+   "slug": "falcon-9-block-5-telesat-lightspeed-1",
+   "name": "Falcon 9 Block 5 | Telesat Lightspeed 1",
+   "net": "2027-09-30T00:00:00Z",
+   "window_start": "2027-09-30T00:00:00Z",
+   "window_end": "2027-09-30T00:00:00Z",
+   "precision": "Quarter 3",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Telesat Lightspeed 1",
+   "mission_type": "Communications",
+   "mission_description": "First two satellites manufactured by MDA for Canadian satellite operator Telesat's Lightspeed constellation.",
+   "orbit": "LEO",
+   "mission_agencies": [
+    "Telesat"
+   ],
+   "pad": "Unknown Pad",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-10-29T21:54:01Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/ce1317de-ec94-4479-9b28-38ebf11f13ae/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "f3a1a032-5cca-4733-9ca8-04a5a1dba222",
+   "slug": "falcon-9-block-5-vast-pam-1-vast-iss-mission-1",
+   "name": "Falcon 9 Block 5 | Vast-PAM-1 (Vast ISS Mission 1)",
+   "net": "2027-09-30T00:00:00Z",
+   "window_start": "2027-09-30T00:00:00Z",
+   "window_end": "2027-09-30T00:00:00Z",
+   "precision": "Quarter 3",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Vast-PAM-1 (Vast ISS Mission 1)",
+   "mission_type": "Tourism",
+   "mission_description": "Vast’s first private crew rotation to the International Space Station aboard a SpaceX Crew Dragon spacecraft, and NASA's 6th Private Astronaut Mission to the ISS.\r\n\r\nThe crew includes ESA/CNES astronaut Thomas Pesquet, who will serve as Commander for the mission, Czech astronaut Aleš Svoboda, and Greek astronaut Adrianos Golemis. The mission will carry 4 astronauts to and from the International Space Station for up to 2 weeks.",
+   "orbit": "LEO",
+   "mission_agencies": [],
+   "pad": "Space Launch Complex 40",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-09-09T22:21:51Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/f3a1a032-5cca-4733-9ca8-04a5a1dba222/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "c07cac30-849b-4e24-91e2-c064e6db456e",
+   "slug": "falcon-9-block-5-arabsat-7a",
+   "name": "Falcon 9 Block 5 | Arabsat 7A",
+   "net": "2027-10-31T00:00:00Z",
+   "window_start": "2027-10-31T00:00:00Z",
+   "window_end": "2027-10-31T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Arabsat 7A",
+   "mission_type": "Communications",
+   "mission_description": "Geostationary communications satellite",
+   "orbit": "GTO",
+   "mission_agencies": [],
+   "pad": "Unknown Pad",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2025-09-19T14:14:28Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/c07cac30-849b-4e24-91e2-c064e6db456e/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "a831a433-f60c-4229-864c-b1b0429b1890",
+   "slug": "falcon-9-block-5-transporter-21-dedicated-sso-ride",
+   "name": "Falcon 9 Block 5 | Transporter 21 (Dedicated SSO Rideshare)",
+   "net": "2027-10-31T00:00:00Z",
+   "window_start": "2027-10-31T00:00:00Z",
+   "window_end": "2027-10-31T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Transporter 21 (Dedicated SSO Rideshare)",
+   "mission_type": "Dedicated Rideshare",
+   "mission_description": "Dedicated rideshare flight to a sun-synchronous orbit with dozens of small microsatellites and nanosatellites for commercial and government customers.",
+   "orbit": "SSO",
+   "mission_agencies": [
+    "SpaceX"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "webcast_live": false,
+   "last_updated": "2026-09-30T06:42:53Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/a831a433-f60c-4229-864c-b1b0429b1890/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "2b33643b-681b-4616-96a2-f1e986e03615",
+   "slug": "falcon-9-block-5-sicral-3b",
+   "name": "Falcon 9 Block 5 | SICRAL 3B",
+   "net": "2027-11-30T00:00:00Z",
+   "window_start": "2027-11-30T00:00:00Z",
+   "window_end": "2027-11-30T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "SICRAL 3B",
+   "mission_type": "Communications",
+   "mission_description": "SICRAL 3A and 3B are next generation communication satellites for the Italian Ministry of Defence, providing UHF and SHF communications services in replacement of SICRAL 2 and adding Ka-band capacities. One of the satellites will provide UHF and SHF band communications, while the other carries a Ka-band payload. These 2 geostationary satellites will provide confidential strategic and tactical communications, to support defense missions both in Italy and abroad, as well as supporting security, public rescue and civil protection services. The new SICRAL 3 system is designed to meet Italian defense communications and interoperability requirements.",
+   "orbit": "GTO",
+   "mission_agencies": [],
+   "pad": "Unknown Pad",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "webcast_live": false,
+   "last_updated": "2026-03-16T21:05:42Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/2b33643b-681b-4616-96a2-f1e986e03615/",
+   "queries": [
+    "spacex"
+   ]
+  }
+ ]
+}

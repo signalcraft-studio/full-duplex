@@ -1,0 +1,37 @@
+# TO ACTIVATE: move this file to .github/workflows/launches.yml when merging to main.
+# (The box token lacks GitHub's "workflow" scope, so it cannot push files under .github/workflows.)
+# Refresh the launch tracker a few times a day: fetch Launch Library 2, rebuild, commit if anything changed.
+# PREVIEW: added on the launch-tracker branch. GitHub only runs scheduled workflows from the default branch,
+# so the schedule starts once this is merged to main (after Sam approves). Until then it can be run by hand
+# from the Actions tab (workflow_dispatch) on this branch.
+name: Refresh launches
+on:
+  schedule:
+    - cron: '17 0,6,12,18 * * *'   # 4 runs a day = 20 API calls/day, far below the free 15/hour limit
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: refresh-launches
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # build.py rebuilds the tracker change log from git history
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pillow
+      - run: python3 scripts/fetch_launches.py --force
+      - run: python3 scripts/build.py
+      - name: Commit if changed
+        run: |
+          git config user.name "Full Duplex bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "Launches: refresh from Launch Library 2"
+          git push

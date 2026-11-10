@@ -1,0 +1,20 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Full Duplex//Launch tracker//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:0f867f0c-5422-4d44-93b8-d7faaae7019b@fullduplex
+DTSTAMP:20261110T112945Z
+DTSTART:20261113T224500Z
+DTEND:20261114T000000Z
+SUMMARY:Launch: Starlink Group 31-2 (Starship Flight 15) (Starship V3)
+DESCRIPTION:Starship V3 from Orbital Launch Pad 2\, SpaceX Starbase\, TX\,
+  USA. Starlink: These serve Starlink dishes\, not phones directly. More o
+ f them mainly adds broadband capacity\, including links some mobile netwo
+ rks use to connect remote masts. Launch times move: check https://signalc
+ raft-studio.github.io/full-duplex/launches/ before you watch.
+LOCATION:Orbital Launch Pad 2\, SpaceX Starbase\, TX\, USA
+URL:https://signalcraft-studio.github.io/full-duplex/launches/
+END:VEVENT
+END:VCALENDAR

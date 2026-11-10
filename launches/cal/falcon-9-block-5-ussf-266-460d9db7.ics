@@ -1,0 +1,19 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Full Duplex//Launch tracker//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:460d9db7-eaf6-4cd9-b095-cff433534c09@fullduplex
+DTSTAMP:20261110T112945Z
+DTSTART:20261117T165800Z
+DTEND:20261117T205800Z
+SUMMARY:Launch: USSF-266 (Falcon 9 Block 5)
+DESCRIPTION:Falcon 9 Block 5 from Space Launch Complex 4E\, Vandenberg SFB
+ \, CA\, USA. Other: Not a phone-satellite launch. Listed so you can see e
+ verything SpaceX and its rivals are flying. Launch times move: check http
+ s://signalcraft-studio.github.io/full-duplex/launches/ before you watch.
+LOCATION:Space Launch Complex 4E\, Vandenberg SFB\, CA\, USA
+URL:https://signalcraft-studio.github.io/full-duplex/launches/
+END:VEVENT
+END:VCALENDAR

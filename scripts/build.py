@@ -7,7 +7,8 @@ GitHub Pages serves the committed files from main; there is no CI step.
 
 Generates: every HTML page, articles/index.html, tracker.html, tracker/<country>/index.html,
 tracker/changes/index.html, search.html, 404.html, data/tracker.csv, data/tracker-changes.json,
-search-index.json, sitemap.xml, robots.txt, feed.xml.
+search-index.json, sitemap.xml, robots.txt, feed.xml, launches/index.html (+ launches/cal/*.ics)
+from data/launches.json (scripts/fetch_launches.py) and data/constellations.json.
 
 The tracker change log is rebuilt from the git history of data/tracker.json when git is
 available, and otherwise read back from data/tracker-changes.json.
@@ -84,7 +85,7 @@ def signal_block(root, surface, variant='full', heading_level=2, heading=None, i
             f'<a class=more href="{esc(SITE["archive_url"])}">Read past issues</a></p>{privacy}</div></section>')
 
 # ---------------------------------------------------------------- chrome
-NAV = [('index.html', 'Home'), ('articles/index.html', 'Articles'), ('tracker.html', 'Tracker'), ('search.html', 'Search'), ('about.html', 'About'), ('sponsor.html', 'Sponsor')]
+NAV = [('index.html', 'Home'), ('articles/index.html', 'Articles'), ('tracker.html', 'Tracker'), ('launches/index.html', 'Launches'), ('search.html', 'Search'), ('about.html', 'About'), ('sponsor.html', 'Sponsor')]
 
 LOGO_MARK = ('<svg class=mark viewBox="254 250 516 516" width="44" height="44" aria-hidden="true" focusable="false">'
              '<g fill="none" stroke-width="32" stroke-linecap="round"><path d="M279 505A233 233 0 0 1 644.3 313.2" stroke="#00cfff"/><path d="M744.9 511.9A233 233 0 0 1 383.7 699.5" stroke="#fff"/></g><circle cx="423" cy="432" r="10" fill="#00cfff"/><path transform="translate(426 517.5) rotate(-15)" fill="#00cfff" fill-rule="evenodd" d="M-23.5 -57.5h47a5 5 0 0 1 5 5v105a5 5 0 0 1 -5 5h-47a5 5 0 0 1 -5 -5v-105a5 5 0 0 1 5 -5zM-8.5 -48h17.0a5.5 5.5 0 0 1 5.5 5.5v0.0a5.5 5.5 0 0 1 -5.5 5.5h-17.0a5.5 5.5 0 0 1 -5.5 -5.5v-0.0a5.5 5.5 0 0 1 5.5 -5.5z"/><g fill="#fff"><path d="M583 488h21l33 32-22 22-32-32z"/><path d="M620 492l20-21 15 14-21 22z"/><path d="M567 545l21-21 14 14-20 20z"/><circle cx="635" cy="541" r="8"/></g>' + '</svg>')  # logo A, approved by Sam 9 Nov 2026 (same as assets/logo.svg)
@@ -101,7 +102,7 @@ def footer(root, sticky=True):
     return (f'<footer class=site><div class=wrap><div><a class=logo href="{root}index.html">{LOGO_MARK}Full<span>Duplex</span></a><p>Independent analysis of satellite-to-phone and mobile networks. Made in the UK.</p>'
             f'<p class=copy>© 2026 Full Duplex.</p></div>'
             f'<nav aria-label="Footer"><a href="{esc(sub_url("footer"))}">Subscribe to Signal</a><a href="https://x.com/{X}" target=_blank rel="noopener me">Follow @{X} on X</a>'
-            f'<a href="{root}articles/index.html">Articles</a><a href="{root}tracker.html">Tracker</a><a href="{root}tracker/changes/">Tracker changes</a>'
+            f'<a href="{root}articles/index.html">Articles</a><a href="{root}tracker.html">Tracker</a><a href="{root}tracker/changes/">Tracker changes</a><a href="{root}launches/">Launches</a>'
             f'<a href="{root}play/constellation.html">Constellation</a><a href="{root}search.html">Search</a><a href="{root}feed.xml">RSS</a>'
             f'<a href="{root}about.html">About</a><a href="{root}sponsor.html">Sponsor</a><a href="{root}privacy.html">Privacy</a></nav></div></footer>{bar}')
 
@@ -340,6 +341,7 @@ tbody = tbody.replace('<h1>Direct-to-cell around the world</h1>', '<header class
 tbody = tbody.replace('<div class=tablewrap>', f'<section aria-labelledby=tbl-h><h2 id=tbl-h>Every tracked service</h2>{controls}{tools}<div class=tablewrap>', 1)
 tbody = tbody.replace('</div><p class=note>Spotted a change?', '</div></section><p class=note>Spotted a change?', 1)
 tbody += (f'<section aria-labelledby=bc-h><h2 id=bc-h>Browse by country</h2><div class=cclist>{country_links}</div></section>'
+          f'<p class=note>Next satellites going up: see the <a href="launches/">launch tracker</a> for upcoming SpaceX, AST SpaceMobile and other direct-to-cell launches, and how many phone-capable satellites each operator has in orbit.</p>'
           f'<section aria-labelledby=ch-h><h2 id=ch-h>What changed</h2>{change_list(CHANGES, "", 8)}<p><a href="tracker/changes/">Full change log</a></p></section>'
           + signal_block('', 'tracker', heading='Get tracker updates in Signal', intro='Every week, Signal covers what changed in the tracker: new launches, trials and status changes, with the sources.'))
 ld = [{'@context': 'https://schema.org', '@type': 'Dataset', 'name': 'Full Duplex direct-to-cell tracker', 'description': meta['description'],
@@ -384,6 +386,194 @@ page(og=('Tracker', 'Tracker change log'), path='tracker/changes/index.html', ti
      body=body, root='../../', current='tracker.html', lastmod=CHANGES[0]['date'] if CHANGES else None,
      search_text=' '.join(it['text'] for e in CHANGES for it in e['items']))
 
+# ---------------------------------------------------------------- launches (data/launches.json from scripts/fetch_launches.py)
+from datetime import datetime, timezone, timedelta
+LDATA = json.loads((ROOT / 'data/launches.json').read_text()) if (ROOT / 'data/launches.json').exists() else {'fetched_at': None, 'launches': []}
+CONST = json.loads((ROOT / 'data/constellations.json').read_text())
+LTAGS = json.loads((ROOT / 'data/launch-tags.json').read_text()).get('overrides', {}) if (ROOT / 'data/launch-tags.json').exists() else {}
+def iso_dt(s): return datetime.fromisoformat(s.replace('Z', '+00:00'))
+BUILD_NOW = datetime.now(timezone.utc)
+TAG = {  # label, css class, why it matters for your phone (plain English, no hype)
+    'starlink-dtc': ('Starlink Direct to Cell', 'dtc', 'Adds satellites that talk straight to ordinary phones through partner networks such as T-Mobile and One NZ. More of them means more frequent passes overhead and fewer gaps for texts and app data where there’s no signal.'),
+    'starlink': ('Starlink', 'sl', 'These serve Starlink dishes, not phones directly. More of them mainly adds broadband capacity, including links some mobile networks use to connect remote masts.'),
+    'ast': ('AST SpaceMobile', 'ast', 'Each BlueBird adds coverage for AST’s partner networks, such as AT&T, Verizon and Vodafone. AST says it needs about 45 in orbit before service moves beyond intermittent coverage.'),
+    'amazon-leo': ('Amazon Leo · broadband', 'leo', 'Amazon Leo is broadband for dishes, not phones. It matters to telcos as a rival to Starlink for backhaul and business links, not as a phone-to-satellite service.'),
+    'd2d-other': ('Other direct-to-device', 'd2d', 'Another phone-to-satellite network. Whether your phone can use it depends on your handset and your mobile operator’s deals.'),
+    'other': ('Other', 'oth', 'Not a phone-satellite launch. Listed so you can see everything SpaceX and its rivals are flying.'),
+}
+WHO = [('all', 'All'), ('phone', 'Phone satellites'), ('spacex', 'SpaceX'), ('ast', 'AST SpaceMobile'), ('amazon-leo', 'Amazon Leo'), ('lynk', 'Lynk / Elveo'), ('others', 'Others')]
+EMPTY = {'lynk': 'No Lynk or Elveo launches are listed right now. Elveo says it will start launching its new satellites in Q4 2027.'}
+def ltext(l): return ' '.join(str(l.get(k) or '') for k in ('name', 'mission', 'mission_description'))
+def classify(l):
+    if l['id'] in LTAGS: return LTAGS[l['id']]['tag']
+    t = ltext(l)
+    if re.search(r'BlueBird|AST SpaceMobile', t): return 'ast'
+    if re.search(r'Amazon Leo|Kuiper', t): return 'amazon-leo'
+    if re.search(r'\bLynk\b|Elveo|Omnispace|Globalstar', t): return 'd2d-other'
+    if re.search(r'Starlink', l['name'] + ' ' + (l.get('mission') or '')):
+        # Direct to Cell only when the source text says so (or a sourced override in data/launch-tags.json)
+        return 'starlink-dtc' if re.search(r'direct[- ]to[- ]cell|\bDTC\b|direct[- ]to[- ]cell', t, re.I) else 'starlink'
+    return 'other'
+def who(l, tag):
+    w = []
+    if l.get('provider') == 'SpaceX' or tag in ('starlink', 'starlink-dtc'): w.append('spacex')
+    if tag == 'ast': w.append('ast')
+    if tag == 'amazon-leo': w.append('amazon-leo')
+    if re.search(r'\bLynk\b|Elveo|Omnispace', ltext(l)): w.append('lynk')
+    if tag in ('starlink-dtc', 'ast', 'd2d-other'): w.append('phone')
+    if (tag == 'd2d-other' and 'lynk' not in w) or (tag == 'other' and l.get('provider') != 'SpaceX'): w.append('others')
+    return w
+PRECISE = ('Second', 'Minute', 'Hour')
+def when_text(l):
+    p = l['precision']; d = iso_dt(l['net'])
+    if p in ('Second', 'Minute'): return d.strftime('%a %-d %b %Y, %H:%M UTC')
+    if p == 'Hour': return d.strftime('%a %-d %b %Y, about %H:00 UTC')
+    if p == 'Day': return d.strftime('%a %-d %b %Y') + ' · time not set'
+    if p == 'Month': return d.strftime('%B %Y') + ' · date not set'
+    if p == 'Week': return 'Week of ' + d.strftime('%-d %b %Y')
+    m = re.match(r'Quarter (\d)', p)
+    if m: return f'Q{m.group(1)} {d.year} · date not set'
+    m = re.match(r'Half (\d)', p)
+    if m: return f'H{m.group(1)} {d.year} · date not set'
+    if p.startswith('Year'): return f'{d.year} · date not set'
+    return 'No earlier than ' + d.strftime('%-d %b %Y')
+def ics_name(l): return f"{(l.get('slug') or slugify(l['name']))[:70]}-{l['id'][:8]}.ics"
+def ics(l, tag):
+    d = iso_dt(l['net']); stamp = (LDATA.get('fetched_at') or BUILD_NOW.strftime('%Y-%m-%dT%H:%M:%SZ')).replace('-', '').replace(':', '')
+    why = TAG[tag][2]
+    lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Full Duplex//Launch tracker//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', 'BEGIN:VEVENT',
+             f"UID:{l['id']}@fullduplex", f'DTSTAMP:{stamp}']
+    if l['precision'] in PRECISE:
+        end = iso_dt(l['window_end']) if l.get('window_end') and iso_dt(l['window_end']) > d else d + timedelta(hours=1)
+        lines += [f"DTSTART:{d.strftime('%Y%m%dT%H%M%SZ')}", f"DTEND:{end.strftime('%Y%m%dT%H%M%SZ')}"]
+    else:
+        lines += [f"DTSTART;VALUE=DATE:{d.strftime('%Y%m%d')}", f"DTEND;VALUE=DATE:{(d + timedelta(days=1)).strftime('%Y%m%d')}"]
+    def ical_esc(s): return s.replace('\\', '\\\\').replace(';', '\\;').replace(',', '\\,').replace('\n', '\\n')
+    desc = f"{l.get('rocket')} from {l.get('pad')}, {l.get('location')}. {TAG[tag][0]}: {why} Launch times move: check {BASE}launches/ before you watch."
+    lines += ['SUMMARY:' + ical_esc(f"Launch: {l.get('mission') or l['name']} ({l.get('rocket')})"), 'DESCRIPTION:' + ical_esc(desc),
+              'LOCATION:' + ical_esc(f"{l.get('pad')}, {l.get('location')}"), f'URL:{BASE}launches/', 'END:VEVENT', 'END:VCALENDAR']
+    out = []
+    for ln in lines:  # fold at 75 octets
+        b = ln.encode()
+        while len(b) > 74:
+            cut = 74
+            while (b[cut] & 0xC0) == 0x80: cut -= 1
+            out.append(b[:cut].decode()); b = b' ' + b[cut:]
+        out.append(b.decode())
+    return '\r\n'.join(out) + '\r\n'
+
+# keep launches that haven't happened yet at build time (allow 3 h for a launch window in progress)
+UPCOMING = []
+for l in LDATA['launches']:
+    if iso_dt(l['net']) < BUILD_NOW - timedelta(hours=3) and l['precision'] in PRECISE + ('Day',): continue
+    tag = classify(l); UPCOMING.append(dict(l, tag=tag, who=who(l, tag)))
+CAL = ROOT / 'launches' / 'cal'; CAL.mkdir(parents=True, exist_ok=True)
+for f in CAL.glob('*.ics'): f.unlink()
+for l in UPCOMING:
+    if l['precision'] in PRECISE + ('Day',): (CAL / ics_name(l)).write_bytes(ics(l, l['tag']).encode())
+def tag_pill(tag): return f'<span class="ltag l-{TAG[tag][1]}">{TAG[tag][0]}</span>'
+def local_time(l):
+    d = iso_dt(l['net'])
+    if l['precision'] in PRECISE: return f'<time datetime="{l["net"]}" data-local>{esc(when_text(l))}</time>'
+    return f'<time datetime="{d.date().isoformat()}">{esc(when_text(l))}</time>'
+def cal_btn(l, root):
+    if l['precision'] not in PRECISE + ('Day',): return ''
+    return f'<a class="btn ghost sm" href="{root}launches/cal/{ics_name(l)}" download>Add to calendar<span class=sr> ({esc(l.get("mission") or l["name"])})</span></a>'
+def launch_item(l, root):
+    cd = f'<p class=lcd data-countdown="{l["net"]}" aria-hidden=true></p>' if l['precision'] in PRECISE else ''
+    status = l.get('status') or ''
+    st = f'<span class="lst{" go" if (l.get("status_abbrev") == "Go") else ""}">{esc(status)}</span>' if status else ''
+    return (f'<li class="launch t-{TAG[l["tag"]][1]}" data-who="{" ".join(l["who"])}"><div class=l-when>{local_time(l)}{cd}</div>'
+            f'<div class=l-body><div class=l-top>{tag_pill(l["tag"])}{st}</div><h3>{esc(l.get("mission") or l["name"])}</h3>'
+            f'<p class=l-meta>{esc(l.get("rocket") or "")} · {esc(l.get("provider") or "")} · {esc(l.get("location") or "")}</p>'
+            f'<p class=l-why><strong>Why it matters for your phone:</strong> {esc(TAG[l["tag"]][2])}</p>'
+            f'<div class=l-act>{cal_btn(l, root)}</div></div></li>')
+def human_dt(iso):
+    d = iso_dt(iso); return d.strftime('%-d %b %Y, %H:%M UTC')
+def next_launches(n=6):
+    return [l for l in UPCOMING if l['precision'] in PRECISE and iso_dt(l['net']) > BUILD_NOW - timedelta(hours=3)][:n]
+def window_text(l):
+    if not (l.get('window_start') and l.get('window_end')): return ''
+    a, b = iso_dt(l['window_start']), iso_dt(l['window_end'])
+    if a == b: return 'Instantaneous window (one exact time)'
+    return f"Window {a.strftime('%H:%M')}–{b.strftime('%H:%M')} UTC" + (' (ends next day)' if b.date() > a.date() else '')
+def next_card(root=''):
+    q = next_launches()
+    if not q: return ''
+    l = q[0]
+    queue = json.dumps([{'n': x['net'], 'm': x.get('mission') or x['name'], 'r': x.get('rocket'), 'p': x.get('location'), 'w': window_text(x), 't': TAG[x['tag']][0], 'c': TAG[x['tag']][1]} for x in q], ensure_ascii=False, separators=(',', ':'))
+    ph = next((x for x in UPCOMING if x['tag'] in ('starlink-dtc', 'ast', 'd2d-other')), None)
+    phone = (f'<p class=nl-phone>Next phone-satellite launch: <strong>{esc(ph.get("mission") or ph["name"])}</strong> · {esc(when_text(ph))}</p>') if ph else ''
+    return (f'<section class=nextlaunch aria-labelledby=nl-h data-queue="{esc(queue)}"><div class=nl-main><p class=kicker>Next launch <span class=nl-tag>{tag_pill(l["tag"])}</span></p>'
+            f'<h2 id=nl-h class=nl-title>{esc(l.get("mission") or l["name"])}</h2>'
+            f'<p class=nl-meta><span class=nl-rocket>{esc(l.get("rocket") or "")}</span> · <span class=nl-pad>{esc(l.get("location") or "")}</span></p>'
+            f'<p class=nl-when>{local_time(l)}</p><p class=nl-window>{esc(window_text(l))}</p></div>'
+            f'<div class=nl-side><p class=nl-cd data-countdown="{l["net"]}" role=timer aria-live=off>T− <span>--d --h --m --s</span></p>'
+            f'<p class=nl-links><a class=btn href="{root}launches/">All launches</a>{cal_btn(l, root)}</p></div>{phone}</section>')
+def count_rows(items, root):
+    top = max([i['count'] for i in items if i['count']] or [1])
+    out = []
+    for i in items:
+        n = i['count']
+        num = f'{n:,}' if n is not None else esc(i.get('count_display') or 'Not disclosed')
+        bar = (f'<span class=cbar aria-hidden=true><i style="width:{max(1.2, 100 * n / top):.1f}%"></i></span>') if n else '<span class="cbar none" aria-hidden=true></span>'
+        srcs = [i['source']] + i.get('extra_sources', [])
+        src = ' · '.join(f'<a href="{esc(s["url"])}">{esc(s["label"])}</a>' for s in srcs)
+        plan = f'<p class=cplan><strong>Plan:</strong> {esc(i["planned"]["text"])}. <a href="{esc(i["planned"]["source"]["url"])}">Source</a></p>' if i.get('planned') else ''
+        out.append(f'<li class="crow f-{i["filter"]}"><div class=chead><div><h3>{esc(i["network"])}</h3><p class=cop>{esc(i["operator"])}</p></div>'
+                   f'<p class=cnum><b{" class=nd" if n is None else ""}>{num}</b><span>{esc(i["count_label"])}</span></p></div>{bar}'
+                   f'<p class=cnote>{esc(i["note"])}</p>{plan}<p class=csrc>As of <time datetime="{i["as_of"]}">{human(i["as_of"])}</time> · Source: {src}</p></li>')
+    return '<ul class=counts>' + ''.join(out) + '</ul>'
+
+def glance(root):
+    items = [i for i in CONST['direct_to_device'] if i['count'] is not None]
+    li = ''.join(f'<li class="g-{i["filter"]}"><b>{i["count"]:,}</b><span>{esc(i["short"])}</span></li>' for i in items)
+    asof = max(i['as_of'] for i in items)
+    return (f'<div class="stats glance"><p class=kicker>Phone-capable satellites in orbit</p><ul aria-label="Phone-capable satellites in orbit by network">{li}</ul>'
+            f'<p class=checked>As of {human(asof)}, with sources. <a href="#cnt-h">Compare them, plus broadband-only networks</a>.</p></div>')
+def launches_page():
+    root = '../'
+    fetched = LDATA.get('fetched_at')
+    chips = ''.join(f'<button type=button class=chip data-who={k} aria-pressed={"true" if k == "all" else "false"}>{t}</button>' for k, t in WHO)
+    FIRST = 20
+    items = ''.join(launch_item(l, root) for l in UPCOMING[:FIRST])
+    rest = UPCOMING[FIRST:]
+    more = (f'<details class=lmore id=launch-more><summary>Show {len(rest)} more launches</summary><ol class=launches start={FIRST + 1}>'
+            + ''.join(launch_item(l, root) for l in rest) + '</ol></details>') if rest else ''
+    n_phone = sum(1 for l in UPCOMING if 'phone' in l['who'])
+    empty = ''.join(f' data-empty-{k}="{esc(v)}"' for k, v in EMPTY.items())
+    upd = (f'Launch data from <a href="https://thespacedevs.com/llapi">The Space Devs Launch Library 2</a>, refreshed <time datetime="{fetched}">{human_dt(fetched)}</time>.' if fetched else 'Launch data from The Space Devs Launch Library 2.')
+    body = (f'<header class=page-head><p class=kicker>Launches</p><h1>Launch tracker</h1>'
+            f'<p class=lede>What SpaceX and its rivals are launching next, and what each launch means for the phone in your pocket.</p></header>'
+            + next_card(root) + glance(root) +
+            f'<section aria-labelledby=up-h><h2 id=up-h>Upcoming launches</h2>'
+            f'<p class=l-intro>{len(UPCOMING)} upcoming launches from SpaceX, AST SpaceMobile, Amazon Leo and other satellite-to-phone players, {n_phone} of them carrying phone-capable satellites. Each one is tagged by what it means for mobile.</p>'
+            f'<div class=filters role=search aria-label="Filter launches"><div class=f-row><div class=chips role=group aria-label="Show launches for">{chips}</div>'
+            f'<p id=l-count class=t-count role=status aria-live=polite>{len(UPCOMING)} launches</p></div></div>'
+            f'<div id=launch-list><ol class=launches>{items}</ol>{more}</div><p id=l-empty class=l-empty hidden{empty} data-empty="No upcoming launches match this filter right now.">No upcoming launches match this filter right now.</p>'
+            f'<p class=l-credit>{upd} Times are shown in UTC, or your local time where your browser allows. Launch dates slip often, so check again on the day. We tag a Starlink launch as Direct to Cell only when the launch data or a reliable source says it carries direct-to-cell satellites.</p></section>'
+            f'<section aria-labelledby=cnt-h class=countsec><h2 id=cnt-h>Phone satellites in orbit: who has how many</h2>'
+            f'<p class=l-intro>Satellites that can connect to ordinary phones, by operator. Every number has a source and a date. If a company doesn’t publish a figure and we can’t find a reliable independent one, we say so rather than guess.</p>'
+            + count_rows(CONST['direct_to_device'], root) +
+            f'<h3 class=bb-h>Broadband-only constellations (not phone-capable)</h3><p class=l-intro>For scale: these networks serve dishes and terminals, not phones directly.</p>'
+            + count_rows(CONST['broadband_only'], root) +
+            f'<p class=l-credit>Counts last checked {human(CONST["last_checked"])}. Satellite totals change with every launch and re-entry. Data: <a href="{root}data/constellations.json">constellations.json</a> · <a href="{root}data/launches.json">launches.json</a></p></section>'
+            f'<section class="card tlink" aria-labelledby=tl-h><p class=kicker>From the tracker</p><h2 id=tl-h><a href="{root}tracker.html">Where these satellites already reach phones</a></h2>'
+            f'<p>{C["live"]} live direct-to-cell services in {NLIVE_C} countries, plus {C["trial"]} trials and {C["announced"]} announced. See who’s live, country by country, with sources.</p>'
+            f'<p class=row-cta><a class="btn ghost" href="{root}tracker.html">Open the tracker</a><a class="btn ghost" href="{root}articles/why-starship-is-a-telco-story.html">Why Starship is a telco story</a></p></section>'
+            + signal_block(root, 'launches', heading='Get launch alerts in Signal', intro='Signal is our free weekly direct-to-cell briefing. Subscribe for the launches that matter for your phone and what changed in the tracker, in one email a week.'))
+    ld = [crumbs([('Home', ''), ('Launches', 'launches/')]),
+          {'@context': 'https://schema.org', '@type': 'Dataset', 'name': 'Full Duplex: phone-capable satellites in orbit by operator', 'description': 'Direct-to-device satellite counts by operator, each with a source and an as-of date, kept separate from broadband-only constellations.',
+           'url': BASE + 'launches/', 'creator': PUBLISHER, 'isAccessibleForFree': True, 'dateModified': CONST['last_checked'],
+           'distribution': [{'@type': 'DataDownload', 'encodingFormat': 'application/json', 'contentUrl': BASE + 'data/constellations.json'}]}]
+    page(og=('Launches', 'Launch tracker: what’s going up, and what it means for your phone'), path='launches/index.html', title='Launch tracker',
+         full_title='Launch tracker: SpaceX, AST SpaceMobile and phone-satellite launches | Full Duplex',
+         description='Upcoming SpaceX, AST SpaceMobile, Amazon Leo and direct-to-cell launches, tagged by what they mean for your phone, plus a sourced count of phone-capable satellites in orbit.',
+         body=body, root=root, current='launches/index.html', jsonld=ld, cls='is-launches', lastmod=(fetched or BUILD_NOW.isoformat())[:10],
+         scripts=f'<script defer src="{root}assets/launches.js"></script>',
+         search_text='Launch tracker. ' + ' '.join(f"{l.get('mission')} {l.get('rocket')} {TAG[l['tag']][0]}." for l in UPCOMING) + ' ' + ' '.join(f"{i['network']} {i['operator']} {i['note']}" for i in CONST['direct_to_device'] + CONST['broadband_only']))
+launches_page()
+
 # ---------------------------------------------------------------- search + 404
 body = ('<header class=page-head><p class=kicker>Search</p><h1>Search Full Duplex</h1></header>'
         '<form class=searchbox role=search action="search.html" method=get><label for=q class=sr>Search articles, countries and operators</label>'
@@ -407,6 +597,7 @@ home = (f'<section class=hero><div class=hero-art aria-hidden=true><img src="ass
         f'<figcaption><span class=k-live>Live</span><span class=k-trial>Trial</span><span class=k-ann>Announced</span> <a href="tracker.html">Open the map</a></figcaption></figure>'
         f'</section>'
         + stats_strip()
+        + next_card('')
         + f'<section aria-labelledby=latest class=front><h2 id=latest class=sec>Latest analysis</h2><div class=front-grid>{art_card(feat, "", 3, "card feature")}'
           f'<div class=grid3>{"".join(art_card(a) for a in rest[:3])}</div></div></section>'
         + signal_block('', 'home')
@@ -422,7 +613,7 @@ ld = [{'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'Full Duple
        'potentialAction': {'@type': 'SearchAction', 'target': BASE + 'search.html?q={q}', 'query-input': 'required name=q'}}]
 page(og=('Full Duplex', 'Your phone is about to talk to space.'), path='index.html', title='Satellite-to-phone and the future of mobile', full_title='Satellite-to-phone and the future of mobile | Full Duplex',
      description=SITE['home_description'], body=home, current='index.html', jsonld=ld, cls='is-home',
-     scripts='<script defer src="assets/globe.js"></script>', lastmod=max(a.get('updated', a['published']) for a in arts), search=False)
+     scripts='<script defer src="assets/globe.js"></script><script defer src="assets/launches.js"></script>', lastmod=max(a.get('updated', a['published']) for a in arts), search=False)
 
 # ---------------------------------------------------------------- feeds, sitemap, search index
 sm = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']

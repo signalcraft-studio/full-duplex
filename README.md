@@ -11,6 +11,13 @@ Live site: https://signalcraft-studio.github.io/full-duplex/ (GitHub Pages, serv
 - New country in the tracker? Add its region to `regions` in `src/site.json` (the build warns if one is missing).
 - Fonts (Inter Tight, Newsreader, JetBrains Mono; SIL OFL, see `assets/fonts/OFL.txt`) are embedded in `assets/fonts.css` and load without blocking the page.
 
+## Launch tracker (`launches/`)
+- `python3 scripts/fetch_launches.py` pulls upcoming launches from The Space Devs Launch Library 2 (free API, 15 requests/hour) into `data/launches.json`. It makes 5 requests, skips the fetch if the cache is under 2 hours old (use `--force` to override), and keeps the cached file if the API fails. Then run `python3 scripts/build.py`.
+- `ci/launches.yml` (move to `.github/workflows/` to activate) does fetch + build + commit four times a day once it is on `main` (scheduled workflows only run from the default branch).
+- Each launch is tagged by telco relevance in `scripts/build.py` (`classify`). A Starlink launch is tagged Direct to Cell only if the launch data says so; to tag one by hand, add its Launch Library id to `data/launch-tags.json` with a source.
+- Satellite counts for the comparison panel live in `data/constellations.json`. Every number needs a source URL and an `as_of` date; use `null` (shown as "Not disclosed") rather than an estimate. Phone-capable and broadband-only networks are kept in separate lists.
+- Calendar files are generated in `launches/cal/` for launches with a set day or time.
+
 ## Images
 All artwork below was approved by Sam on 9 Nov 2026. New artwork needs a preview approved before it goes on the site.
 
