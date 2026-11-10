@@ -1,5 +1,5 @@
 {
- "last_checked": "9 Nov 2026",
+ "last_checked": "10 Nov 2026",
  "note": "Single source of truth for tracker.html (table + map). Edit here, then run: python3 scripts/build_tracker.py. iso_n3 = ISO 3166-1 numeric code for the map; null = multi-country/non-country row, listed under the map.",
  "rows": [
   {
@@ -27,7 +27,7 @@
    "operator": "AT&T",
    "satellite": "AST SpaceMobile",
    "status": "trial",
-   "services": "First handoff between a ground-based cellular network and a direct-to-device satellite network, 21 Oct 2026 near Granite Falls, Washington (Ericsson and Nokia kit); builds on earlier voice, text and video calls; moving towards beta, no commercial launch date",
+   "services": "First handoff between a ground-based cellular network and a direct-to-device satellite network, 21 Oct 2026 near Granite Falls, Washington (Ericsson and Nokia kit); builds on earlier voice, text and video calls; AST (9 Nov 2026) targets initial, intermittent nationwide US coverage before end-2026, with the first step a roll-out to strategic partners; moving towards beta, no commercial launch date",
    "sources": [
     {
      "label": "Source",
@@ -36,9 +36,13 @@
     {
      "label": "Update",
      "url": "https://www.satellitetoday.com/connectivity/2026/11/03/att-and-ast-spacemobile-demonstrate-handoff-between-cellular-d2d-networks/"
+    },
+    {
+     "label": "Q3",
+     "url": "https://www.sec.gov/Archives/edgar/data/1780312/000119312526453758/asts-ex99_1.htm"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "10 Nov 2026"
   },
   {
    "country": "Canada",
@@ -65,7 +69,7 @@
    "operator": "Telus",
    "satellite": "AST SpaceMobile",
    "status": "trial",
-   "services": "First network integration test completed Oct 2026; targeting broadband data, voice and text; Telus expects service for customers within the next year; AST (20 Oct 2026) targets initial, intermittent Canada coverage before end-2026",
+   "services": "First network integration test completed Oct 2026; targeting broadband data, voice and text; Telus expects service for customers within the next year; AST (9 Nov 2026) targets initial, intermittent Canada coverage before end-2026, with the first step a roll-out to strategic partners",
    "sources": [
     {
      "label": "Source",
@@ -74,9 +78,13 @@
     {
      "label": "Update",
      "url": "https://www.businesswire.com/news/home/20261020527793/en/AST-SpaceMobile-Advances-Service-Readiness-Ahead-of-Initial-Space-Based-Cellular-Broadband-Coverage-in-Key-Global-Markets"
+    },
+    {
+     "label": "Q3",
+     "url": "https://www.sec.gov/Archives/edgar/data/1780312/000119312526453758/asts-ex99_1.htm"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "10 Nov 2026"
   },
   {
    "country": "United Kingdom",
@@ -107,7 +115,7 @@
    "operator": "VodafoneThree",
    "satellite": "AST SpaceMobile (via Satellite Connect Europe)",
    "status": "trial",
-   "services": "AST (20 Oct 2026) targets initial, intermittent UK coverage before end-2026; Vodafone's earlier guidance was beta testing in early 2027, once AST has about 45 satellites in orbit; targeting data, voice, SMS",
+   "services": "AST (9 Nov 2026) targets initial, intermittent UK coverage before end-2026, with the first step a roll-out to strategic partners; Vodafone's earlier guidance was beta testing in early 2027, once AST has about 45 satellites in orbit; targeting data, voice, SMS",
    "sources": [
     {
      "label": "Source",
@@ -116,9 +124,13 @@
     {
      "label": "Update",
      "url": "https://www.businesswire.com/news/home/20261020527793/en/AST-SpaceMobile-Advances-Service-Readiness-Ahead-of-Initial-Space-Based-Cellular-Broadband-Coverage-in-Key-Global-Markets"
+    },
+    {
+     "label": "Q3",
+     "url": "https://www.sec.gov/Archives/edgar/data/1780312/000119312526453758/asts-ex99_1.htm"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "10 Nov 2026"
   },
   {
    "country": "New Zealand",
@@ -217,7 +229,7 @@
    "operator": "Rakuten Mobile",
    "satellite": "AST SpaceMobile",
    "status": "trial",
-   "services": "First broadband video call on unmodified phones (23 Apr 2025, experimental licence); Rakuten Saikyo Satellite Service (700 MHz) to begin a free test in the commercial environment before end-2026, open to all users but only at limited times while about 13 satellites are in orbit. Separately, the Rakuten AST joint venture (agreed 6 Nov 2026, up to ¥148bn from MIC's J-LEO) targets a mid-band domestic service by end-March 2029",
+   "services": "First broadband video call on unmodified phones (23 Apr 2025, experimental licence); Rakuten Saikyo Satellite Service (700 MHz) to begin a free test in the commercial environment before end-2026, open to all users but only at limited times while AST has 12 BlueBirds unfolded and in operation (Rakuten's 9 Nov note said about 13 satellites in orbit). AST (9 Nov 2026) also targets initial, intermittent Japan coverage before end-2026, with the first step a roll-out to strategic partners. Separately, the Rakuten AST joint venture (agreed 6 Nov 2026, up to ¥148bn from MIC's J-LEO; AST describes this as about $1.0bn in non-dilutive funding) targets a mid-band domestic service by end-March 2029",
    "sources": [
     {
      "label": "Source",
@@ -234,9 +246,17 @@
     {
      "label": "Trade",
      "url": "https://www.lightreading.com/satellite/rakuten-and-ast-form-d2d-joint-venture-in-japan"
+    },
+    {
+     "label": "Q3",
+     "url": "https://www.sec.gov/Archives/edgar/data/1780312/000119312526453758/asts-ex99_1.htm"
+    },
+    {
+     "label": "Q3 slides",
+     "url": "https://www.sec.gov/Archives/edgar/data/1780312/000119312526453758/asts-ex99_2.htm"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "10 Nov 2026"
   },
   {
    "country": "Australia",
@@ -544,7 +564,7 @@
    "operator": "Brisanet; Unifique; Iez! Telecom; Amazônia 5G",
    "satellite": "AST SpaceMobile",
    "status": "announced",
-   "services": "Agreements announced Oct 2026: the four regional operators lend AST up to 10+10 MHz of 700 MHz spectrum (secondary use), alongside AST's 15+15 MHz S-band authorisation from Anatel (9 Oct 2026); four ground gateways being built; no launch date",
+   "services": "Agreements announced Oct 2026: the four regional operators lend AST up to 10+10 MHz of 700 MHz spectrum (secondary use), alongside AST's 15+15 MHz S-band authorisation from Anatel (9 Oct 2026); AST's 9 Nov 2026 update calls this authorisation for commercial service, with a combined 50 MHz of S-band and low-band spectrum; four ground gateways being built; no launch date",
    "sources": [
     {
      "label": "Source",
@@ -553,9 +573,13 @@
     {
      "label": "Update",
      "url": "https://exame.com/invest/mercados/rival-da-starlink-avanca-no-brasil-e-quer-levar-satelite-a-200-milhoes-de-celulares/"
+    },
+    {
+     "label": "Q3",
+     "url": "https://www.sec.gov/Archives/edgar/data/1780312/000119312526453758/asts-ex99_1.htm"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "10 Nov 2026"
   },
   {
    "country": "France",
@@ -586,7 +610,7 @@
    "operator": "stc",
    "satellite": "AST SpaceMobile",
    "status": "announced",
-   "services": "10-year commercial agreement (Oct 2025) with a $175m prepayment; three gateways and a Riyadh operations centre; AST targets initial, intermittent coverage before end-2026, subject to CST approval",
+   "services": "10-year commercial agreement (Oct 2025) with a $175m prepayment; three gateways and a Riyadh operations centre; AST (9 Nov 2026) targets initial, intermittent coverage before end-2026, with the first step a roll-out to strategic partners, subject to CST approval",
    "sources": [
     {
      "label": "Source",
@@ -595,9 +619,13 @@
     {
      "label": "Update",
      "url": "https://www.businesswire.com/news/home/20261020527793/en/AST-SpaceMobile-Advances-Service-Readiness-Ahead-of-Initial-Space-Based-Cellular-Broadband-Coverage-in-Key-Global-Markets"
+    },
+    {
+     "label": "Q3",
+     "url": "https://www.sec.gov/Archives/edgar/data/1780312/000119312526453758/asts-ex99_1.htm"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "10 Nov 2026"
   }
  ]
 }

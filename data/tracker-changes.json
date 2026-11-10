@@ -1,5 +1,47 @@
 [
  {
+  "date": "2026-11-10",
+  "commit": "working-tree",
+  "items": [
+   {
+    "type": "updated",
+    "status": "trial",
+    "country": "United States",
+    "text": "Updated details for United States: AT&T + AST SpaceMobile."
+   },
+   {
+    "type": "updated",
+    "status": "trial",
+    "country": "Canada",
+    "text": "Updated details for Canada: Telus + AST SpaceMobile."
+   },
+   {
+    "type": "updated",
+    "status": "trial",
+    "country": "United Kingdom",
+    "text": "Updated details for United Kingdom: VodafoneThree + AST SpaceMobile (via Satellite Connect Europe)."
+   },
+   {
+    "type": "updated",
+    "status": "trial",
+    "country": "Japan",
+    "text": "Updated details for Japan: Rakuten Mobile + AST SpaceMobile."
+   },
+   {
+    "type": "updated",
+    "status": "announced",
+    "country": "Brazil",
+    "text": "Updated details for Brazil: Brisanet; Unifique; Iez! Telecom; Amazônia 5G + AST SpaceMobile."
+   },
+   {
+    "type": "updated",
+    "status": "announced",
+    "country": "Saudi Arabia",
+    "text": "Updated details for Saudi Arabia: stc + AST SpaceMobile."
+   }
+  ]
+ },
+ {
   "date": "2026-11-09",
   "commit": "7f31bdb6bd081994b403f8679bc57552c9cd941e",
   "items": [
