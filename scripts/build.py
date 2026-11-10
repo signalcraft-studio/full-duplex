@@ -76,11 +76,11 @@ def signal_block(root, surface, variant='full', heading_level=2, heading=None, i
     embed = f'<div class=bh-slot data-form="{FORM}" data-surface="{surface}"></div>'
     if variant == 'mid':
         return (f'<aside class="signal mid" aria-label="Subscribe to Signal"><p class=kicker>Signal · free weekly briefing</p>'
-                f'<{h} class=signal-h>{heading or "Signal: the weekly direct-to-cell briefing from an 11-year network insider"}</{h}>'
+                f'<{h} class=signal-h>{heading or "Signal: the weekly direct-to-cell briefing from a 13-year network insider"}</{h}>'
                 f'{embed}<p class=signal-cta><a class=btn href="{esc(sub_url(surface))}">Send me Signal</a></p>{privacy}</aside>')
     return (f'<section class=signal aria-label="Subscribe to Signal"><div class=signal-copy><p class=kicker>Signal · free weekly briefing</p>'
             f'<{h} class=signal-h>{heading or "Get Signal: what changed in satellite-to-phone this week"}</{h}>'
-            f'<p>{intro or "One email a week on direct-to-cell, mobile networks and what it means for you, from an 11-year mobile network insider."}</p>'
+            f'<p>{intro or "One email a week on direct-to-cell, mobile networks and what it means for you, from a 13-year mobile network insider."}</p>'
             f'<p class=issues-h>Recent issues</p>{issues_list()}</div><div class=signal-form>{embed}<p class=signal-cta><a class=btn href="{esc(sub_url(surface))}">Send me Signal</a> '
             f'<a class=more href="{esc(SITE["archive_url"])}">Read past issues</a></p>{privacy}</div></section>')
 
@@ -309,7 +309,7 @@ for i, a in enumerate(arts):
          head_extra=f'<meta property="article:published_time" content="{a["published"]}"><meta property="article:author" content="{esc(SITE["author"])}">')
 
 # articles index
-body = (f'<header class=page-head><p class=kicker>Analysis</p><h1>Articles</h1><p class=lede>Plain-English analysis of direct-to-cell, satellite-to-phone and mobile networks, from an 11-year network insider.</p></header>'
+body = (f'<header class=page-head><p class=kicker>Analysis</p><h1>Articles</h1><p class=lede>Plain-English analysis of direct-to-cell, satellite-to-phone and mobile networks, from a 13-year network insider.</p></header>'
         f'<div class=grid3>{"".join(art_card(a, "../", 2) for a in arts)}</div>' + signal_block('../', 'articles-index'))
 page(og=('Analysis', 'All articles'), path='articles/index.html', title='Articles', description='All Full Duplex analysis: direct-to-cell, satellite-to-phone, 2G/3G switch-off, MVNOs and the future of mobile networks.',
      body=body, root='../', current='articles/index.html', lastmod=max(a.get('updated', a['published']) for a in arts), search=False)
@@ -712,7 +712,7 @@ def journey_page():
     share = share_btn('What happens when you hit send from a phone with no signal: one text message, via satellite, in six scenes.', url)
     body = body.replace('<!--SHARE-TOP-->', f'<p class=row-cta>{share}{follow_btn()}</p>')
     body += (f'<div class=share-end><p>Know someone who still thinks satellite phones need a brick-sized handset? Send them this.</p>{share}{follow_btn()}</div>'
-             + signal_block(root, 'journey', heading='Get Signal: the weekly direct-to-cell briefing', intro='One email a week on satellite-to-phone, mobile networks and what it means for you, from an 11-year mobile network insider. Plain English, with sources.'))
+             + signal_block(root, 'journey', heading='Get Signal: the weekly direct-to-cell briefing', intro='One email a week on satellite-to-phone, mobile networks and what it means for you, from a 13-year mobile network insider. Plain English, with sources.'))
     ld = [crumbs([('Home', ''), ('What happens when you hit send', 'journey/')]),
           {'@context': 'https://schema.org', '@type': 'Article', 'headline': meta['title'], 'description': meta['description'], 'author': AUTHOR, 'publisher': PUBLISHER,
            'mainEntityOfPage': url, 'inLanguage': 'en-GB', 'image': [f'{BASE}assets/og/journey.jpg'], 'datePublished': '2026-11-10'}]
@@ -740,7 +740,7 @@ feat, rest = arts[0], arts[1:]
 home = (f'<section class=hero><div class=hero-art aria-hidden=true><img src="assets/img/home-hero-1600.webp" srcset="assets/img/home-hero-960.webp 960w, assets/img/home-hero-1600.webp 1600w" sizes="100vw" width="1600" height="687" alt="" decoding="async" fetchpriority="high"></div><div class=hero-copy><p class=kicker>Both directions, all at once</p><h1>Your phone is about to talk to space.</h1>'
         f'<p class=lede>Full Duplex explains direct-to-cell satellites, GSM and the shake-up coming to the mobile industry.</p>'
         f'<p class=hero-cta><a class=btn href="{esc(sub_url("home-hero"))}">Send me Signal</a><a class="btn ghost" href="tracker.html">Explore the tracker</a></p>'
-        f'<p class=byl>By <a href="about.html">{esc(SITE["author"])}</a>, an 11-year mobile network insider · {follow_btn("xinline")}</p></div>'
+        f'<p class=byl>By <a href="about.html">{esc(SITE["author"])}</a>, a 13-year mobile network insider · {follow_btn("xinline")}</p></div>'
         f'<figure class=globe-wrap><div id=globe class=globe role=img aria-label="Rotating globe: {NLIVE_C} countries with live direct-to-cell service in green, countries with trials in amber. Full data in the tracker."></div>'
         f'<figcaption><span class=k-live>Live</span><span class=k-trial>Trial</span><span class=k-ann>Announced</span> <a href="tracker.html">Open the map</a></figcaption></figure>'
         f'</section>'
