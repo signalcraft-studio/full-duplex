@@ -272,7 +272,17 @@ def insert_mid(body, block):
 def art_meta(a):
     return f'<p class=meta><time datetime="{a["published"]}">{human(a["published"], False)}</time> · {reading_time(a["body"])} min read</p>'
 def art_card(a, root='', level=3, cls='card'):
-    return (f'<article class="{cls}"><h{level}><a href="{root}articles/{a["slug"]}.html">{esc(a["title"])}</a></h{level}><p>{esc(a["summary"])}</p>{art_meta(a)}</article>')
+    inner = (f'<h{level}><a href="{root}articles/{a["slug"]}.html">{esc(a["title"])}</a></h{level}>'
+             f'<p>{esc(a["summary"])}</p>{art_meta(a)}')
+    if 'feature' not in cls.split():
+        return f'<article class="{cls}">{inner}</article>'
+    # Lead card: approved article plate as a cover background, with a dark fade so the type stays readable.
+    href = f'{root}articles/{a["slug"]}.html'
+    img = (f'<img class="feature-img" src="{root}assets/img/article-plate-1280.webp" '
+           f'srcset="{root}assets/img/article-plate-640.webp 640w, {root}assets/img/article-plate-960.webp 960w, {root}assets/img/article-plate-1280.webp 1280w" '
+           f'sizes="(min-width:900px) 50vw, 100vw" width="1280" height="512" alt="" decoding="async" loading="lazy">')
+    copy = f'<h{level}>{esc(a["title"])}</h{level}><p>{esc(a["summary"])}</p>{art_meta(a)}'
+    return f'<article class="{cls}"><a href="{href}">{img}<div class="feature-copy">{copy}</div></a></article>'
 def mentions(a, country):
     alias = {'United Kingdom': r'\b(UK|United Kingdom|Britain)\b', 'United States': r'\b(US|USA|United States|America)\b'}
     return re.search(alias.get(country, r'\b' + re.escape(country) + r'\b'), strip_tags(a['body']))
