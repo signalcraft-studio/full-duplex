@@ -1,15 +1,15 @@
 {
- "fetched_at": "2026-11-10T17:10:17Z",
+ "fetched_at": "2026-11-11T21:12:39Z",
  "source": "The Space Devs Launch Library 2 (https://ll.thespacedevs.com/2.3.0/launches/upcoming/)",
  "launches": [
   {
    "id": "6aa7b90b-e5ed-45d8-a52e-04fbf399d178",
    "slug": "falcon-9-block-5-ussf-627",
    "name": "Falcon 9 Block 5 | USSF-627",
-   "net": "2026-11-12T02:35:00Z",
+   "net": "2026-11-12T02:36:18Z",
    "window_start": "2026-11-12T02:35:00Z",
    "window_end": "2026-11-12T06:35:00Z",
-   "precision": "Minute",
+   "precision": "Second",
    "status": "Go for Launch",
    "status_abbrev": "Go",
    "provider": "SpaceX",
@@ -26,7 +26,7 @@
    "pad_lat": 34.632,
    "pad_lon": -120.611,
    "webcast_live": false,
-   "last_updated": "2026-11-10T16:25:24Z",
+   "last_updated": "2026-11-11T16:14:46Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/6aa7b90b-e5ed-45d8-a52e-04fbf399d178/",
    "queries": [
     "spacex"
@@ -38,7 +38,7 @@
    "name": "Vulcan VC6L | Amazon Leo (LV-01)",
    "net": "2026-11-13T17:54:00Z",
    "window_start": "2026-11-13T17:54:00Z",
-   "window_end": "2026-11-13T18:24:00Z",
+   "window_end": "2026-11-13T18:23:00Z",
    "precision": "Minute",
    "status": "Go for Launch",
    "status_abbrev": "Go",
@@ -56,7 +56,7 @@
    "pad_lat": 28.58341025,
    "pad_lon": -80.58303644,
    "webcast_live": false,
-   "last_updated": "2026-11-06T14:36:43Z",
+   "last_updated": "2026-11-11T19:20:36Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/ef9850ad-1096-425b-9d27-f7bbd186e61a/",
    "queries": [
     "amazon-leo"
@@ -86,7 +86,7 @@
    "pad_lat": 25.99677,
    "pad_lon": -97.15799,
    "webcast_live": false,
-   "last_updated": "2026-11-09T23:06:16Z",
+   "last_updated": "2026-11-10T22:06:46Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/",
    "queries": [
     "spacex"
