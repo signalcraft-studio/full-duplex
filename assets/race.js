@@ -18,7 +18,7 @@
     order.forEach(function(x,rank){ var o=rows[K[x]], w=v[x]/top;
       o.el.style.transform='translateY('+(rank*100)+'%)'; o.bar.style.width=(Math.min(1,w)*100).toFixed(2)+'%'; o.bar.classList.toggle('over',w>1);
       o.val.textContent=Math.round(v[x]).toLocaleString('en-GB')+(w>1?' →':''); });
-    tgt.style.left=Math.min(100,D.t/top*100).toFixed(2)+'%';
+    var pct=Math.min(100,D.t/top*100); tgt.style.left=pct.toFixed(2)+'%'; tgt.classList.toggle('end',pct>58);
     dateEl.textContent=label(cur);
     var d=F[cur][0], ev=null; for(var e=0;e<D.e.length;e++){ if(D.e[e][0]<=d) ev=D.e[e]; }
     var recent=ev&&(new Date(d)-new Date(ev[0]))<120*864e5;

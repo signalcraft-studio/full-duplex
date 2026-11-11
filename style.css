@@ -46,8 +46,8 @@ header.site nav a[aria-current=page]{box-shadow:inset 0 -2px 0 var(--cyan)}
 .xlink:hover{color:#fff}
 @media (max-width:820px){
   header.site .wrap{gap:.4rem 1rem;padding-top:.5rem;padding-bottom:.25rem}
-  header.site nav{order:3;flex-basis:100%;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:.25rem;gap:1rem}
-  header.site nav::-webkit-scrollbar{display:none}
+  header.site nav{order:3;flex-basis:100%;flex-wrap:wrap;gap:.15rem .85rem;padding-bottom:.35rem}
+  header.site nav a{font-size:.88rem}
   .hdr-cta{margin-left:auto}.xlink{display:none}
 }
 
@@ -392,7 +392,8 @@ footer.site .logo .mark{width:40px;height:40px}
 .rval{font-family:var(--f-mono);font-weight:500;color:#fff;margin-left:.5rem;font-size:.95rem;font-variant-numeric:tabular-nums;white-space:nowrap}
 .rtarget{position:absolute;top:-2rem;bottom:0;border-left:2px dashed var(--c-ast);pointer-events:none;transition:left .45s ease;z-index:1}
 .rval{position:relative;z-index:2;text-shadow:0 0 4px #0b1220,0 0 10px #0b1220,0 0 2px #0b1220}
-.rtarget span{position:absolute;top:0;left:.4rem;white-space:nowrap;font-family:var(--f-mono);font-size:.72rem;color:var(--c-ast);background:rgba(7,11,20,.8);padding:.05rem .3rem;border-radius:4px}
+.rtarget span{position:absolute;top:0;left:.4rem;white-space:normal;width:max-content;max-width:12.5rem;line-height:1.25;font-family:var(--f-mono);font-size:.72rem;color:var(--c-ast);background:rgba(7,11,20,.8);padding:.05rem .3rem;border-radius:4px}
+.rtarget.end span{left:auto;right:.4rem;text-align:right}
 .race-event{min-height:1.5em;margin:.8rem 0 0;font-size:.9rem;color:var(--muted)}
 .race-ctl{display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:center;margin:.9rem 0}
 .race-scrub{display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:var(--muted);flex:1 1 14rem}
@@ -480,5 +481,5 @@ footer.site .logo .mark{width:40px;height:40px}
  .rrow{flex-direction:column;align-items:stretch;justify-content:center;gap:.2rem}
  .rlab{position:relative;z-index:2;right:auto;width:auto;max-width:none;text-align:left;font-size:.78rem;text-shadow:0 0 4px #0b1220,0 0 8px #0b1220}
  .rbar{height:1.1rem;flex:none}
- .rtarget span{white-space:normal;width:13rem;font-size:.68rem}
+ .rtarget span{font-size:.68rem;max-width:11rem}
 }
