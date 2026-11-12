@@ -1,9 +1,9 @@
-# TO ACTIVATE: move this file to .github/workflows/launches.yml when merging to main.
-# (The box token lacks GitHub's "workflow" scope, so it cannot push files under .github/workflows.)
-# Refresh the launch tracker a few times a day: fetch Launch Library 2, rebuild, commit if anything changed.
-# PREVIEW: added on the launch-tracker branch. GitHub only runs scheduled workflows from the default branch,
-# so the schedule starts once this is merged to main (after Sam approves). Until then it can be run by hand
-# from the Actions tab (workflow_dispatch) on this branch.
+# Refresh upcoming launches from Launch Library 2 a few times a day.
+# Only updates data/launches.json and the pages built from it (home countdown,
+# /launches/ list, .ics files, sitemap). Keeps the cache if the API fails.
+# Does not touch tracker rows, satellite counts, race data or launch-tags.
+# A GITHUB_TOKEN push does not trigger the Pages deploy workflow, so
+# .github/workflows/pages.yml also runs on workflow_run of this workflow.
 name: Refresh launches
 on:
   schedule:
@@ -31,7 +31,14 @@ jobs:
         run: |
           git config user.name "Full Duplex bot"
           git config user.email "actions@users.noreply.github.com"
-          git add -A
+          # Only stage launch-derived outputs. Never tracker rows, satellite
+          # counts, race data or manual Direct to Cell tags.
+          git add data/launches.json index.html launches/ sitemap.xml
+          if git diff --cached --name-only | grep -E '^(data/(constellations|race|launch-tags)\.json|tracker\.html|tracker/)'; then
+            echo "Refusing to commit protected tracker or constellation files"
+            git diff --cached --name-only
+            exit 1
+          fi
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
           git commit -m "Launches: refresh from Launch Library 2"
           git push

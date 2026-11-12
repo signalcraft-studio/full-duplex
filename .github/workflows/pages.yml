@@ -1,0 +1,39 @@
+# Deploy the already-built static site to GitHub Pages.
+# Runs on a normal push to main, and again after "Refresh launches"
+# because a GITHUB_TOKEN commit does not trigger on: push workflows.
+name: Deploy Pages
+on:
+  push:
+    branches: [main]
+  workflow_run:
+    workflows: ["Refresh launches"]
+    types: [completed]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  deploy:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Stage site without git metadata
+        run: |
+          mkdir -p _site
+          tar --exclude='./.git' --exclude='./_site' -cf - . | tar -C _site -xf -
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
