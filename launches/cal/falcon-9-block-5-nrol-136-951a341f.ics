@@ -4,11 +4,11 @@ PRODID:-//Full Duplex//Launch tracker//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VEVENT
-UID:6aa7b90b-e5ed-45d8-a52e-04fbf399d178@fullduplex
-DTSTAMP:20261111T211239Z
-DTSTART:20261112T023618Z
-DTEND:20261112T063500Z
-SUMMARY:Launch: USSF-627 (Falcon 9 Block 5)
+UID:951a341f-236b-42fe-a667-4ab2fcf36eac@fullduplex
+DTSTAMP:20261112T223447Z
+DTSTART:20261121T123000Z
+DTEND:20261121T130000Z
+SUMMARY:Launch: NROL-136 (Falcon 9 Block 5)
 DESCRIPTION:Falcon 9 Block 5 from Space Launch Complex 4E\, Vandenberg SFB
  \, CA\, USA. Other: Not a phone-satellite launch. Listed so you can see e
  verything SpaceX and its rivals are flying. Launch times move: check http
