@@ -64,22 +64,30 @@
   document.addEventListener('click',function(ev){if(!ev.target.closest||!ev.target.closest('.gw'))close();});
   document.addEventListener('keydown',function(ev){if(ev.key==='Escape'){var o=document.querySelector('.gw.open');close();if(o)o.querySelector('.gl').focus();}});
 })();
-/* First-visit welcome: the D1 intro (assets/intro.js, loaded only on a first visit), then a small corner card with three
-   Start here links (not a modal; the page stays usable). Once per browser (localStorage); skip, Esc or click closes the intro;
-   with reduced motion there is no intro, only the card with the still logo. ?nowelcome turns both off. */
+/* First-visit welcome. Home page: the D1 intro (assets/intro.js, loaded only there) plays once per browser, then the corner card.
+   Any other page: just the corner card. The card is shown once per browser overall, wherever it was seen first, so a visitor who
+   met it on an article still gets the intro on their first home visit, but no second card. Intro: skip button, Esc or click.
+   Reduced motion: no intro, card with the still logo. ?nowelcome turns both off. */
 (function(){
-  var KEY='fd_welcomed', me=document.currentScript||document.querySelector('script[src*="assets/site.js"]');
-  if(!me)return;
-  try{if(localStorage.getItem(KEY)||/[?&]nowelcome\b/.test(location.search))return;}catch(e){return;}
+  var CK='fd_welcomed', IK='fd_intro', me=document.currentScript||document.querySelector('script[src*="assets/site.js"]');
+  if(!me||/[?&]nowelcome\b/.test(location.search))return;
   if(document.body.classList.contains('is-game')||document.body.classList.contains('is-check'))return;
-  try{localStorage.setItem(KEY,String(Date.now()));}catch(e){}
-  var root=new URL('../',me.src).href, still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var root=new URL('../',me.src).href, here=location.href.split(/[?#]/)[0], home=here===root||here===root+'index.html';
+  var card, intro;
+  try{
+    var cv=localStorage.getItem(CK);
+    if(cv&&cv.indexOf('v2:')!==0&&!localStorage.getItem(IK))localStorage.setItem(IK,'pre-v2'); /* saw intro + card before this change */
+    card=!cv; intro=home&&!localStorage.getItem(IK);
+  }catch(e){return;}
+  if(!card&&!intro)return;
+  var still=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var ART='<svg class=wl-art viewBox="0 0 320 150" aria-hidden=true focusable=false><g fill="#9fb0c3"><circle cx=30 cy=24 r=1.1 /><circle cx=112 cy=12 r=.9 /><circle cx=200 cy=20 r=1.2 /><circle cx=300 cy=70 r=1 /><circle cx=150 cy=86 r=.8 /><circle cx=86 cy=56 r=1 /><circle cx=238 cy=94 r=.9 /></g>'+
     '<g transform="translate(105 20) scale(.2132) translate(-254 -250)"><ellipse cx=512 cy=508 rx=560 ry=170 transform="rotate(-18 512 508)" fill=none stroke="#5ec8ff" stroke-opacity=".18" stroke-width=6 stroke-dasharray="18 22"/>'+
     '<g fill=none stroke-width=32 stroke-linecap=round><path d="M279 505A233 233 0 0 1 644.3 313.2" stroke="#00cfff"/><path d="M744.9 511.9A233 233 0 0 1 383.7 699.5" stroke="#fff"/></g>'+
     '<circle cx=423 cy=432 r=10 fill="#00cfff"/><path transform="translate(426 517.5) rotate(-15)" fill="#00cfff" fill-rule=evenodd d="M-23.5 -57.5h47a5 5 0 0 1 5 5v105a5 5 0 0 1 -5 5h-47a5 5 0 0 1 -5 -5v-105a5 5 0 0 1 5 -5zM-8.5 -48h17.0a5.5 5.5 0 0 1 5.5 5.5v0.0a5.5 5.5 0 0 1 -5.5 5.5h-17.0a5.5 5.5 0 0 1 -5.5 -5.5v-0.0a5.5 5.5 0 0 1 5.5 -5.5z"/>'+
     '<g fill="#fff"><path d="M583 488h21l33 32-22 22-32-32z"/><path d="M620 492l20-21 15 14-21 22z"/><path d="M567 545l21-21 14 14-20 20z"/><circle cx=635 cy=541 r=8 /></g></g></svg>';
   function show(){
+    if(!card)return; card=false; try{localStorage.setItem(CK,'v2:'+Date.now());}catch(e){}
     var d=document.createElement('div'); d.className='welcome'; d.setAttribute('role','dialog'); d.setAttribute('aria-modal','false'); d.setAttribute('aria-labelledby','wl-h');
     d.innerHTML='<button type=button class=wl-x aria-label="Close welcome">×</button>'+ART+
       '<p class=wl-k>Constellation online</p><h2 id=wl-h>Welcome to Full Duplex</h2>'+
@@ -93,7 +101,8 @@
     document.addEventListener('keydown',key);
     document.body.appendChild(d);
   }
-  if(still||!window.HTMLCanvasElement)return show();
+  if(intro){try{localStorage.setItem(IK,'v2:'+Date.now());}catch(e){}}
+  if(!intro||still||!window.HTMLCanvasElement)return show();
   var s=document.createElement('script'); s.src=root+'assets/intro.js?v='+(me.src.split('v=')[1]||'0');
   s.onload=function(){if(window.FDIntro)window.FDIntro({onDone:show});else show();}; s.onerror=show; document.head.appendChild(s);
 })();
