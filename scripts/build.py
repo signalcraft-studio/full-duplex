@@ -21,6 +21,7 @@ New artwork still needs Sam's approval of a preview before it goes on the site.
 import csv, html, io, json, math, pathlib, re, subprocess, sys, urllib.parse
 from datetime import date
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import satviz  # satellite illustrations + payload-card animations (preview, needs Sam's approval)
 try:
     import images as IMGS  # needs Pillow; optional
 except ImportError:
@@ -102,7 +103,7 @@ def footer(root, sticky=True):
     return (f'<footer class=site><div class=wrap><div><a class=logo href="{root}index.html">{LOGO_MARK}Full<span>Duplex</span></a><p>Independent analysis of satellite-to-phone and mobile networks. Made in the UK.</p>'
             f'<p class=copy>© 2026 Full Duplex.</p></div>'
             f'<nav aria-label="Footer"><a href="{esc(sub_url("footer"))}">Subscribe to Signal</a><a href="https://x.com/{X}" target=_blank rel="noopener me">Follow @{X} on X</a>'
-            f'<a href="{root}articles/index.html">Articles</a><a href="{root}tracker.html">Tracker</a><a href="{root}tracker/changes/">Tracker changes</a><a href="{root}launches/">Launches</a><a href="{root}journey/">What happens when you hit send</a>'
+            f'<a href="{root}articles/index.html">Articles</a><a href="{root}tracker.html">Tracker</a><a href="{root}tracker/changes/">Tracker changes</a><a href="{root}launches/">Launches</a><a href="{root}journey/">What happens when you hit send</a><a href="{root}satellites/">Meet the satellites</a>'
             f'<a href="{root}play/constellation.html">Constellation</a><a href="{root}search.html">Search</a><a href="{root}feed.xml">RSS</a>'
             f'<a href="{root}about.html">About</a><a href="{root}sponsor.html">Sponsor</a><a href="{root}privacy.html">Privacy</a></nav></div></footer>{bar}')
 
@@ -527,8 +528,13 @@ def payload_html(l):
     fx = (f'<p class=pb-fact>{esc(fact["text"])} <a href="{esc(fact["src"][1])}">{esc(fact["src"][0])}</a></p>') if fact else ''
     src = f'<a href="{esc(l["ll2_url"])}">Launch Library 2</a>' if l.get('ll2_url') else 'Launch Library 2'
     orbit = {'LEO': 'low Earth orbit', 'PO': 'polar orbit', 'SSO': 'sun-synchronous orbit', 'GTO': 'geostationary transfer orbit', 'Direct-GEO': 'geostationary orbit', 'LO': 'lunar orbit'}.get(l.get('orbit') or '', '')
-    return (f'<p class=kicker>What’s on board</p><p class=pb-h>{esc(h)}</p>' + (f'<p class=pb-d>{esc(d)}</p>' if d else '') + fx +
-            f'<p class=pb-meta>{("Heading to " + orbit + " · ") if orbit else ""}Source: {src}</p>')
+    k = satviz.kind_of(l['tag'], ltext(l), l.get('who', []))
+    anim = (f'<figure class=pb-anim>{satviz.scene(k)}<figcaption>Illustration</figcaption></figure>') if k else ''
+    more = (f'<p class=pb-more><a href="../satellites/#{SAT_ANCHOR[k]}">How {SAT_NAME[k]} works</a></p>') if k else ''
+    return (f'<p class=kicker>What’s on board</p>{anim}<p class=pb-h>{esc(h)}</p>' + (f'<p class=pb-d>{esc(d)}</p>' if d else '') + fx +
+            f'<p class=pb-meta>{("Heading to " + orbit + " · ") if orbit else ""}Source: {src}</p>{more}')
+SAT_ANCHOR = {'starlink-dtc': 'starlink-dtc', 'bluebird': 'bluebird', 'amazon-leo': 'amazon-leo', 'lynk': 'lynk', 'globalstar': 'globalstar'}
+SAT_NAME = {'starlink-dtc': 'a Starlink Direct to Cell satellite', 'bluebird': 'a BlueBird', 'amazon-leo': 'an Amazon Leo satellite', 'lynk': 'a Lynk satellite', 'globalstar': 'a Globalstar satellite'}
 
 # Launch sites for the orbit view's launch moment (lat, lon; public pad coordinates, rounded) and an illustrative ascent heading.
 PADS = {'Cape Canaveral SFS, FL, USA': (28.56, -80.58, 45), 'Kennedy Space Center, FL, USA': (28.61, -80.60, 45),
@@ -688,7 +694,7 @@ def launches_page():
             f'<section class="card tlink" aria-labelledby=tl-h><p class=kicker>From the tracker</p><h2 id=tl-h><a href="{root}tracker.html">Where these satellites already reach phones</a></h2>'
             f'<p>{C["live"]} live direct-to-cell services in {NLIVE_C} countries, plus {C["trial"]} trials and {C["announced"]} announced. See who’s live, country by country, with sources.</p>'
             f'<p class=row-cta><a class="btn ghost" href="{root}tracker.html">Open the tracker</a><a class="btn ghost" href="{root}articles/why-starship-is-a-telco-story.html">Why Starship is a telco story</a></p></section>'
-            + journey_card(root)
+            + journey_card(root) + sats_card(root)
             + signal_block(root, 'launches', heading='Get launch alerts in Signal', intro='Signal is our free weekly direct-to-cell briefing. Subscribe for the launches that matter for your phone and what changed in the tracker, in one email a week.'))
     ld = [crumbs([('Home', ''), ('Launches', 'launches/')]),
           {'@context': 'https://schema.org', '@type': 'Dataset', 'name': 'Full Duplex: phone-capable satellites in orbit by operator', 'description': 'Direct-to-device satellite counts by operator, each with a source and an as-of date, kept separate from broadband-only constellations.',
@@ -719,8 +725,78 @@ def journey_page():
     page(og=('Explainer', 'What happens when you hit send: one text, via satellite'), path='journey/index.html', title=meta['title'], description=meta['description'],
          body=body, root=root, current='', jsonld=ld, cls='is-journey', lastmod='2026-11-10', scripts=f'<script defer src="{root}assets/journey.js"></script>',
          full_title='What happens when you hit send: a text via satellite | Full Duplex')
+# ---------------------------------------------------------------- satellites explainer (src/satellites.json; drawings in scripts/satviz.py)
+SATS = json.loads((SRC / 'satellites.json').read_text())
+def const_item(cid): return next((i for i in CONST['direct_to_device'] + CONST['broadband_only'] if i['id'] == cid), None)
+def sats_card(root):
+    return (f'<section class="card jcard scard" aria-labelledby=sc-h>{satviz.scene("bluebird")}<div><p class=kicker>Explainer · new</p><h2 id=sc-h><a href="{root}satellites/">Meet the satellites</a></h2>'
+            f'<p>What a Starlink, a BlueBird, a Lynk and a Globalstar satellite look like, how high they fly and how they reach an ordinary phone. Plus why Amazon Leo isn’t a phone satellite (yet).</p></div></section>')
+def satellites_page():
+    root = '../'; url = BASE + 'satellites/'; S = SATS['sources']
+    def src(keys):
+        if not keys: return ''
+        return '<span class=sc-src>Source: ' + ' · '.join(f'<a href="{esc(S[k][1])}">{esc(S[k][0])}</a>' for k in keys) + '</span>'
+    fams = SATS['families']
+    jump = ''.join(f'<li><a href="#{f["id"]}" style="--c:{f["color"]}">{satviz.scene(f["anim"])}<span><i aria-hidden=true></i>{esc(f["short"])}</span></a></li>' for f in fams)
+    # infographic 1: phone antennas to scale (sides in metres; BlueBird squares have the same area as the real array)
+    scale = [('Lynk', 'whole satellite, about 1 m across', 1, 1, '#6ee79a', ['keeptrack-lynk']),
+             ('Starlink DTC', 'phone antenna, about 2.7 × 2.3 m', 2.7, 2.3, '#00cfff', ['astrospace-dtc']),
+             ('BlueBird Block 1', 'array about 64 m² (693 sq ft)', 8.02, 8.02, '#ff9a3c', ['keeptrack-ast']),
+             ('BlueBird Block 2', 'array about 223 m² (2,400 sq ft)', 14.93, 14.93, '#ff9a3c', ['space-bb2'])]
+    person = '<svg class=person viewBox="0 0 10 36" aria-hidden=true focusable=false><circle cx=5 cy=4 r=3.4 fill="#9fb0c3"/><path d="M1.5 10h7l-.6 12H7.2L6.8 35H3.2L2.8 22H2.1z" fill="#9fb0c3"/></svg>'
+    sc_li = ''.join(f'<li style="--w:{w};--h:{h};--c:{c}"><span class=sqbox><span class=sq aria-hidden=true></span></span><b>{esc(n)}</b><span>{esc(t)}</span></li>' for n, t, w, h, c, _ in scale)
+    sc_src = src(sorted({k for *_, ks in scale for k in ks}, key=list(S).index))
+    scale_html = (f'<section class=sat-info aria-labelledby=scale-h><p class=kicker>To scale</p><h2 id=scale-h>How big is the bit that talks to your phone?</h2>'
+                  f'<p class=l-intro>Bigger antennas can hear a phone’s weak signal from further away. Drawn to the same scale, next to a 1.8 m person. BlueBird squares have the same area as the real arrays.</p>'
+                  f'<ul class=scale-row><li class=sp style="--h:1.8"><span class=sqbox>{person}</span><b>Person</b><span>1.8 m tall</span></li>{sc_li}</ul>'
+                  f'<p class=l-credit>Globalstar’s antenna size: TBC. Amazon Leo isn’t shown because it doesn’t talk to phones. {sc_src}</p></section>')
+    # infographic 2: how high they fly
+    alts = [('Starlink DTC', 360, 'about 360 km', '#00cfff', ['keeptrack-dtc']), ('BlueBird', 520, 'about 520 km', '#ff9a3c', ['keeptrack-ast']),
+            ('Amazon Leo', 630, '590 to 630 km', '#f5c26b', ['wiki-leo']), ('Globalstar', 1414, 'about 1,414 km', '#b58cff', ['gs-fcc-c3'])]
+    al_li = ''.join(f'<li style="--c:{c}"><span class=al-n>{esc(n)}</span><span class=al-bar><i style="width:{100 * v / 1414:.1f}%"></i></span><span class=al-v>{esc(t)}</span></li>' for n, v, t, c, _ in alts)
+    alt_html = (f'<section class=sat-info aria-labelledby=alt-h><p class=kicker>Height</p><h2 id=alt-h>How high they fly</h2>'
+                f'<p class=l-intro>Lower satellites are closer to your phone, so the signal has less distance to cover, but each one passes overhead faster and you need more of them.</p>'
+                f'<ul class=alt-chart>{al_li}<li style="--c:#6ee79a"><span class=al-n>Lynk</span><span class="al-bar tbc"></span><span class=al-v>low orbit, height TBC</span></li></ul>'
+                f'<p class=l-credit>{src(["keeptrack-dtc", "keeptrack-ast", "wiki-leo", "gs-fcc-c3", "keeptrack-lynk"])}</p></section>')
+    cards = []; rows = []
+    for f in fams:
+        ci = const_item(f['count_id'])
+        if ci and ci['count'] is not None:
+            cnt = (f'<p class=sc-count><b>{ci["count"]:,}</b><span>{esc(ci["count_label"])} · as of <time datetime="{ci["as_of"]}">{human(ci["as_of"])}</time> · '
+                   f'Source: <a href="{esc(ci["source"]["url"])}">{esc(ci["source"]["label"])}</a></span></p>')
+            cnt_s = f'{ci["count"]:,} ({human(ci["as_of"], False)})'
+        else:
+            cnt = '<p class=sc-count><b>TBC</b><span>No sourced count yet</span></p>'; cnt_s = 'TBC'
+        facts = ''.join(f'<div><dt>{esc(x["k"])}</dt><dd>{esc(x["v"])} {src(x["s"])}</dd></div>' for x in f['facts'])
+        nxt = f'<p class=sc-next><strong>What’s next:</strong> {esc(f["next"]["v"])} {src(f["next"]["s"])}</p>'
+        badge = f'<span class="sc-badge{"" if f["phone"] else " no"}">{esc(f["badge"])}</span>'
+        cards.append(f'<article class=satcard id="{f["id"]}" style="--c:{f["color"]}" aria-labelledby="h-{f["id"]}">'
+                     f'<figure class=sc-art>{satviz.scene(f["anim"], "card")}<figcaption>Illustration drawn by Full Duplex from public descriptions. Not to scale.</figcaption></figure>'
+                     f'<div class=sc-body><p class=kicker>{esc(f["operator"])}</p>{badge}<h2 id="h-{f["id"]}">{esc(f["name"])}</h2><p class=sc-lede>{esc(f["lede"])}</p>'
+                     f'{cnt}<dl class=sc-facts>{facts}</dl>{nxt}</div></article>')
+        rows.append(f'<tr><th scope=row><a href="#{f["id"]}">{esc(f["short"])}</a></th><td data-l="Ordinary phones?">{"Yes" if f["phone"] else "No, dishes only"}</td><td data-l="Frequencies">{esc(f["glance"]["spec"])}</td><td data-l="Today">{esc(f["glance"]["today"])}</td><td data-l="In orbit">{cnt_s}</td></tr>')
+    glance = ('<section class=sat-info aria-labelledby=gl-h><p class=kicker>At a glance</p><h2 id=gl-h>Which is which</h2><div class=tablewrap><table class=sat-table>'
+              '<thead><tr><th scope=col>Satellite</th><th scope=col>Talks to ordinary phones?</th><th scope=col>Whose frequencies</th><th scope=col>What works today</th><th scope=col>In orbit</th></tr></thead>'
+              f'<tbody>{"".join(rows)}</tbody></table></div><p class=l-credit>Sources are listed with each satellite above. Satellite counts come from our <a href="{root}launches/#cnt-h">launch tracker</a> and change with every launch.</p></section>')
+    share = share_btn('Meet the satellites that talk to your phone: what Starlink, AST’s BlueBird, Lynk and Globalstar look like and how they work.', url)
+    body = (f'<header class="page-head sathead"><p class=kicker>Explainer · satellite to phone</p><h1>Meet the satellites</h1>'
+            f'<p class=lede>The satellites that can talk to an ordinary phone, and one that can’t yet. What each looks like, how high it flies, how it reaches your phone and who it works with.</p>'
+            f'<p class=jcred>Written by a mobile network insider with over 13 years in GSM, from IVR and SMS to call routing and thin and thick MVNOs.</p>'
+            f'<p class=row-cta>{share}{follow_btn()}</p><ul class=sat-jump aria-label="Jump to a satellite">{jump}</ul></header>'
+            + scale_html + alt_html + ''.join(cards) + glance
+            + f'<p class=l-credit>Checked {human(SATS["checked"])}. Illustrations are drawn by Full Duplex from public descriptions and are not to scale. Where we couldn’t find a reliable figure we say TBC. Watch the next launches on our <a href="{root}launches/">launch tracker</a>.</p>'
+            + f'<div class=share-end><p>Know someone who thinks every satellite is the same? Send them this.</p>{share}{follow_btn()}</div>'
+            + signal_block(root, 'satellites', heading='Get Signal: the weekly direct-to-cell briefing', intro='One email a week on satellite-to-phone, mobile networks and what it means for you, from a mobile network insider with over 13 years in GSM. Plain English, with sources.'))
+    ld = [crumbs([('Home', ''), ('Meet the satellites', 'satellites/')]),
+          {'@context': 'https://schema.org', '@type': 'Article', 'headline': 'Meet the satellites', 'description': 'What Starlink Direct to Cell, AST SpaceMobile BlueBird, Amazon Leo, Lynk and Globalstar satellites look like, how high they fly and how they reach an ordinary phone.',
+           'author': AUTHOR, 'publisher': PUBLISHER, 'mainEntityOfPage': url, 'inLanguage': 'en-GB', 'image': [f'{BASE}assets/og/satellites.jpg'], 'datePublished': SATS['checked']}]
+    page(og=('Explainer', 'Meet the satellites that talk to your phone'), path='satellites/index.html', title='Meet the satellites',
+         full_title='Meet the satellites: Starlink, BlueBird, Lynk, Globalstar and Amazon Leo explained | Full Duplex',
+         description='What Starlink Direct to Cell, AST SpaceMobile BlueBird, Amazon Leo, Lynk and Globalstar satellites look like, how high they fly and how they reach an ordinary phone. Plain English, with sources.',
+         body=body, root=root, current='', jsonld=ld, cls='is-sats', lastmod=SATS['checked'])
 launches_page()
 journey_page()
+satellites_page()
 
 # ---------------------------------------------------------------- search + 404
 body = ('<header class=page-head><p class=kicker>Search</p><h1>Search Full Duplex</h1></header>'

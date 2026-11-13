@@ -1,0 +1,465 @@
+{
+ "_readme": "Content for /satellites/ ('Meet the satellites') and the payload-card animations on /launches/. Every fact needs a source key from 'sources'. Counts are NOT stored here: they are read from data/constellations.json (count_id) so there is one sourced number per network. Write TBC rather than guess. Illustrations are drawn in code (scripts/satviz.py) from public descriptions: preview only until Sam approves.",
+ "checked": "2026-11-13",
+ "sources": {
+  "starlink-mobile": [
+   "Starlink Mobile (SpaceX), accessed 13 Nov 2026",
+   "https://www.starlink.com/business/direct-to-cell"
+  ],
+  "keeptrack-dtc": [
+   "KeepTrack: a V2 Mini Direct to Cell satellite, 2 Aug 2026",
+   "https://keeptrack.space/satellite-of-the-day/sotd-2026-08-02"
+  ],
+  "astrospace-dtc": [
+   "AstroSpace.it, 12 Jan 2024 (SpaceX's first direct-to-cell test)",
+   "https://www.astrospace.it/2024/01/12/spacex-ha-testato-con-successo-il-collegamento-direct-to-cell-di-starlink/"
+  ],
+  "ispreview-beams": [
+   "ISPreview, 19 Aug 2026 (Ookla beam study)",
+   "https://www.ispreview.co.uk/index.php/2026/08/ookla-maps-size-of-starlinks-direct-to-cell-4g-mobile-satellite-beams.html"
+  ],
+  "mcdowell-starlink": [
+   "Jonathan McDowell, Starlink statistics",
+   "https://planet4589.org/space/con/star/stats.html"
+  ],
+  "ast-unfold": [
+   "AST SpaceMobile, 25 Oct 2024 (BlueBirds 1-5 unfolded)",
+   "https://www.nasdaq.com/press-release/ast-spacemobile-successfully-completes-unfolding-first-five-commercial-satellites-low"
+  ],
+  "keeptrack-ast": [
+   "KeepTrack: AST SpaceMobile BlueBirds deep dive",
+   "https://keeptrack.space/deep-dive/ast-spacemobile-bluebirds"
+  ],
+  "space-bb2": [
+   "Space.com, 5 Aug 2026",
+   "https://www.space.com/space-exploration/launches-spacecraft/spacex-launches-ast-spacemobile-11-13-direct-to-cell-satellites"
+  ],
+  "techspot-bw3": [
+   "TechSpot, 15 Nov 2022 (BlueWalker 3 array)",
+   "https://www.techspot.com/news/96664-largest-ever-commercial-communications-satellite-spans-693-square.html"
+  ],
+  "ast-q3": [
+   "AST SpaceMobile Q3 2026 business update (SEC filing, 9 Nov 2026)",
+   "https://www.sec.gov/Archives/edgar/data/1780312/000119312526453758/asts-ex99_2.htm"
+  ],
+  "att-ast": [
+   "AT&T, Oct 2026",
+   "https://about.att.com/story/2026/att-ast-spacemobile-engineering-connected-world.html"
+  ],
+  "rakuten-ast": [
+   "ITmedia Mobile, 9 Nov 2026 (Rakuten uses 700 MHz; in Japanese)",
+   "https://www.itmedia.co.jp/mobile/articles/2611/09/news067.html"
+  ],
+  "ispreview-vf": [
+   "ISPreview, Jul 2026 (VodafoneThree)",
+   "https://www.ispreview.co.uk/index.php/2026/07/vodafone-uk-says-space-5g-mobile-service-still-on-track-for-early-2027-beta.html"
+  ],
+  "fd-uk-race": [
+   "Full Duplex: the UK direct-to-device race",
+   "../articles/uk-d2d-race.html"
+  ],
+  "amazon-d2d": [
+   "Amazon, 27 Jul 2026 (Leo direct-to-device plan)",
+   "https://www.aboutamazon.com/news/amazon-leo/amazon-leo-direct-to-device-satellite-service-explained"
+  ],
+  "amazon-lv01": [
+   "Amazon, 9 Nov 2026 (LV-01)",
+   "https://www.aboutamazon.com/news/amazon-leo/amazon-leo-vulcan-satellites-launch"
+  ],
+  "wiki-leo": [
+   "Wikipedia: Amazon Leo (citing the FCC authorisation)",
+   "https://en.wikipedia.org/wiki/Amazon_Leo"
+  ],
+  "mcdowell-leo": [
+   "Jonathan McDowell, Amazon Leo (Kuiper) statistics",
+   "https://planet4589.org/space/con/kp/stats.html"
+  ],
+  "keeptrack-lynk": [
+   "KeepTrack: Lynk satellite bus, data as of 13 Nov 2026",
+   "https://keeptrack.space/satellites/buses/lynk-shannon"
+  ],
+  "lynk-bw": [
+   "Lynk, 12 Mar 2024",
+   "https://www.businesswire.com/news/home/20240312390349/en/Lynk-Successfully-Deploys-Two-More-Orbital-Cell-Phone-Towers-in-Space"
+  ],
+  "mtn-lynk": [
+   "CAJ News Africa, 28 Mar 2025 (MTN and Lynk)",
+   "https://cajnewsafrica.com/2025/03/28/mtn-sa-and-lynk-global-trial-africas-first-cell-tower-in-space-satellite-to-phone-voice-call/"
+  ],
+  "lr-elveo": [
+   "Light Reading, 17 Aug 2026",
+   "https://www.lightreading.com/satellite/lynk-and-omnispace-merger-creates-d2d-challenger-elveo-mobile"
+  ],
+  "mcdowell-lynk": [
+   "Jonathan McDowell, Lynk statistics",
+   "https://www.planet4589.org/space/con/lynk/stats.html"
+  ],
+  "gunter-gs2": [
+   "Gunter's Space Page: Globalstar-2",
+   "https://space.skyrocket.de/doc_sdat/globalstar-2.htm"
+  ],
+  "gs-fcc-c3": [
+   "Globalstar, 19 Oct 2026 (FCC authorises C-3)",
+   "https://investors.globalstar.com/news-releases/news-release-details/fcc-authorizes-globalstars-third-generation-c-3-system/"
+  ],
+  "gs-fr-c3": [
+   "Globalstar, 9 Nov 2026 (France authorises C-3)",
+   "https://investors.globalstar.com/news-releases/news-release-details/france-authorizes-globalstars-third-generation-c-3-system/"
+  ],
+  "apple-sat": [
+   "Apple Support: connect to a satellite with your iPhone",
+   "https://support.apple.com/en-us/105097"
+  ],
+  "mda-2r": [
+   "MDA Space, 16 Aug 2026",
+   "https://mda.space/article/mda-space-satellites-for-globalstar-successfully-launched"
+  ],
+  "nse-2r": [
+   "New Space Economy, 11 Nov 2026",
+   "https://newspaceeconomy.ca/2026/11/11/globalstar-eight-satellites-in-orbit-testing/"
+  ],
+  "fcc-amzn-gs": [
+   "FCC, 27 Oct 2026 (Amazon Leo and Globalstar)",
+   "https://docs.fcc.gov/public/attachments/DOC-426214A1.pdf"
+  ],
+  "mcdowell-gs": [
+   "Jonathan McDowell, Globalstar statistics",
+   "https://planet4589.org/space/con/gbl/stats.html"
+  ],
+  "fd-tracker": [
+   "Full Duplex tracker",
+   "../tracker.html"
+  ]
+ },
+ "families": [
+  {
+   "id": "starlink-dtc",
+   "anim": "starlink-dtc",
+   "count_id": "starlink-dtc",
+   "color": "#00cfff",
+   "operator": "SpaceX",
+   "name": "Starlink Direct to Cell",
+   "phone": true,
+   "badge": "Talks to ordinary phones",
+   "short": "Starlink DTC",
+   "lede": "A Starlink satellite with an extra antenna that behaves like a mobile mast. Your phone sees it as just another network to roam on.",
+   "facts": [
+    {
+     "k": "What it looks like",
+     "v": "A flat, slab-shaped body about 4.1 m across, with solar wings that span about 29 m tip to tip. About 960 kg at launch.",
+     "s": [
+      "keeptrack-dtc"
+     ]
+    },
+    {
+     "k": "Phone antenna",
+     "v": "A phased-array antenna of about 2.7 m by 2.3 m (roughly 6 m²). SpaceX calls it a cellphone tower in space.",
+     "s": [
+      "astrospace-dtc",
+      "starlink-mobile"
+     ]
+    },
+    {
+     "k": "Height",
+     "v": "Very low: about 360 km up, in two groups of orbits tilted at 53° and 43°.",
+     "s": [
+      "keeptrack-dtc",
+      "mcdowell-starlink"
+     ]
+    },
+    {
+     "k": "How it reaches your phone",
+     "v": "It borrows your own network’s 4G frequencies, so an ordinary 4G phone connects as if it were roaming. In the UK, O2 Satellite uses 5 MHz of O2’s 1800 MHz spectrum. Each satellite can point 48 beams down and listen with 16.",
+     "s": [
+      "starlink-mobile",
+      "ispreview-beams"
+     ]
+    },
+    {
+     "k": "What you can do today",
+     "v": "Texts, data for 40+ selected apps, and voice calls through apps such as WhatsApp. Ordinary (native) phone calls are a future step.",
+     "s": [
+      "starlink-mobile"
+     ]
+    },
+    {
+     "k": "Who it works with",
+     "v": "T-Mobile (US), VMO2 (UK), Rogers (Canada), One NZ, Telstra, KDDI, NTT Docomo, SoftBank, Kyivstar, Entel, Globe, Airtel Africa, Deutsche Telekom and more.",
+     "s": [
+      "starlink-mobile"
+     ]
+    }
+   ],
+   "next": {
+    "v": "A second generation (V2) is planned with around 20 times the throughput of today’s satellites. SpaceX expects them to reach orbit during 2027.",
+    "s": [
+     "starlink-mobile",
+     "ispreview-beams"
+    ]
+   },
+   "glance": {
+    "spec": "Your network’s 4G frequencies",
+    "today": "Texts, 40+ apps, app calls"
+   }
+  },
+  {
+   "id": "bluebird",
+   "anim": "bluebird",
+   "count_id": "ast",
+   "color": "#ff9a3c",
+   "operator": "AST SpaceMobile",
+   "name": "BlueBird (Block 1 and Block 2)",
+   "phone": true,
+   "badge": "Talks to ordinary phones · testing",
+   "short": "BlueBird",
+   "lede": "Few satellites, but enormous ones. Each BlueBird unfolds a huge flat antenna, so it can hear a normal phone’s weak signal from hundreds of kilometres away.",
+   "facts": [
+    {
+     "k": "What it looks like",
+     "v": "A giant flat square panel, folded for launch and opened in orbit. The side facing Earth is covered in small antennas; the back carries solar cells.",
+     "s": [
+      "techspot-bw3"
+     ]
+    },
+    {
+     "k": "Block 1 (BlueBirds 1–5)",
+     "v": "Array about 693 sq ft (64 m²), about 1,500 kg. Launched together in September 2024.",
+     "s": [
+      "keeptrack-ast"
+     ]
+    },
+    {
+     "k": "Block 2 (BlueBird 6 onwards)",
+     "v": "Array about 2,400 sq ft (223 m²), more than three times bigger, and about 6,100 kg, with AST’s own AST5000 signal-processing chip.",
+     "s": [
+      "space-bb2",
+      "keeptrack-ast"
+     ]
+    },
+    {
+     "k": "Height",
+     "v": "About 520 km up, tilted at 53°.",
+     "s": [
+      "keeptrack-ast"
+     ]
+    },
+    {
+     "k": "How it reaches your phone",
+     "v": "It uses partner networks’ own mobile frequencies, mostly low-band, which travels further and gets indoors more easily. Examples: 700 MHz with Rakuten in Japan, 900 MHz with VodafoneThree in the UK.",
+     "s": [
+      "ast-unfold",
+      "rakuten-ast",
+      "fd-uk-race"
+     ]
+    },
+    {
+     "k": "What you can do today",
+     "v": "Built for full 4G and 5G broadband. Voice calls, video calls, texts and data have been tested on unmodified phones, but there is no commercial service yet. AST is aiming for first, patchy coverage before the end of 2026.",
+     "s": [
+      "att-ast",
+      "ast-q3"
+     ]
+    },
+    {
+     "k": "Who it works with",
+     "v": "AT&T, Verizon and Vodafone, plus Rakuten, Telus, stc and 2degrees among others.",
+     "s": [
+      "ast-unfold",
+      "fd-tracker"
+     ]
+    }
+   ],
+   "next": {
+    "v": "AST is aiming for about 45 BlueBirds in orbit by mid-2027. AST says that is when service can move beyond patchy coverage.",
+    "s": [
+     "ast-q3"
+    ]
+   },
+   "glance": {
+    "spec": "Your network’s frequencies (mostly low-band)",
+    "today": "Testing: voice, video, data"
+   }
+  },
+  {
+   "id": "amazon-leo",
+   "anim": "amazon-leo",
+   "count_id": "amazon-leo",
+   "color": "#f5c26b",
+   "operator": "Amazon",
+   "name": "Amazon Leo (formerly Project Kuiper)",
+   "phone": false,
+   "badge": "Broadband for dishes, not phones",
+   "short": "Amazon Leo",
+   "lede": "Amazon’s rival to Starlink broadband. Today’s Leo satellites talk to dishes and terminals, not to the phone in your pocket.",
+   "facts": [
+    {
+     "k": "Not a phone satellite (yet)",
+     "v": "Customers connect through Amazon’s own antennas (Leo Nano, Leo Pro and Leo Ultra), not with a mobile phone.",
+     "s": [
+      "amazon-d2d"
+     ]
+    },
+    {
+     "k": "What it looks like",
+     "v": "TBC. Amazon hasn’t published dimensions we could check, so our drawing is a generic flat-panel satellite.",
+     "s": []
+    },
+    {
+     "k": "Height",
+     "v": "Three layers of orbits, at 590 km, 610 km and 630 km.",
+     "s": [
+      "wiki-leo"
+     ]
+    },
+    {
+     "k": "How it connects",
+     "v": "High-frequency Ka-band links to customer antennas and ground stations. That is why a phone can’t use it directly.",
+     "s": [
+      "wiki-leo"
+     ]
+    },
+    {
+     "k": "Who it works with",
+     "v": "Telecoms partners such as Vodafone, DirecTV, Herotel and Australia’s National Broadband Network.",
+     "s": [
+      "amazon-d2d"
+     ]
+    }
+   ],
+   "next": {
+    "v": "Amazon has filed with the FCC for a separate phone network of up to 5,105 satellites using Globalstar’s spectrum, with deployment starting in 2028.",
+    "s": [
+     "amazon-d2d"
+    ]
+   },
+   "glance": {
+    "spec": "Amazon’s own Ka-band",
+    "today": "Broadband to dishes"
+   }
+  },
+  {
+   "id": "lynk",
+   "anim": "lynk",
+   "count_id": "lynk",
+   "color": "#6ee79a",
+   "operator": "Elveo Mobile (Lynk + Omnispace)",
+   "name": "Lynk",
+   "phone": true,
+   "badge": "Talks to ordinary phones · small fleet",
+   "short": "Lynk",
+   "lede": "The small one. Lynk calls its satellites ‘cell towers in space’. They are about the size of a coffee table and focus on texts and emergency alerts.",
+   "facts": [
+    {
+     "k": "What it looks like",
+     "v": "A flat box about 1 m across and about 85 kg. That is tiny next to a Starlink or a BlueBird.",
+     "s": [
+      "keeptrack-lynk"
+     ]
+    },
+    {
+     "k": "Height",
+     "v": "Low Earth orbit on a near-polar path (about 97°), going round roughly every 94 minutes. Exact height: TBC.",
+     "s": [
+      "keeptrack-lynk"
+     ]
+    },
+    {
+     "k": "How it reaches your phone",
+     "v": "It works with standard, unmodified phones through partner networks. The merged company, Elveo, also holds rights to 60 MHz of satellite S-band spectrum and says it supports 2G, 4G, 5G and IoT devices.",
+     "s": [
+      "lynk-bw",
+      "lr-elveo"
+     ]
+    },
+    {
+     "k": "What you can do today",
+     "v": "Two-way text messages and emergency alerts, with a satellite passing overhead from time to time. MTN tested a voice call in South Africa in March 2025.",
+     "s": [
+      "lynk-bw",
+      "mtn-lynk"
+     ]
+    },
+    {
+     "k": "Who it works with",
+     "v": "56 contracts with mobile networks and distribution partners in more than 60 countries. Elveo is testing with ten operators.",
+     "s": [
+      "lr-elveo"
+     ]
+    }
+   ],
+   "next": {
+    "v": "Elveo plans 320 new low-orbit satellites from late 2027, with commercial service in early 2028.",
+    "s": [
+     "lr-elveo"
+    ]
+   },
+   "glance": {
+    "spec": "Partner networks’ frequencies",
+    "today": "Texts and emergency alerts"
+   }
+  },
+  {
+   "id": "globalstar",
+   "anim": "globalstar",
+   "count_id": "globalstar",
+   "color": "#b58cff",
+   "operator": "Globalstar (agreed to be bought by Amazon)",
+   "name": "Globalstar",
+   "phone": true,
+   "badge": "Only phones built for it, e.g. iPhone",
+   "short": "Globalstar",
+   "lede": "The network behind the satellite features on iPhone 14 and later. It flies much higher than the others and uses its own satellite frequencies.",
+   "facts": [
+    {
+     "k": "What it looks like",
+     "v": "Today’s second-generation satellites weigh about 700 kg at launch and run on solar power.",
+     "s": [
+      "gunter-gs2"
+     ]
+    },
+    {
+     "k": "Height",
+     "v": "About 1,414 km up, tilted at 52°. That is nearly four times as high as Starlink’s phone satellites.",
+     "s": [
+      "gs-fcc-c3",
+      "gunter-gs2"
+     ]
+    },
+    {
+     "k": "How it reaches your phone",
+     "v": "It uses Globalstar’s own satellite band, not your mobile network’s, so only phones built for it can connect. The satellites act as relays, passing your message down to a Globalstar ground station.",
+     "s": [
+      "gs-fr-c3",
+      "nse-2r"
+     ]
+    },
+    {
+     "k": "What you can do today",
+     "v": "On iPhone 14 or later: Emergency SOS, messages to friends and family, Roadside Assistance and Find My location updates. A message can take 30 seconds or more to send.",
+     "s": [
+      "apple-sat"
+     ]
+    },
+    {
+     "k": "Who it works with",
+     "v": "Apple. Amazon has agreed to buy Globalstar; the FCC approved the deal on 27 Oct 2026.",
+     "s": [
+      "apple-sat",
+      "fcc-amzn-gs"
+     ]
+    }
+   ],
+   "next": {
+    "v": "Nine more MDA-built replacement satellites are due on the next Globalstar launch (in our launch list). After that comes C-3, a new 48-satellite system (plus 6 spares) at 1,414 km built for phones. Launches start in 2027.",
+    "s": [
+     "mda-2r",
+     "gs-fr-c3"
+    ]
+   },
+   "glance": {
+    "spec": "Globalstar’s own satellite band",
+    "today": "iPhone SOS, messages, Find My"
+   }
+  }
+ ]
+}
