@@ -19,7 +19,7 @@ OG cards (assets/og/*.jpg) are generated here at build time when Pillow is insta
 New artwork still needs Sam's approval of a preview before it goes on the site.
 """
 import csv, html, io, json, math, pathlib, re, subprocess, sys, urllib.parse
-from datetime import date
+from datetime import date, timedelta
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import satviz  # satellite illustrations + payload-card animations (preview, needs Sam's approval)
 try:
@@ -103,7 +103,7 @@ def footer(root, sticky=True):
     return (f'<footer class=site><div class=wrap><div><a class=logo href="{root}index.html">{LOGO_MARK}Full<span>Duplex</span></a><p>Independent analysis of satellite-to-phone and mobile networks. Made in the UK.</p>'
             f'<p class=copy>© 2026 Full Duplex.</p></div>'
             f'<nav aria-label="Footer"><a href="{esc(sub_url("footer"))}">Subscribe to Signal</a><a href="https://x.com/{X}" target=_blank rel="noopener me">Follow @{X} on X</a>'
-            f'<a href="{root}articles/index.html">Articles</a><a href="{root}tracker.html">Tracker</a><a href="{root}tracker/changes/">Tracker changes</a><a href="{root}launches/">Launches</a><a href="{root}journey/">What happens when you hit send</a><a href="{root}satellites/">Meet the satellites</a>'
+            f'<a href="{root}articles/index.html">Articles</a><a href="{root}tracker.html">Tracker</a><a href="{root}tracker/changes/">Tracker changes</a><a href="{root}launches/">Launches</a><a href="{root}journey/">What happens when you hit send</a><a href="{root}satellites/">Meet the satellites</a><a href="{root}check/">Can my phone connect?</a><a href="{root}glossary/">Glossary</a>'
             f'<a href="{root}play/constellation.html">Constellation</a><a href="{root}search.html">Search</a><a href="{root}feed.xml">RSS</a>'
             f'<a href="{root}about.html">About</a><a href="{root}sponsor.html">Sponsor</a><a href="{root}privacy.html">Privacy</a></nav></div></footer>{bar}')
 
@@ -111,19 +111,62 @@ import hashlib
 _AV = {}
 def asset_v(rel):
     """Short content hash so browsers fetch new CSS/JS with new HTML (GitHub Pages caches for 10 minutes)."""
-    if rel not in _AV: _AV[rel] = hashlib.sha1((ROOT / rel).read_bytes()).hexdigest()[:8] if (ROOT / rel).exists() else '0'
+    # site.js lazy-loads assets/intro.js with its own ?v=, so its tag covers both files
+    if rel not in _AV: _AV[rel] = hashlib.sha1(b''.join((ROOT / r).read_bytes() for r in ([rel, 'assets/intro.js'] if rel == 'assets/site.js' else [rel]) if (ROOT / r).exists())).hexdigest()[:8] if (ROOT / rel).exists() else '0'
     return _AV[rel]
+# ---------------------------------------------------------------- hover/tap glossary (src/glossary.json; behaviour in assets/site.js)
+GLOSS = json.loads((SRC / 'glossary.json').read_text())
+GL_RX = [(t, re.compile('|'.join(t['match']))) for t in GLOSS['terms']]
+GL_SKIP = {'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'button', 'script', 'style', 'svg', 'title', 'label', 'select', 'option', 'summary', 'code', 'abbr', 'dt', 'th', 'time', 'noscript', 'aside', 'nav', 'figcaption', 'blockquote'}
+GL_VOID = {'br', 'img', 'input', 'meta', 'link', 'hr', 'source', 'wbr', 'col', 'area', 'path', 'circle', 'rect', 'line', 'ellipse', 'polygon', 'polyline', 'stop', 'use'}
+_GLN = [0]
+def gloss_tip(t, shown, root):
+    _GLN[0] += 1; n = _GLN[0]
+    return (f'<span class=gw><span class=gl role=button tabindex=0 aria-expanded=false aria-controls=gt{n} aria-describedby=gt{n}>{shown}</span>'
+            f'<span class=gt id=gt{n}><b>{esc(t["term"])}</b> {esc(t["def"])} <a href="{root}glossary/#{t["id"]}">Glossary</a></span></span>')
+def gloss_html(body, root, limit=14):
+    """Wrap the first use of each glossary term in a tooltip, in running text only (never in links, headings, buttons, SVG or Signal blocks)."""
+    used, out, stack = set(), [], []
+    for tok in re.split(r'(<[^>]+>)', body):
+        if tok.startswith('<'):
+            m = re.match(r'<(/?)([a-zA-Z0-9]+)', tok)
+            if m and not tok.startswith('<!'):
+                name = m[2].lower(); closing = m[1] == '/'
+                if closing:
+                    while stack:
+                        if stack.pop()[0] == name: break
+                elif name not in GL_VOID and not tok.endswith('/>'):
+                    skip = name in GL_SKIP or bool(re.search(r'class=["\']?(signal|sat-jump|row-cta|share-end|byline|crumbs|stats|kicker|sc-src|l-credit|pb-)', tok))
+                    stack.append((name, skip))
+            out.append(tok); continue
+        if not tok.strip() or any(sk for _, sk in stack) or len(used) >= limit:
+            out.append(tok); continue
+        res, rest = '', tok
+        while rest and len(used) < limit:
+            best = None
+            for t, rx in GL_RX:
+                if t['id'] in used: continue
+                mm = rx.search(rest)
+                if mm and (best is None or mm.start() < best[1].start()): best = (t, mm)
+            if not best: break
+            t, mm = best; used.add(t['id'])
+            res += rest[:mm.start()] + gloss_tip(t, mm[0], root); rest = rest[mm.end():]
+        out.append(res + rest)
+    return ''.join(out)
+
 built = []  # (path, lastmod)
 SEARCH = []
 
 def page(*, path, title, description, body, root='', current='', og_type='website', jsonld=None, head_extra='', scripts='',
-         viewport='width=device-width,initial-scale=1', sticky=True, full_title=None, lastmod=None, search=True, cls='', index=True, search_text=None, og=None):
+         viewport='width=device-width,initial-scale=1', sticky=True, full_title=None, lastmod=None, search=True, cls='', index=True, search_text=None, og=None, gloss=False):
     url = BASE + (path[:-len('index.html')] if path.endswith('index.html') else path)
     ft = full_title or f'{title} | Full Duplex'
     slug = 'home' if path == 'index.html' else re.sub(r'(/index)?\.html$', '', path).replace('/', '-')
-    kicker, og_title = og or ('Full Duplex', title)
+    kicker, og_title, *og_more = og or ('Full Duplex', title)
     if not index: slug = 'home'
-    elif IMGS: IMGS.og_card(ROOT / 'assets' / 'og' / f'{slug}.jpg', kicker, og_title)
+    elif IMGS: IMGS.og_card(ROOT / 'assets' / 'og' / f'{slug}.jpg', kicker, og_title, chips=og_more[0] if og_more else None)
+    raw_body = body
+    if gloss: body = gloss_html(body, root)
     og_img = f'{BASE}assets/og/{slug}.jpg'
     if index and not (ROOT / 'assets' / 'og' / f'{slug}.jpg').exists(): print('WARNING: missing OG card', slug, '(pip install pillow)')
     ld = ''.join(f'<script type="application/ld+json">{json.dumps(j, ensure_ascii=False)}</script>' for j in (jsonld or []))
@@ -148,7 +191,7 @@ def page(*, path, title, description, body, root='', current='', og_type='websit
     (ROOT / path).parent.mkdir(parents=True, exist_ok=True)
     (ROOT / path).write_text(out)
     if index: built.append((path, lastmod))
-    if search: SEARCH.append({'t': title, 'u': path[:-len('index.html')] if path.endswith('index.html') else path, 'd': description, 'x': (search_text if search_text is not None else strip_tags(re.sub(r'<(aside|section) class=["]?signal.*?</\1>', ' ', body, flags=re.S)))[:6000]})
+    if search: SEARCH.append({'t': title, 'u': path[:-len('index.html')] if path.endswith('index.html') else path, 'd': description, 'x': (search_text if search_text is not None else strip_tags(re.sub(r'<(aside|section) class=["]?signal.*?</\1>', ' ', raw_body, flags=re.S)))[:6000]})
     return url
 
 PUBLISHER = {'@type': 'Organization', 'name': 'Full Duplex', 'url': BASE, 'sameAs': [f'https://x.com/{X}']}
@@ -269,6 +312,85 @@ def change_list(entries, root='', limit=None):
         if limit and n >= limit: break
     return f'<ol class=changes>{"".join(out)}</ol>'
 
+
+# ---------------------------------------------------------------- quick wins (13 Nov 2026 preview): race leaderboard, phone checker, glossary page
+OGC = {'live': '#6ee79a', 'trial': '#f5c26b', 'announced': '#7f93a8', 'cyan': '#5ec8ff', 'muted': '#9fb0c3'}
+def short_op(o): return re.split(r'\s*[(;]', o)[0].strip()
+def status_chips(rs, n=4): return [(f'{short_op(r["operator"])} · {LABEL[r["status"]]}', OGC[r['status']]) for r in sorted(rs, key=lambda r: -RANK[r['status']])[:n]]
+_J = {}
+def jdata(rel):
+    if rel not in _J: _J[rel] = json.loads((ROOT / rel).read_text()) if (ROOT / rel).exists() else None
+    return _J[rel]
+BOARD = [  # (label, tracker provider, constellations.json id, race.json series id, colour)
+    ('Starlink Direct to Cell', 'Starlink', 'starlink-dtc', 'starlink-dtc', '#00cfff'),
+    ('AST SpaceMobile', 'AST SpaceMobile', 'ast', 'ast', '#ff9a3c'),
+    ('Skylo', 'Skylo', 'skylo', None, '#8fdbff'),
+    ('Lynk / Elveo', 'Lynk / Elveo', 'lynk', 'lynk', '#6ee79a'),
+    ('Globalstar (Apple)', None, 'globalstar', 'globalstar', '#b58cff')]
+def board_rows():
+    const = jdata('data/constellations.json'); race = jdata('data/race.json')
+    ci = {i['id']: i for i in const['direct_to_device'] + const['broadband_only']}
+    fr = race['frames'] if race else []
+    prev = next((f for f in reversed(fr) if not f.get('final')), None); last = fr[-1] if fr else None
+    week = (BUILD_DAY - timedelta(days=7)).isoformat()
+    out = []
+    for label, prov, cid, rid, col in BOARD:
+        rs = [r for r in ROWS if prov and provider(r['satellite']) == prov]
+        n = {st: sum(1 for r in rs if r['status'] == st) for st in RANK}
+        live_c = sorted({r['country'] for r in rs if r['status'] == 'live' and r['iso_n3']})
+        multi = [r for r in rs if not r['iso_n3'] and r['status'] == 'live']
+        multi_n = sum(int(m[1]) for r in multi for m in [re.match(r'(\d+)', r['country'])] if m)
+        ch = sum(1 for e in CHANGES if e['date'] >= week for it in e['items'] if prov and provider(it['text']) == prov)
+        c = ci.get(cid); d = None
+        if rid and prev and last and rid in last['v'] and rid in prev['v']: d = (last['v'][rid] - prev['v'][rid], prev['d'])
+        out.append({'label': label, 'prov': prov, 'col': col, 'n': n, 'live_c': live_c, 'multi_n': multi_n, 'changes': ch, 'const': c, 'delta': d,
+                    'key': (n['live'], len(live_c) + multi_n, n['trial'], n['announced'], (c or {}).get('count') or 0)})
+    out.sort(key=lambda x: x['key'], reverse=True)
+    return out
+def country_board(k=6):
+    sc = sorted(COUNTRIES.items(), key=lambda kv: (-sum(r['status'] == 'live' for r in kv[1]), -sum(r['status'] == 'trial' for r in kv[1]), -len(kv[1]), kv[0]))
+    return sc[:k]
+def race_board(root, compact=False):
+    """'This week in the race': ranked from data/tracker.json, data/constellations.json, data/race.json and the tracker change log. No numbers of our own."""
+    rows = board_rows(); const = jdata('data/constellations.json')
+    tr = []
+    for i, x in enumerate(rows, 1):
+        c = x['const']
+        if c and c.get('count') is not None:
+            sat = (f'<b>{c["count"]:,}</b><a class=lb-src href="{esc(c["source"]["url"])}" title="{esc(c["source"]["label"])}, as of {human(c["as_of"])}">source</a>')
+            if x['delta'] and not compact:
+                dv, dd = x['delta']; sat += f'<span class="lb-d{" up" if dv > 0 else " dn" if dv < 0 else ""}">{"+" if dv > 0 else ""}{dv} since {human(dd, False)}</span>'
+        else:
+            sat = f'<span class=lb-na>{"Not disclosed" if c else "n/a"}</span>' + (f'<a class=lb-src href="{esc(c["source"]["url"])}">source</a>' if c and c.get('source') else '')
+        if x['prov']:
+            cn = f'<b>{len(x["live_c"])}</b>' + (f'<span class=lb-m>+{x["multi_n"]} via partners</span>' if x['multi_n'] else '')
+            live = f'<b>{x["n"]["live"]}</b>'; tri = f'{x["n"]["trial"]}'; ann = f'{x["n"]["announced"]}'
+            wk = f'{x["changes"]} update{"s" if x["changes"] != 1 else ""}' if x['changes'] else '<span class=lb-na>None</span>'
+        else:
+            cn = live = tri = ann = '<span class=lb-na>n/a</span>'; wk = '<span class=lb-na>Apple only</span>'
+        cells = (f'<td data-l="Live services">{live}</td><td data-l="Countries live">{cn}</td>'
+                 + ('' if compact else f'<td data-l="Trials">{tri}</td><td data-l="Announced">{ann}</td>')
+                 + f'<td data-l="Phone satellites in orbit">{sat}</td>' + ('' if compact else f'<td data-l="Tracker updates, last 7 days">{wk}</td>'))
+        tr.append(f'<tr style="--c:{x["col"]}"><td class=lb-rank>{i}</td><th scope=row><i aria-hidden=true></i>{esc(x["label"])}</th>{cells}</tr>')
+    head = ('<tr><th scope=col><span class=sr>Rank</span>#</th><th scope=col>Provider</th><th scope=col>Live services</th><th scope=col>Countries live</th>'
+            + ('' if compact else '<th scope=col>Trials</th><th scope=col>Announced</th>') + '<th scope=col>Phone satellites in orbit</th>'
+            + ('' if compact else '<th scope=col>Tracker updates, last 7 days</th>') + '</tr>')
+    cb = ''.join(f'<li><a href="{root}tracker/{country_slug(c)}/"><span class=lb-cn>{esc(c)}</span><span class=lb-ops>'
+                 + ' '.join(f'<span class="spill s-{CLS[r["status"]]}" title="{esc(r["operator"])} with {esc(r["satellite"])}">{esc(short_op(r["operator"]))}</span>' for r in sorted(rs, key=lambda r: -RANK[r['status']]))
+                 + '</span></a></li>' for c, rs in country_board(4 if compact else 6))
+    note = ('Ranked by live services, then countries with a live service, trials, announced deals and satellites in orbit. '
+            f'Services and countries come from our <a href="{root}tracker.html">tracker</a> (last checked {TRACK["last_checked"]}); satellite counts from the '
+            f'<a href="{root}launches/#cnt-h">launch tracker</a> (checked {human(const["last_checked"])}), each linked to its source. '
+            'Skylo’s “via partners” figure is the 41-country row in the tracker. Globalstar works through Apple’s own iPhone features rather than operator deals, so it has no tracker rows.')
+    if compact: note = (f'Ranked by live services, then countries live. From our <a href="{root}tracker.html">tracker</a> ({TRACK["last_checked"]}) and the '
+                        f'<a href="{root}launches/#cnt-h">launch tracker</a> ({human(const["last_checked"])}), sources linked. <a href="{root}tracker.html#lb-h">Full leaderboard</a>.')
+    return (f'<section class="lboard{" compact" if compact else ""}" aria-labelledby=lb-h><div class=lb-top><div><p class=kicker>This week in the race · as of {human(BUILD_DAY.isoformat())}</p>'
+            f'<h2 id=lb-h>{"Who’s winning satellite-to-phone" if compact else "The race leaderboard"}</h2></div>'
+            + ('' if compact else share_btn('Who’s winning satellite-to-phone this week? The Full Duplex race leaderboard, with sources.', BASE + 'tracker.html#lb-h'))
+            + f'</div><div class=lb-grid><div class="tablewrap lbwrap"><table class=lb-table><thead>{head}</thead><tbody>{"".join(tr)}</tbody></table></div>'
+            f'<div class=lb-countries><h3>Most connected countries</h3><ol>{cb}</ol></div></div><p class=l-credit>{note}</p></section>')
+BUILD_DAY = date.today()
+
 # ---------------------------------------------------------------- articles
 arts = []
 for slug in SITE['article_order']:
@@ -313,7 +435,7 @@ for i, a in enumerate(arts):
            'publisher': PUBLISHER, 'mainEntityOfPage': url, 'inLanguage': 'en-GB', 'image': [f"{BASE}assets/og/articles-{a['slug']}.jpg"]},
           crumbs([('Home', ''), ('Articles', 'articles/'), (a['title'], path)])]
     page(path=path, title=a['title'], description=a['description'], body=body, root=root, og_type='article', jsonld=ld, current='articles/index.html',
-         full_title=f"{a['short_title']} | Full Duplex", lastmod=a.get('updated', a['published']), cls='is-article', search_text=strip_tags(a['body']), og=('Analysis', a['title']),
+         full_title=f"{a['short_title']} | Full Duplex", lastmod=a.get('updated', a['published']), cls='is-article', search_text=strip_tags(a['body']), og=('Analysis', a['title'], [(f'By {SITE["author"]}', OGC['cyan']), (f'{reading_time(a["body"])} min read', OGC['muted'])]), gloss=True,
          head_extra=f'<meta property="article:published_time" content="{a["published"]}"><meta property="article:author" content="{esc(SITE["author"])}">')
 
 # articles index
@@ -355,7 +477,7 @@ tools = (f'<div class=t-tools><a class="btn ghost" href="data/tracker.csv" downl
 tbody = tbody.replace('<!--TRACKER-TABLE-->', tracker_table())
 tbody = re.sub(r'<span id=tracker-checked>.*?</span>', f"<span id=tracker-checked>{TRACK['last_checked']}</span>", tbody)
 # hero + stats before the intro; filters before the table; extras after
-tbody = tbody.replace('<h1>Direct-to-cell around the world</h1>', '<header class=page-head><p class=kicker>Tracker</p><h1>Direct-to-cell around the world</h1></header>' + stats_strip(), 1)
+tbody = tbody.replace('<h1>Direct-to-cell around the world</h1>', '<header class=page-head><p class=kicker>Tracker</p><h1>Direct-to-cell around the world</h1></header>' + stats_strip() + race_board(''), 1)
 tbody = tbody.replace('<div class=tablewrap>', f'<section aria-labelledby=tbl-h><h2 id=tbl-h>Every tracked service</h2>{controls}{tools}<div class=tablewrap>', 1)
 tbody = tbody.replace('</div><p class=note>Spotted a change?', '</div></section><p class=note>Spotted a change?', 1)
 tbody += (f'<section aria-labelledby=bc-h><h2 id=bc-h>Browse by country</h2><div class=cclist>{country_links}</div></section>'
@@ -366,7 +488,7 @@ ld = [{'@context': 'https://schema.org', '@type': 'Dataset', 'name': 'Full Duple
        'url': BASE + 'tracker.html', 'creator': PUBLISHER, 'isAccessibleForFree': True, 'inLanguage': 'en-GB', 'dateModified': parse_human(TRACK['last_checked']),
        'distribution': [{'@type': 'DataDownload', 'encodingFormat': 'text/csv', 'contentUrl': BASE + 'data/tracker.csv'},
                         {'@type': 'DataDownload', 'encodingFormat': 'application/json', 'contentUrl': BASE + 'data/tracker.json'}]}]
-page(og=('Tracker', 'Direct-to-cell around the world: who is live, trialling or announced'), path='tracker.html', title=meta['title'], description=meta['description'], body=tbody, current='tracker.html', cls='is-tracker',
+page(og=('Tracker', 'Direct-to-cell around the world', [(f"{C['live']} live", OGC['live']), (f"{C['trial']} trials", OGC['trial']), (f"{C['announced']} announced", OGC['announced']), (f'{NLIVE_C} countries live', OGC['cyan'])]), path='tracker.html', title=meta['title'], description=meta['description'], body=tbody, current='tracker.html', cls='is-tracker',
      head_extra=meta['head_extra'] + '<link rel="preload" as="image" href="assets/img/tracker-map-640.webp" media="(max-width:699px)"><link rel="preload" as="image" href="assets/img/tracker-map-1280.webp" media="(min-width:700px)">', scripts=tscripts + '<script defer src="assets/tracker-filters.js"></script>', jsonld=ld, lastmod=parse_human(TRACK['last_checked']),
      search_text=meta['description'] + ' ' + ' '.join(f"{r['country']} {r['operator']} {r['satellite']} {r['status']}. {strip_tags(r['services'])}." for r in ROWS))
 
@@ -393,7 +515,7 @@ for c, rs in sorted(COUNTRIES.items()):
             f'{cards}<p class=note>Status reflects what the source says on the date checked. Multi-country services such as Skylo are listed on the <a href="{root}tracker.html">main tracker</a>.</p>'
             f'{chh}{relh}' + signal_block(root, 'tracker-country', heading=f'Get {esc(the(c))} updates in Signal', intro='Signal covers new launches, trials and status changes every week, with the sources.'))
     ld = [crumbs([('Tracker', 'tracker.html'), (c, path[:-10])])]
-    page(og=('Tracker', f'Satellite-to-phone in {the(c)}'), path=path, title=f'Satellite-to-phone in {the(c)}', description=desc, body=body, root=root, current='tracker.html', jsonld=ld, lastmod=checked,
+    page(og=('Tracker', f'Satellite-to-phone in {the(c)}', status_chips(rs)), path=path, title=f'Satellite-to-phone in {the(c)}', description=desc, body=body, root=root, current='tracker.html', jsonld=ld, lastmod=checked,
          search_text=' '.join(f"{r['operator']} with {r['satellite']}: {r['status']}. {strip_tags(r['services'])}." for r in rs))
 
 # change log page
@@ -677,6 +799,10 @@ def race_section(root):
             f'<div class=tablewrap><table><caption class=sr>Phone-capable satellites in orbit, by quarter</caption><thead>{thead}</thead><tbody>{trows}</tbody></table></div>'
             f'<p class=l-credit>Every month end is in <a href="{root}data/race.json">race.json</a>.</p><ul class=race-src>{srcs}</ul><h3 class=bb-h>Milestones</h3><ul class=race-src>{evs}</ul></details></section>')
 
+def LAUNCH_CHIPS():
+    nx = next_launches(1)
+    out = [(f'Next: {nx[0]["name"].split("|")[-1].strip()[:30]} · {iso_dt(nx[0]["net"]).strftime("%-d %b")}', OGC['cyan'])] if nx else []
+    return out + SAT_CHIPS()[:2]
 def launches_page():
     root = '../'
     fetched = LDATA.get('fetched_at')
@@ -714,7 +840,7 @@ def launches_page():
           {'@context': 'https://schema.org', '@type': 'Dataset', 'name': 'Full Duplex: phone-capable satellites in orbit by operator', 'description': 'Direct-to-device satellite counts by operator, each with a source and an as-of date, kept separate from broadband-only constellations.',
            'url': BASE + 'launches/', 'creator': PUBLISHER, 'isAccessibleForFree': True, 'dateModified': CONST['last_checked'],
            'distribution': [{'@type': 'DataDownload', 'encodingFormat': 'application/json', 'contentUrl': BASE + 'data/constellations.json'}]}]
-    page(og=('Launches', 'Launch tracker: what’s going up, and what it means for your phone'), path='launches/index.html', title='Launch tracker',
+    page(og=('Launches', 'Launch tracker: what’s going up, and what it means for your phone', LAUNCH_CHIPS()), path='launches/index.html', title='Launch tracker',
          full_title='Launch tracker: SpaceX, AST SpaceMobile and phone-satellite launches | Full Duplex',
          description='Upcoming SpaceX, AST SpaceMobile, Amazon Leo and direct-to-cell launches, tagged by what they mean for your phone, plus a sourced count of phone-capable satellites in orbit.',
          body=body, root=root, current='launches/index.html', jsonld=ld, cls='is-launches', lastmod=(fetched or BUILD_NOW.isoformat())[:10],
@@ -736,7 +862,7 @@ def journey_page():
     ld = [crumbs([('Home', ''), ('What happens when you hit send', 'journey/')]),
           {'@context': 'https://schema.org', '@type': 'Article', 'headline': meta['title'], 'description': meta['description'], 'author': AUTHOR, 'publisher': PUBLISHER,
            'mainEntityOfPage': url, 'inLanguage': 'en-GB', 'image': [f'{BASE}assets/og/journey.jpg'], 'datePublished': '2026-11-10'}]
-    page(og=('Explainer', 'What happens when you hit send: one text, via satellite'), path='journey/index.html', title=meta['title'], description=meta['description'],
+    page(og=('Explainer', 'What happens when you hit send: one text, via satellite'), gloss=True, path='journey/index.html', title=meta['title'], description=meta['description'],
          body=body, root=root, current='', jsonld=ld, cls='is-journey', lastmod='2026-11-10', scripts=f'<script defer src="{root}assets/journey.js"></script>',
          full_title='What happens when you hit send: a text via satellite | Full Duplex')
 # ---------------------------------------------------------------- satellites explainer (src/satellites.json; drawings in scripts/satviz.py)
@@ -744,6 +870,12 @@ def const_item(cid): return next((i for i in CONST['direct_to_device'] + CONST['
 def sats_card(root):
     return (f'<section class="card jcard scard" aria-labelledby=sc-h>{satviz.scene("bluebird")}<div><p class=kicker>Explainer · new</p><h2 id=sc-h><a href="{root}satellites/">Meet the satellites</a></h2>'
             f'<p>What a Starlink, a BlueBird, a Lynk and a Globalstar satellite look like, how high they fly and how they reach an ordinary phone. Plus why Amazon Leo isn’t a phone satellite (yet).</p></div></section>')
+def SAT_CHIPS():
+    out = []
+    for cid, nm, col in (('starlink-dtc', 'Starlink DTC', '#00cfff'), ('ast', 'BlueBirds', '#ff9a3c'), ('globalstar', 'Globalstar', '#b58cff'), ('lynk', 'Lynk', '#6ee79a')):
+        c = const_item(cid)
+        if c and c.get('count') is not None: out.append((f'{c["count"]:,} {nm}', col))
+    return out
 def satellites_page():
     root = '../'; url = BASE + 'satellites/'; S = SATS['sources']
     def src(keys):
@@ -803,13 +935,79 @@ def satellites_page():
     ld = [crumbs([('Home', ''), ('Meet the satellites', 'satellites/')]),
           {'@context': 'https://schema.org', '@type': 'Article', 'headline': 'Meet the satellites', 'description': 'What Starlink Direct to Cell, AST SpaceMobile BlueBird, Amazon Leo, Lynk and Globalstar satellites look like, how high they fly and how they reach an ordinary phone.',
            'author': AUTHOR, 'publisher': PUBLISHER, 'mainEntityOfPage': url, 'inLanguage': 'en-GB', 'image': [f'{BASE}assets/og/satellites.jpg'], 'datePublished': SATS['checked']}]
-    page(og=('Explainer', 'Meet the satellites that talk to your phone'), path='satellites/index.html', title='Meet the satellites',
+    page(og=('Explainer', 'Meet the satellites that talk to your phone', SAT_CHIPS()), gloss=True, path='satellites/index.html', title='Meet the satellites',
          full_title='Meet the satellites: Starlink, BlueBird, Lynk, Globalstar and Amazon Leo explained | Full Duplex',
          description='What Starlink Direct to Cell, AST SpaceMobile BlueBird, Amazon Leo, Lynk and Globalstar satellites look like, how high they fly and how they reach an ordinary phone. Plain English, with sources.',
          body=body, root=root, current='satellites/index.html', jsonld=ld, cls='is-sats', lastmod=SATS['checked'])
 launches_page()
 journey_page()
 satellites_page()
+
+
+# ---------------------------------------------------------------- "Can my phone connect?" checker (src/phones.json + data/tracker.json; logic in assets/check.js)
+PHONES = json.loads((SRC / 'phones.json').read_text())
+def check_data():
+    rows = [{'c': r['country'], 'cs': country_slug(r['country']) if r['iso_n3'] else '', 'o': r['operator'], 'os': slugify(short_op(r['operator'])),
+             'p': provider(r['satellite']), 'sat': r['satellite'], 'st': r['status'], 'sv': strip_tags(r['services']),
+             'src': [[x['label'], x['url']] for x in r['sources']], 'chk': r['checked']} for r in ROWS]
+    return {'rows': rows, 'phones': PHONES, 'checked': TRACK['last_checked'], 'base': BASE}
+def check_ops():
+    ops = {}
+    for r in ROWS:
+        if r['iso_n3']: ops.setdefault(country_slug(r['country']), []).append([slugify(short_op(r['operator'])), r['operator']])
+    return json.dumps(ops, ensure_ascii=False, separators=(',', ':'))
+def check_selects(idp, countries, models, op_hint=True):
+    copt = ''.join(f'<option value="{country_slug(c)}">{esc(c)}</option>' for c in countries)
+    groups = {}
+    for mid, lab, brand in models: groups.setdefault(brand, []).append(f'<option value="{mid}">{esc(lab)}</option>')
+    popt = ''.join(f'<optgroup label="{esc(b)}">{"".join(o)}</optgroup>' for b, o in groups.items())
+    return (f'<label><span>Country</span><select id={idp}-c name=c required><option value="">Pick a country</option>{copt}<option value=other>Somewhere else</option></select></label>'
+            f'<label><span>Network</span><select id={idp}-o name=o><option value="">Pick a network</option></select></label>'
+            f'<label><span>Phone</span><select id={idp}-p name=p><option value="">Pick a phone</option>{popt}</select></label>')
+def check_box(root):
+    """Compact entry box for the home page: a plain GET form to /check/, so it works without JavaScript too."""
+    return (f'<section class="card chkbox" aria-labelledby=ck-h><div class=ck-copy><p class=kicker>New · 3 taps, no sign-up</p><h2 id=ck-h><a href="{root}check/">Can my phone connect to a satellite?</a></h2>'
+            f'<p>Pick your country, network and phone. We’ll tell you what’s live, what’s on trial and how to check your handset, with sources. No IMEI needed.</p></div>'
+            f'<form class=ck-form action="{root}check/" method=get data-chk data-ops="{esc(check_ops())}">{check_selects("hk", sorted(COUNTRIES), PHONES["models"])}<button class=btn type=submit>Check</button></form></section>')
+def check_page():
+    root = '../'; url = BASE + 'check/'
+    data = json.dumps(check_data(), ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
+    srcs = sorted({(v['label'], v['url']) for v in PHONES['lists'].values() if v.get('url')} | {(PHONES[k]['label'], PHONES[k]['url']) for k in ('apple_carrier', 'apple_sos', 'pixel_sos')} | {(h['src'][0], h['src'][1]) for h in PHONES['howto']})
+    body = (f'<header class=page-head><p class=kicker>Checker · satellite to phone</p><h1>Can my phone connect?</h1>'
+            f'<p class=lede>Pick your country, your network and your phone. You’ll get a plain-English answer from our tracker: what’s live, what’s only on trial, what it does, and whether your phone is on the official list.</p>'
+            f'<p class=jcred>Built by a mobile network insider with over 13 years in GSM. We never ask for your IMEI and nothing you pick leaves your browser.</p></header>'
+            f'<form id=chk class="card ck-form big" action="./" method=get data-chk data-ops="{esc(check_ops())}">{check_selects("ck", sorted(COUNTRIES), PHONES["models"])}<button class=btn type=submit>Check</button></form>'
+            f'<div id=chk-out class=ck-out aria-live=polite></div>'
+            f'<noscript><p class=note>The checker needs JavaScript. Every service is listed in the <a href="{root}tracker.html">tracker</a>, with sources.</p></noscript>'
+            f'<section class=ck-about aria-labelledby=ca-h><h2 id=ca-h>How the checker works</h2><ul>'
+            f'<li>Network answers come straight from the <a href="{root}tracker.html">Full Duplex tracker</a> (last checked {TRACK["last_checked"]}): {len(ROWS)} services in {NCOUNTRIES} countries.</li>'
+            f'<li>Phone answers only use official compatibility lists from networks, Apple and Google. If we don’t have one for your network and phone, we say so and show you how to check on the phone itself.</li>'
+            f'<li>Lists change often. Always confirm on your network’s own page before you pay for anything.</li></ul>'
+            f'<p class=l-credit>Phone lists used (checked {human(PHONES["checked"])}): ' + ' · '.join(f'<a href="{esc(u)}">{esc(l)}</a>' for l, u in srcs) + '. Orange and Telstra details come from the tracker’s own sources.</p></section>'
+            f'<script type=application/json id=chk-data>{data}</script>'
+            + signal_block(root, 'checker', heading='Get told when your network goes live', intro='Signal covers new launches, trials and status changes every week, country by country, with the sources.'))
+    page(og=('Checker', 'Can my phone connect to a satellite?', [(f'{len(ROWS)} services', OGC['cyan']), (f'{NCOUNTRIES} countries', OGC['live']), ('No IMEI needed', OGC['muted'])]),
+         path='check/index.html', title='Can my phone connect?', full_title='Can my phone connect to a satellite? Check by country, network and phone | Full Duplex',
+         description='Check whether satellite-to-phone works on your network and phone: pick your country, network and handset for a plain-English answer with sources. No IMEI needed.',
+         body=body, root=root, cls='is-check', scripts='<script defer src="../assets/check.js"></script>', lastmod=parse_human(TRACK['last_checked']),
+         search_text='Can my phone connect to a satellite? Phone checker by country, network and phone model. ' + ' '.join(f"{r['country']} {r['operator']}" for r in ROWS))
+
+def glossary_page():
+    root = '../'; terms = sorted(GLOSS['terms'], key=lambda t: t['term'].lower())
+    jump = ''.join(f'<a href="#{t["id"]}">{esc(t["term"])}</a>' for t in terms)
+    items = ''.join(f'<div class=gl-item id="{t["id"]}"><dt>{esc(t["term"])}</dt><dd><p>{esc(t["def"])}</p><p class=gl-src>Source: '
+                    + ' · '.join(f'<a href="{esc(u)}">{esc(l)}</a>' for l, u in t['src']) + '</p></dd></div>' for t in terms)
+    body = (f'<header class=page-head><p class=kicker>Glossary</p><h1>Satellite-to-phone jargon, in plain English</h1>'
+            f'<p class=lede>The terms you’ll meet in our articles and explainers. Tap or hover a dotted word anywhere on the site to see its meaning without leaving the page.</p>'
+            f'<p class=jcred>Definitions by a mobile network insider with over 13 years in GSM. Checked {human(GLOSS["checked"])}.</p></header>'
+            f'<nav class=gl-jump aria-label="Jump to a term">{jump}</nav><dl class=gl-list>{items}</dl>'
+            + signal_block(root, 'glossary'))
+    page(og=('Glossary', 'Satellite-to-phone jargon, in plain English', [(f'{len(terms)} terms', OGC['cyan']), ('D2D · NTN · LEO · MVNO', OGC['muted'])]),
+         path='glossary/index.html', title='Glossary', full_title='Satellite-to-phone glossary: D2D, NTN, LEO, MVNO and more | Full Duplex',
+         description='Plain-English definitions of satellite-to-phone and mobile network jargon: D2D, NTN, LEO, MVNO, spectrum, eNodeB, bent pipe and more, with sources.',
+         body=body, root=root, lastmod=GLOSS['checked'])
+check_page()
+glossary_page()
 
 # ---------------------------------------------------------------- search + 404
 body = ('<header class=page-head><p class=kicker>Search</p><h1>Search Full Duplex</h1></header>'
@@ -834,6 +1032,8 @@ home = (f'<section class=hero><div class=hero-art aria-hidden=true><img src="ass
         f'<figcaption><span class=k-live>Live</span><span class=k-trial>Trial</span><span class=k-ann>Announced</span> <a href="tracker.html">Open the map</a></figcaption></figure>'
         f'</section>'
         + stats_strip()
+        + check_box('')
+        + race_board('', compact=True)
         + next_card('')
         + f'<section aria-labelledby=latest class=front><h2 id=latest class=sec>Latest analysis</h2><div class=front-grid>{art_card(feat, "", 3, "card feature")}'
           f'<div class=grid3>{"".join(art_card(a) for a in rest[:3])}</div></div></section>'
@@ -849,7 +1049,7 @@ home = (f'<section class=hero><div class=hero-art aria-hidden=true><img src="ass
           '<p><a class="btn ghost" href="sponsor.html">See sponsor options</a></p></aside>')
 ld = [{'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'Full Duplex', 'url': BASE, 'inLanguage': 'en-GB', 'publisher': PUBLISHER,
        'potentialAction': {'@type': 'SearchAction', 'target': BASE + 'search.html?q={q}', 'query-input': 'required name=q'}}]
-page(og=('Full Duplex', 'Your phone is about to talk to space.'), path='index.html', title='Satellite-to-phone and the future of mobile', full_title='Satellite-to-phone and the future of mobile | Full Duplex',
+page(og=('Full Duplex', 'Your phone is about to talk to space.', [(f"{C['live']} live services", OGC['live']), (f'{NLIVE_C} countries', OGC['cyan']), ('Weekly briefing: Signal', OGC['muted'])]), path='index.html', title='Satellite-to-phone and the future of mobile', full_title='Satellite-to-phone and the future of mobile | Full Duplex',
      description=SITE['home_description'], body=home, current='index.html', jsonld=ld, cls='is-home',
      scripts='<script defer src="assets/globe.js"></script><script defer src="assets/launches.js"></script>', lastmod=max(a.get('updated', a['published']) for a in arts), search=False)
 

@@ -1,0 +1,399 @@
+{
+ "_readme": "Glossary for hover/tap tooltips (first use on a page, articles and explainers) and /glossary/. Plain UK English. Each term carries the source used for its definition.",
+ "checked": "2026-11-13",
+ "terms": [
+  {
+   "id": "d2d",
+   "term": "D2D",
+   "match": [
+    "\\bD2D\\b",
+    "\\bdirect-to-device\\b"
+   ],
+   "def": "Direct to device: a satellite talking straight to an ordinary phone, with no dish or special handset. Your phone thinks it has found another mast, just one a few hundred kilometres up.",
+   "src": [
+    [
+     "3GPP: Non-Terrestrial Networks (NTN) overview",
+     "https://www.3gpp.org/technologies/ntn-overview"
+    ]
+   ]
+  },
+  {
+   "id": "d2c",
+   "term": "Direct to cell",
+   "match": [
+    "\\bD2C\\b",
+    "\\b[Dd]irect[- ]to[- ][Cc]ell\\b"
+   ],
+   "def": "Starlink’s name (and the industry’s shorthand, D2C) for satellites that act as a mobile mast in space and connect to normal 4G phones through a partner network.",
+   "src": [
+    [
+     "3GPP: Non-Terrestrial Networks (NTN) overview",
+     "https://www.3gpp.org/technologies/ntn-overview"
+    ]
+   ]
+  },
+  {
+   "id": "ntn",
+   "term": "NTN",
+   "match": [
+    "\\bNTN\\b",
+    "\\bnon-terrestrial networks?\\b"
+   ],
+   "def": "Non-terrestrial network: the official 3GPP term for mobile networks that use satellites (or high-altitude platforms) instead of, or as well as, masts on the ground.",
+   "src": [
+    [
+     "3GPP: Non-Terrestrial Networks (NTN) overview",
+     "https://www.3gpp.org/technologies/ntn-overview"
+    ]
+   ]
+  },
+  {
+   "id": "mno",
+   "term": "Mobile network operator",
+   "match": [
+    "\\bMNOs?\\b",
+    "\\bmobile network operators?\\b"
+   ],
+   "def": "A company that owns its own mobile network and spectrum licences, such as O2, EE or T-Mobile. Satellite firms partner with them to borrow their frequencies.",
+   "src": [
+    [
+     "Wikipedia: Mobile network operator",
+     "https://en.wikipedia.org/wiki/Mobile_network_operator"
+    ]
+   ]
+  },
+  {
+   "id": "mvno",
+   "term": "MVNO",
+   "match": [
+    "\\bMVNOs?\\b"
+   ],
+   "def": "Mobile virtual network operator: a brand that sells mobile service over someone else’s network. A thin MVNO mostly resells; a thick MVNO runs its own core network, SIMs and billing.",
+   "src": [
+    [
+     "Wikipedia: Mobile virtual network operator",
+     "https://en.wikipedia.org/wiki/Mobile_virtual_network_operator"
+    ]
+   ]
+  },
+  {
+   "id": "leo",
+   "term": "LEO",
+   "match": [
+    "\\bLEO\\b",
+    "\\b[Ll]ow Earth orbit\\b"
+   ],
+   "def": "Low Earth orbit: roughly 500 to 2,000 km up. Close enough for a phone’s weak signal to reach, but each satellite crosses the sky in minutes, so you need hundreds of them.",
+   "src": [
+    [
+     "3GPP: Non-Terrestrial Networks (NTN) overview",
+     "https://www.3gpp.org/technologies/ntn-overview"
+    ]
+   ]
+  },
+  {
+   "id": "geo",
+   "term": "GEO",
+   "match": [
+    "\\bGEO\\b",
+    "\\b[Gg]eostationary\\b"
+   ],
+   "def": "Geostationary orbit: 35,786 km above the equator, where a satellite seems to hang still in the sky. Great for TV, but too far for an ordinary phone to talk to directly.",
+   "src": [
+    [
+     "3GPP: Non-Terrestrial Networks (NTN) overview",
+     "https://www.3gpp.org/technologies/ntn-overview"
+    ]
+   ]
+  },
+  {
+   "id": "mss",
+   "term": "MSS",
+   "match": [
+    "\\bMSS\\b",
+    "\\b[Mm]obile[- ]satellite service\\b"
+   ],
+   "def": "Mobile-satellite service: radio spectrum set aside internationally for satellites that talk to mobile terminals. Globalstar, Skylo’s partners and others use MSS bands rather than a mobile network’s own frequencies.",
+   "src": [
+    [
+     "Wikipedia: Mobile-satellite service",
+     "https://en.wikipedia.org/wiki/Mobile-satellite_service"
+    ]
+   ]
+  },
+  {
+   "id": "scs",
+   "term": "SCS",
+   "match": [
+    "\\bSCS\\b",
+    "\\b[Ss]upplemental [Cc]overage from [Ss]pace\\b"
+   ],
+   "def": "Supplemental Coverage from Space: the US FCC’s rules (2024) that let a satellite operator use a mobile network’s spectrum to fill its coverage gaps, as Starlink does with T-Mobile.",
+   "src": [
+    [
+     "FCC: Supplemental Coverage from Space framework (14 Mar 2024)",
+     "https://www.fcc.gov/document/fcc-advances-supplemental-coverage-space-framework"
+    ]
+   ]
+  },
+  {
+   "id": "spectrum",
+   "term": "Spectrum",
+   "match": [
+    "\\bspectrum\\b"
+   ],
+   "def": "The range of radio frequencies. Governments license slices of it, and who owns which slice decides who can talk to your phone, which is why satellite firms team up with mobile networks.",
+   "src": [
+    [
+     "Wikipedia: Radio spectrum",
+     "https://en.wikipedia.org/wiki/Radio_spectrum"
+    ]
+   ]
+  },
+  {
+   "id": "mhz",
+   "term": "MHz",
+   "match": [
+    "\\bMHz\\b"
+   ],
+   "def": "Megahertz, a million cycles a second: how radio frequencies are measured. Lower frequencies (say 700 MHz) travel further and get through better; higher ones carry more data.",
+   "src": [
+    [
+     "Wikipedia: Radio spectrum",
+     "https://en.wikipedia.org/wiki/Radio_spectrum"
+    ]
+   ]
+  },
+  {
+   "id": "band",
+   "term": "Frequency band",
+   "match": [
+    "\\b[Bb]and \\d{1,3}\\b"
+   ],
+   "def": "A numbered block of mobile spectrum defined by 3GPP, such as band 25 (1900 MHz). Your phone has to support the band a satellite uses for the satellite to reach it.",
+   "src": [
+    [
+     "3GPP: LTE",
+     "https://www.3gpp.org/technologies/lte"
+    ]
+   ]
+  },
+  {
+   "id": "enodeb",
+   "term": "eNodeB",
+   "match": [
+    "\\beNodeBs?\\b",
+    "\\bgNodeBs?\\b"
+   ],
+   "def": "The 3GPP name for a 4G base station (the 5G one is a gNodeB): the radio kit at the top of a mast. A direct-to-cell satellite does this job from space.",
+   "src": [
+    [
+     "3GPP TS 36.300 (E-UTRAN overall description)",
+     "https://www.3gpp.org/dynareport/36300.htm"
+    ]
+   ]
+  },
+  {
+   "id": "bentpipe",
+   "term": "Bent pipe",
+   "match": [
+    "\\b[Bb]ent[- ]pipe\\b",
+    "\\btransparent payload\\b"
+   ],
+   "def": "A satellite that just relays: it takes the signal from your phone, shifts its frequency, amplifies it and beams it down to a ground station, with no processing on board. 3GPP calls it a transparent payload.",
+   "src": [
+    [
+     "3GPP: Non-Terrestrial Networks (NTN) overview",
+     "https://www.3gpp.org/technologies/ntn-overview"
+    ]
+   ]
+  },
+  {
+   "id": "linkbudget",
+   "term": "Link budget",
+   "match": [
+    "\\b[Ll]ink budget\\b"
+   ],
+   "def": "The sum of every gain and loss between a transmitter and a receiver. A phone has a tiny antenna and little power, so a satellite needs a big antenna and a low orbit to close the link budget.",
+   "src": [
+    [
+     "3GPP: Non-Terrestrial Networks (NTN) overview",
+     "https://www.3gpp.org/technologies/ntn-overview"
+    ],
+    [
+     "Wikipedia: Link budget",
+     "https://en.wikipedia.org/wiki/Link_budget"
+    ]
+   ]
+  },
+  {
+   "id": "phased",
+   "term": "Phased array",
+   "match": [
+    "\\b[Pp]hased[- ]array\\b"
+   ],
+   "def": "A flat antenna made of many small elements whose timing is adjusted to steer the beam electronically, with no moving parts. AST’s BlueBirds unfold huge ones.",
+   "src": [
+    [
+     "Wikipedia: Phased array",
+     "https://en.wikipedia.org/wiki/Phased_array"
+    ]
+   ]
+  },
+  {
+   "id": "esim",
+   "term": "eSIM",
+   "match": [
+    "\\beSIMs?\\b"
+   ],
+   "def": "A SIM built into the phone that you download instead of inserting. Handy for adding a second line, such as a satellite plan, without swapping cards.",
+   "src": [
+    [
+     "GSMA: eSIM",
+     "https://www.gsma.com/solutions-and-impact/technologies/esim/"
+    ]
+   ]
+  },
+  {
+   "id": "imei",
+   "term": "IMEI",
+   "match": [
+    "\\bIMEI\\b"
+   ],
+   "def": "Your phone’s unique serial number (dial *#06# to see it). Networks use it to check which features a handset supports. Our checker never asks for it.",
+   "src": [
+    [
+     "Wikipedia: IMEI",
+     "https://en.wikipedia.org/wiki/International_Mobile_Equipment_Identity"
+    ]
+   ]
+  },
+  {
+   "id": "roaming",
+   "term": "Roaming",
+   "match": [
+    "\\broaming\\b"
+   ],
+   "def": "Using another network when yours isn’t there, usually abroad. Satellite-to-phone works much like roaming: your phone attaches to a partner network that happens to be in space.",
+   "src": [
+    [
+     "Wikipedia: Roaming",
+     "https://en.wikipedia.org/wiki/Roaming"
+    ]
+   ]
+  },
+  {
+   "id": "3gpp",
+   "term": "3GPP",
+   "match": [
+    "\\b3GPP\\b"
+   ],
+   "def": "The body that writes the global mobile standards (GSM, 3G, 4G LTE, 5G). Its Release 17 added satellite (NTN) support to the standards in 2022.",
+   "src": [
+    [
+     "3GPP: Non-Terrestrial Networks (NTN) overview",
+     "https://www.3gpp.org/technologies/ntn-overview"
+    ]
+   ]
+  },
+  {
+   "id": "lte",
+   "term": "LTE",
+   "match": [
+    "\\bLTE\\b"
+   ],
+   "def": "Long Term Evolution, the standard behind 4G. Starlink’s direct-to-cell service speaks LTE, which is why it works with phones people already own.",
+   "src": [
+    [
+     "3GPP: LTE",
+     "https://www.3gpp.org/technologies/lte"
+    ]
+   ]
+  },
+  {
+   "id": "gsm",
+   "term": "GSM",
+   "match": [
+    "\\bGSM\\b"
+   ],
+   "def": "Global System for Mobile communications: the 2G standard from 1991 that started it all, and the base that SMS, roaming and SIM cards were built on.",
+   "src": [
+    [
+     "Wikipedia: GSM",
+     "https://en.wikipedia.org/wiki/GSM"
+    ]
+   ]
+  },
+  {
+   "id": "rcs",
+   "term": "RCS",
+   "match": [
+    "\\bRCS\\b"
+   ],
+   "def": "Rich Communication Services: the upgrade to SMS that adds read receipts, typing indicators and photos, used by Google Messages and, since iOS 18, iPhone.",
+   "src": [
+    [
+     "GSMA: RCS",
+     "https://www.gsma.com/solutions-and-impact/technologies/networks/rcs/"
+    ]
+   ]
+  },
+  {
+   "id": "constellation",
+   "term": "Constellation",
+   "match": [
+    "\\bconstellations?\\b"
+   ],
+   "def": "A fleet of satellites working together, spread across orbits so that at least one is always overhead.",
+   "src": [
+    [
+     "Wikipedia: Satellite constellation",
+     "https://en.wikipedia.org/wiki/Satellite_constellation"
+    ]
+   ]
+  },
+  {
+   "id": "groundstation",
+   "term": "Ground station",
+   "match": [
+    "\\bground stations?\\b"
+   ],
+   "def": "A dish site on Earth that links satellites to the internet and to the mobile network’s core. With a bent-pipe satellite, your call or message comes down here before it goes anywhere else.",
+   "src": [
+    [
+     "3GPP: Non-Terrestrial Networks (NTN) overview",
+     "https://www.3gpp.org/technologies/ntn-overview"
+    ]
+   ]
+  },
+  {
+   "id": "backhaul",
+   "term": "Backhaul",
+   "match": [
+    "\\bbackhaul\\b"
+   ],
+   "def": "The link that carries traffic from a mast back to the core network. Satellites such as Starlink broadband are often used as backhaul for remote masts, which is different from talking to phones.",
+   "src": [
+    [
+     "Wikipedia: Backhaul",
+     "https://en.wikipedia.org/wiki/Backhaul_(telecommunications)"
+    ]
+   ]
+  },
+  {
+   "id": "handover",
+   "term": "Handover",
+   "match": [
+    "\\bhandovers?\\b",
+    "\\bhandoffs?\\b"
+   ],
+   "def": "Passing a connection from one cell to another without dropping it. Handing over between a ground mast and a satellite is one of the harder problems in direct to device.",
+   "src": [
+    [
+     "Wikipedia: Handover",
+     "https://en.wikipedia.org/wiki/Handover"
+    ]
+   ]
+  }
+ ]
+}

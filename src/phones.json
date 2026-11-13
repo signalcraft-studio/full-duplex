@@ -1,0 +1,350 @@
+{
+ "_readme": "Phone compatibility for /check/. Only official, sourced lists. A model is never marked compatible unless the operator's (or Apple's/Google's) own page lists it. Anything not covered here shows 'check with your network'. No IMEI input, nothing is sent anywhere: the checker runs in the browser.",
+ "checked": "2026-11-13",
+ "models": [
+  [
+   "iphone-18",
+   "iPhone 18 Pro or 18 Pro Max",
+   "Apple"
+  ],
+  [
+   "iphone-17",
+   "iPhone 17, 17 Pro or 17 Pro Max",
+   "Apple"
+  ],
+  [
+   "iphone-17e",
+   "iPhone 17e",
+   "Apple"
+  ],
+  [
+   "iphone-air",
+   "iPhone Air",
+   "Apple"
+  ],
+  [
+   "iphone-16",
+   "iPhone 16, 16 Plus, 16 Pro or 16 Pro Max",
+   "Apple"
+  ],
+  [
+   "iphone-16e",
+   "iPhone 16e",
+   "Apple"
+  ],
+  [
+   "iphone-15",
+   "iPhone 15 (any model)",
+   "Apple"
+  ],
+  [
+   "iphone-14",
+   "iPhone 14 (any model)",
+   "Apple"
+  ],
+  [
+   "iphone-13",
+   "iPhone 13 (any model, including mini)",
+   "Apple"
+  ],
+  [
+   "iphone-12",
+   "iPhone 12 or older",
+   "Apple"
+  ],
+  [
+   "pixel-11",
+   "Pixel 11, 11 Pro, 11 Pro XL or 11 Pro Fold",
+   "Google"
+  ],
+  [
+   "pixel-10",
+   "Pixel 10, 10 Pro, 10 Pro XL or 10 Pro Fold",
+   "Google"
+  ],
+  [
+   "pixel-10a",
+   "Pixel 10a",
+   "Google"
+  ],
+  [
+   "pixel-9",
+   "Pixel 9, 9 Pro, 9 Pro XL or 9 Pro Fold",
+   "Google"
+  ],
+  [
+   "pixel-9a",
+   "Pixel 9a",
+   "Google"
+  ],
+  [
+   "pixel-8",
+   "Pixel 8 or older",
+   "Google"
+  ],
+  [
+   "galaxy-s26",
+   "Galaxy S26, S26+, S26 Ultra or S26 FE",
+   "Samsung"
+  ],
+  [
+   "galaxy-s25",
+   "Galaxy S25, S25+, S25 Ultra, S25 Edge or S25 FE",
+   "Samsung"
+  ],
+  [
+   "galaxy-s24",
+   "Galaxy S24, S24+, S24 Ultra or S24 FE",
+   "Samsung"
+  ],
+  [
+   "galaxy-s23",
+   "Galaxy S23, S23+, S23 Ultra or S23 FE",
+   "Samsung"
+  ],
+  [
+   "galaxy-s22",
+   "Galaxy S22, S22+ or S22 Ultra",
+   "Samsung"
+  ],
+  [
+   "galaxy-s21",
+   "Galaxy S21, S21+, S21 Ultra or S21 FE",
+   "Samsung"
+  ],
+  [
+   "galaxy-other",
+   "Another Galaxy (A series, Z Fold, Z Flip, XCover)",
+   "Samsung"
+  ],
+  [
+   "other",
+   "Another make of phone",
+   "Other"
+  ],
+  [
+   "unsure",
+   "I’m not sure",
+   "Other"
+  ]
+ ],
+ "lists": {
+  "United States|T-Mobile": {
+   "label": "T-Mobile’s T-Satellite eligible devices list",
+   "url": "https://www.t-mobile.com/support/coverage/satellite-support",
+   "checked": "2026-11-13",
+   "yes": {
+    "iphone-17": "Texts, picture messages and app data",
+    "iphone-air": "Texts, picture messages and app data",
+    "iphone-16": "Texts, picture messages and app data",
+    "iphone-16e": "Texts, picture messages and app data",
+    "iphone-15": "Texts, picture messages and app data",
+    "iphone-14": "Texts, picture messages and app data",
+    "iphone-13": "Texts, picture messages and app data",
+    "pixel-10": "Texts, picture messages and app data",
+    "pixel-9": "Texts, picture messages and app data",
+    "galaxy-s25": "Texts, picture messages and app data",
+    "galaxy-s24": "Texts, picture messages and app data",
+    "galaxy-s23": "Texts, picture messages and app data",
+    "galaxy-s22": "Texts, picture messages and app data"
+   },
+   "part": {
+    "pixel-9a": "Texts only: no picture messages or app data",
+    "galaxy-s21": "Texts and picture messages. No app data on the S21, S21+ and S21 Ultra (the S21 FE gets app data too)",
+    "galaxy-other": "Many A series, Z Fold, Z Flip and XCover models are listed, some without app data. Check your exact model"
+   },
+   "extra": "Not a T-Mobile customer? T-Mobile says you need an unlocked phone from its list with a free eSIM slot."
+  },
+  "United Kingdom|Virgin Media O2": {
+   "label": "O2’s list of phones that work with O2 Satellite",
+   "url": "https://www.o2.co.uk/help/products-and-services/offers-and-extras/o2-satellite",
+   "checked": "2026-11-13",
+   "yes": {
+    "iphone-18": "Listed",
+    "iphone-17": "Listed",
+    "iphone-17e": "Listed",
+    "iphone-air": "Listed",
+    "iphone-16": "Listed",
+    "iphone-16e": "Listed",
+    "iphone-15": "Listed",
+    "iphone-14": "Listed",
+    "iphone-13": "Listed",
+    "pixel-11": "Listed",
+    "pixel-10": "Listed",
+    "pixel-10a": "Listed",
+    "pixel-9": "Listed",
+    "galaxy-s26": "Listed",
+    "galaxy-s25": "Listed",
+    "galaxy-s24": "Listed",
+    "galaxy-s23": "Listed"
+   },
+   "part": {
+    "galaxy-other": "Some A series (A15 to A57) and Z Fold and Z Flip 5 to 8 models are listed. Check your exact model"
+   },
+   "extra": "O2 says you need a Pay Monthly plan and the latest software, and some customers need a free SIM swap first."
+  },
+  "France|Orange": {
+   "label": "Orange Message Satellite (tracker source)",
+   "from_tracker": true,
+   "checked": "2026-11-10",
+   "only": true,
+   "yes": {
+    "pixel-11": "Texts and location sharing",
+    "pixel-10": "Texts and location sharing",
+    "pixel-9": "Texts and location sharing"
+   },
+   "no_text": "Orange’s Message Satellite works only on the Google Pixel 9 (not 9a), 10 and 11 on Orange 5G and 5G+ plans."
+  },
+  "Australia|Telstra": {
+   "label": "Telstra Select Satellite Apps (tracker source)",
+   "from_tracker": true,
+   "checked": "2026-11-09",
+   "yes": {
+    "iphone-18": "Satellite messaging and Select Satellite Apps",
+    "iphone-17": "Satellite messaging and Select Satellite Apps",
+    "iphone-17e": "Satellite messaging and Select Satellite Apps",
+    "iphone-air": "Satellite messaging and Select Satellite Apps",
+    "iphone-16": "Satellite messaging and Select Satellite Apps",
+    "iphone-16e": "Satellite messaging and Select Satellite Apps",
+    "iphone-15": "Satellite messaging and Select Satellite Apps",
+    "iphone-14": "Satellite messaging and Select Satellite Apps",
+    "iphone-13": "Satellite messaging and Select Satellite Apps",
+    "galaxy-s26": "Satellite messaging and Select Satellite Apps"
+   },
+   "extra": "Telstra’s satellite apps need an eligible Upfront Mobile or Business plan with an iPhone 13 or newer or a Galaxy S26. Other phones may still get satellite texts: check Telstra’s list."
+  }
+ },
+ "apple_carrier": {
+  "label": "Apple: About network operator-provided satellite features on iPhone",
+  "url": "https://support.apple.com/en-gb/122339",
+  "rule": "Apple says network-operator satellite features need an iPhone 13 or later with the latest iOS.",
+  "no": [
+   "iphone-12"
+  ]
+ },
+ "apple_sos": {
+  "label": "Apple: Use Emergency SOS via satellite on your iPhone",
+  "url": "https://support.apple.com/en-gb/101573",
+  "models": [
+   "iphone-18",
+   "iphone-17",
+   "iphone-17e",
+   "iphone-air",
+   "iphone-16",
+   "iphone-16e",
+   "iphone-15",
+   "iphone-14"
+  ],
+  "countries": [
+   "Andorra",
+   "Australia",
+   "Austria",
+   "Belgium",
+   "Canada",
+   "France",
+   "Germany",
+   "Iceland",
+   "Ireland",
+   "Italy",
+   "Japan",
+   "Luxembourg",
+   "Mexico",
+   "Netherlands",
+   "New Zealand",
+   "Norway",
+   "Portugal",
+   "Spain",
+   "Switzerland",
+   "United Kingdom",
+   "United States"
+  ],
+  "text": "Apple’s own satellite features (Emergency SOS, and in some countries messages and Find My) work on iPhone 14 or later in {country}, separately from your network. They run on Globalstar satellites.",
+  "caveat": "Not offered on iPhones bought in Armenia, Belarus, mainland China, Kazakhstan, Kyrgyzstan or Russia."
+ },
+ "pixel_sos": {
+  "label": "Google: Get emergency help through satellite with your Pixel phone",
+  "url": "https://support.google.com/pixelphone/answer/15254448?hl=en-GB",
+  "models": [
+   "pixel-11",
+   "pixel-10",
+   "pixel-10a",
+   "pixel-9"
+  ],
+  "countries": [
+   "Australia",
+   "Austria",
+   "Belgium",
+   "Bulgaria",
+   "Canada",
+   "Croatia",
+   "Cyprus",
+   "Czechia",
+   "Denmark",
+   "Estonia",
+   "Finland",
+   "France",
+   "Germany",
+   "Greece",
+   "Hungary",
+   "Ireland",
+   "Italy",
+   "Latvia",
+   "Liechtenstein",
+   "Lithuania",
+   "Luxembourg",
+   "Netherlands",
+   "Norway",
+   "Poland",
+   "Portugal",
+   "Puerto Rico",
+   "Romania",
+   "Slovakia",
+   "Slovenia",
+   "Spain",
+   "Sweden",
+   "Switzerland",
+   "United Kingdom",
+   "United States"
+  ],
+  "text": "Google’s Satellite SOS (emergency texts only) works on your Pixel in {country}, separately from your network. Google says it covers every Pixel since the Pixel 9, except the 9a."
+ },
+ "howto": [
+  {
+   "id": "iphone",
+   "h": "On an iPhone",
+   "steps": [
+    "Open Settings, then Mobile Data, then Mobile Data Options (or tap your network if you have two SIMs).",
+    "If you see Satellite there, your network offers satellite on your iPhone. If it isn’t there, it doesn’t (yet).",
+    "When it’s in use, the status bar shows SAT."
+   ],
+   "src": [
+    "Apple Support (UK)",
+    "https://support.apple.com/en-gb/122339"
+   ]
+  },
+  {
+   "id": "pixel",
+   "h": "On a Google Pixel",
+   "steps": [
+    "Open Settings, then Safety & emergency, then Satellite SOS, to see whether Google’s emergency satellite feature is on and to try the demo.",
+    "Network satellite services connect by themselves when there’s no signal and you can see the sky."
+   ],
+   "src": [
+    "Google Pixel Help",
+    "https://support.google.com/pixelphone/answer/15254448?hl=en-GB"
+   ]
+  },
+  {
+   "id": "tmo",
+   "h": "Signs you’re connected (T-Mobile)",
+   "steps": [
+    "iPhone: signal bars, SAT and the network name T-Mobile SpaceX or T-Sat+Starlink.",
+    "Android: a satellite icon and the same network names."
+   ],
+   "src": [
+    "T-Mobile Support",
+    "https://www.t-mobile.com/support/coverage/satellite-support"
+   ]
+  }
+ ]
+}
