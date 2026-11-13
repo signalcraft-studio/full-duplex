@@ -69,8 +69,9 @@
    Review: ?welcome=a|b|c|d forces a concept (B-D live in assets/welcome-alt.js, loaded only for review). */
 (function(){
   var KEY='fd_welcomed', me=document.currentScript||document.querySelector('script[src*="assets/site.js"]');
-  var Q=(location.search.match(/[?&]welcome=([a-d])\b/)||[])[1];
+  var Q=(location.search.match(/[?&]welcome=([a-d])\b/)||[])[1], I=(location.search.match(/[?&]intro=(d[123])\b/)||[])[1];
   if(!me)return;
+  if(I)Q='d';
   if(!Q){
     try{if(localStorage.getItem(KEY)||/[?&]nowelcome\b/.test(location.search))return;}catch(e){return;}
     if(document.body.classList.contains('is-game')||document.body.classList.contains('is-check'))return;
@@ -86,24 +87,27 @@
     '<g transform="translate(250 32) rotate(-12)"><g class=wl-sat><rect x=-28 y=-5 width=18 height=10 fill="#1d3a66" stroke="#5ec8ff" stroke-width=1 /><rect x=10 y=-5 width=18 height=10 fill="#1d3a66" stroke="#5ec8ff" stroke-width=1 /><rect x=-8 y=-8 width=16 height=16 rx=2 fill="#e8eef7"/><circle cx=0 cy=0 r=3 fill="#00cfff"/></g></g>'+
     '<path class=wl-down d="M244 46L66 88" fill=none stroke="#6ee79a" stroke-width=2.4 stroke-linecap=round />'+
     '<g class=wl-ring fill=none stroke="#6ee79a" stroke-width=1.6><circle cx=52 cy=96 r=16 /><circle cx=52 cy=96 r=26 /></g></svg>'};
-  function show(V){
-    var d=document.createElement('div'); d.className='welcome '+V.cls+(still?' still':''); d.setAttribute('role','dialog'); d.setAttribute('aria-modal','false'); d.setAttribute('aria-labelledby','wl-h');
+  function show(V,calm){
+    var still2=still||calm, d=document.createElement('div'); d.className='welcome '+V.cls+(still2?' still':''); d.setAttribute('role','dialog'); d.setAttribute('aria-modal','false'); d.setAttribute('aria-labelledby','wl-h');
     if(V.wt)d.style.setProperty('--wt',V.wt);
-    var rev=Q?'<p class=wl-rev>Review: '+['a','b','c','d'].map(function(x){return x===Q?'<b>'+x.toUpperCase()+'</b>':'<a href="?welcome='+x+'">'+x.toUpperCase()+'</a>';}).join(' ')+'</p>':'';
+    var rev=I?'':Q?'<p class=wl-rev>Review: '+['a','b','c','d'].map(function(x){return x===Q?'<b>'+x.toUpperCase()+'</b>':'<a href="?welcome='+x+'">'+x.toUpperCase()+'</a>';}).join(' ')+'</p>':'';
     d.innerHTML='<button type=button class=wl-x aria-label="Close welcome">×</button>'+V.art+
       '<p class=wl-k>'+V.k+'</p><h2 id=wl-h>Welcome to Full Duplex</h2>'+
       '<p class=wl-p>Satellite-to-phone, explained by a mobile network insider with over 13 years in GSM. Start here:</p>'+
       '<div class=wl-b><a class=btn href="'+root+'check/">Can my phone connect?</a><a class="btn ghost" href="'+root+'satellites/">Meet the satellites</a><a class="btn ghost" href="https://fullduplexhq.beehiiv.com/subscribe?utm_source=fullduplex-site&amp;utm_medium=welcome&amp;utm_campaign=signal">Get Signal free</a></div>'+
       '<button type=button class=wl-skip>Skip</button>'+rev;
-    if(still){var mo=d.querySelector('animateMotion');if(mo)mo.remove();var dt=d.querySelector('.wl-dot');if(dt){dt.setAttribute('cx','236');dt.setAttribute('cy','34');}}
+    if(still2){var mo=d.querySelector('animateMotion');if(mo)mo.remove();var dt=d.querySelector('.wl-dot');if(dt){dt.setAttribute('cx','236');dt.setAttribute('cy','34');}}
     if(V.init)V.init(d,still);
-    function shut(){d.classList.add('out');setTimeout(function(){d.remove();},still?0:250);document.removeEventListener('keydown',key);}
+    function shut(){d.classList.add('out');setTimeout(function(){d.remove();},still2?0:250);document.removeEventListener('keydown',key);}
     function key(ev){if(ev.key==='Escape')shut();}
     d.querySelector('.wl-x').addEventListener('click',shut); d.querySelector('.wl-skip').addEventListener('click',shut);
     [].forEach.call(d.querySelectorAll('.wl-b a'),function(x){x.addEventListener('click',function(){d.remove();});});
     document.addEventListener('keydown',key);
-    setTimeout(function(){document.body.appendChild(d);},still?0:400);
+    setTimeout(function(){document.body.appendChild(d);},still2?0:400);
   }
-  if(Q&&Q!=='a'){var s=document.createElement('script');s.src=root+'assets/welcome-alt.js?v='+(me.src.split('v=')[1]||'0');s.onload=function(){if(window.FDW&&window.FDW[Q])show(window.FDW[Q]);};document.head.appendChild(s);}
+  function load(f,cb){var s=document.createElement('script');s.src=root+'assets/'+f+'?v='+(me.src.split('v=')[1]||'0');s.onload=cb;s.onerror=cb;document.head.appendChild(s);}
+  /* Intro concepts D1-D3 (?intro=d1|d2|d3): full-screen brand moment, then the concept D card, settled (no second animation). Reduced motion: card only. */
+  if(I){load('welcome-alt.js',function(){if(still||!window.HTMLCanvasElement)return show(window.FDW.d);load('intro-d.js',function(){if(!window.FDIntro)return show(window.FDW.d,true);window.FDIntro(I,{review:true,onDone:function(){show(window.FDW.d,true);}});});});}
+  else if(Q&&Q!=='a'){load('welcome-alt.js',function(){if(window.FDW&&window.FDW[Q])show(window.FDW[Q]);});}
   else show(A);
 })();
