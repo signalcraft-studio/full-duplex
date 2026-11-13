@@ -111,7 +111,8 @@ import hashlib
 _AV = {}
 def asset_v(rel):
     """Short content hash so browsers fetch new CSS/JS with new HTML (GitHub Pages caches for 10 minutes)."""
-    if rel not in _AV: _AV[rel] = hashlib.sha1((ROOT / rel).read_bytes()).hexdigest()[:8] if (ROOT / rel).exists() else '0'
+    # site.js lazy-loads assets/intro.js with its own ?v=, so its tag covers both files
+    if rel not in _AV: _AV[rel] = hashlib.sha1(b''.join((ROOT / r).read_bytes() for r in ([rel, 'assets/intro.js'] if rel == 'assets/site.js' else [rel]) if (ROOT / r).exists())).hexdigest()[:8] if (ROOT / rel).exists() else '0'
     return _AV[rel]
 # ---------------------------------------------------------------- hover/tap glossary (src/glossary.json; behaviour in assets/site.js)
 GLOSS = json.loads((SRC / 'glossary.json').read_text())

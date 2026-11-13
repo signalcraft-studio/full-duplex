@@ -702,24 +702,5 @@ footer.site .logo .mark{width:40px;height:40px}
 .wl-p{margin:.3rem 0 .7rem;color:#cfdbe8;font-size:.92rem;line-height:1.45}
 .wl-b{display:flex;flex-wrap:wrap;gap:.45rem}.wl-b .btn{padding:.55rem .8rem;font-size:.88rem}
 .wl-skip{display:block;margin:.6rem 0 0 auto;background:none;border:0;color:var(--muted);font:inherit;font-size:.85rem;cursor:pointer;text-decoration:underline;padding:.2rem .3rem}
-.wl-dot{opacity:0;animation:wl-show .01s .25s forwards,wl-hide .2s 1.5s forwards}
-.wl-up{stroke-dashoffset:60;animation:wl-dash 1.3s .25s linear both}
-.wl-sat{transform-box:fill-box;transform-origin:center;animation:wl-pulse .5s 1.5s ease-out both}
-.wl-down{stroke-dasharray:190;stroke-dashoffset:190;animation:wl-draw .7s 1.7s ease-in forwards}
-.wl-ring circle{transform-box:fill-box;transform-origin:center;opacity:0;animation:wl-ring 1s 2.35s ease-out both}
-.wl-ring circle+circle{animation-delay:2.5s}
-.welcome .wl-k,.welcome h2,.welcome .wl-p{opacity:0;animation:wl-fade .5s var(--wt,2.4s) ease-out forwards}
-.welcome .wl-b,.welcome .wl-skip{opacity:0;animation:wl-fade .4s calc(var(--wt,2.4s) + .5s) ease-out forwards}
-.wl-rev{margin:.4rem 0 0;font-family:var(--f-mono);font-size:.7rem;color:var(--muted)}.wl-rev a,.wl-rev b{margin-left:.35rem}.wl-rev b{color:var(--cyan)}
-.welcome .wl-x{opacity:1}
 @keyframes wl-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-@keyframes wl-show{to{opacity:1}}@keyframes wl-hide{to{opacity:0}}
-@keyframes wl-dash{from{opacity:.2}to{stroke-dashoffset:0;opacity:1}}
-@keyframes wl-pulse{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
-@keyframes wl-draw{to{stroke-dashoffset:0}}
-@keyframes wl-ring{0%{opacity:.9;transform:scale(.4)}100%{opacity:0;transform:scale(1.25)}}
-@keyframes wl-fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
-.welcome.still,.welcome.still *{animation:none!important}
-.welcome.still .wl-k,.welcome.still h2,.welcome.still .wl-p,.welcome.still .wl-b,.welcome.still .wl-skip{opacity:1}
-.welcome.still .wl-down{stroke-dashoffset:0}.welcome.still .wl-dot{opacity:1}.welcome.still .wl-ring circle{opacity:.5}
 @media (prefers-reduced-motion:reduce){.welcome,.welcome *{animation:none!important}}

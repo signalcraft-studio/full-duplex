@@ -64,50 +64,36 @@
   document.addEventListener('click',function(ev){if(!ev.target.closest||!ev.target.closest('.gw'))close();});
   document.addEventListener('keydown',function(ev){if(ev.key==='Escape'){var o=document.querySelector('.gw.open');close();if(o)o.querySelector('.gl').focus();}});
 })();
-/* First-visit welcome: a small card (not a modal; the page stays usable). Shown once per browser (localStorage), skippable, Esc closes,
-   static when reduced motion is on. Links are built relative to this script so they work at any depth.
-   Review: ?welcome=a|b|c|d forces a concept (B-D live in assets/welcome-alt.js, loaded only for review). */
+/* First-visit welcome: the D1 intro (assets/intro.js, loaded only on a first visit), then a small corner card with three
+   Start here links (not a modal; the page stays usable). Once per browser (localStorage); skip, Esc or click closes the intro;
+   with reduced motion there is no intro, only the card with the still logo. ?nowelcome turns both off. */
 (function(){
   var KEY='fd_welcomed', me=document.currentScript||document.querySelector('script[src*="assets/site.js"]');
-  var Q=(location.search.match(/[?&]welcome=([a-d])\b/)||[])[1], I=(location.search.match(/[?&]intro=(d[123])\b/)||[])[1];
   if(!me)return;
-  if(I)Q='d';
-  if(!Q){
-    try{if(localStorage.getItem(KEY)||/[?&]nowelcome\b/.test(location.search))return;}catch(e){return;}
-    if(document.body.classList.contains('is-game')||document.body.classList.contains('is-check'))return;
-    try{localStorage.setItem(KEY,String(Date.now()));}catch(e){}
-  }
+  try{if(localStorage.getItem(KEY)||/[?&]nowelcome\b/.test(location.search))return;}catch(e){return;}
+  if(document.body.classList.contains('is-game')||document.body.classList.contains('is-check'))return;
+  try{localStorage.setItem(KEY,String(Date.now()));}catch(e){}
   var root=new URL('../',me.src).href, still=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var A={cls:'v-a',k:'Signal received',art:'<svg class=wl-art viewBox="0 0 320 150" aria-hidden=true focusable=false><defs><linearGradient id=wl-g x1=0 y1=1 x2=1 y2=0><stop offset=0 stop-color="#5ec8ff" stop-opacity=".1"/><stop offset=1 stop-color="#5ec8ff" stop-opacity=".9"/></linearGradient></defs>'+
-    '<g class=wl-stars fill="#9fb0c3"><circle cx=40 cy=22 r=1.2 /><circle cx=120 cy=14 r=1 /><circle cx=210 cy=30 r=1.3 /><circle cx=290 cy=60 r=1 /><circle cx=170 cy=70 r=.9 /><circle cx=70 cy=64 r=1 /></g>'+
-    '<path d="M0 140C80 118 240 118 320 140V150H0z" fill="#16243d"/>'+
-    '<g class=wl-phone transform="translate(52 96)"><rect x=-9 y=-17 width=18 height=32 rx=4 fill="#0f1626" stroke="#e8eef7" stroke-width=1.6 /><rect x=-6 y=-13 width=12 height=21 rx=1.5 fill="#5ec8ff" opacity=".35"/></g>'+
-    '<path class=wl-up d="M58 80Q140 30 236 34" fill=none stroke="url(#wl-g)" stroke-width=2.4 stroke-linecap=round stroke-dasharray="4 7"/>'+
-    '<circle class=wl-dot r=4 fill="#5ec8ff"><animateMotion dur="1.3s" begin="0.25s" fill="freeze" path="M58 80Q140 30 236 34"/></circle>'+
-    '<g transform="translate(250 32) rotate(-12)"><g class=wl-sat><rect x=-28 y=-5 width=18 height=10 fill="#1d3a66" stroke="#5ec8ff" stroke-width=1 /><rect x=10 y=-5 width=18 height=10 fill="#1d3a66" stroke="#5ec8ff" stroke-width=1 /><rect x=-8 y=-8 width=16 height=16 rx=2 fill="#e8eef7"/><circle cx=0 cy=0 r=3 fill="#00cfff"/></g></g>'+
-    '<path class=wl-down d="M244 46L66 88" fill=none stroke="#6ee79a" stroke-width=2.4 stroke-linecap=round />'+
-    '<g class=wl-ring fill=none stroke="#6ee79a" stroke-width=1.6><circle cx=52 cy=96 r=16 /><circle cx=52 cy=96 r=26 /></g></svg>'};
-  function show(V,calm){
-    var still2=still||calm, d=document.createElement('div'); d.className='welcome '+V.cls+(still2?' still':''); d.setAttribute('role','dialog'); d.setAttribute('aria-modal','false'); d.setAttribute('aria-labelledby','wl-h');
-    if(V.wt)d.style.setProperty('--wt',V.wt);
-    var rev=I?'':Q?'<p class=wl-rev>Review: '+['a','b','c','d'].map(function(x){return x===Q?'<b>'+x.toUpperCase()+'</b>':'<a href="?welcome='+x+'">'+x.toUpperCase()+'</a>';}).join(' ')+'</p>':'';
-    d.innerHTML='<button type=button class=wl-x aria-label="Close welcome">×</button>'+V.art+
-      '<p class=wl-k>'+V.k+'</p><h2 id=wl-h>Welcome to Full Duplex</h2>'+
+  var ART='<svg class=wl-art viewBox="0 0 320 150" aria-hidden=true focusable=false><g fill="#9fb0c3"><circle cx=30 cy=24 r=1.1 /><circle cx=112 cy=12 r=.9 /><circle cx=200 cy=20 r=1.2 /><circle cx=300 cy=70 r=1 /><circle cx=150 cy=86 r=.8 /><circle cx=86 cy=56 r=1 /><circle cx=238 cy=94 r=.9 /></g>'+
+    '<g transform="translate(105 20) scale(.2132) translate(-254 -250)"><ellipse cx=512 cy=508 rx=560 ry=170 transform="rotate(-18 512 508)" fill=none stroke="#5ec8ff" stroke-opacity=".18" stroke-width=6 stroke-dasharray="18 22"/>'+
+    '<g fill=none stroke-width=32 stroke-linecap=round><path d="M279 505A233 233 0 0 1 644.3 313.2" stroke="#00cfff"/><path d="M744.9 511.9A233 233 0 0 1 383.7 699.5" stroke="#fff"/></g>'+
+    '<circle cx=423 cy=432 r=10 fill="#00cfff"/><path transform="translate(426 517.5) rotate(-15)" fill="#00cfff" fill-rule=evenodd d="M-23.5 -57.5h47a5 5 0 0 1 5 5v105a5 5 0 0 1 -5 5h-47a5 5 0 0 1 -5 -5v-105a5 5 0 0 1 5 -5zM-8.5 -48h17.0a5.5 5.5 0 0 1 5.5 5.5v0.0a5.5 5.5 0 0 1 -5.5 5.5h-17.0a5.5 5.5 0 0 1 -5.5 -5.5v-0.0a5.5 5.5 0 0 1 5.5 -5.5z"/>'+
+    '<g fill="#fff"><path d="M583 488h21l33 32-22 22-32-32z"/><path d="M620 492l20-21 15 14-21 22z"/><path d="M567 545l21-21 14 14-20 20z"/><circle cx=635 cy=541 r=8 /></g></g></svg>';
+  function show(){
+    var d=document.createElement('div'); d.className='welcome'; d.setAttribute('role','dialog'); d.setAttribute('aria-modal','false'); d.setAttribute('aria-labelledby','wl-h');
+    d.innerHTML='<button type=button class=wl-x aria-label="Close welcome">×</button>'+ART+
+      '<p class=wl-k>Constellation online</p><h2 id=wl-h>Welcome to Full Duplex</h2>'+
       '<p class=wl-p>Satellite-to-phone, explained by a mobile network insider with over 13 years in GSM. Start here:</p>'+
       '<div class=wl-b><a class=btn href="'+root+'check/">Can my phone connect?</a><a class="btn ghost" href="'+root+'satellites/">Meet the satellites</a><a class="btn ghost" href="https://fullduplexhq.beehiiv.com/subscribe?utm_source=fullduplex-site&amp;utm_medium=welcome&amp;utm_campaign=signal">Get Signal free</a></div>'+
-      '<button type=button class=wl-skip>Skip</button>'+rev;
-    if(still2){var mo=d.querySelector('animateMotion');if(mo)mo.remove();var dt=d.querySelector('.wl-dot');if(dt){dt.setAttribute('cx','236');dt.setAttribute('cy','34');}}
-    if(V.init)V.init(d,still);
-    function shut(){d.classList.add('out');setTimeout(function(){d.remove();},still2?0:250);document.removeEventListener('keydown',key);}
+      '<button type=button class=wl-skip>Skip</button>';
+    function shut(){d.classList.add('out');setTimeout(function(){d.remove();},still?0:250);document.removeEventListener('keydown',key);}
     function key(ev){if(ev.key==='Escape')shut();}
     d.querySelector('.wl-x').addEventListener('click',shut); d.querySelector('.wl-skip').addEventListener('click',shut);
     [].forEach.call(d.querySelectorAll('.wl-b a'),function(x){x.addEventListener('click',function(){d.remove();});});
     document.addEventListener('keydown',key);
-    setTimeout(function(){document.body.appendChild(d);},still2?0:400);
+    document.body.appendChild(d);
   }
-  function load(f,cb){var s=document.createElement('script');s.src=root+'assets/'+f+'?v='+(me.src.split('v=')[1]||'0');s.onload=cb;s.onerror=cb;document.head.appendChild(s);}
-  /* Intro concepts D1-D3 (?intro=d1|d2|d3): full-screen brand moment, then the concept D card, settled (no second animation). Reduced motion: card only. */
-  if(I){load('welcome-alt.js',function(){if(still||!window.HTMLCanvasElement)return show(window.FDW.d);load('intro-d.js',function(){if(!window.FDIntro)return show(window.FDW.d,true);window.FDIntro(I,{review:true,onDone:function(){show(window.FDW.d,true);}});});});}
-  else if(Q&&Q!=='a'){load('welcome-alt.js',function(){if(window.FDW&&window.FDW[Q])show(window.FDW[Q]);});}
-  else show(A);
+  if(still||!window.HTMLCanvasElement)return show();
+  var s=document.createElement('script'); s.src=root+'assets/intro.js?v='+(me.src.split('v=')[1]||'0');
+  s.onload=function(){if(window.FDIntro)window.FDIntro({onDone:show});else show();}; s.onerror=show; document.head.appendChild(s);
 })();
