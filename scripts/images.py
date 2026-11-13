@@ -58,7 +58,22 @@ def wrap(d, text, f, width):
         else: lines.append(cur); cur = wd
     return lines + [cur] if cur else lines
 
-def og_card(out, kicker, title, foot='signalcraft-studio.github.io/full-duplex  ·  @FullDuplexHQ'):
+def chip_row(d, chips, x, y, maxw=1056):
+    """Data chips under the title: [(text, (r,g,b)), ...]. Pills wrap to a second row; anything that won't fit is dropped."""
+    f = font('JetBrainsMono-500.woff2', 25); h = 50; x0 = x
+    for text, col in chips:
+        w = round(d.textlength(text, font=f)) + 44
+        if x + w > x0 + maxw:
+            x = x0; y += h + 14
+            if y > 500: break
+        d.rounded_rectangle((x, y, x + w, y + h), radius=25, fill=tuple(round(c * .16 + b * .84) for c, b in zip(col, BG)), outline=col, width=2)
+        d.ellipse((x + 16, y + h // 2 - 5, x + 26, y + h // 2 + 5), fill=col)
+        d.text((x + 34, y + 11), text, font=f, fill=WHITE)
+        x += w + 14
+
+def hexrgb(h): h = h.lstrip('#'); return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
+
+def og_card(out, kicker, title, foot='signalcraft-studio.github.io/full-duplex  ·  @FullDuplexHQ', chips=None):
     global _plate
     if _plate is None: _plate = fit(Image.open(SRC / 'og-plate.jpg').convert('RGB'), 1200, 630)
     im = _plate.copy(); d = ImageDraw.Draw(im)
@@ -67,11 +82,13 @@ def og_card(out, kicker, title, foot='signalcraft-studio.github.io/full-duplex  
     fh = font('InterTight-600.woff2', 40)
     d.text((148, 66), 'Full', font=fh, fill=WHITE); d.text((148 + d.textlength('Full', font=fh), 66), 'Duplex', font=fh, fill=CYAN)
     d.text((72, 200), kicker.upper(), font=font('JetBrainsMono-500.woff2', 26), fill=CYAN)
-    for size in (76, 68, 60, 52):
+    maxl = 2 if chips else 3
+    for size in ((68, 60, 54, 48) if chips else (76, 68, 60, 52)):
         ft = font('InterTight-600.woff2', size); lines = wrap(d, title, ft, 1000)
-        if len(lines) <= 3: break
-    lines = lines[:3]; y = 250
+        if len(lines) <= maxl: break
+    lines = lines[:maxl]; y = 250
     for ln in lines: d.text((72, y), ln, font=ft, fill=WHITE); y += round(size * 1.12)
+    if chips: chip_row(d, [(t, hexrgb(c) if isinstance(c, str) else c) for t, c in chips], 72, y + 30)
     d.text((72, 548), foot, font=font('JetBrainsMono-500.woff2', 22), fill=(160, 176, 200))
     return save(im, out, 'JPEG', quality=84, optimize=True, progressive=True)
 
