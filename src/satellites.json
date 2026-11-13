@@ -1,5 +1,5 @@
 {
- "_readme": "Content for /satellites/ ('Meet the satellites') and the payload-card animations on /launches/. Every fact needs a source key from 'sources'. Counts are NOT stored here: they are read from data/constellations.json (count_id) so there is one sourced number per network. Write TBC rather than guess. Illustrations are drawn in code (scripts/satviz.py) from public descriptions: preview only until Sam approves.",
+ "_readme": "Content for /satellites/ ('Meet the satellites') and the static payload-card pictures + 'card' stats on /launches/ (the 'card' values restate the sourced facts above). Every fact needs a source key from 'sources'. Counts are NOT stored here: they are read from data/constellations.json (count_id) so there is one sourced number per network. Write TBC rather than guess. Illustrations are drawn in code (scripts/satviz.py) from public descriptions: preview only until Sam approves.",
  "checked": "2026-11-13",
  "sources": {
   "starlink-mobile": [
@@ -200,7 +200,25 @@
    "glance": {
     "spec": "Your network’s 4G frequencies",
     "today": "Texts, 40+ apps, app calls"
-   }
+   },
+   "card": [
+    {
+     "k": "Operator",
+     "v": "SpaceX"
+    },
+    {
+     "k": "Size",
+     "v": "Wings about 29 m tip to tip; phone antenna about 2.7 × 2.3 m"
+    },
+    {
+     "k": "Height",
+     "v": "About 360 km"
+    },
+    {
+     "k": "For phones",
+     "v": "Texts, 40+ apps and app calls on ordinary 4G phones"
+    }
+   ]
   },
   {
    "id": "bluebird",
@@ -278,7 +296,25 @@
    "glance": {
     "spec": "Your network’s frequencies (mostly low-band)",
     "today": "Testing: voice, video, data"
-   }
+   },
+   "card": [
+    {
+     "k": "Operator",
+     "v": "AST SpaceMobile"
+    },
+    {
+     "k": "Size",
+     "v": "Block 2 array about 223 m² (2,400 sq ft); Block 1 about 64 m²"
+    },
+    {
+     "k": "Height",
+     "v": "About 520 km"
+    },
+    {
+     "k": "For phones",
+     "v": "Built for 4G/5G broadband; testing, not commercial yet"
+    }
+   ]
   },
   {
    "id": "amazon-leo",
@@ -335,7 +371,25 @@
    "glance": {
     "spec": "Amazon’s own Ka-band",
     "today": "Broadband to dishes"
-   }
+   },
+   "card": [
+    {
+     "k": "Operator",
+     "v": "Amazon"
+    },
+    {
+     "k": "Size",
+     "v": "TBC"
+    },
+    {
+     "k": "Height",
+     "v": "590 to 630 km"
+    },
+    {
+     "k": "For phones",
+     "v": "None: broadband for dishes, not phones"
+    }
+   ]
   },
   {
    "id": "lynk",
@@ -396,7 +450,25 @@
    "glance": {
     "spec": "Partner networks’ frequencies",
     "today": "Texts and emergency alerts"
-   }
+   },
+   "card": [
+    {
+     "k": "Operator",
+     "v": "Elveo Mobile (Lynk + Omnispace)"
+    },
+    {
+     "k": "Size",
+     "v": "About 1 m across, about 85 kg"
+    },
+    {
+     "k": "Height",
+     "v": "Low, near-polar orbit (height TBC)"
+    },
+    {
+     "k": "For phones",
+     "v": "Texts and emergency alerts"
+    }
+   ]
   },
   {
    "id": "globalstar",
@@ -459,7 +531,25 @@
    "glance": {
     "spec": "Globalstar’s own satellite band",
     "today": "iPhone SOS, messages, Find My"
-   }
+   },
+   "card": [
+    {
+     "k": "Operator",
+     "v": "Globalstar"
+    },
+    {
+     "k": "Size",
+     "v": "About 700 kg at launch"
+    },
+    {
+     "k": "Height",
+     "v": "About 1,414 km"
+    },
+    {
+     "k": "For phones",
+     "v": "Only phones built for it: iPhone 14+ SOS, messages, Find My"
+    }
+   ]
   }
  ]
 }

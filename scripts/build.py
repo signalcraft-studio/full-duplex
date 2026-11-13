@@ -86,7 +86,7 @@ def signal_block(root, surface, variant='full', heading_level=2, heading=None, i
             f'<a class=more href="{esc(SITE["archive_url"])}">Read past issues</a></p>{privacy}</div></section>')
 
 # ---------------------------------------------------------------- chrome
-NAV = [('index.html', 'Home'), ('articles/index.html', 'Articles'), ('tracker.html', 'Tracker'), ('launches/index.html', 'Launches'), ('search.html', 'Search'), ('about.html', 'About'), ('sponsor.html', 'Sponsor')]
+NAV = [('index.html', 'Home'), ('articles/index.html', 'Articles'), ('tracker.html', 'Tracker'), ('launches/index.html', 'Launches'), ('satellites/index.html', 'Satellites'), ('search.html', 'Search'), ('about.html', 'About'), ('sponsor.html', 'Sponsor')]
 
 LOGO_MARK = ('<svg class=mark viewBox="254 250 516 516" width="44" height="44" aria-hidden="true" focusable="false">'
              '<g fill="none" stroke-width="32" stroke-linecap="round"><path d="M279 505A233 233 0 0 1 644.3 313.2" stroke="#00cfff"/><path d="M744.9 511.9A233 233 0 0 1 383.7 699.5" stroke="#fff"/></g><circle cx="423" cy="432" r="10" fill="#00cfff"/><path transform="translate(426 517.5) rotate(-15)" fill="#00cfff" fill-rule="evenodd" d="M-23.5 -57.5h47a5 5 0 0 1 5 5v105a5 5 0 0 1 -5 5h-47a5 5 0 0 1 -5 -5v-105a5 5 0 0 1 5 -5zM-8.5 -48h17.0a5.5 5.5 0 0 1 5.5 5.5v0.0a5.5 5.5 0 0 1 -5.5 5.5h-17.0a5.5 5.5 0 0 1 -5.5 -5.5v-0.0a5.5 5.5 0 0 1 5.5 -5.5z"/><g fill="#fff"><path d="M583 488h21l33 32-22 22-32-32z"/><path d="M620 492l20-21 15 14-21 22z"/><path d="M567 545l21-21 14 14-20 20z"/><circle cx="635" cy="541" r="8"/></g>' + '</svg>')  # logo A, approved by Sam 9 Nov 2026 (same as assets/logo.svg)
@@ -107,6 +107,12 @@ def footer(root, sticky=True):
             f'<a href="{root}play/constellation.html">Constellation</a><a href="{root}search.html">Search</a><a href="{root}feed.xml">RSS</a>'
             f'<a href="{root}about.html">About</a><a href="{root}sponsor.html">Sponsor</a><a href="{root}privacy.html">Privacy</a></nav></div></footer>{bar}')
 
+import hashlib
+_AV = {}
+def asset_v(rel):
+    """Short content hash so browsers fetch new CSS/JS with new HTML (GitHub Pages caches for 10 minutes)."""
+    if rel not in _AV: _AV[rel] = hashlib.sha1((ROOT / rel).read_bytes()).hexdigest()[:8] if (ROOT / rel).exists() else '0'
+    return _AV[rel]
 built = []  # (path, lastmod)
 SEARCH = []
 
@@ -138,6 +144,7 @@ def page(*, path, title, description, body, root='', current='', og_type='websit
             f'{head_extra}{ld}</head><body{" class=" + cls if cls else ""}>')
     out = (head + header(root, current) + f'<main id=main>{body}</main>' + footer(root, sticky)
            + f'<script src="{root}assets/site.js" defer></script>{scripts}</body></html>\n')
+    out = re.sub(r'((?:href|src)="((?:\.\./)*)(style\.css|assets/[\w.-]+\.js))"', lambda m: f'{m[1]}?v={asset_v(m[3])}"', out)
     (ROOT / path).parent.mkdir(parents=True, exist_ok=True)
     (ROOT / path).write_text(out)
     if index: built.append((path, lastmod))
@@ -401,6 +408,7 @@ page(og=('Tracker', 'Tracker change log'), path='tracker/changes/index.html', ti
 from datetime import datetime, timezone, timedelta
 LDATA = json.loads((ROOT / 'data/launches.json').read_text()) if (ROOT / 'data/launches.json').exists() else {'fetched_at': None, 'launches': []}
 CONST = json.loads((ROOT / 'data/constellations.json').read_text())
+SATS = json.loads((SRC / 'satellites.json').read_text())  # /satellites/ content + payload-card stats
 LTAGS = json.loads((ROOT / 'data/launch-tags.json').read_text()).get('overrides', {}) if (ROOT / 'data/launch-tags.json').exists() else {}
 def iso_dt(s): return datetime.fromisoformat(s.replace('Z', '+00:00'))
 BUILD_NOW = datetime.now(timezone.utc)
@@ -529,10 +537,16 @@ def payload_html(l):
     src = f'<a href="{esc(l["ll2_url"])}">Launch Library 2</a>' if l.get('ll2_url') else 'Launch Library 2'
     orbit = {'LEO': 'low Earth orbit', 'PO': 'polar orbit', 'SSO': 'sun-synchronous orbit', 'GTO': 'geostationary transfer orbit', 'Direct-GEO': 'geostationary orbit', 'LO': 'lunar orbit'}.get(l.get('orbit') or '', '')
     k = satviz.kind_of(l['tag'], ltext(l), l.get('who', []))
-    anim = (f'<figure class=pb-anim>{satviz.scene(k)}<figcaption>Illustration</figcaption></figure>') if k else ''
-    more = (f'<p class=pb-more><a href="../satellites/#{SAT_ANCHOR[k]}">How {SAT_NAME[k]} works</a></p>') if k else ''
-    return (f'<p class=kicker>What’s on board</p>{anim}<p class=pb-h>{esc(h)}</p>' + (f'<p class=pb-d>{esc(d)}</p>' if d else '') + fx +
-            f'<p class=pb-meta>{("Heading to " + orbit + " · ") if orbit else ""}Source: {src}</p>{more}')
+    sat = sat_box(k) if k else ''
+    return (f'<p class=kicker>What’s on board</p><p class=pb-h>{esc(h)}</p>' + (f'<p class=pb-d>{esc(d)}</p>' if d else '') + fx + sat +
+            f'<p class=pb-meta>{("Heading to " + orbit + " · ") if orbit else ""}Source: {src}</p>')
+def sat_box(k):
+    """Static picture of the satellite type + basic stats (src/satellites.json 'card'), linking to /satellites/. No motion here."""
+    f = next(x for x in SATS['families'] if x['anim'] == k)
+    stats = ''.join(f'<div><dt>{esc(x["k"])}</dt><dd>{esc(x["v"])}</dd></div>' for x in f['card'])
+    return (f'<div class=pb-sat style="--c:{f["color"]}"><figure class=pb-pic>{satviz.scene(k, "still")}</figure><div class=pb-info>'
+            f'<p class=pb-name>{esc(f["name"])}</p><dl class=pb-stats>{stats}</dl>'
+            f'<p class=pb-more><a href="../satellites/#{f["id"]}">How it works →<span class=sr> ({esc(f["name"])}, sources and animation)</span></a></p></div></div>')
 SAT_ANCHOR = {'starlink-dtc': 'starlink-dtc', 'bluebird': 'bluebird', 'amazon-leo': 'amazon-leo', 'lynk': 'lynk', 'globalstar': 'globalstar'}
 SAT_NAME = {'starlink-dtc': 'a Starlink Direct to Cell satellite', 'bluebird': 'a BlueBird', 'amazon-leo': 'an Amazon Leo satellite', 'lynk': 'a Lynk satellite', 'globalstar': 'a Globalstar satellite'}
 
@@ -726,7 +740,6 @@ def journey_page():
          body=body, root=root, current='', jsonld=ld, cls='is-journey', lastmod='2026-11-10', scripts=f'<script defer src="{root}assets/journey.js"></script>',
          full_title='What happens when you hit send: a text via satellite | Full Duplex')
 # ---------------------------------------------------------------- satellites explainer (src/satellites.json; drawings in scripts/satviz.py)
-SATS = json.loads((SRC / 'satellites.json').read_text())
 def const_item(cid): return next((i for i in CONST['direct_to_device'] + CONST['broadband_only'] if i['id'] == cid), None)
 def sats_card(root):
     return (f'<section class="card jcard scard" aria-labelledby=sc-h>{satviz.scene("bluebird")}<div><p class=kicker>Explainer · new</p><h2 id=sc-h><a href="{root}satellites/">Meet the satellites</a></h2>'
@@ -793,7 +806,7 @@ def satellites_page():
     page(og=('Explainer', 'Meet the satellites that talk to your phone'), path='satellites/index.html', title='Meet the satellites',
          full_title='Meet the satellites: Starlink, BlueBird, Lynk, Globalstar and Amazon Leo explained | Full Duplex',
          description='What Starlink Direct to Cell, AST SpaceMobile BlueBird, Amazon Leo, Lynk and Globalstar satellites look like, how high they fly and how they reach an ordinary phone. Plain English, with sources.',
-         body=body, root=root, current='', jsonld=ld, cls='is-sats', lastmod=SATS['checked'])
+         body=body, root=root, current='satellites/index.html', jsonld=ld, cls='is-sats', lastmod=SATS['checked'])
 launches_page()
 journey_page()
 satellites_page()

@@ -81,7 +81,7 @@ CARD_LABELS = {  # (x, y, anchor, text) in the 240x180 box; card-size only
 }
 
 def scene(kind, size='mini'):
-    """Inline SVG. size='mini' for payload cards (decorative), 'card' for /satellites/ (labelled)."""
+    """Inline SVG. size='mini' (decorative tile), 'card' for /satellites/ (labelled), 'still' = finished picture, never animated (launch cards)."""
     c = COL[kind]; sy = SAT_Y
     tx, ty = (168, 140)
     ground = _dish(c, tx, ty) if kind == 'amazon-leo' else _phone(c, tx, ty - 2)
@@ -98,7 +98,8 @@ def scene(kind, size='mini'):
             f'<text x="{x}" y="{y}" text-anchor="{a}">{t}</text>' for x, y, a, t in CARD_LABELS[kind]) + '</g>'
     aria = (f'role="img" aria-label="Illustration: {LABEL[kind]} unfolding and beaming a signal down to '
             + ('a dish on the ground (not a phone)' if kind == 'amazon-leo' else 'a phone') + '. Not to scale."') if size == 'card' else 'aria-hidden="true" focusable="false"'
-    return (f'<svg class="sa sa-{kind} sa-{size}" viewBox="0 0 240 180" {aria}>'
+    dims = {'still': ' width="160" height="120"', 'mini': ' width="240" height="180"', 'card': ' width="480" height="360"'}[size]
+    return (f'<svg class="sa sa-{kind} sa-{size}" viewBox="0 0 240 180"{dims} {aria}>'
             f'<rect width="240" height="180" rx="14" fill="#0b1426"/><g fill="#cfe6ff" opacity=".8">{STARS}</g>'
             f'<path d="M0 156Q120 128 240 156V180H0z" fill="#13233d"/><path d="M0 156Q120 128 240 156" fill="none" stroke="#2b4a73"/>'
             f'<g class="sc">{beam}{extra}{ground}<g transform="translate(120 {sy})"><g class="drift">{_sat(kind)}</g></g>{bub}</g>{labels}</svg>')
