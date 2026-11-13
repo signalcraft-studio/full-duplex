@@ -708,8 +708,9 @@ footer.site .logo .mark{width:40px;height:40px}
 .wl-down{stroke-dasharray:190;stroke-dashoffset:190;animation:wl-draw .7s 1.7s ease-in forwards}
 .wl-ring circle{transform-box:fill-box;transform-origin:center;opacity:0;animation:wl-ring 1s 2.35s ease-out both}
 .wl-ring circle+circle{animation-delay:2.5s}
-.welcome .wl-k,.welcome h2,.welcome .wl-p{opacity:0;animation:wl-fade .5s 2.4s ease-out forwards}
-.welcome .wl-b,.welcome .wl-skip{opacity:0;animation:wl-fade .4s 2.9s ease-out forwards}
+.welcome .wl-k,.welcome h2,.welcome .wl-p{opacity:0;animation:wl-fade .5s var(--wt,2.4s) ease-out forwards}
+.welcome .wl-b,.welcome .wl-skip{opacity:0;animation:wl-fade .4s calc(var(--wt,2.4s) + .5s) ease-out forwards}
+.wl-rev{margin:.4rem 0 0;font-family:var(--f-mono);font-size:.7rem;color:var(--muted)}.wl-rev a,.wl-rev b{margin-left:.35rem}.wl-rev b{color:var(--cyan)}
 .welcome .wl-x{opacity:1}
 @keyframes wl-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @keyframes wl-show{to{opacity:1}}@keyframes wl-hide{to{opacity:0}}

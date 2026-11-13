@@ -65,17 +65,19 @@
   document.addEventListener('keydown',function(ev){if(ev.key==='Escape'){var o=document.querySelector('.gw.open');close();if(o)o.querySelector('.gl').focus();}});
 })();
 /* First-visit welcome: a small card (not a modal; the page stays usable). Shown once per browser (localStorage), skippable, Esc closes,
-   static when reduced motion is on. Links are built relative to this script so they work at any depth. */
+   static when reduced motion is on. Links are built relative to this script so they work at any depth.
+   Review: ?welcome=a|b|c|d forces a concept (B-D live in assets/welcome-alt.js, loaded only for review). */
 (function(){
   var KEY='fd_welcomed', me=document.currentScript||document.querySelector('script[src*="assets/site.js"]');
-  try{if(localStorage.getItem(KEY)||/[?&]nowelcome\b/.test(location.search))return;}catch(e){return;}
-  if(document.body.classList.contains('is-game')||document.body.classList.contains('is-check')||!me)return;
-  var root=new URL('../',me.src).href;
-  try{localStorage.setItem(KEY,String(Date.now()));}catch(e){}
-  var still=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var d=document.createElement('div'); d.className='welcome'+(still?' still':''); d.setAttribute('role','dialog'); d.setAttribute('aria-modal','false'); d.setAttribute('aria-labelledby','wl-h');
-  d.innerHTML='<button type=button class=wl-x aria-label="Close welcome">×</button>'+
-    '<svg class=wl-art viewBox="0 0 320 150" aria-hidden=true focusable=false><defs><linearGradient id=wl-g x1=0 y1=1 x2=1 y2=0><stop offset=0 stop-color="#5ec8ff" stop-opacity=".1"/><stop offset=1 stop-color="#5ec8ff" stop-opacity=".9"/></linearGradient></defs>'+
+  var Q=(location.search.match(/[?&]welcome=([a-d])\b/)||[])[1];
+  if(!me)return;
+  if(!Q){
+    try{if(localStorage.getItem(KEY)||/[?&]nowelcome\b/.test(location.search))return;}catch(e){return;}
+    if(document.body.classList.contains('is-game')||document.body.classList.contains('is-check'))return;
+    try{localStorage.setItem(KEY,String(Date.now()));}catch(e){}
+  }
+  var root=new URL('../',me.src).href, still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var A={cls:'v-a',k:'Signal received',art:'<svg class=wl-art viewBox="0 0 320 150" aria-hidden=true focusable=false><defs><linearGradient id=wl-g x1=0 y1=1 x2=1 y2=0><stop offset=0 stop-color="#5ec8ff" stop-opacity=".1"/><stop offset=1 stop-color="#5ec8ff" stop-opacity=".9"/></linearGradient></defs>'+
     '<g class=wl-stars fill="#9fb0c3"><circle cx=40 cy=22 r=1.2 /><circle cx=120 cy=14 r=1 /><circle cx=210 cy=30 r=1.3 /><circle cx=290 cy=60 r=1 /><circle cx=170 cy=70 r=.9 /><circle cx=70 cy=64 r=1 /></g>'+
     '<path d="M0 140C80 118 240 118 320 140V150H0z" fill="#16243d"/>'+
     '<g class=wl-phone transform="translate(52 96)"><rect x=-9 y=-17 width=18 height=32 rx=4 fill="#0f1626" stroke="#e8eef7" stroke-width=1.6 /><rect x=-6 y=-13 width=12 height=21 rx=1.5 fill="#5ec8ff" opacity=".35"/></g>'+
@@ -83,16 +85,25 @@
     '<circle class=wl-dot r=4 fill="#5ec8ff"><animateMotion dur="1.3s" begin="0.25s" fill="freeze" path="M58 80Q140 30 236 34"/></circle>'+
     '<g transform="translate(250 32) rotate(-12)"><g class=wl-sat><rect x=-28 y=-5 width=18 height=10 fill="#1d3a66" stroke="#5ec8ff" stroke-width=1 /><rect x=10 y=-5 width=18 height=10 fill="#1d3a66" stroke="#5ec8ff" stroke-width=1 /><rect x=-8 y=-8 width=16 height=16 rx=2 fill="#e8eef7"/><circle cx=0 cy=0 r=3 fill="#00cfff"/></g></g>'+
     '<path class=wl-down d="M244 46L66 88" fill=none stroke="#6ee79a" stroke-width=2.4 stroke-linecap=round />'+
-    '<g class=wl-ring fill=none stroke="#6ee79a" stroke-width=1.6><circle cx=52 cy=96 r=16 /><circle cx=52 cy=96 r=26 /></g></svg>'+
-    '<p class=wl-k>Signal received</p><h2 id=wl-h>Welcome to Full Duplex</h2>'+
-    '<p class=wl-p>Satellite-to-phone, explained by a mobile network insider with over 13 years in GSM. Start here:</p>'+
-    '<div class=wl-b><a class=btn href="'+root+'check/">Can my phone connect?</a><a class="btn ghost" href="'+root+'satellites/">Meet the satellites</a><a class="btn ghost" href="https://fullduplexhq.beehiiv.com/subscribe?utm_source=fullduplex-site&amp;utm_medium=welcome&amp;utm_campaign=signal">Get Signal free</a></div>'+
-    '<button type=button class=wl-skip>Skip</button>';
-  if(still){var mo=d.querySelector('animateMotion');if(mo)mo.remove();var dt=d.querySelector('.wl-dot');dt.setAttribute('cx','236');dt.setAttribute('cy','34');}
-  function shut(){d.classList.add('out');setTimeout(function(){d.remove();},still?0:250);document.removeEventListener('keydown',key);}
-  function key(ev){if(ev.key==='Escape')shut();}
-  d.querySelector('.wl-x').addEventListener('click',shut); d.querySelector('.wl-skip').addEventListener('click',shut);
-  [].forEach.call(d.querySelectorAll('.wl-b a'),function(x){x.addEventListener('click',function(){d.remove();});});
-  document.addEventListener('keydown',key);
-  setTimeout(function(){document.body.appendChild(d);},still?0:400);
+    '<g class=wl-ring fill=none stroke="#6ee79a" stroke-width=1.6><circle cx=52 cy=96 r=16 /><circle cx=52 cy=96 r=26 /></g></svg>'};
+  function show(V){
+    var d=document.createElement('div'); d.className='welcome '+V.cls+(still?' still':''); d.setAttribute('role','dialog'); d.setAttribute('aria-modal','false'); d.setAttribute('aria-labelledby','wl-h');
+    if(V.wt)d.style.setProperty('--wt',V.wt);
+    var rev=Q?'<p class=wl-rev>Review: '+['a','b','c','d'].map(function(x){return x===Q?'<b>'+x.toUpperCase()+'</b>':'<a href="?welcome='+x+'">'+x.toUpperCase()+'</a>';}).join(' ')+'</p>':'';
+    d.innerHTML='<button type=button class=wl-x aria-label="Close welcome">×</button>'+V.art+
+      '<p class=wl-k>'+V.k+'</p><h2 id=wl-h>Welcome to Full Duplex</h2>'+
+      '<p class=wl-p>Satellite-to-phone, explained by a mobile network insider with over 13 years in GSM. Start here:</p>'+
+      '<div class=wl-b><a class=btn href="'+root+'check/">Can my phone connect?</a><a class="btn ghost" href="'+root+'satellites/">Meet the satellites</a><a class="btn ghost" href="https://fullduplexhq.beehiiv.com/subscribe?utm_source=fullduplex-site&amp;utm_medium=welcome&amp;utm_campaign=signal">Get Signal free</a></div>'+
+      '<button type=button class=wl-skip>Skip</button>'+rev;
+    if(still){var mo=d.querySelector('animateMotion');if(mo)mo.remove();var dt=d.querySelector('.wl-dot');if(dt){dt.setAttribute('cx','236');dt.setAttribute('cy','34');}}
+    if(V.init)V.init(d,still);
+    function shut(){d.classList.add('out');setTimeout(function(){d.remove();},still?0:250);document.removeEventListener('keydown',key);}
+    function key(ev){if(ev.key==='Escape')shut();}
+    d.querySelector('.wl-x').addEventListener('click',shut); d.querySelector('.wl-skip').addEventListener('click',shut);
+    [].forEach.call(d.querySelectorAll('.wl-b a'),function(x){x.addEventListener('click',function(){d.remove();});});
+    document.addEventListener('keydown',key);
+    setTimeout(function(){document.body.appendChild(d);},still?0:400);
+  }
+  if(Q&&Q!=='a'){var s=document.createElement('script');s.src=root+'assets/welcome-alt.js?v='+(me.src.split('v=')[1]||'0');s.onload=function(){if(window.FDW&&window.FDW[Q])show(window.FDW[Q]);};document.head.appendChild(s);}
+  else show(A);
 })();
