@@ -495,7 +495,8 @@ controls = (f'<div class=filters role=search aria-label="Filter the tracker"><di
 country_links = ''.join(f'<a class="cc s-{CLS[best(rs)]}" href="tracker/{country_slug(c)}/">{esc(c)}</a>' for c, rs in sorted(COUNTRIES.items()))
 tools = (f'<div class=t-tools><a class="btn ghost" href="data/tracker.csv" download>Download CSV</a><a class="btn ghost" href="data/tracker.json">JSON</a>'
          + share_btn(f"Direct-to-cell tracker: {C['live']} live services, {C['trial']} trials, {C['announced']} announced. Country by country, with sources.", BASE + 'tracker.html') +
-         f'</div><p class=cite><strong>Cite this tracker:</strong> Full Duplex, “Direct-to-cell tracker”, last checked {TRACK["last_checked"]}, {BASE}tracker.html</p>')
+         f'</div><p class=cite><strong>Cite this tracker:</strong> Full Duplex, “Direct-to-cell tracker”, last checked {TRACK["last_checked"]}, {BASE}tracker.html</p>'
+         f'<p class=cite>Tracker data: <a href="{SITE["data_license"]}" rel="license">CC BY 4.0</a>, credit Full Duplex.</p>')
 tbody = tbody.replace('<!--TRACKER-TABLE-->', tracker_table())
 tbody = re.sub(r'<span id=tracker-checked>.*?</span>', f"<span id=tracker-checked>{TRACK['last_checked']}</span>", tbody)
 # hero + stats before the intro; filters before the table; extras after
