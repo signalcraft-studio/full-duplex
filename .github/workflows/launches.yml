@@ -1,4 +1,5 @@
-# Refresh upcoming launches from Launch Library 2 a few times a day.
+# Refresh upcoming launches from Launch Library 2 a few times a day, plus recent
+# satellite orbits from CelesTrak for the flight view (data/gp-recent.json).
 # Only updates data/launches.json and the pages built from it (home countdown,
 # /launches/ list, .ics files, sitemap). Keeps the cache if the API fails.
 # Does not touch tracker rows, satellite counts, race data or launch-tags.
@@ -26,6 +27,11 @@ jobs:
           python-version: '3.12'
       - run: pip install pillow
       - run: python3 scripts/fetch_launches.py --force
+      # Recent satellite orbits for /launches/flight/ (CelesTrak GP data). Cached in data/gp-recent.json;
+      # the script skips if the cache is under 3 hours old (CelesTrak updates GP data about every 2 hours)
+      # and keeps the cache if CelesTrak fails, so a CelesTrak problem never blocks the launch refresh.
+      - run: python3 scripts/fetch_gp.py
+        continue-on-error: true
       - run: python3 scripts/build.py
       - name: Commit if changed
         run: |
@@ -33,7 +39,7 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           # Only stage launch-derived outputs. Never tracker rows, satellite
           # counts, race data or manual Direct to Cell tags.
-          git add data/launches.json index.html launches/ sitemap.xml
+          git add data/launches.json data/gp-recent.json index.html launches/ sitemap.xml
           if git diff --cached --name-only | grep -E '^(data/(constellations|race|launch-tags)\.json|tracker\.html|tracker/)'; then
             echo "Refusing to commit protected tracker or constellation files"
             git diff --cached --name-only

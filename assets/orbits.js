@@ -94,7 +94,7 @@
     if(reduce){ lam=aim.l1; phi=aim.p1; aim=null; }
     box.classList.add('liftoff'); if(btn&&!reduce) btn.disabled=true;
     var who={'starlink-dtc':'Starlink Direct to Cell','ast':'BlueBird','globalstar':'Globalstar','lynk':'Lynk'}[d.c]||'';
-    status.textContent='Launch moment (illustrative): '+(d.r||'A rocket')+' lifts off from '+where(d.p)+' for '+d.m+' and '+(d.n?'releases '+d.n+' '+who+' satellites into orbit.':'releases its payload into orbit.');
+    status.textContent='Launch moment (illustrative): '+(d.r||'A rocket')+' lifts off from '+where(d.p)+' for '+d.m+' and '+(d.n?'releases '+(d.nt||d.n)+' '+(who?who+' ':'')+'satellites into orbit'+((d.nt||0)>d.n?' (the animation shows '+d.n+').':'.'):'releases its payload into orbit.');
     if(reduce) render(performance.now()); else play();
   }
   function frame(t){ if(!running) return; requestAnimationFrame(frame); if(t-last<33) return; var dt=last?Math.min(100,t-last):33; last=t;

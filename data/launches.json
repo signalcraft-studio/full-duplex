@@ -8,7 +8,7 @@
    "name": "Vulcan VC6L | Amazon Leo (LV-01)",
    "net": "2026-11-15T17:11:30Z",
    "window_start": "2026-11-15T17:11:30Z",
-   "window_end": "2026-11-15T17:31:00Z",
+   "window_end": "2026-11-15T17:40:00Z",
    "precision": "Second",
    "status": "Go for Launch",
    "status_abbrev": "Go",
@@ -16,7 +16,7 @@
    "rocket": "Vulcan VC6L",
    "mission": "Amazon Leo (LV-01)",
    "mission_type": "Communications",
-   "mission_description": "Amazon Leo, formerly known as Project Kuiper, is a mega constellation of satellites in Low Earth Orbit that will offer broadband internet access, this constellation will be managed by Kuiper Systems LLC, a subsidiary of Amazon. This constellation is planned to be composed of 3,276 satellites. The satellites are projected to be placed in 98 orbital planes in three orbital layers, one at 590 km, 610 km and 630 km altitude.\r\n\r\n45 satellites will be carried on each Vulcan launch.",
+   "mission_description": "Amazon Leo, formerly known as Project Kuiper, is a mega constellation of satellites in Low Earth Orbit that will offer broadband internet access, this constellation will be managed by Kuiper Systems LLC, a subsidiary of Amazon. This constellation is planned to be composed of 3,276 satellites. The satellites are projected to be placed in 98 orbital planes in three orbital layers, one at 590 km, 610 km and 630 km altitude.\r\n\r\nULA says this launch carries 40 Amazon Leo satellites.",
    "orbit": "LEO",
    "mission_agencies": [
     "Amazon Leo"
@@ -30,7 +30,13 @@
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/ef9850ad-1096-425b-9d27-f7bbd186e61a/",
    "queries": [
     "amazon-leo"
-   ]
+   ],
+   "payload_count": 40,
+   "override_source": {
+    "label": "ULA, Vulcan Leo 1 mission page",
+    "url": "https://www.ulalaunch.com/missions/next-launch/vulcan-leo-1",
+    "checked": "2026-11-14"
+   }
   },
   {
    "id": "76617033-4dc0-4448-b50c-e5b0d5a18539",

@@ -1,0 +1,202 @@
+{
+  "_note": "Flight profiles for /launches/flight/. Event times (seconds after liftoff) are from the cited mission page where 'source' is set; otherwise the profile is generic (typical sequence, rounded times) and says so on the page. Altitude/speed keypoints [t s, altitude km, speed km/h] are always Full Duplex estimates for the animation, never telemetry.",
+  "profiles": [
+    {
+      "id": "vulcan-lv01", "match_slug": "amazon-leo-lv-01", "vehicle": "Vulcan VC6L",
+      "title": "Vulcan VC6L · Amazon Leo LV-01",
+      "source": {"label": "ULA, Vulcan Leo 1 mission page (flight profile graphic)", "url": "https://www.ulalaunch.com/missions/next-launch/vulcan-leo-1", "checked": "2026-11-14"},
+      "payload_note": "ULA’s mission page says this flight carries 40 Amazon Leo satellites, released over about 26 minutes into orbits about 420 to 465 km up, inclined 51.9°.",
+      "booster": "expended",
+      "events": [
+        [0.9, "liftoff", "Liftoff", "Two BE-4 engines plus six solid rocket boosters push Vulcan off the pad."],
+        [37.1, "other", "Mach 1", "Vulcan passes the speed of sound."],
+        [54.7, "maxq", "Max-Q", "Peak aerodynamic stress: the moment the air pushes hardest on the rocket."],
+        [96.6, "other", "Solid boosters jettison (4)", "Four of the six spent solid boosters fall away."],
+        [98.1, "other", "Solid boosters jettison (2)", "The last two solid boosters fall away."],
+        [297.1, "meco", "Booster engine cutoff (BECO)", "The first stage’s BE-4 engines shut down. Vulcan’s booster isn’t recovered on this flight."],
+        [303.1, "sep", "Stage separation", "The Centaur V upper stage separates from the booster."],
+        [313.1, "ses", "Centaur burn 1 starts", "Centaur’s two RL10 engines light."],
+        [321.1, "fairing", "Fairing jettison", "The nose cone splits open, exposing the satellites to space."],
+        [1018.4, "seco", "Centaur burn 1 ends", "Centaur reaches a first parking orbit and coasts for about 49 minutes."],
+        [3949.5, "ses", "Centaur burn 2 starts", "A short burn to shape the deployment orbit."],
+        [3962.5, "seco", "Centaur burn 2 ends", "Centaur is in the orbit where the satellites will be released."],
+        [4181.5, "deploy", "Satellite deployment begins", "Centaur starts releasing Amazon Leo satellites one batch at a time."],
+        [5721.5, "deploy", "Satellite deployment ends", "All satellites released. From here each one uses its own thrusters to climb to its working orbit over the coming weeks."],
+        [7004.3, "other", "Centaur burn 3 (disposal)", "Centaur fires again to move itself out of the way."]
+      ],
+      "keypoints": [[0,0,0],[37,7,1230],[55,13,1750],[98,38,4300],[180,85,9000],[297,135,15500],[321,150,15700],[600,175,20500],[1018,200,28300],[2000,330,27900],[3000,415,27500],[3949,440,27330],[3963,440,27560],[5722,445,27540],[7013,450,27520]]
+    },
+    {
+      "id": "f9-starlink", "match_rocket": "Falcon 9", "match_text": "Starlink", "vehicle": "Falcon 9",
+      "title": "Falcon 9 · Starlink",
+      "source": {"label": "SpaceX, Starlink 15-20 mission page (published timeline; ‘all times approximate’)", "url": "https://www.spacex.com/launches/sl-15-20", "checked": "2026-11-14"},
+      "basis": "Based on SpaceX’s published timeline for Starlink 15-20, the previous launch in the same Starlink group from the same pad. SpaceX publishes each mission’s own timeline shortly before launch.",
+      "payload_note": "SpaceX says Starlink 15-20 carried 27 satellites. This mission’s count is confirmed on launch day.",
+      "booster": "landing",
+      "events": [
+        [0, "liftoff", "Liftoff", "Nine Merlin engines lift Falcon 9 off the pad."],
+        [67, "maxq", "Max-Q", "Peak aerodynamic stress on the rocket."],
+        [145, "meco", "Main engine cutoff (MECO)", "The first stage’s nine engines shut down."],
+        [149, "sep", "Stage separation", "First and second stages separate."],
+        [155, "ses", "Second stage engine start (SES-1)", "The second stage’s single engine lights."],
+        [176, "fairing", "Fairing separation", "The two fairing halves fall away; SpaceX recovers them from the sea."],
+        [361, "other", "Booster entry burn", "The first stage relights three engines to slow down as it falls back through the atmosphere."],
+        [503, "landing", "Booster landing", "The first stage lands on a droneship at sea, ready to fly again."],
+        [519, "seco", "Second stage engine cutoff (SECO-1)", "The second stage reaches orbit and coasts."],
+        [3178, "ses", "Second stage restart (SES-2)", "A one-second burn to trim the orbit."],
+        [3709, "deploy", "Starlink satellites deploy", "The whole stack of flat-packed Starlink satellites is released at once. They then drift apart and use their own thrusters to spread out and climb."]
+      ],
+      "keypoints": [[0,0,0],[67,12,1500],[145,68,7900],[176,92,8100],[361,150,14500],[519,215,27200],[1500,260,27350],[3178,320,27150],[3709,335,27420],[4300,335,27420]]
+    },
+    {
+      "id": "f9-generic", "match_rocket": "Falcon 9", "vehicle": "Falcon 9", "title": "Falcon 9 · generic profile", "generic": true,
+      "basis": "Generic Falcon 9 profile: typical event order with rounded times, based on SpaceX’s published timelines for recent missions. This mission’s own timeline may differ, especially when and where the payload is released.",
+      "booster": "landing",
+      "events": [
+        [0, "liftoff", "Liftoff", "Nine Merlin engines lift Falcon 9 off the pad."],
+        [70, "maxq", "Max-Q", "Peak aerodynamic stress on the rocket."],
+        [150, "meco", "Main engine cutoff (MECO)", "The first stage shuts down."],
+        [153, "sep", "Stage separation", "First and second stages separate."],
+        [160, "ses", "Second stage engine start", "The second stage lights."],
+        [190, "fairing", "Fairing separation", "The nose cone falls away (if the mission uses one)."],
+        [500, "landing", "Booster landing (if recovered)", "Most Falcon 9 boosters land on a droneship or landing zone."],
+        [520, "seco", "Second stage engine cutoff (SECO)", "The second stage reaches orbit."],
+        [3600, "deploy", "Payload deployment (varies)", "When and where the payload is released depends on the mission. Check the mission page on launch day."]
+      ],
+      "keypoints": [[0,0,0],[70,12,1550],[150,70,8000],[190,95,8200],[520,210,27000],[3600,330,27300],[4000,330,27300]]
+    },
+    {
+      "id": "fh-generic", "match_rocket": "Falcon Heavy", "vehicle": "Falcon Heavy", "title": "Falcon Heavy · generic profile", "generic": true,
+      "basis": "Generic Falcon Heavy profile: typical event order with rounded times. Many Falcon Heavy missions go to high orbits, so the real flight can last hours.",
+      "booster": "landing",
+      "events": [
+        [0, "liftoff", "Liftoff", "Twenty-seven engines across three cores light together."],
+        [65, "maxq", "Max-Q", "Peak aerodynamic stress."],
+        [150, "other", "Side boosters cut off and separate", "The two side boosters peel away and head back to land."],
+        [215, "meco", "Centre core cutoff (MECO)", "The centre core shuts down."],
+        [220, "sep", "Stage separation", "The second stage separates."],
+        [230, "ses", "Second stage engine start", "The second stage lights."],
+        [270, "fairing", "Fairing separation", "The nose cone falls away."],
+        [480, "landing", "Side booster landings (if recovered)", "The two side boosters land back at the Cape."],
+        [540, "seco", "Second stage engine cutoff", "The second stage reaches a parking orbit."],
+        [3600, "deploy", "Payload deployment (varies)", "Depends entirely on the mission; high orbits can take several hours."]
+      ],
+      "keypoints": [[0,0,0],[65,12,1500],[150,60,6500],[215,95,9500],[540,200,27000],[3600,400,27000],[4000,400,27000]]
+    },
+    {
+      "id": "vulcan-generic", "match_rocket": "Vulcan", "vehicle": "Vulcan", "title": "Vulcan · generic profile", "generic": true,
+      "basis": "Generic Vulcan profile, based on the order of events in ULA’s published Vulcan Leo 1 profile. Each mission’s timeline differs.",
+      "booster": "expended",
+      "events": [
+        [1, "liftoff", "Liftoff", "Two BE-4 engines plus solid boosters lift Vulcan off the pad."],
+        [55, "maxq", "Max-Q", "Peak aerodynamic stress."],
+        [100, "other", "Solid boosters jettison", "The spent solid boosters fall away."],
+        [300, "meco", "Booster engine cutoff", "The first stage shuts down."],
+        [305, "sep", "Stage separation", "The Centaur V upper stage separates."],
+        [315, "ses", "Centaur engine start", "Centaur lights."],
+        [325, "fairing", "Fairing jettison", "The nose cone falls away."],
+        [1000, "seco", "Centaur engine cutoff", "Centaur reaches orbit."],
+        [4000, "deploy", "Payload deployment (varies)", "Depends on the mission."]
+      ],
+      "keypoints": [[0,0,0],[55,13,1750],[100,38,4300],[300,135,15500],[1000,200,28000],[4000,440,27400],[4500,440,27400]]
+    },
+    {
+      "id": "atlas-generic", "match_rocket": "Atlas V", "vehicle": "Atlas V", "title": "Atlas V · generic profile", "generic": true,
+      "basis": "Generic Atlas V profile: typical event order with rounded times. ULA flew Amazon’s first batches on Atlas V.",
+      "booster": "expended",
+      "events": [
+        [1, "liftoff", "Liftoff", "Atlas V lifts off."],
+        [60, "maxq", "Max-Q", "Peak aerodynamic stress."],
+        [255, "meco", "Booster engine cutoff", "The first stage shuts down."],
+        [261, "sep", "Stage separation", "Centaur separates."],
+        [271, "ses", "Centaur engine start", "Centaur lights."],
+        [280, "fairing", "Fairing jettison", "The nose cone falls away."],
+        [900, "seco", "Centaur engine cutoff", "Centaur reaches orbit."],
+        [3600, "deploy", "Payload deployment (varies)", "Depends on the mission."]
+      ],
+      "keypoints": [[0,0,0],[60,12,1600],[255,120,14000],[900,200,28000],[3600,450,27400],[4000,450,27400]]
+    },
+    {
+      "id": "newglenn-generic", "match_rocket": "New Glenn", "vehicle": "New Glenn", "title": "New Glenn · generic profile", "generic": true,
+      "basis": "Generic New Glenn profile: typical event order with rounded times. Blue Origin hasn’t published this mission’s timeline yet.",
+      "booster": "landing",
+      "events": [
+        [0, "liftoff", "Liftoff", "Seven BE-4 engines lift New Glenn off the pad."],
+        [75, "maxq", "Max-Q", "Peak aerodynamic stress."],
+        [190, "meco", "Main engine cutoff (MECO)", "The first stage shuts down."],
+        [195, "sep", "Stage separation", "The second stage separates."],
+        [200, "ses", "Second stage engine start", "Two BE-3U engines light."],
+        [210, "fairing", "Fairing separation", "The 7 m-wide nose cone falls away."],
+        [570, "landing", "Booster landing (planned)", "Blue Origin aims to land the booster on its ship Jacklyn at sea."],
+        [780, "seco", "Second stage engine cutoff", "The second stage reaches orbit."],
+        [3600, "deploy", "Payload deployment (varies)", "Depends on the mission."]
+      ],
+      "keypoints": [[0,0,0],[75,13,1700],[190,85,8500],[780,220,27500],[3600,500,27200],[4000,500,27200]]
+    },
+    {
+      "id": "ariane6-generic", "match_rocket": "Ariane 6", "vehicle": "Ariane 6", "title": "Ariane 6 · generic profile", "generic": true,
+      "basis": "Generic Ariane 64 profile: typical event order with rounded times. Arianespace publishes each mission’s own timeline in its launch kit.",
+      "booster": "expended",
+      "events": [
+        [7, "liftoff", "Liftoff", "The Vulcain core engine and four P120C solid boosters lift Ariane 6 off the pad."],
+        [70, "maxq", "Max-Q", "Peak aerodynamic stress."],
+        [140, "other", "Solid boosters separate", "The four spent boosters fall away."],
+        [210, "fairing", "Fairing jettison", "The nose cone falls away."],
+        [470, "meco", "Core stage cutoff", "The Vulcain 2.1 core engine shuts down."],
+        [478, "sep", "Stage separation", "The upper stage separates."],
+        [490, "ses", "Upper stage (Vinci) ignition", "The restartable Vinci engine lights."],
+        [1100, "seco", "Upper stage cutoff", "The upper stage reaches orbit."],
+        [3600, "deploy", "Payload deployment (varies)", "Depends on the mission."]
+      ],
+      "keypoints": [[0,0,0],[70,12,1500],[140,50,5500],[470,170,18000],[1100,250,27800],[3600,460,27400],[4000,460,27400]]
+    },
+    {
+      "id": "electron-generic", "match_rocket": "Electron", "vehicle": "Electron", "title": "Electron · generic profile", "generic": true,
+      "basis": "Generic Electron profile: typical event order with rounded times. Rocket Lab publishes each mission’s timeline in its press kit.",
+      "booster": "expended",
+      "events": [
+        [0, "liftoff", "Liftoff", "Nine Rutherford engines lift the small Electron rocket."],
+        [70, "maxq", "Max-Q", "Peak aerodynamic stress."],
+        [150, "meco", "Main engine cutoff (MECO)", "The first stage shuts down."],
+        [153, "sep", "Stage separation", "The second stage separates."],
+        [156, "ses", "Second stage ignition", "The second stage lights."],
+        [190, "fairing", "Fairing separation", "The nose cone falls away."],
+        [540, "seco", "Second stage cutoff (SECO)", "The second stage shuts down."],
+        [550, "other", "Kick stage separation", "The Curie kick stage takes over."],
+        [3000, "deploy", "Payload deployment (varies)", "The kick stage releases the satellite."]
+      ],
+      "keypoints": [[0,0,0],[70,12,1500],[150,75,8000],[540,250,27000],[3000,520,27300],[3300,520,27300]]
+    },
+    {
+      "id": "starship-generic", "match_rocket": "Starship", "vehicle": "Starship", "title": "Starship · generic profile", "generic": true,
+      "basis": "Generic Starship profile: typical event order with rounded times from recent test flights. Each flight’s plan differs.",
+      "booster": "landing",
+      "events": [
+        [0, "liftoff", "Liftoff", "Thirty-three Raptor engines lift Super Heavy and Starship."],
+        [60, "maxq", "Max-Q", "Peak aerodynamic stress."],
+        [160, "meco", "Booster engine cutoff", "Most of Super Heavy’s engines shut down."],
+        [165, "sep", "Hot staging", "Starship lights its engines while still attached, then pushes away."],
+        [420, "landing", "Booster catch or splashdown", "Super Heavy returns to be caught by the tower or splash down."],
+        [520, "seco", "Starship engine cutoff", "Starship reaches its planned trajectory."],
+        [1800, "deploy", "Payload deployment (varies)", "On some flights Starship releases test or Starlink satellites."]
+      ],
+      "keypoints": [[0,0,0],[60,11,1500],[160,70,5800],[520,190,26500],[1800,200,26800],[2200,200,26800]]
+    },
+    {
+      "id": "generic", "vehicle": "Rocket", "title": "Generic orbital launch", "generic": true,
+      "basis": "Generic profile: the usual order of events for a two-stage rocket, with rounded times. It isn’t specific to this rocket or mission.",
+      "booster": "expended",
+      "events": [
+        [0, "liftoff", "Liftoff", "The rocket clears the pad."],
+        [70, "maxq", "Max-Q", "Peak aerodynamic stress."],
+        [170, "meco", "First stage cutoff", "The first stage shuts down."],
+        [175, "sep", "Stage separation", "The upper stage separates."],
+        [185, "ses", "Upper stage ignition", "The upper stage lights."],
+        [220, "fairing", "Fairing separation", "The nose cone falls away."],
+        [560, "seco", "Upper stage cutoff", "The upper stage reaches orbit."],
+        [3600, "deploy", "Payload deployment (varies)", "Depends on the mission."]
+      ],
+      "keypoints": [[0,0,0],[70,12,1500],[170,80,8000],[560,210,27000],[3600,400,27300],[4000,400,27300]]
+    }
+  ]
+}

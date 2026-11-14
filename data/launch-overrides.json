@@ -1,0 +1,14 @@
+{
+ "_note": "Sourced corrections layered over Launch Library 2 data. Applied by scripts/launch_overrides.py in scripts/fetch_launches.py (before data/launches.json is saved) and again in scripts/build.py. Each entry matches one launch by its Launch Library 2 id and stops applying automatically once the launch is past (3 hours after its NET, the same cut-off the site uses) or after 'expires', whichever comes first. 'when_window_start' guards window fixes: they only apply while the launch keeps the window start the source quoted, so a slip to a new day isn't overwritten with an old window.",
+ "overrides": [
+  {
+   "id": "ef9850ad-1096-425b-9d27-f7bbd186e61a",
+   "label": "Vulcan VC6L | Amazon Leo (LV-01)",
+   "expires": "2026-12-31T00:00:00Z",
+   "source": {"label": "ULA, Vulcan Leo 1 mission page", "url": "https://www.ulalaunch.com/missions/next-launch/vulcan-leo-1", "checked": "2026-11-14"},
+   "payload_count": 40,
+   "window": {"when_window_start": "2026-11-15T17:11", "window_end": "2026-11-15T17:40:00Z"},
+   "replace_text": {"mission_description": [["45 satellites will be carried on each Vulcan launch.", "ULA says this launch carries 40 Amazon Leo satellites."]]}
+  }
+ ]
+}

@@ -753,3 +753,64 @@ header.site nav{gap:.2rem 1rem}
   .welcome .wl-b .btn{flex:1 1 auto;justify-content:center;padding:.45rem .5rem;font-size:.8rem;text-align:center;white-space:nowrap}
   .wl-x{top:.25rem;right:.3rem}
 }
+/* ---- flight view (/launches/flight/) */
+.fl{margin:0 0 2.5rem}
+.fl-pick{display:grid;gap:.6rem;margin:0 0 1rem}
+.fl-pick select{font:inherit;font-size:.95rem;color:var(--text);background:var(--surface);border:1px solid var(--line-2);border-radius:10px;padding:.6rem .8rem;max-width:100%;min-height:44px}
+.fl-quick{display:flex;flex-wrap:wrap;gap:.45rem}.fl-quick .chip{text-decoration:none;font-size:.82rem}.fl-quick .chip[aria-current]{background:var(--cyan);color:#06101c;border-color:var(--cyan)}
+.fl-hud{position:relative;border:1px solid rgba(94,200,255,.22);border-radius:18px;background:radial-gradient(900px 380px at 50% 0%,rgba(0,207,255,.10),transparent 70%),linear-gradient(180deg,#081022,#050a15);padding:1rem 1rem .8rem;overflow:hidden}
+.fl-top{display:flex;justify-content:space-between;align-items:flex-start;gap:.8rem;flex-wrap:wrap}
+.fl-mission{font-family:var(--f-head);font-size:clamp(1.1rem,2.4vw,1.5rem);margin:0;letter-spacing:.01em;text-transform:uppercase}
+.fl-veh{margin:.15rem 0 0;color:var(--muted);font-family:var(--f-mono);font-size:.75rem}
+.fl-badge{margin:0;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:#ffc08a;border:1px solid rgba(255,154,60,.5);border-radius:999px;padding:.3rem .65rem;white-space:nowrap}
+.fl-plot svg{display:block;width:100%;height:auto;margin:.4rem 0 0}
+.fl-grid{stroke:rgba(255,255,255,.07);stroke-width:1}.fl-ground{stroke:rgba(255,255,255,.22);stroke-width:1}
+.fl-ax{fill:var(--dim);font:500 13px var(--f-mono)}
+.fl-plan{fill:none;stroke:rgba(143,219,255,.35);stroke-width:2;stroke-dasharray:4 6}
+.fl-flown{fill:none;stroke:var(--cyan);stroke-width:3;filter:drop-shadow(0 0 6px rgba(0,207,255,.6))}
+.fl-boost{fill:none;stroke:rgba(255,192,138,.5);stroke-width:1.5;stroke-dasharray:3 5}
+.fl-ev{fill:#070b14;stroke:rgba(143,219,255,.6);stroke-width:2}.fl-ev.done{fill:var(--cyan);stroke:#fff}
+.fl-ev.k-deploy{stroke:#6ee79a}.fl-ev.k-deploy.done{fill:#6ee79a}.fl-ev.k-landing{stroke:#ffc08a}.fl-ev.k-landing.done{fill:#ff9a3c}
+.fl-lab{fill:#cfe7f7;font:500 12px var(--f-mono);letter-spacing:.06em}
+.fl-now{stroke:rgba(255,255,255,.18);stroke-dasharray:2 4}.fl-dot{fill:#fff}
+.fl-bar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:.6rem;margin:.4rem 0 .6rem}
+.fl-g{display:flex;align-items:center;gap:.6rem}.fl-g:last-child{flex-direction:row-reverse;text-align:right}
+.fl-g svg{width:64px;height:64px;transform:rotate(-90deg);flex:none}
+.fl-gt{fill:none;stroke:rgba(255,255,255,.1);stroke-width:7}.fl-gv{fill:none;stroke:var(--cyan);stroke-width:7;stroke-linecap:round;stroke-dasharray:0 100;transition:stroke-dasharray .25s linear}.fl-gv.alt{stroke:#6ee79a}
+.fl-g p{margin:0;display:grid;line-height:1.1}.fl-g b{font-family:var(--f-mono);font-size:1.35rem;font-weight:500;font-variant-numeric:tabular-nums}.fl-g span{font-family:var(--f-mono);font-size:.72rem;color:var(--muted)}.fl-g small{font-size:.7rem;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;margin-top:.15rem}
+.fl-clockbox{text-align:center}
+.fl-clock{font-family:var(--f-mono);font-size:clamp(1.4rem,3.6vw,2.3rem);margin:0;font-variant-numeric:tabular-nums;letter-spacing:.04em;color:#fff;text-shadow:0 0 18px rgba(0,207,255,.35)}
+.fl-next{margin:.2rem 0 0;font-size:.82rem;color:var(--muted);min-height:1.2em}
+.fl-ctl{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.6rem 1rem;border-top:1px solid var(--line);padding-top:.7rem}
+.fl-btns{display:flex;gap:.45rem;flex-wrap:wrap}
+.fl-scrub{display:flex;align-items:center;gap:.6rem;font-size:.8rem;color:var(--muted);flex:1 1 260px;max-width:460px}.fl-scrub input{flex:1;accent-color:var(--cyan);min-height:32px}
+.fl-status{margin:.5rem 0 0;font-size:.85rem;color:var(--cyan-2);min-height:1.2em}
+.fl-fine{font-size:.78rem;color:var(--dim);margin:.4rem 0 0}
+.fl-cols{display:grid;gap:1.2rem 2rem;margin-top:1.6rem}
+@media (min-width:900px){.fl-cols{grid-template-columns:1.5fr 1fr}.fl-hud{padding:1.4rem 1.6rem 1rem}}
+.fl-events{list-style:none;padding:0;margin:0 0 0 .5rem;border-left:2px solid var(--line-2)}
+.fe{position:relative;display:grid;grid-template-columns:6.2em 1fr;gap:.7rem;padding:.5rem 0 .5rem 1rem;font-size:.92rem}
+.fe::before{content:"";position:absolute;left:-7px;top:.85rem;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid rgba(143,219,255,.5)}
+.fe.done::before{background:var(--cyan);border-color:var(--cyan)}.fe.next::before{border-color:#fff;box-shadow:0 0 0 4px rgba(0,207,255,.25)}
+.fe.fe-deploy.done::before{background:#6ee79a;border-color:#6ee79a}
+.fe-t{font-family:var(--f-mono);font-size:.8rem;color:var(--cyan-2);padding-top:.12rem}.fe.done .fe-b{color:var(--muted)}.fe-b b{color:var(--text)}
+.fl-side p{font-size:.92rem}.fl-side .kicker{margin-top:1rem}.fl-side .kicker:first-child{margin-top:0}.fl-pay:empty{display:none}
+.flg .gl-sel{color:#ffc08a;font-size:.92rem;margin:.6rem 0}
+.gl-chips,.gl-speed{display:flex;flex-wrap:wrap;gap:.4rem;margin:.6rem 0}
+.gl-chips .chip,.gl-speed .chip{font-size:.8rem;padding:.35rem .7rem;display:inline-flex;align-items:center;gap:.4rem}
+.gl-chips .chip i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.gl-chips .chip[aria-pressed=true],.gl-speed .chip[aria-pressed=true]{border-color:var(--cyan);background:rgba(0,207,255,.14)}
+.gl-sum{font-size:.92rem;margin:.6rem 0 .2rem}.gl-time{font-family:var(--f-mono);font-size:.75rem;color:var(--dim);margin:0 0 .6rem}
+.fl-why{max-width:var(--measure)}
+.fl-plot svg.narrow .fl-ax{font-size:17px}.fl-plot svg.narrow .fl-lab{font-size:16px}
+.gl-chips .chip[aria-pressed=true],.gl-speed .chip[aria-pressed=true]{color:#fff}
+@media (max-width:600px){
+  .fl-hud{padding:.8rem .7rem .7rem;border-radius:14px}
+  .fl-bar{grid-template-columns:1fr 1fr;grid-template-areas:"c c" "s a"}
+  .fl-clockbox{grid-area:c}.fl-bar .fl-g:first-child{grid-area:s}.fl-bar .fl-g:last-child{grid-area:a}
+  .fl-g svg{width:48px;height:48px}.fl-g b{font-size:1.1rem}
+  .fl-badge{font-size:.6rem}
+  .fe{grid-template-columns:5.4em 1fr;font-size:.88rem}
+}
+@media (prefers-reduced-motion:reduce){.fl-gv{transition:none}}
+.fl [hidden],.flg [hidden]{display:none!important}
