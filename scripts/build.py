@@ -697,7 +697,7 @@ def launch_item(l, root):
             f'<div class=l-body><div class=flip><div class="face front"><div class=l-top>{tag_pill(l["tag"])}{st}</div><h3>{esc(l.get("mission") or l["name"])}</h3>'
             f'<p class=l-meta>{esc(l.get("rocket") or "")} · {esc(l.get("provider") or "")} · {esc(l.get("location") or "")}</p>'
             f'<p class=l-why><strong>Why it matters for your phone:</strong> {esc(TAG[l["tag"]][2])}</p>'
-            f'<div class=l-act><button type=button class="btn ghost sm flipbtn" aria-expanded=false>What’s on board<span class=sr> {esc(l.get("mission") or l["name"])}</span></button>{cal_btn(l, root)}</div></div>'
+            f'<div class=l-act><button type=button class="btn ghost sm flipbtn" aria-expanded=false>What’s on board<span class=sr> {esc(l.get("mission") or l["name"])}</span></button><a class="btn ghost sm" href="{flight_url(l, root)}">Flight view<span class=sr> for {esc(l.get("mission") or l["name"])}</span></a>{cal_btn(l, root)}</div></div>'
             f'<div class="face back" id="pb-{l["id"][:8]}">{payload_html(l)}<p class=l-act><button type=button class="btn ghost sm flipback">Back to launch<span class=sr> details</span></button></p></div></div></div></li>')
 def human_dt(iso):
     d = iso_dt(iso); return d.strftime('%-d %b %Y, %H:%M UTC')
@@ -720,7 +720,7 @@ def next_card(root=''):
             f'<p class=nl-meta><span class=nl-rocket>{esc(l.get("rocket") or "")}</span> · <span class=nl-pad>{esc(l.get("location") or "")}</span></p>'
             f'<p class=nl-when>{local_time(l)}</p><p class=nl-window>{esc(window_text(l))}</p></div>'
             f'<div class=nl-side><p class=nl-cd data-countdown="{l["net"]}" role=timer aria-live=off>T− <span>--d --h --m --s</span></p>'
-            f'<p class=nl-links><a class=btn href="{root}launches/">All launches</a>{cal_btn(l, root)}</p></div>{phone}</section>')
+            f'<p class=nl-links><a class=btn href="{root}launches/">All launches</a><a class="btn ghost" href="{flight_url(l, root)}">Flight view</a>{cal_btn(l, root)}</p></div>{phone}</section>')
 def count_rows(items, root):
     top = max([i['count'] for i in items if i['count']] or [1])
     out = []
@@ -848,6 +848,95 @@ def launches_page():
          body=body, root=root, current='launches/index.html', jsonld=ld, cls='is-launches', lastmod=(fetched or BUILD_NOW.isoformat())[:10],
          scripts=f'<script defer src="{root}assets/launches.js"></script><script defer src="{root}assets/orbits.js"></script><script defer src="{root}assets/race.js"></script>',
          search_text='Launch tracker. ' + ' '.join(f"{l.get('mission')} {l.get('rocket')} {TAG[l['tag']][0]}." for l in UPCOMING) + ' ' + ' '.join(f"{i['network']} {i['operator']} {i['note']}" for i in CONST['direct_to_device'] + CONST['broadband_only']))
+# ---------------------------------------------------------------- flight view (/launches/flight/; assets/flight.js + lazy assets/flight-globe.js)
+FLIGHT = json.loads((SRC / 'flight-profiles.json').read_text())['profiles']
+GPR = json.loads((ROOT / 'data/gp-recent.json').read_text()) if (ROOT / 'data/gp-recent.json').exists() else None
+def flight_profile(l):
+    slug, rocket, text = l.get('slug') or '', l.get('rocket') or '', ltext(l)
+    for p in FLIGHT:
+        if p.get('match_slug') and p['match_slug'] in slug: return p
+    for p in FLIGHT:
+        if p.get('match_slug') or not p.get('match_rocket'): continue
+        if p['match_rocket'] in rocket and (not p.get('match_text') or p['match_text'] in text): return p
+    return FLIGHT[-1]
+FL_NET = {'starlink-dtc': 'starlink', 'starlink': 'starlink', 'ast': 'ast', 'amazon-leo': 'amazon-leo'}
+def fl_net(l):
+    t = ltext(l)
+    if 'Globalstar' in t: return 'globalstar'
+    if 'OneWeb' in t: return 'oneweb'
+    if re.search(r'\bLynk\b', t): return 'lynk'
+    return FL_NET.get(l['tag'])
+def flight_url(l, root): return f'{root}launches/flight/?l={l.get("slug") or l["id"]}'
+def flight_events_html(p):
+    return ''.join(f'<li class="fe fe-{k}" data-t="{t}"><span class=fe-t>T+{int(t) // 3600:d}:{int(t) % 3600 // 60:02d}:{int(t) % 60:02d}</span><span class=fe-b><b>{esc(lab)}</b> {esc(d)}</span></li>' for t, k, lab, d in p['events'])
+def flight_page():
+    root = '../../'
+    ls = [l for l in UPCOMING if l.get('slug')]
+    if not ls: return
+    data = [{'id': l['id'], 's': l['slug'], 'm': l.get('mission') or l['name'], 'r': l.get('rocket') or '', 'pv': l.get('provider') or '', 'n': l['net'], 'pr': l['precision'],
+             'w': when_text(l), 'loc': l.get('location') or '', 'st': l.get('status') or '', 'tag': TAG[l['tag']][0], 'tc': TAG[l['tag']][1], 'why': TAG[l['tag']][2],
+             'p': flight_profile(l)['id'], 'net': fl_net(l), 'ph': 'phone' in l['who']} for l in ls]
+    profs = {p['id']: {k: p[k] for k in ('title', 'vehicle', 'events', 'keypoints', 'booster') if k in p} | {'src': p.get('source'), 'basis': p.get('basis', ''), 'pay': p.get('payload_note', ''), 'gen': bool(p.get('generic'))} for p in FLIGHT}
+    d0 = ls[0]; p0 = flight_profile(d0)
+    quick = [l for l in ls if l['tag'] != 'other'][:6]
+    if d0 not in quick: quick = [d0] + quick[:5]
+    opts = ''.join(f'<option value="{esc(l["slug"])}"{" selected" if l is d0 else ""}>{esc(iso_dt(l["net"]).strftime("%-d %b %Y") if l["precision"] in PRECISE + ("Day",) else when_text(l).split(" · ")[0])} · {esc(l.get("mission") or l["name"])} · {esc(l.get("rocket") or "")}</option>' for l in ls)
+    chips = ''.join(f'<a class=chip href="?l={esc(l["slug"])}" data-l="{esc(l["slug"])}"{" aria-current=true" if l is d0 else ""}>{esc(l.get("mission") or l["name"])}</a>' for l in quick)
+    src0 = p0.get('source')
+    gp_note = ''
+    if GPR:
+        n_sat = sum(g['n'] for g in GPR['groups']); n_l = len(GPR['groups'])
+        gp_note = f'{n_sat} satellites from {n_l} recent broadband and phone-network launches'
+    body = (f'<header class=page-head><p class=kicker><a href="{root}launches/">Launches</a> · Flight view</p><h1>Flight view: follow a launch, stage by stage</h1>'
+            f'<p class=lede>See a launch the way the webcasts show it: the climb, each stage event and the moment the satellites are let go. Then see where the newest satellites are right now.</p></header>'
+            f'<section class=fl aria-labelledby=fl-h data-base="{root}"><h2 id=fl-h class=sr>Launch infographic</h2>'
+            f'<div class=fl-pick><label for=fl-sel class=kicker>Choose a launch</label><select id=fl-sel>{opts}</select>'
+            f'<div class=fl-quick role=group aria-label="Quick picks: phone and broadband launches">{chips}</div></div>'
+            f'<div class=fl-hud id=fl-hud><div class=fl-top><div><p class=fl-mission id=fl-mission>{esc(d0.get("mission") or d0["name"])}</p>'
+            f'<p class=fl-veh id=fl-veh>{esc(d0.get("rocket") or "")} · {esc(d0.get("location") or "")}</p></div>'
+            f'<p class=fl-badge>Planned profile · not live telemetry</p></div>'
+            f'<div class=fl-plot><svg id=fl-svg viewBox="0 0 1000 340" role=img aria-label="Ascent profile: planned altitude against time, with stage events marked" preserveAspectRatio="xMidYMid meet"></svg></div>'
+            f'<div class=fl-bar><div class=fl-g><svg viewBox="0 0 120 120" aria-hidden=true><circle class=fl-gt cx=60 cy=60 r=50 pathLength=100 /><circle class=fl-gv id=fl-spd-arc cx=60 cy=60 r=50 pathLength=100 /></svg>'
+            f'<p><b id=fl-spd>0</b><span>km/h</span><small>Speed (est.)</small></p></div>'
+            f'<div class=fl-clockbox><p class=fl-clock id=fl-clock role=timer aria-live=off>T− --:--:--:--</p><p class=fl-next id=fl-next></p></div>'
+            f'<div class=fl-g><svg viewBox="0 0 120 120" aria-hidden=true><circle class=fl-gt cx=60 cy=60 r=50 pathLength=100 /><circle class="fl-gv alt" id=fl-alt-arc cx=60 cy=60 r=50 pathLength=100 /></svg>'
+            f'<p><b id=fl-alt>0</b><span>km</span><small>Altitude (est.)</small></p></div></div>'
+            f'<div class=fl-ctl><div class=fl-btns role=group aria-label="Clock mode"><button type=button class="btn sm" id=fl-live aria-pressed=true>Live clock</button>'
+            f'<button type=button class="btn ghost sm" id=fl-replay aria-pressed=false>Replay the flight</button></div>'
+            f'<label class=fl-scrub>Scrub through the flight <input id=fl-range type=range min=0 max=1000 value=0 step=1></label></div>'
+            f'<p class=fl-status id=fl-status role=status aria-live=polite></p>'
+            f'<p class=fl-fine id=fl-note>The clock counts to the launch time in our launch data, refreshed every 6 hours. Speed and altitude follow the planned profile as if the rocket flies exactly on time and on plan. They’re our estimates, not readings from the rocket.</p></div>'
+            f'<div class=fl-cols><div><h2 id=fe-h>What happens, step by step</h2><ol class=fl-events id=fl-events aria-labelledby=fe-h>{flight_events_html(p0)}</ol></div>'
+            f'<aside class="card fl-side"><p class=kicker>Why it matters for your phone</p><p id=fl-why>{esc(TAG[d0["tag"]][2])}</p>'
+            f'<p class=fl-pay id=fl-pay>{esc(p0.get("payload_note", ""))}</p>'
+            f'<p class=kicker>Where the timeline comes from</p><p class=fl-src id=fl-src>'
+            + (f'Event times: <a href="{esc(src0["url"])}">{esc(src0["label"])}</a>, checked {human(src0["checked"])}. ' if src0 else '')
+            + f'{esc(p0.get("basis", ""))} Speed and altitude between events are Full Duplex estimates.</p>'
+            f'<p class=fl-fine>Launch times: <a href="https://thespacedevs.com/llapi">The Space Devs Launch Library 2</a>. Times slip often; check on the day.</p></aside></div></section>'
+            f'<section class="orbit flg" aria-labelledby=gl-h data-base="{root}">'
+            f'<div class=ov-copy><p class=kicker>After deployment</p><h2 id=gl-h>Where the newest satellites are right now</h2>'
+            f'<p class=ov-intro>Each dot is a real satellite launched in the last 30 days for a broadband or phone network, placed using its latest published orbit. A fresh batch flies as a tight “train”, then spreads out around the orbit over the following weeks.</p>'
+            f'<p class=gl-sel id=gl-sel role=status aria-live=polite></p>'
+            f'<div class=gl-chips id=gl-chips role=group aria-label="Highlight a launch"></div>'
+            f'<p class=gl-sum id=gl-sum></p><p class=gl-time id=gl-time></p>'
+            f'<div class=gl-speed role=group aria-label="Playback speed"><button type=button class="chip" data-x=1 aria-pressed=true>Real time</button><button type=button class=chip data-x=60 aria-pressed=false>×60</button><button type=button class=chip data-x=600 aria-pressed=false>×600</button></div>'
+            f'<p class=checked id=gl-credit>Orbits: <a href="https://celestrak.org/">CelesTrak</a> GP data'
+            + (f', fetched <time datetime="{GPR["fetched_at"]}">{human_dt(GPR["fetched_at"])}</time> ({gp_note})' if GPR else '')
+            + '. Positions are computed in your browser with <a href="https://github.com/shashwatak/satellite-js">satellite.js</a> (SGP4). They’re typically within a few kilometres near the data’s date, and drift if a satellite fires its thrusters.</p></div>'
+            f'<figure class=ov-fig><div id=glview class="globe ov-globe" role=img aria-label="Globe showing recently launched broadband and phone-network satellites at their computed current positions"></div>'
+            f'<figcaption>Real orbits, computed in your browser. Heights to scale; dots enlarged. Drag to spin.</figcaption></figure></section>'
+            f'<section class="card fl-why" aria-labelledby=sp-h><h2 id=sp-h>Why new satellites spread out</h2>'
+            f'<p>Rockets drop a whole batch of satellites in one place. To cover the planet, each satellite needs its own slot, so over the following weeks they use small thrusters to climb to slightly different heights. Lower satellites go round faster than higher ones, so the batch slowly stretches into a line, then a ring.</p>'
+            f'<p><strong>Why it matters for your phone:</strong> a satellite only helps your phone when it’s overhead. Until a new batch has spread out and reached its working height, it adds little coverage. That’s why a launch today usually means better gaps-in-signal coverage weeks later, not tonight.</p></section>'
+            + signal_block(root, 'flight', heading='Get launch alerts in Signal', intro='Signal is our free weekly direct-to-cell briefing: the launches that matter for your phone, in one email a week.'))
+    fdata = json.dumps({'l': data, 'p': profs}, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
+    body += f'<script type="application/json" id=fl-data>{fdata}</script>'
+    ld = [crumbs([('Home', ''), ('Launches', 'launches/'), ('Flight view', 'launches/flight/')])]
+    page(og=('Launches', 'Flight view: follow a launch, stage by stage'), path='launches/flight/index.html', title='Flight view: follow a launch, stage by stage',
+         description='A webcast-style infographic for upcoming launches: ascent profile, stage events and mission clock, plus a live globe of newly launched broadband and phone satellites.',
+         body=body, root=root, current='launches/index.html', jsonld=ld, cls='is-flight', lastmod=BUILD_NOW.isoformat()[:10],
+         scripts=f'<script defer src="{root}assets/flight-globe.js"></script><script defer src="{root}assets/flight.js"></script>',
+         search_text='Flight view. Launch infographic: ascent profile, Max-Q, MECO, stage separation, fairing, booster landing, SECO, payload deployment. Globe of new Starlink, Amazon Leo and phone satellites.')
 # ---------------------------------------------------------------- journey explainer (src/pages/journey.html; animations in style.css + assets/journey.js)
 JOURNEY_MINI = ('<svg viewBox="0 0 150 90" aria-hidden=true focusable=false><rect width=150 height=90 rx=12 fill="#0c1830"/><path d="M0 78C30 62 60 58 90 64S130 80 150 76V90H0z" fill="#16243d"/>'
                 '<path d="M40 64L75 18 116 70" fill=none stroke="#00cfff" stroke-width=1.6 stroke-dasharray="3 4"/><rect x=64 y=12 width=22 height=10 rx=2 fill="#e8eef7"/><rect x=50 y=14 width=12 height=6 fill="#06324a" stroke="#00cfff"/><rect x=88 y=14 width=12 height=6 fill="#06324a" stroke="#00cfff"/>'
@@ -942,6 +1031,7 @@ def satellites_page():
          description='What Starlink Direct to Cell, AST SpaceMobile BlueBird, Amazon Leo, Lynk and Globalstar satellites look like, how high they fly and how they reach an ordinary phone. Plain English, with sources.',
          body=body, root=root, current='satellites/index.html', jsonld=ld, cls='is-sats', lastmod=SATS['checked'])
 launches_page()
+flight_page()
 journey_page()
 satellites_page()
 
