@@ -1,14 +1,14 @@
 {
- "fetched_at": "2026-11-14T06:34:47Z",
+ "fetched_at": "2026-11-14T18:12:18Z",
  "source": "The Space Devs Launch Library 2 (https://ll.thespacedevs.com/2.3.0/launches/upcoming/)",
  "launches": [
   {
    "id": "ef9850ad-1096-425b-9d27-f7bbd186e61a",
    "slug": "vulcan-vc6l-amazon-leo-lv-01",
    "name": "Vulcan VC6L | Amazon Leo (LV-01)",
-   "net": "2026-11-14T17:32:30Z",
-   "window_start": "2026-11-14T17:32:00Z",
-   "window_end": "2026-11-14T18:01:00Z",
+   "net": "2026-11-15T17:11:30Z",
+   "window_start": "2026-11-15T17:11:30Z",
+   "window_end": "2026-11-15T17:31:00Z",
    "precision": "Second",
    "status": "Go for Launch",
    "status_abbrev": "Go",
@@ -26,7 +26,7 @@
    "pad_lat": 28.58341025,
    "pad_lon": -80.58303644,
    "webcast_live": false,
-   "last_updated": "2026-11-13T14:54:33Z",
+   "last_updated": "2026-11-14T14:18:08Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/ef9850ad-1096-425b-9d27-f7bbd186e61a/",
    "queries": [
     "amazon-leo"
@@ -86,7 +86,7 @@
    "pad_lat": 34.632,
    "pad_lon": -120.611,
    "webcast_live": false,
-   "last_updated": "2026-11-12T19:21:00Z",
+   "last_updated": "2026-11-14T14:29:39Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/951a341f-236b-42fe-a667-4ab2fcf36eac/",
    "queries": [
     "spacex"
