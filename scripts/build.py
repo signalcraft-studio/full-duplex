@@ -157,12 +157,26 @@ def gloss_html(body, root, limit=14):
     return ''.join(out)
 
 built = []  # (path, lastmod)
+SEO = json.loads((SRC / 'seo.json').read_text())['pages']
+CRUMB = {'tracker.html': [('Tracker', 'tracker.html')], 'tracker/changes/index.html': [('Tracker', 'tracker.html'), ('Change log', 'tracker/changes/')],
+         'articles/index.html': [('Articles', 'articles/')], 'about.html': [('About', 'about.html')], 'sponsor.html': [('Sponsor', 'sponsor.html')],
+         'privacy.html': [('Privacy', 'privacy.html')], 'search.html': [('Search', 'search.html')], 'check/index.html': [('Phone checker', 'check/')],
+         'glossary/index.html': [('Glossary', 'glossary/')], 'play/constellation.html': [('Constellation', 'play/constellation.html')]}
 SEARCH = []
 
 def page(*, path, title, description, body, root='', current='', og_type='website', jsonld=None, head_extra='', scripts='',
          viewport='width=device-width,initial-scale=1', sticky=True, full_title=None, lastmod=None, search=True, cls='', index=True, search_text=None, og=None, gloss=False):
     url = BASE + (path[:-len('index.html')] if path.endswith('index.html') else path)
     ft = full_title or f'{title} | Full Duplex'
+    o = SEO.get(path, {})
+    if o.get('title'): ft = o['title']
+    if o.get('description'):
+        old, description = description, o['description']
+        for j in jsonld or []:
+            if j.get('description') == old: j['description'] = description
+    if index and path != 'index.html' and not any(j.get('@type') == 'BreadcrumbList' for j in jsonld or []):
+        jsonld = (jsonld or []) + [crumbs([('Home', '')] + CRUMB.get(path, [(title, path)]))]
+    if index and (len(ft) > 60 or not 70 <= len(description) <= 160): print(f'WARNING: SEO limits {path}: title {len(ft)}, description {len(description)}')
     slug = 'home' if path == 'index.html' else re.sub(r'(/index)?\.html$', '', path).replace('/', '-')
     kicker, og_title, *og_more = og or ('Full Duplex', title)
     if not index: slug = 'home'
@@ -180,10 +194,10 @@ def page(*, path, title, description, body, root='', current='', og_type='websit
             f'<link rel="preload" href="{root}assets/fonts/InterTight-600.woff2" as="font" type="font/woff2" crossorigin>'
             f'<link rel="preload" href="{root}assets/fonts/Newsreader-400.woff2" as="font" type="font/woff2" crossorigin><meta name="theme-color" content="#070b14"><meta name="color-scheme" content="dark">'
             f'<meta property="og:site_name" content="Full Duplex"><meta property="og:locale" content="en_GB"><meta property="og:type" content="{og_type}">'
-            f'<meta property="og:title" content="{esc(title)}"><meta property="og:description" content="{esc(description)}"><meta property="og:url" content="{url}">'
+            f'<meta property="og:title" content="{esc(ft)}"><meta property="og:description" content="{esc(description)}"><meta property="og:url" content="{url}">'
             f'<meta property="og:image" content="{og_img}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
             f'<meta property="og:image:alt" content="{esc(og_title)} (Full Duplex)">'
-            f'<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{og_img}"><meta name="twitter:image:alt" content="{esc(og_title)} (Full Duplex)"><meta name="twitter:site" content="@{X}"><meta name="twitter:title" content="{esc(title)}"><meta name="twitter:description" content="{esc(description)}">'
+            f'<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{og_img}"><meta name="twitter:image:alt" content="{esc(og_title)} (Full Duplex)"><meta name="twitter:site" content="@{X}"><meta name="twitter:title" content="{esc(ft)}"><meta name="twitter:description" content="{esc(description)}">'
             f'<link rel="alternate" type="application/rss+xml" title="Full Duplex" href="{BASE}feed.xml">'
             f'<link rel="stylesheet" href="{root}style.css">'
             f'{head_extra}{ld}</head><body{" class=" + cls if cls else ""}>')
@@ -196,8 +210,13 @@ def page(*, path, title, description, body, root='', current='', og_type='websit
     if search: SEARCH.append({'t': title, 'u': path[:-len('index.html')] if path.endswith('index.html') else path, 'd': description, 'x': (search_text if search_text is not None else strip_tags(re.sub(r'<(aside|section) class=["]?signal.*?</\1>', ' ', raw_body, flags=re.S)))[:6000]})
     return url
 
-PUBLISHER = {'@type': 'Organization', 'name': 'Full Duplex', 'url': BASE, 'sameAs': [f'https://x.com/{X}']}
-AUTHOR = {'@type': 'Person', 'name': SITE['author'], 'url': BASE + 'about.html'}
+LOGO = {'@type': 'ImageObject', 'url': BASE + 'assets/logo.svg', 'width': 516, 'height': 516}  # logo A
+PUBLISHER = {'@type': 'Organization', '@id': BASE + '#organization', 'name': 'Full Duplex', 'url': BASE, 'logo': LOGO, 'sameAs': [f'https://x.com/{X}']}
+AUTHOR = {'@type': 'Person', '@id': BASE + 'about.html#sam', 'name': SITE['author'], 'url': BASE + 'about.html'}
+ORG = {'@context': 'https://schema.org', **PUBLISHER, 'description': 'Independent analysis of satellite-to-phone and mobile networks.',
+       'founder': AUTHOR}
+PERSON = {'@context': 'https://schema.org', **AUTHOR, 'description': 'Mobile network insider with over 13 years in GSM, writing Full Duplex.',
+          'knowsAbout': ['GSM', 'Mobile networks', 'MVNOs', 'Satellite-to-phone', 'Direct-to-cell'], 'worksFor': {'@id': PUBLISHER['@id']}}
 def crumbs(items):
     return {'@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': [
         {'@type': 'ListItem', 'position': i + 1, 'name': n, 'item': BASE + u} for i, (n, u) in enumerate(items)]}
@@ -435,7 +454,7 @@ for i, a in enumerate(arts):
     ld = [{'@context': 'https://schema.org', '@type': 'NewsArticle', 'headline': a['title'], 'description': a['description'],
            'datePublished': a['published'], 'dateModified': a.get('updated', a['published']), 'author': AUTHOR,
            'publisher': PUBLISHER, 'mainEntityOfPage': url, 'inLanguage': 'en-GB', 'image': [f"{BASE}assets/og/articles-{a['slug']}.jpg"]},
-          crumbs([('Home', ''), ('Articles', 'articles/'), (a['title'], path)])]
+          crumbs([('Home', ''), ('Articles', 'articles/'), (a['short_title'], path)])]
     page(path=path, title=a['title'], description=a['description'], body=body, root=root, og_type='article', jsonld=ld, current='articles/index.html',
          full_title=f"{a['short_title']} | Full Duplex", lastmod=a.get('updated', a['published']), cls='is-article', search_text=strip_tags(a['body']), og=('Analysis', a['title'], [(f'By {SITE["author"]}', OGC['cyan']), (f'{reading_time(a["body"])} min read', OGC['muted'])]), gloss=True,
          head_extra=f'<meta property="article:published_time" content="{a["published"]}"><meta property="article:author" content="{esc(SITE["author"])}">')
@@ -452,7 +471,8 @@ for p in ['about', 'sponsor', 'privacy']:
     body = f'<div class=prose-page>{body}</div>'
     if p == 'about': body += f'<p class=follow-row>{follow_btn()}</p>' + signal_block('', 'about')
     if p == 'sponsor': body += signal_block('', 'sponsor', heading='See the newsletter sponsors would appear in')
-    page(path=f'{p}.html', title=meta['title'], description=meta['description'], body=body, current=f'{p}.html', sticky=(p != 'privacy'), search_text=strip_tags(read_src(SRC / 'pages' / f'{p}.html')[1]))
+    ld = [{'@context': 'https://schema.org', '@type': 'AboutPage', 'url': BASE + 'about.html', 'name': 'About Full Duplex', 'about': {'@id': PUBLISHER['@id']}, 'mainEntity': {'@id': AUTHOR['@id']}}, PERSON, ORG] if p == 'about' else None
+    page(path=f'{p}.html', title=meta['title'], description=meta['description'], body=body, current=f'{p}.html', jsonld=ld, sticky=(p != 'privacy'), search_text=strip_tags(read_src(SRC / 'pages' / f'{p}.html')[1]))
 
 meta, body, scripts = read_src(SRC / 'pages' / 'constellation.html')
 body = body + f'<div class=share-end><p>Beat your score? Challenge someone.</p>{share_btn("I just played Constellation: deploy direct-to-cell satellites before time runs out.", BASE + "play/constellation.html", "Share the game on X")}{follow_btn()}</div>' + signal_block('../', 'game')
@@ -475,7 +495,8 @@ controls = (f'<div class=filters role=search aria-label="Filter the tracker"><di
 country_links = ''.join(f'<a class="cc s-{CLS[best(rs)]}" href="tracker/{country_slug(c)}/">{esc(c)}</a>' for c, rs in sorted(COUNTRIES.items()))
 tools = (f'<div class=t-tools><a class="btn ghost" href="data/tracker.csv" download>Download CSV</a><a class="btn ghost" href="data/tracker.json">JSON</a>'
          + share_btn(f"Direct-to-cell tracker: {C['live']} live services, {C['trial']} trials, {C['announced']} announced. Country by country, with sources.", BASE + 'tracker.html') +
-         f'</div><p class=cite><strong>Cite this tracker:</strong> Full Duplex, “Direct-to-cell tracker”, last checked {TRACK["last_checked"]}, {BASE}tracker.html</p>')
+         f'</div><p class=cite><strong>Cite this tracker:</strong> Full Duplex, “Direct-to-cell tracker”, last checked {TRACK["last_checked"]}, {BASE}tracker.html</p>'
+         f'<p class=cite>Tracker data: <a href="{SITE["data_license"]}" rel="license">CC BY 4.0</a>, credit Full Duplex.</p>')
 tbody = tbody.replace('<!--TRACKER-TABLE-->', tracker_table())
 tbody = re.sub(r'<span id=tracker-checked>.*?</span>', f"<span id=tracker-checked>{TRACK['last_checked']}</span>", tbody)
 # hero + stats before the intro; filters before the table; extras after
@@ -487,7 +508,7 @@ tbody += (f'<section aria-labelledby=bc-h><h2 id=bc-h>Browse by country</h2><div
           f'<section aria-labelledby=ch-h><h2 id=ch-h>What changed</h2>{change_list(CHANGES, "", 8)}<p><a href="tracker/changes/">Full change log</a></p></section>'
           + signal_block('', 'tracker', heading='Get tracker updates in Signal', intro='Every week, Signal covers what changed in the tracker: new launches, trials and status changes, with the sources.'))
 ld = [{'@context': 'https://schema.org', '@type': 'Dataset', 'name': 'Full Duplex direct-to-cell tracker', 'description': meta['description'],
-       'url': BASE + 'tracker.html', 'creator': PUBLISHER, 'isAccessibleForFree': True, 'inLanguage': 'en-GB', 'dateModified': parse_human(TRACK['last_checked']),
+       'url': BASE + 'tracker.html', 'creator': PUBLISHER, 'license': SITE['data_license'], 'isAccessibleForFree': True, 'inLanguage': 'en-GB', 'dateModified': parse_human(TRACK['last_checked']),
        'distribution': [{'@type': 'DataDownload', 'encodingFormat': 'text/csv', 'contentUrl': BASE + 'data/tracker.csv'},
                         {'@type': 'DataDownload', 'encodingFormat': 'application/json', 'contentUrl': BASE + 'data/tracker.json'}]}]
 page(og=('Tracker', 'Direct-to-cell around the world', [(f"{C['live']} live", OGC['live']), (f"{C['trial']} trials", OGC['trial']), (f"{C['announced']} announced", OGC['announced']), (f'{NLIVE_C} countries live', OGC['cyan'])]), path='tracker.html', title=meta['title'], description=meta['description'], body=tbody, current='tracker.html', cls='is-tracker',
@@ -502,10 +523,10 @@ for c, rs in sorted(COUNTRIES.items()):
     checked = max(parse_human(r['checked']) for r in rs)
     ops = '; '.join(f"{r['operator']} with {r['satellite']} ({r['status']})" for r in rs)
     desc = f"Satellite-to-phone in {the(c)}: {ops}. Status, services and sources, last checked {human(checked)}."
-    if len(desc) > 200: desc = f"Satellite-to-phone in {the(c)}: {len(rs)} direct-to-cell partnerships tracked ({parts}). Status, services and sources, last checked {human(checked)}."
+    if len(desc) > 160: desc = f"Satellite-to-phone in {the(c)}: {len(rs)} direct-to-cell partnerships tracked ({parts}). Status, services and sources, last checked {human(checked)}."
     cards = ''.join(f'<article class="card op"><div class=op-head><h2>{r["operator"]} <span class=plus>+</span> {r["satellite"]}</h2>{pill(r["status"])}</div>'
                     f'<p>{r["services"]}</p><p class=meta>Source: {sources_html(r)} · Last checked {r["checked"]}</p></article>' for r in rs)
-    rel = [a for a in arts if mentions(a, c)][:3]
+    rel = sorted((a for a in arts if mentions(a, c)), key=lambda a: not (c == 'United Kingdom' and a['slug'] == 'o2-satellite-uk'))[:3]  # UK: lead with the O2 Satellite explainer
     relh = f'<section aria-labelledby=rel-h><h2 id=rel-h>Related analysis</h2><div class=grid3>{"".join(art_card(a, root) for a in rel)}</div></section>' if rel else ''
     chg = [{'date': e['date'], 'items': [it for it in e['items'] if it.get('country') == c]} for e in CHANGES]
     chg = [e for e in chg if e['items']]
@@ -516,7 +537,7 @@ for c, rs in sorted(COUNTRIES.items()):
             f'<p class=row-cta>{share_btn(f"Satellite-to-phone in {the(c)}: who is live, trialling or announced, with sources.", BASE + path[:-10])}<a class="btn ghost" href="{root}tracker.html">All countries</a></p></header>'
             f'{cards}<p class=note>Status reflects what the source says on the date checked. Multi-country services such as Skylo are listed on the <a href="{root}tracker.html">main tracker</a>.</p>'
             f'{chh}{relh}' + signal_block(root, 'tracker-country', heading=f'Get {esc(the(c))} updates in Signal', intro='Signal covers new launches, trials and status changes every week, with the sources.'))
-    ld = [crumbs([('Tracker', 'tracker.html'), (c, path[:-10])])]
+    ld = [crumbs([('Home', ''), ('Tracker', 'tracker.html'), (c, path[:-10])])]
     page(og=('Tracker', f'Satellite-to-phone in {the(c)}', status_chips(rs)), path=path, title=f'Satellite-to-phone in {the(c)}', description=desc, body=body, root=root, current='tracker.html', jsonld=ld, lastmod=checked,
          search_text=' '.join(f"{r['operator']} with {r['satellite']}: {r['status']}. {strip_tags(r['services'])}." for r in rs))
 
@@ -1150,7 +1171,7 @@ home = (f'<section class=hero><div class=hero-art aria-hidden=true><img src="ass
           '<p>Engineers, operator teams, investors and early adopters read Full Duplex. One sponsor at a time, always clearly labelled.</p>'
           '<p><a class="btn ghost" href="sponsor.html">See sponsor options</a></p></aside>')
 ld = [{'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'Full Duplex', 'url': BASE, 'inLanguage': 'en-GB', 'publisher': PUBLISHER,
-       'potentialAction': {'@type': 'SearchAction', 'target': BASE + 'search.html?q={q}', 'query-input': 'required name=q'}}]
+       'potentialAction': {'@type': 'SearchAction', 'target': BASE + 'search.html?q={q}', 'query-input': 'required name=q'}}, ORG]
 page(og=('Full Duplex', 'Your phone is about to talk to space.', [(f"{C['live']} live services", OGC['live']), (f'{NLIVE_C} countries', OGC['cyan']), ('Weekly briefing: Signal', OGC['muted'])]), path='index.html', title='Satellite-to-phone and the future of mobile', full_title='Satellite-to-phone and the future of mobile | Full Duplex',
      description=SITE['home_description'], body=home, current='index.html', jsonld=ld, cls='is-home',
      scripts='<script defer src="assets/globe.js"></script><script defer src="assets/launches.js"></script>', lastmod=max(a.get('updated', a['published']) for a in arts), search=False)
