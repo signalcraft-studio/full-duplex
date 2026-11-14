@@ -10,6 +10,7 @@ keeps the existing cache, so the site build never breaks because the API is down
 Data: The Space Devs, https://thespacedevs.com/ (free API; attribution on the launches page).
 """
 import json, pathlib, sys, time, urllib.parse, urllib.request
+import launch_overrides  # sourced corrections (data/launch-overrides.json), kept across refreshes
 from datetime import datetime, timedelta, timezone
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -69,6 +70,8 @@ def main(force=False):
     launches = sorted(seen.values(), key=lambda s: s['net'])
     if not launches and old:
         print('launches: API returned nothing; keeping cache'); return 0
+    used = launch_overrides.apply(launches, now)
+    if used: print('launches: applied sourced overrides for', ', '.join(used))
     out = {'fetched_at': now.strftime('%Y-%m-%dT%H:%M:%SZ'), 'source': 'The Space Devs Launch Library 2 (' + API + ')', 'launches': launches}
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=1) + '\n')
     print(f'launches: saved {len(launches)} upcoming launches')

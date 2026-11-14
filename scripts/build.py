@@ -531,6 +531,8 @@ page(og=('Tracker', 'Tracker change log'), path='tracker/changes/index.html', ti
 # ---------------------------------------------------------------- launches (data/launches.json from scripts/fetch_launches.py)
 from datetime import datetime, timezone, timedelta
 LDATA = json.loads((ROOT / 'data/launches.json').read_text()) if (ROOT / 'data/launches.json').exists() else {'fetched_at': None, 'launches': []}
+sys.path.insert(0, str(ROOT / 'scripts')); import launch_overrides
+launch_overrides.apply(LDATA['launches'])  # sourced corrections over Launch Library 2 (data/launch-overrides.json)
 CONST = json.loads((ROOT / 'data/constellations.json').read_text())
 SATS = json.loads((SRC / 'satellites.json').read_text())  # /satellites/ content + payload-card stats
 LTAGS = json.loads((ROOT / 'data/launch-tags.json').read_text()).get('overrides', {}) if (ROOT / 'data/launch-tags.json').exists() else {}
@@ -649,6 +651,9 @@ def payload(l):
     if 'Starlink' in name:
         return 'Starlink satellites · number not disclosed', first_sentence(desc), None
     if 'Amazon Leo' in name:
+        if l.get('payload_count') and l.get('override_source'):
+            o = l['override_source']
+            return f'{l["payload_count"]} Amazon Leo broadband satellites', 'Broadband for dishes and terminals, not phones.', {'text': 'Satellite count from', 'src': (o['label'], o['url'])}
         return 'Amazon Leo broadband satellites · number not disclosed in the launch data', 'Broadband for dishes and terminals, not phones.', None
     if mt == 'Government/Top Secret':
         return 'Classified payload', first_sentence(desc) or 'Details not disclosed.', None
@@ -687,7 +692,7 @@ def liftoff(l):
     if not pd: return None
     h = payload(l)[0]; m = re.match(r'(\d+) ', h); n = int(m[1]) if m else 0
     who = {'starlink-dtc': 'starlink-dtc', 'ast': 'ast'}.get(l['tag']) or ('globalstar' if 'Globalstar' in (l.get('mission') or '') else 'lynk' if 'lynk' in l['who'] else 'other')
-    return {'m': l.get('mission') or l['name'], 'r': l.get('rocket'), 'p': l.get('location'), 'lat': pd[0], 'lon': pd[1], 'az': pd[2], 'n': min(n, 30), 'c': who, 'net': l['net']}
+    return {'m': l.get('mission') or l['name'], 'r': l.get('rocket'), 'p': l.get('location'), 'lat': pd[0], 'lon': pd[1], 'az': pd[2], 'n': min(n, 30), 'nt': n, 'c': who, 'net': l['net']}
 
 def launch_item(l, root):
     cd = f'<p class=lcd data-countdown="{l["net"]}" aria-hidden=true></p>' if l['precision'] in PRECISE else ''
