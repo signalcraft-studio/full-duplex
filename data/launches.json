@@ -1,15 +1,15 @@
 {
- "fetched_at": "2026-11-13T06:52:52Z",
+ "fetched_at": "2026-11-14T06:34:47Z",
  "source": "The Space Devs Launch Library 2 (https://ll.thespacedevs.com/2.3.0/launches/upcoming/)",
  "launches": [
   {
    "id": "ef9850ad-1096-425b-9d27-f7bbd186e61a",
    "slug": "vulcan-vc6l-amazon-leo-lv-01",
    "name": "Vulcan VC6L | Amazon Leo (LV-01)",
-   "net": "2026-11-13T17:54:00Z",
-   "window_start": "2026-11-13T17:54:00Z",
-   "window_end": "2026-11-13T18:23:00Z",
-   "precision": "Minute",
+   "net": "2026-11-14T17:32:30Z",
+   "window_start": "2026-11-14T17:32:00Z",
+   "window_end": "2026-11-14T18:01:00Z",
+   "precision": "Second",
    "status": "Go for Launch",
    "status_abbrev": "Go",
    "provider": "United Launch Alliance",
@@ -26,40 +26,10 @@
    "pad_lat": 28.58341025,
    "pad_lon": -80.58303644,
    "webcast_live": false,
-   "last_updated": "2026-11-12T08:29:58Z",
+   "last_updated": "2026-11-13T14:54:33Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/ef9850ad-1096-425b-9d27-f7bbd186e61a/",
    "queries": [
     "amazon-leo"
-   ]
-  },
-  {
-   "id": "0f867f0c-5422-4d44-93b8-d7faaae7019b",
-   "slug": "starship-starlink-group-31-2-starship-flight-15",
-   "name": "Starship | Starlink Group 31-2 (Starship Flight 15)",
-   "net": "2026-11-13T22:45:00Z",
-   "window_start": "2026-11-13T22:45:00Z",
-   "window_end": "2026-11-14T00:00:00Z",
-   "precision": "Minute",
-   "status": "To Be Confirmed",
-   "status_abbrev": "TBC",
-   "provider": "SpaceX",
-   "rocket": "Starship V3",
-   "mission": "Starlink Group 31-2 (Starship Flight 15)",
-   "mission_type": "Communications",
-   "mission_description": "15th test flight of the two-stage Starship launch vehicle and 4th flight of Starship V3. Second Starship flight to deploy satellites (a group of Starlink satellites known as Starlink Group 31-2) into stable Low Earth Orbit and first ever to attempt returning the Starship 2nd stage back to the launch site.\r\n\r\nThe ship is expected to fly at an altitude approximately 275 km above Earth and complete approximately 14 orbits around the planet for more than 22 hours, with the ship expected to attempt returning back to Starbase, Texas on its launch pad by pad arms catching.\r\n\r\nThe booster’s primary test objective on Flight 15 will be executing a successful launch, ascent, stage separation, boostback burn, and landing by pad arms catching. This will also be the 1st Starship V3 booster to attempt returning to its launch site.\r\n\r\nStarship will deliver 26 Starlink V3 satellites to orbit for the second time, which aim to greatly expand the network's capacity and user speeds. Each Starlink V3 satellite will add 1 Tbps of capacity to the constellation. 3 of the satellites have been modified with a suite of cameras to scan Starship’s heatshield and transmit imagery down to operators.",
-   "orbit": "LEO",
-   "mission_agencies": [
-    "SpaceX"
-   ],
-   "pad": "Orbital Launch Pad 2",
-   "location": "SpaceX Starbase, TX, USA",
-   "pad_lat": 25.99677,
-   "pad_lon": -97.15799,
-   "webcast_live": false,
-   "last_updated": "2026-11-10T22:06:46Z",
-   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/",
-   "queries": [
-    "spacex"
    ]
   },
   {
@@ -88,36 +58,6 @@
    "webcast_live": false,
    "last_updated": "2026-11-13T01:52:13Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/76617033-4dc0-4448-b50c-e5b0d5a18539/",
-   "queries": [
-    "spacex"
-   ]
-  },
-  {
-   "id": "460d9db7-eaf6-4cd9-b095-cff433534c09",
-   "slug": "falcon-9-block-5-ussf-266",
-   "name": "Falcon 9 Block 5 | USSF-266",
-   "net": "2026-11-18T16:49:00Z",
-   "window_start": "2026-11-18T16:49:00Z",
-   "window_end": "2026-11-18T20:49:00Z",
-   "precision": "Minute",
-   "status": "Go for Launch",
-   "status_abbrev": "Go",
-   "provider": "SpaceX",
-   "rocket": "Falcon 9 Block 5",
-   "mission": "USSF-266",
-   "mission_type": "Government/Top Secret",
-   "mission_description": "A classified mission for the United States Space Force. It is possibly a batch of classified LEO satellites based on SpaceX’s Starshield satellite bus, based on locations of ascent rocket stage drop zones being fits with previous SDA Transport Layer launches.",
-   "orbit": "PO",
-   "mission_agencies": [
-    "United States Space Force"
-   ],
-   "pad": "Space Launch Complex 4E",
-   "location": "Vandenberg SFB, CA, USA",
-   "pad_lat": 34.632,
-   "pad_lon": -120.611,
-   "webcast_live": false,
-   "last_updated": "2026-11-10T16:26:25Z",
-   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/460d9db7-eaf6-4cd9-b095-cff433534c09/",
    "queries": [
     "spacex"
    ]
@@ -183,12 +123,42 @@
    ]
   },
   {
+   "id": "460d9db7-eaf6-4cd9-b095-cff433534c09",
+   "slug": "falcon-9-block-5-ussf-266",
+   "name": "Falcon 9 Block 5 | USSF-266",
+   "net": "2026-11-23T16:04:00Z",
+   "window_start": "2026-11-23T16:04:00Z",
+   "window_end": "2026-11-23T20:04:00Z",
+   "precision": "Minute",
+   "status": "Go for Launch",
+   "status_abbrev": "Go",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "USSF-266",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "A classified mission for the United States Space Force. It is possibly a batch of classified LEO satellites based on SpaceX’s Starshield satellite bus, based on locations of ascent rocket stage drop zones being fits with previous SDA Transport Layer launches.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "United States Space Force"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "pad_lat": 34.632,
+   "pad_lon": -120.611,
+   "webcast_live": false,
+   "last_updated": "2026-11-13T17:46:32Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/460d9db7-eaf6-4cd9-b095-cff433534c09/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
    "id": "d74afbc7-0de5-491c-be05-4e9c31f736ac",
    "slug": "falcon-9-block-5-cygnus-crs-2-ng-25",
    "name": "Falcon 9 Block 5 | Cygnus CRS-2 NG-25",
-   "net": "2026-11-29T15:49:00Z",
-   "window_start": "2026-11-29T15:49:00Z",
-   "window_end": "2026-11-29T15:49:00Z",
+   "net": "2026-11-29T15:47:00Z",
+   "window_start": "2026-11-29T15:47:00Z",
+   "window_end": "2026-11-29T15:47:00Z",
    "precision": "Minute",
    "status": "Go for Launch",
    "status_abbrev": "Go",
@@ -204,7 +174,7 @@
    "pad_lat": 28.56194122,
    "pad_lon": -80.57735736,
    "webcast_live": false,
-   "last_updated": "2026-11-04T20:05:35Z",
+   "last_updated": "2026-11-13T12:35:58Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/d74afbc7-0de5-491c-be05-4e9c31f736ac/",
    "queries": [
     "spacex"
