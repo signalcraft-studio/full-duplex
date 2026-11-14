@@ -12,7 +12,7 @@
   var MON='Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split(' '), zoom=false, pos=N-1, raf=0, played=false;
   function label(i){ var d=F[i][0].split('-'); return i===N-1?(+d[2])+' '+MON[d[1]-1]+' '+d[0]+' · today':MON[d[1]-1]+' '+d[0]; }
   function render(p){
-    pos=p; var i=Math.min(N-1,Math.floor(p)), fr=p-i, j=Math.min(N-1,i+1), v=K.map(function(_,x){ return F[i][1][x]+(F[j][1][x]-F[i][1][x])*fr; });
+    p=Math.max(0,Math.min(N-1,+p||0)); pos=p; var i=Math.min(N-1,Math.floor(p)), fr=p-i, j=Math.min(N-1,i+1), v=K.map(function(_,x){ return F[i][1][x]+(F[j][1][x]-F[i][1][x])*fr; });
     var top=zoom?50:Math.max(50,Math.max.apply(null,v)*1.12), cur=fr>0.5?j:i;
     var order=K.map(function(k,x){return x;}).sort(function(a,b){return v[b]-v[a]||a-b;});
     order.forEach(function(x,rank){ var o=rows[K[x]], w=v[x]/top;
@@ -30,7 +30,7 @@
     stop(); played=true; playB.textContent='Pause';
     if(reduce){ var k=0; (function step(){ render(k); if(k++<N-1) raf=setTimeout(step,600); else stop(); })(); return; }
     var t0=performance.now(), dur=(N-1)*380;
-    (function tick(t){ var p=Math.min(1,(t-t0)/dur)*(N-1); render(p); if(p<N-1) raf=requestAnimationFrame(tick); else stop(); })(t0);
+    (function tick(t){ var p=Math.max(0,Math.min(1,(t-t0)/dur))*(N-1); /* rAF's first timestamp can be a hair before t0 */ render(p); if(p<N-1) raf=requestAnimationFrame(tick); else stop(); })(t0);
   }
   playB.addEventListener('click',function(){ if(raf) stop(); else play(); });
   zoomB.addEventListener('click',function(){ zoom=!zoom; zoomB.setAttribute('aria-pressed',String(zoom)); zoomB.textContent=zoom?'Show the full scale':'Zoom in on the smaller networks'; render(pos); });

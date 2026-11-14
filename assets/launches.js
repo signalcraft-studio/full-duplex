@@ -64,15 +64,19 @@
   var list=document.getElementById('launch-list'); if(!list)return;
   var chips=[].slice.call(document.querySelectorAll('.chip[data-who]')), items=[].slice.call(list.querySelectorAll('li.launch')), more=document.getElementById('launch-more');
   var count=document.getElementById('l-count'), empty=document.getElementById('l-empty');
-  function apply(k){
+  var DEF='phone', allB=document.getElementById('l-all');
+  if(allB)allB.addEventListener('click',function(){apply('all',true);var c=document.querySelector('.chip[data-who=all]');if(c)c.focus({preventScroll:true});});
+  function apply(k,push){
     var n=0;
     items.forEach(function(li){var on=k==='all'||(' '+li.getAttribute('data-who')+' ').indexOf(' '+k+' ')>-1; li.hidden=!on; if(on)n++;});
     chips.forEach(function(c){c.setAttribute('aria-pressed',String(c.getAttribute('data-who')===k));});
     count.textContent=n+(n===1?' launch':' launches');
     if(more){var hid=more.querySelectorAll('li.launch:not([hidden])').length; if(k!=='all'&&hid)more.open=true; more.hidden=!hid; more.querySelector('summary').textContent='Show '+hid+' more launch'+(hid===1?'':'es');}
     empty.hidden=n>0; if(!n)empty.textContent=empty.getAttribute('data-empty-'+k)||empty.getAttribute('data-empty');
-    try{history.replaceState(null,'',k==='all'?location.pathname:'#'+k);}catch(e){}
+    if(allB){allB.hidden=k==='all'; allB.textContent='Show all '+items.length+' launches';}
+    if(push){try{history.replaceState(null,'',k===DEF?location.pathname:'#'+k);}catch(e){}}
   }
-  chips.forEach(function(c){c.addEventListener('click',function(){apply(c.getAttribute('data-who'));});});
-  var h=location.hash.slice(1); if(h&&chips.some(function(c){return c.getAttribute('data-who')===h;}))apply(h);
+  chips.forEach(function(c){c.addEventListener('click',function(){apply(c.getAttribute('data-who'),true);});});
+  /* Opens on "Phone satellites" (UAT 14 Nov 2026); #all, the All chip or the "Show all" button bring every launch back. */
+  var h=location.hash.slice(1); apply(h&&chips.some(function(c){return c.getAttribute('data-who')===h;})?h:DEF,false);
 })();

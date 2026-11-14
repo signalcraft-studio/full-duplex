@@ -70,31 +70,33 @@ def issues_list():
     return f'<ul class=issues aria-label="Recent issues of Signal">{li}</ul>'
 
 def signal_block(root, surface, variant='full', heading_level=2, heading=None, intro=None):
-    """The beehiiv embed loads lazily (assets/site.js) when the block nears the viewport;
-    the button always works without it."""
+    """One on-brand call to action. The beehiiv iframe embed was removed (14 Nov 2026 UAT): it rendered as a white box with a
+    squashed email field on phones and doubled up with our own button. Signing up happens on beehiiv's hosted page."""
     h = f'h{heading_level}'
-    privacy = f'<p class=fine>Free. Your email is managed by beehiiv and used only to send Signal. Unsubscribe any time. <a href="{root}privacy.html">Privacy notice</a>.</p>'
-    embed = f'<div class=bh-slot data-form="{FORM}" data-surface="{surface}"></div>'
+    privacy = f'<p class=fine>Free, one email a week. Opens beehiiv’s sign-up page; your email is used only to send Signal. Unsubscribe any time. <a href="{root}privacy.html">Privacy notice</a>.</p>'
+    btn = f'<a class="btn signal-btn" href="{esc(sub_url(surface))}">Get Signal free <span aria-hidden=true>→</span></a>'
     if variant == 'mid':
         return (f'<aside class="signal mid" aria-label="Subscribe to Signal"><p class=kicker>Signal · free weekly briefing</p>'
                 f'<{h} class=signal-h>{heading or "Signal: the weekly direct-to-cell briefing from a mobile network insider with over 13 years in GSM"}</{h}>'
-                f'{embed}<p class=signal-cta><a class=btn href="{esc(sub_url(surface))}">Send me Signal</a></p>{privacy}</aside>')
+                f'<p class=signal-cta>{btn}</p>{privacy}</aside>')
     return (f'<section class=signal aria-label="Subscribe to Signal"><div class=signal-copy><p class=kicker>Signal · free weekly briefing</p>'
             f'<{h} class=signal-h>{heading or "Get Signal: what changed in satellite-to-phone this week"}</{h}>'
-            f'<p>{intro or "One email a week on direct-to-cell, mobile networks and what it means for you, from a mobile network insider with over 13 years in GSM."}</p>'
-            f'<p class=issues-h>Recent issues</p>{issues_list()}</div><div class=signal-form>{embed}<p class=signal-cta><a class=btn href="{esc(sub_url(surface))}">Send me Signal</a> '
+            f'<p>{intro or "One email a week on direct-to-cell, mobile networks and what it means for you, from a mobile network insider with over 13 years in GSM."}</p></div>'
+            f'<div class=signal-form><p class=issues-h>Recent issues</p>{issues_list()}<p class=signal-cta>{btn}'
             f'<a class=more href="{esc(SITE["archive_url"])}">Read past issues</a></p>{privacy}</div></section>')
 
 # ---------------------------------------------------------------- chrome
-NAV = [('index.html', 'Home'), ('articles/index.html', 'Articles'), ('tracker.html', 'Tracker'), ('launches/index.html', 'Launches'), ('satellites/index.html', 'Satellites'), ('search.html', 'Search'), ('about.html', 'About'), ('sponsor.html', 'Sponsor')]
+NAV = [('index.html', 'Home'), ('articles/index.html', 'Articles'), ('tracker.html', 'Tracker'), ('launches/index.html', 'Launches'), ('satellites/index.html', 'Satellites'), ('check/index.html', 'Check my phone'), ('search.html', 'Search'), ('about.html', 'About'), ('sponsor.html', 'Sponsor')]
 
 LOGO_MARK = ('<svg class=mark viewBox="254 250 516 516" width="44" height="44" aria-hidden="true" focusable="false">'
              '<g fill="none" stroke-width="32" stroke-linecap="round"><path d="M279 505A233 233 0 0 1 644.3 313.2" stroke="#00cfff"/><path d="M744.9 511.9A233 233 0 0 1 383.7 699.5" stroke="#fff"/></g><circle cx="423" cy="432" r="10" fill="#00cfff"/><path transform="translate(426 517.5) rotate(-15)" fill="#00cfff" fill-rule="evenodd" d="M-23.5 -57.5h47a5 5 0 0 1 5 5v105a5 5 0 0 1 -5 5h-47a5 5 0 0 1 -5 -5v-105a5 5 0 0 1 5 -5zM-8.5 -48h17.0a5.5 5.5 0 0 1 5.5 5.5v0.0a5.5 5.5 0 0 1 -5.5 5.5h-17.0a5.5 5.5 0 0 1 -5.5 -5.5v-0.0a5.5 5.5 0 0 1 5.5 -5.5z"/><g fill="#fff"><path d="M583 488h21l33 32-22 22-32-32z"/><path d="M620 492l20-21 15 14-21 22z"/><path d="M567 545l21-21 14 14-20 20z"/><circle cx="635" cy="541" r="8"/></g>' + '</svg>')  # logo A, approved by Sam 9 Nov 2026 (same as assets/logo.svg)
 
 def header(root, current):
-    links = ''.join(f'<a href="{root}{h}"{" aria-current=page" if h == current else ""}>{t}</a>' for h, t in NAV)
+    # "Search" is an icon on desktop and "Follow" an X mark, so the nav (now with "Check my phone") stays on one row from 861px up
+    lab = lambda h, t: (f'<svg class=nav-ico viewBox="0 0 24 24" width=18 height=18 aria-hidden=true focusable=false><circle cx=10.5 cy=10.5 r=6.5 fill=none stroke=currentColor stroke-width=2.2 /><path d="M15.5 15.5l5 5" stroke=currentColor stroke-width=2.2 stroke-linecap=round /></svg><span class=nav-t>{t}</span>' if h == 'search.html' else t)
+    links = ''.join(f'<a href="{root}{h}"{" class=nav-search" if h == "search.html" else ""}{" aria-current=page" if h == current else ""}>{lab(h, t)}</a>' for h, t in NAV)
     return (f'<a class=skip href="#main">Skip to content</a><header class=site><div class=wrap><a class=logo href="{root}index.html">{LOGO_MARK}Full<span>Duplex</span></a>'
-            f'<nav aria-label="Main">{links}</nav><div class=hdr-cta><a class=xlink href="https://x.com/{X}" target=_blank rel="noopener me">Follow @{X}</a>'
+            f'<nav aria-label="Main">{links}</nav><div class=hdr-cta><a class=xlink href="https://x.com/{X}" target=_blank rel="noopener me" title="Follow @{X} on X"><svg class=x-ico viewBox="0 0 24 24" width=17 height=17 aria-hidden=true focusable=false><path fill=currentColor d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.78L17.75 3zm-1.08 16.17h1.7L7.4 4.74H5.58l11.09 14.43z"/></svg><span class=xl-t>Follow</span><span class=sr> @{X} on X</span></a>'
             f'<a class="btn pill" href="{esc(sub_url("header"))}">Subscribe</a></div></div></header>')
 
 def footer(root, sticky=True):
@@ -478,7 +480,7 @@ tbody = tbody.replace('<!--TRACKER-TABLE-->', tracker_table())
 tbody = re.sub(r'<span id=tracker-checked>.*?</span>', f"<span id=tracker-checked>{TRACK['last_checked']}</span>", tbody)
 # hero + stats before the intro; filters before the table; extras after
 tbody = tbody.replace('<h1>Direct-to-cell around the world</h1>', '<header class=page-head><p class=kicker>Tracker</p><h1>Direct-to-cell around the world</h1></header>' + stats_strip() + race_board(''), 1)
-tbody = tbody.replace('<div class=tablewrap>', f'<section aria-labelledby=tbl-h><h2 id=tbl-h>Every tracked service</h2>{controls}{tools}<div class=tablewrap>', 1)
+tbody = tbody.replace('<div class=tablewrap>', f'<section aria-labelledby=tbl-h><h2 id=tbl-h>Every tracked service</h2>{controls}{tools}<div class="tablewrap trackwrap">', 1)
 tbody = tbody.replace('</div><p class=note>Spotted a change?', '</div></section><p class=note>Spotted a change?', 1)
 tbody += (f'<section aria-labelledby=bc-h><h2 id=bc-h>Browse by country</h2><div class=cclist>{country_links}</div></section>'
           f'<p class=note>Next satellites going up: see the <a href="launches/">launch tracker</a> for upcoming SpaceX, AST SpaceMobile and other direct-to-cell launches, and how many phone-capable satellites each operator has in orbit.</p>'
@@ -806,7 +808,7 @@ def LAUNCH_CHIPS():
 def launches_page():
     root = '../'
     fetched = LDATA.get('fetched_at')
-    chips = ''.join(f'<button type=button class=chip data-who={k} aria-pressed={"true" if k == "all" else "false"}>{t}</button>' for k, t in WHO)
+    chips = ''.join(f'<button type=button class=chip data-who={k} aria-pressed={"true" if k == "phone" else "false"}>{t}</button>' for k, t in WHO)
     FIRST = 20
     items = ''.join(launch_item(l, root) for l in UPCOMING[:FIRST])
     rest = UPCOMING[FIRST:]
@@ -822,7 +824,7 @@ def launches_page():
             f'<p class=l-intro>{len(UPCOMING)} upcoming launches from SpaceX, AST SpaceMobile, Amazon Leo and other satellite-to-phone players, {n_phone} of them carrying phone-capable satellites. Each one is tagged by what it means for mobile.</p>'
             f'<div class=filters role=search aria-label="Filter launches"><div class=f-row><div class=chips role=group aria-label="Show launches for">{chips}</div>'
             f'<p id=l-count class=t-count role=status aria-live=polite>{len(UPCOMING)} launches</p></div></div>'
-            f'<div id=launch-list><ol class=launches>{items}</ol>{more}</div><p id=l-empty class=l-empty hidden{empty} data-empty="No upcoming launches match this filter right now.">No upcoming launches match this filter right now.</p>'
+            f'<div id=launch-list><ol class=launches>{items}</ol>{more}</div><p class=l-allrow><button type=button class="btn ghost sm" id=l-all hidden>Show all {len(UPCOMING)} launches</button></p><p id=l-empty class=l-empty hidden{empty} data-empty="No upcoming launches match this filter right now.">No upcoming launches match this filter right now.</p>'
             f'<p class=l-credit>{upd} Times are shown in UTC, or your local time where your browser allows. Launch dates slip often, so check again on the day. We tag a Starlink launch as Direct to Cell only when the launch data or a reliable source says it carries direct-to-cell satellites.</p></section>'
             + race_section(root) +
             f'<section aria-labelledby=cnt-h class=countsec><h2 id=cnt-h>Phone satellites in orbit: who has how many</h2>'
@@ -949,12 +951,17 @@ PHONES = json.loads((SRC / 'phones.json').read_text())
 def check_data():
     rows = [{'c': r['country'], 'cs': country_slug(r['country']) if r['iso_n3'] else '', 'o': r['operator'], 'os': slugify(short_op(r['operator'])),
              'p': provider(r['satellite']), 'sat': r['satellite'], 'st': r['status'], 'sv': strip_tags(r['services']),
-             'src': [[x['label'], x['url']] for x in r['sources']], 'chk': r['checked']} for r in ROWS]
-    return {'rows': rows, 'phones': PHONES, 'checked': TRACK['last_checked'], 'base': BASE}
+             'src': [[x['label'], x['url']] for x in r['sources']], 'chk': r['checked'], **({'on': op_names(r['operator'])} if ';' in r['operator'] else {})} for r in ROWS]
+    return {'rows': rows, 'phones': PHONES, 'checked': TRACK['last_checked'], 'base': BASE, 'sub': sub_url('checker-result')}
+def op_names(o):
+    """A tracker row can group several networks ("SoftBank; NTT docomo"); the checker offers each one on its own."""
+    return {slugify(short_op(n)): n.strip() for n in o.split(';') if n.strip()}
 def check_ops():
     ops = {}
     for r in ROWS:
-        if r['iso_n3']: ops.setdefault(country_slug(r['country']), []).append([slugify(short_op(r['operator'])), r['operator']])
+        if not r['iso_n3']: continue
+        names = op_names(r['operator']) if ';' in r['operator'] else {slugify(short_op(r['operator'])): r['operator']}
+        for slug, name in names.items(): ops.setdefault(country_slug(r['country']), []).append([slug, name])
     return json.dumps(ops, ensure_ascii=False, separators=(',', ':'))
 def check_selects(idp, countries, models, op_hint=True):
     copt = ''.join(f'<option value="{country_slug(c)}">{esc(c)}</option>' for c in countries)
@@ -989,7 +996,7 @@ def check_page():
     page(og=('Checker', 'Can my phone connect to a satellite?', [(f'{len(ROWS)} services', OGC['cyan']), (f'{NCOUNTRIES} countries', OGC['live']), ('No IMEI needed', OGC['muted'])]),
          path='check/index.html', title='Can my phone connect?', full_title='Can my phone connect to a satellite? Check by country, network and phone | Full Duplex',
          description='Check whether satellite-to-phone works on your network and phone: pick your country, network and handset for a plain-English answer with sources. No IMEI needed.',
-         body=body, root=root, cls='is-check', scripts='<script defer src="../assets/check.js"></script>', lastmod=parse_human(TRACK['last_checked']),
+         body=body, root=root, current='check/index.html', cls='is-check', scripts='<script defer src="../assets/check.js"></script>', lastmod=parse_human(TRACK['last_checked']),
          search_text='Can my phone connect to a satellite? Phone checker by country, network and phone model. ' + ' '.join(f"{r['country']} {r['operator']}" for r in ROWS))
 
 def glossary_page():
@@ -1026,7 +1033,7 @@ page(path='404.html', title='Page not found', description='Page not found.', bod
 feat, rest = arts[0], arts[1:]
 home = (f'<section class=hero><div class=hero-art aria-hidden=true><img src="assets/img/home-hero-1600.webp" srcset="assets/img/home-hero-960.webp 960w, assets/img/home-hero-1600.webp 1600w" sizes="100vw" width="1600" height="687" alt="" decoding="async" fetchpriority="high"></div><div class=hero-copy><p class=kicker>Both directions, all at once</p><h1>Your phone is about to talk to space.</h1>'
         f'<p class=lede>Full Duplex explains direct-to-cell satellites, GSM and the shake-up coming to the mobile industry.</p>'
-        f'<p class=hero-cta><a class=btn href="{esc(sub_url("home-hero"))}">Send me Signal</a><a class="btn ghost" href="tracker.html">Explore the tracker</a></p>'
+        f'<p class=hero-cta><a class=btn href="{esc(sub_url("home-hero"))}">Send me Signal</a><a class="btn ghost" href="check/">Check my phone</a></p>'
         f'<p class=byl>By <a href="about.html">{esc(SITE["author"])}</a>, a mobile network insider with over 13 years in GSM · {follow_btn("xinline")}</p></div>'
         f'<figure class=globe-wrap><div id=globe class=globe role=img aria-label="Rotating globe: {NLIVE_C} countries with live direct-to-cell service in green, countries with trials in amber. Full data in the tracker."></div>'
         f'<figcaption><span class=k-live>Live</span><span class=k-trial>Trial</span><span class=k-ann>Announced</span> <a href="tracker.html">Open the map</a></figcaption></figure>'
@@ -1052,6 +1059,12 @@ ld = [{'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'Full Duple
 page(og=('Full Duplex', 'Your phone is about to talk to space.', [(f"{C['live']} live services", OGC['live']), (f'{NLIVE_C} countries', OGC['cyan']), ('Weekly briefing: Signal', OGC['muted'])]), path='index.html', title='Satellite-to-phone and the future of mobile', full_title='Satellite-to-phone and the future of mobile | Full Duplex',
      description=SITE['home_description'], body=home, current='index.html', jsonld=ld, cls='is-home',
      scripts='<script defer src="assets/globe.js"></script><script defer src="assets/launches.js"></script>', lastmod=max(a.get('updated', a['published']) for a in arts), search=False)
+
+# /tracker/ has country pages under it but the tracker itself is /tracker.html: send the bare folder there (UAT 14 Nov 2026)
+(ROOT / 'tracker' / 'index.html').write_text('<!doctype html><html lang=en-GB><head><meta charset=utf-8><title>Direct-to-cell tracker | Full Duplex</title>'
+    f'<link rel=canonical href="{BASE}tracker.html"><meta name=robots content="noindex,follow"><meta http-equiv=refresh content="0; url=../tracker.html">'
+    '<script>location.replace("../tracker.html"+location.search+location.hash)</script></head>'
+    '<body><p><a href="../tracker.html">Go to the direct-to-cell tracker</a></p></body></html>\n')
 
 # ---------------------------------------------------------------- feeds, sitemap, search index
 sm = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']

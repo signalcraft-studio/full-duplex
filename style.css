@@ -45,7 +45,7 @@ header.site nav a[aria-current=page]{box-shadow:inset 0 -2px 0 var(--cyan)}
 .xlink{color:var(--muted);text-decoration:none;font-size:.9rem}
 .xlink:hover{color:#fff}
 /* Eight nav links since 'Satellites' was added (13 Nov): keep desktop to one row by dropping the header Follow link (it's in the footer and on every page) and tightening gaps */
-@media (max-width:1180px) and (min-width:861px){.xlink{display:none}header.site nav{gap:.2rem .95rem}}
+@media (max-width:1180px) and (min-width:861px){header.site nav{gap:.2rem .95rem}}
 @media (max-width:960px) and (min-width:861px){header.site .wrap{gap:.8rem}header.site nav{gap:.2rem .7rem}header.site nav a{font-size:.88rem}}
 @media (max-width:860px){
   header.site .wrap{gap:.4rem 1rem;padding-top:.5rem;padding-bottom:.25rem}
@@ -242,7 +242,7 @@ td.live,td.trial,td.ann{font-family:var(--f-mono);font-size:.82rem;text-transfor
 .tag.t-status{background:rgba(110,231,154,.12);color:var(--live)}
 .tag.t-removed{background:rgba(245,194,107,.12);color:var(--trial)}
 @media (max-width:700px){
-  .tablewrap{overflow-x:visible;border:0}
+  .trackwrap,.lbwrap{overflow-x:visible;border:0} /* stacked card layouts; every other table keeps sideways scrolling */
   #tracker-table,#tracker-table tbody,#tracker-table tr,#tracker-table td{display:block;width:100%}
   #tracker-table thead{display:none}
   #tracker-table tr{border:1px solid var(--line);border-radius:12px;margin:0 0 1rem;padding:.5rem .8rem;background:var(--surface)}
@@ -704,3 +704,52 @@ footer.site .logo .mark{width:40px;height:40px}
 .wl-skip{display:block;margin:.6rem 0 0 auto;background:none;border:0;color:var(--muted);font:inherit;font-size:.85rem;cursor:pointer;text-decoration:underline;padding:.2rem .3rem}
 @keyframes wl-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.welcome,.welcome *{animation:none!important}}
+
+/* ---- UAT fixes, 14 Nov 2026 ---- */
+/* Mobile header: one slim row of nav that scrolls sideways, hidden while scrolling down (assets/site.js) */
+@media (max-width:860px){
+  header.site{transition:transform .25s ease}
+  header.site.hdr-hide{transform:translateY(-100%)}
+  header.site .wrap{gap:0 .8rem;padding-top:.35rem;padding-bottom:0;min-height:0}
+  header.site .logo .mark{width:34px;height:34px}
+  header.site nav{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;gap:0 1.05rem;padding:0 0 .1rem;margin:0 -1rem;padding-left:1rem;padding-right:1rem;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 1rem,#000 calc(100% - 1.6rem),transparent);mask-image:linear-gradient(90deg,transparent 0,#000 1rem,#000 calc(100% - 1.6rem),transparent)}
+  header.site nav::-webkit-scrollbar{display:none}
+  header.site nav a{white-space:nowrap;flex:none;padding:.45rem 0 .5rem}
+  header.site .btn.pill{padding:.42rem .9rem;font-size:.88rem}
+  .stickybar{padding:.45rem .8rem calc(.45rem + env(safe-area-inset-bottom));gap:.6rem}
+  .stickybar p{font-size:.84rem;line-height:1.3}
+  .stickybar .btn.pill{padding:.45rem .85rem;font-size:.86rem}
+}
+@media (prefers-reduced-motion:reduce){header.site{transition:none}}
+/* Desktop nav now has "Check my phone": keep it on one row down to 861px */
+header.site nav{gap:.2rem 1rem}
+.nav-search{display:inline-flex;align-items:center}
+.nav-ico{display:block}
+.xlink{display:inline-flex;align-items:center;gap:.35rem}
+@media (min-width:861px){.nav-search .nav-t{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}}
+@media (max-width:860px){.nav-ico{display:none}.xlink{display:none}}
+@media (max-width:1100px) and (min-width:861px){header.site .wrap{gap:.9rem}header.site nav{gap:.2rem .8rem}header.site nav a{font-size:.9rem}}
+@media (max-width:1300px) and (min-width:1001px){.xlink .xl-t{display:none}}
+@media (max-width:1000px) and (min-width:861px){.xlink{display:none}header.site .wrap{gap:.8rem}header.site nav{gap:.2rem .55rem}header.site nav a{font-size:.83rem}header.site .logo{font-size:1.05rem}header.site .logo .mark{width:36px;height:36px}}
+/* Signal blocks: one button, full width on phones */
+.signal-btn{font-size:1.02rem;padding:.8rem 1.3rem}
+.signal .issues-h{margin-top:0}
+@media (max-width:600px){.signal-cta{flex-direction:column;align-items:stretch;gap:.7rem}.signal-btn{width:100%;justify-content:center;text-align:center}.signal-cta .more{text-align:center}}
+/* Checker: Signal follow-up under every answer */
+.ck-signal{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.8rem 1.2rem;margin:1.2rem 0;padding:1rem 1.1rem;border-radius:14px;border:1px solid rgba(94,200,255,.35);background:linear-gradient(180deg,#0f1b30,#0c1426)}
+.ck-signal .ck-sig-h{margin:0;font-family:var(--f-ui);font-weight:600;color:#fff;font-size:1.05rem}
+.ck-signal .ck-sig-p{margin:.2rem 0 0;color:#cfdbe8;font-size:.9rem}
+@media (max-width:600px){.ck-signal .signal-btn{width:100%;text-align:center}}
+/* Launches: "Show all" under the default Phone satellites filter */
+.l-allrow{margin:.8rem 0 0}
+/* Welcome on phones: a compact bottom bar instead of the card (desktop card unchanged) */
+@media (max-width:600px){
+  .welcome{left:.5rem;right:.5rem;bottom:.5rem;padding:.7rem .8rem .75rem;border-radius:14px}
+  .welcome .wl-art,.welcome .wl-k,.welcome .wl-skip{display:none}
+  .welcome h2{font-size:1rem;padding-right:2rem}
+  .welcome .wl-p{font-size:.84rem;margin:.15rem 0 .55rem;line-height:1.35}
+  .welcome .wl-b{flex-wrap:wrap;gap:.35rem}
+  .welcome .wl-b .btn{flex:1 1 auto;justify-content:center;padding:.45rem .5rem;font-size:.8rem;text-align:center;white-space:nowrap}
+  .wl-x{top:.25rem;right:.3rem}
+}

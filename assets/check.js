@@ -51,10 +51,18 @@
     return '<article class="ck-row s-'+CL[r.st]+'"><div class=ck-row-h><h3>'+e(r.o)+' <span class=plus>+</span> '+e(r.sat)+'</h3><span class="spill s-'+CL[r.st]+'">'+LAB[r.st]+'</span></div>'+
       '<p>'+e(r.sv)+'</p>'+(p?phoneHtml(phoneFor(r,p)):'')+'<p class=meta>'+srcs(r)+'</p></article>';
   }
+  /* Signal follow-up on every answer (UAT 14 Nov 2026): one link to beehiiv's hosted sign-up, tagged by country and network */
+  function sig(op,the,c){
+    var h=op?'Get told when '+op+' changes':(c==='other'?'Get told when satellite-to-phone reaches you':'Get told when anything changes in '+the);
+    var u=D.sub+'&utm_content='+encodeURIComponent((c||'none')+(op?'-'+op.toLowerCase().replace(/[^a-z0-9]+/g,'-'):''));
+    return '<div class=ck-signal><div><p class=ck-sig-h>'+e(h)+'</p><p class=ck-sig-p>Signal is free, one email a week: new launches, trials and status changes, with the sources.</p></div>'+
+      '<a class="btn signal-btn" href="'+e(u)+'">Get Signal free <span aria-hidden=true>→</span></a></div>';
+  }
   function render(c,o,p,push){
     var rows=D.rows.filter(function(r){return r.cs===c;}), multi=D.rows.filter(function(r){return !r.cs;});
     var cname=rows.length?rows[0].c:'', the=(cname==='United Kingdom'||cname==='United States'||cname==='Philippines')?'the '+cname:cname;
-    var sel=o&&o!=='other'?rows.filter(function(r){return r.os===o;}):[];
+    /* rows that group networks ("SoftBank; NTT docomo") carry on:{slug:name}; show only the picked network's name */
+    var sel=o&&o!=='other'?rows.filter(function(r){return r.os===o||(r.on&&r.on[o]);}).map(function(r){if(!r.on||!r.on[o])return r;var x={};for(var k in r)x[k]=r[k];x.o=r.on[o];return x;}):[];
     var h, list, tw;
     if(!c)return;
     if(c==='other'){
@@ -66,7 +74,7 @@
         else if(v==='part')h='Partly. '+sel[0].o+' has satellite-to-phone live with '+sel[0].sat+', but your phone only gets some of it.';
         else if(v==='no')h='Not on your phone. '+sel[0].o+' has satellite-to-phone live with '+sel[0].sat+', but your phone isn’t supported.';
         else h=sel[0].o+' has satellite-to-phone live with '+sel[0].sat+'. Check your phone with them first.';}
-      var others=rows.filter(function(r){return sel.indexOf(r)<0;});
+      var others=rows.filter(function(r){return !sel.some(function(s){return s.os===r.os;});});
       if(others.length)list+='<p class=ck-also>Also in '+e(the)+': '+others.map(function(r){return e(r.o)+' ('+short(r)+')';}).join(', ')+'.</p>';
       tw=sel[0].o+' satellite-to-phone in '+the+': '+short(sel[0])+(p&&M[p]?' (I checked my '+M[p]+')':'')+'.';
     } else {
@@ -79,7 +87,7 @@
     if(push&&history.replaceState)history.replaceState(null,'',q);
     var share='https://x.com/intent/post?text='+encodeURIComponent(tw+' Check yours:')+'&url='+encodeURIComponent(url)+'&via=FullDuplexHQ';
     out.innerHTML='<section class="card ck-result" aria-labelledby=ck-ans><p class=kicker>Your answer · tracker checked '+e(D.checked)+'</p><h2 id=ck-ans tabindex=-1>'+e(h)+'</h2>'+
-      (p&&M[p]?'<p class=ck-for>For: '+e(M[p])+'</p>':'')+list+(p?extras(p,cname||'*'):'')+howto(p,sel.length?sel:rows)+mu+
+      (p&&M[p]?'<p class=ck-for>For: '+e(M[p])+'</p>':'')+list+sig(sel.length?sel[0].o:'',the,c)+(p?extras(p,cname||'*'):'')+howto(p,sel.length?sel:rows)+mu+
       '<div class=ck-share><a class="btn ghost" href="'+e(share)+'" target=_blank rel=noopener>Share on X</a><button type=button class="btn ghost" id=ck-copy>Copy link</button><span id=ck-copied class=ck-copied role=status></span></div>'+
       '<p class=fine>Status is what the source said on the date checked. Phone lists change: always confirm with your network before you pay.</p></section>';
     var cp=document.getElementById('ck-copy');
