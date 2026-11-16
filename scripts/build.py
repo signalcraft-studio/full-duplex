@@ -186,9 +186,11 @@ def page(*, path, title, description, body, root='', current='', og_type='websit
     og_img = f'{BASE}assets/og/{slug}.jpg'
     if index and not (ROOT / 'assets' / 'og' / f'{slug}.jpg').exists(): print('WARNING: missing OG card', slug, '(pip install pillow)')
     ld = ''.join(f'<script type="application/ld+json">{json.dumps(j, ensure_ascii=False)}</script>' for j in (jsonld or []))
+    verify = (f'<meta name="google-site-verification" content="{esc(SITE["google_site_verification"])}" />'
+              if SITE.get("google_site_verification") else '')
     head = (f'<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="{viewport}">'
             f'<title>{esc(ft)}</title><meta name="description" content="{esc(description)}"><link rel="canonical" href="{url}">'
-            + ('' if index else '<meta name="robots" content="noindex">') +
+            + verify + ('' if index else '<meta name="robots" content="noindex">') +
             f'<link rel="icon" href="{root}assets/favicon-32.png" sizes="32x32" type="image/png"><link rel="icon" href="{root}assets/favicon.svg" sizes="any" type="image/svg+xml">'
             f'<link rel="apple-touch-icon" href="{root}assets/apple-touch-icon.png"><link rel="manifest" href="{root}site.webmanifest">'
             f'<link rel="preload" href="{root}assets/fonts/InterTight-600.woff2" as="font" type="font/woff2" crossorigin>'
