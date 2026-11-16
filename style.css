@@ -814,3 +814,18 @@ header.site nav{gap:.2rem 1rem}
 }
 @media (prefers-reduced-motion:reduce){.fl-gv{transition:none}}
 .fl [hidden],.flg [hidden]{display:none!important}
+/* share to X + save image (preview 16 Nov 2026; assets/share.js) */
+.shr{display:flex;flex-wrap:wrap;gap:.5rem;margin:.8rem 0 0}
+.shr.shr-in{display:inline-flex;margin:0}
+.shr .btn{gap:.4rem}.shr-ico{flex:none}
+.shr .shr-x{color:#e8eef7;border-color:rgba(232,238,247,.32)}.shr .shr-x:hover{background:rgba(232,238,247,.08);color:#fff}
+.shr .shr-save[hidden]{display:none}
+.l-act .shr-in{gap:.5rem}
+.ov-act{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.fl-share{margin:.7rem 0 0;justify-content:flex-end}
+.shr-hit{outline:2px solid var(--cyan);outline-offset:6px;border-radius:14px;transition:outline-color 1s}
+@media (max-width:600px){
+  .shr .btn{padding:.45rem .7rem}
+  .l-act .shr-in .shr-save .shr-t{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .fl-share{justify-content:flex-start}
+}

@@ -715,6 +715,90 @@ def liftoff(l):
     who = {'starlink-dtc': 'starlink-dtc', 'ast': 'ast'}.get(l['tag']) or ('globalstar' if 'Globalstar' in (l.get('mission') or '') else 'lynk' if 'lynk' in l['who'] else 'other')
     return {'m': l.get('mission') or l['name'], 'r': l.get('rocket'), 'p': l.get('location'), 'lat': pd[0], 'lon': pd[1], 'az': pd[2], 'n': min(n, 30), 'nt': n, 'c': who, 'net': l['net']}
 
+# ---- share to X (PREVIEW for Sam's approval, 16 Nov 2026). "Post to X" is a plain x.com web intent link: no X scripts on the site.
+# Each shareable infographic gets a static share page share/<slug>/index.html with its own og:image (X's crawler runs no JS and
+# ignores query strings), which sends people on to the deep link with UTM tags. The 1200x630 JPEG cards (share/<slug>/card.jpg)
+# are screenshots of the real globe/infographic made by scripts/render_share.py (headless Chromium + Pillow); build.py only
+# writes share/items.json (what to render) and the share pages, and prunes share pages for launches that have gone.
+SHARE_UTM = 'utm_source=x&utm_medium=share&utm_campaign=infographic'
+SHARE_DIR = ROOT / 'share'
+SHARE_MAN = json.loads((SHARE_DIR / 'manifest.json').read_text()) if (SHARE_DIR / 'manifest.json').exists() else {}
+SHARE = {}  # slug -> item
+SHARE_LAUNCH_IMAGES = 16  # pre-rendered cards for this many upcoming launches (phone first, then broadband; never military); the rest share the flight view's card
+SHORT_WHY = {'starlink-dtc': 'More satellites that talk straight to ordinary phones means fewer gaps with no signal.',
+             'starlink': 'These serve dishes, not phones, but add capacity some mobile masts rely on.',
+             'ast': 'Each BlueBird adds space coverage for ordinary phones on AT&T, Verizon and Vodafone.',
+             'amazon-leo': 'Broadband for dishes, not phones: Amazon’s Starlink rival for telco backhaul.',
+             'd2d-other': 'Another network built to reach ordinary phones from space.',
+             'other': ''}
+VIA = f' via @{X}'
+def share_deep(path, anchor=''): return BASE + path + ('&' if '?' in path else '?') + SHARE_UTM + (f'#{anchor}' if anchor else '')
+def share_fit(text):
+    """X counts any URL as 23 characters; keep text + space + URL + ' via @FullDuplexHQ' within 280."""
+    room = 280 - 24 - len(VIA)
+    if len(text) <= room: return text
+    return text[:room - 1].rsplit(' ', 1)[0].rstrip(',;:') + '…'
+def share_item(slug, *, text, title, desc, path, anchor='', alt, render=None):
+    it = {'slug': slug, 'text': share_fit(text), 'title': title, 'desc': desc, 'target': share_deep(path, anchor), 'alt': alt, 'render': render}
+    if render: it['key'] = hashlib.sha1(json.dumps([render, title, 'jpg'], sort_keys=True, ensure_ascii=False).encode()).hexdigest()[:10]
+    SHARE[slug] = it; return it
+def share_has_png(it): return bool(it.get('render')) and (SHARE_DIR / it['slug'] / 'card.jpg').exists()
+def share_png(it, root): return f'{root}share/{it["slug"]}/card.jpg' if share_has_png(it) else ''
+def share_link(it): return f'{BASE}share/{it["slug"]}/'
+X_ICO = ('<svg class=shr-ico viewBox="0 0 24 24" width=15 height=15 aria-hidden=true focusable=false><path fill=currentColor d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.78L17.75 3zm-1.08 16.17h1.7L7.4 4.74H5.58l11.09 14.43z"/></svg>')
+DL_ICO = ('<svg class=shr-ico viewBox="0 0 24 24" width=15 height=15 aria-hidden=true focusable=false><path d="M12 4v11m0 0l-4.5-4.5M12 15l4.5-4.5M5 19.5h14" fill=none stroke=currentColor stroke-width=2.2 stroke-linecap=round stroke-linejoin=round /></svg>')
+def share_bar(it, root, what, canvas=None, tag='div', extra='', keep_save=False):
+    """'Post to X' + 'Save image' for one infographic. canvas: CSS selector of a live <canvas> to save (with a watermark) instead of the card."""
+    png = share_png(it, root)
+    save = ''
+    if png or canvas or keep_save:  # keep_save: flight view swaps launches in JS, so keep a (hidden) link to fill in
+        dl = f'full-duplex-{it["slug"]}.{"jpg" if png else "png"}'  # share.js saves live globes as PNG
+        save = (f'<a class="btn ghost sm shr-save" href="{png or "#"}" download="{dl}"' + (f' data-canvas="{esc(canvas)}"' if canvas else '') +
+                f'{"" if png else " hidden"}>{DL_ICO}<span class=shr-t>Save image</span><span class=sr> of {esc(what)}</span></a>')
+    return (f'<{tag} class="shr{(" " + extra) if extra else ""}"><a class="btn ghost sm shr-x" href="{esc(share_url(it["text"], share_link(it)))}" target=_blank rel=noopener>{X_ICO}'
+            f'<span class=shr-t>Post to X</span><span class=sr> about {esc(what)} (opens X in a new tab)</span></a>{save}</{tag}>')
+def share_launch(l):
+    """Share item for one launch: the flight view of that launch (deep link ?l=<slug>)."""
+    if not l.get('slug'): return None
+    s = 'l-' + l['slug'][:80]
+    if s in SHARE: return SHARE[s]
+    m = l.get('mission') or l['name']; r = re.sub(r'\s+Block 5$', '', l.get('rocket') or 'its rocket')
+    d = iso_dt(l['net'])
+    when = d.strftime('%a %-d %b') if l['precision'] in PRECISE else d.strftime('%-d %b') if l['precision'] == 'Day' else when_text(l).split(' · ')[0]
+    h = payload(l)[0]; h = re.sub(r'\s*\(.*?\)', '', h)
+    cnt = h if re.match(r'\d+ ', h) else ''
+    lead = f'{m}: {cnt} go up on {r}, {when}.' if cnt else f'{m} goes up on {r}, {when}.'
+    why = SHORT_WHY.get(l['tag'], '')
+    text = ' '.join(x for x in (lead, why, 'Follow the flight stage by stage:') if x)
+    pick = l['slug'] in SHARE_PICK
+    return share_item(s, text=text, title=f'{m}: {r} launch, {when}', path=f'launches/flight/?l={l["slug"]}',
+                      desc=(f'{cnt[:1].upper() + cnt[1:]}. ' if cnt else '') + (why or 'Follow the launch stage by stage: ascent profile, stage events and mission clock.'),
+                      alt=f'Flight view infographic for {m} on {r}',
+                      render={'kind': 'flight', 'page': f'launches/flight/?l={l["slug"]}&nowelcome', 'sel': '#fl-hud', 'layout': 'wide',
+                              'kicker': f'Launch · {when}', 'title': m, 'sub': f'{r}' + (f' · {cnt}' if cnt else ''), 'tag': l['tag']} if pick else None)
+MILITARY = re.compile(r'\b(USSF|NROL|SDA|Tranche|SICRAL|Victus|Space Force|Reconnaissance|Space Development Agency)\b', re.I)
+def share_tier(l):
+    """Who gets the 16 pre-rendered launch cards (Sam, 16 Nov 2026): phone/direct-to-cell first, then Starlink/Amazon Leo/OneWeb
+    broadband, then other commercial communications launches. Military/NRO launches never get one (they keep the generic card)."""
+    ag = ' '.join(a.get('name', '') if isinstance(a, dict) else str(a) for a in (l.get('mission_agencies') or []))
+    if l.get('mission_type') == 'Government/Top Secret' or MILITARY.search(ltext(l) + ' ' + ag): return None
+    if l['tag'] in ('starlink-dtc', 'ast', 'd2d-other') or 'phone' in l['who']: return 0
+    if l['tag'] in ('starlink', 'amazon-leo') or re.search(r'OneWeb', ltext(l)): return 1
+    if l.get('mission_type') == 'Communications': return 2
+    return None
+def share_pick():
+    ls = [(share_tier(l), i, l) for i, l in enumerate(UPCOMING) if l.get('slug')]
+    out, seen = [], {}
+    for t, i, l in sorted((t, i, l) for t, i, l in ls if t is not None):
+        series = re.sub(r'[\s\-#]*\d+$', '', l.get('mission') or l['name'])  # e.g. Rivada 1..12: at most 3 near-identical cards
+        if t == 2 and seen.get(series, 0) >= 3: continue
+        seen[series] = seen.get(series, 0) + 1; out.append(l['slug'])
+    return out[:SHARE_LAUNCH_IMAGES]
+SHARE_PICK = share_pick()
+
+def launch_share(l, root):
+    it = share_launch(l)
+    return share_bar(it, root, f'{l.get("mission") or l["name"]}', tag='span', extra='shr-in') if it else ''
 def launch_item(l, root):
     cd = f'<p class=lcd data-countdown="{l["net"]}" aria-hidden=true></p>' if l['precision'] in PRECISE else ''
     status = l.get('status') or ''
@@ -723,7 +807,7 @@ def launch_item(l, root):
             f'<div class=l-body><div class=flip><div class="face front"><div class=l-top>{tag_pill(l["tag"])}{st}</div><h3>{esc(l.get("mission") or l["name"])}</h3>'
             f'<p class=l-meta>{esc(l.get("rocket") or "")} · {esc(l.get("provider") or "")} · {esc(l.get("location") or "")}</p>'
             f'<p class=l-why><strong>Why it matters for your phone:</strong> {esc(TAG[l["tag"]][2])}</p>'
-            f'<div class=l-act><button type=button class="btn ghost sm flipbtn" aria-expanded=false>What’s on board<span class=sr> {esc(l.get("mission") or l["name"])}</span></button><a class="btn ghost sm" href="{flight_url(l, root)}">Flight view<span class=sr> for {esc(l.get("mission") or l["name"])}</span></a>{cal_btn(l, root)}</div></div>'
+            f'<div class=l-act><button type=button class="btn ghost sm flipbtn" aria-expanded=false>What’s on board<span class=sr> {esc(l.get("mission") or l["name"])}</span></button><a class="btn ghost sm" href="{flight_url(l, root)}">Flight view<span class=sr> for {esc(l.get("mission") or l["name"])}</span></a>{cal_btn(l, root)}{launch_share(l, root)}</div></div>'
             f'<div class="face back" id="pb-{l["id"][:8]}">{payload_html(l)}<p class=l-act><button type=button class="btn ghost sm flipback">Back to launch<span class=sr> details</span></button></p></div></div></div></li>')
 def human_dt(iso):
     d = iso_dt(iso); return d.strftime('%-d %b %Y, %H:%M UTC')
@@ -773,6 +857,7 @@ OCOL = {'starlink-dtc': '#00cfff', 'ast': '#ff9a3c', 'globalstar': '#b58cff', 'l
 # Illustrative shells: inclination (deg) and height (km) from McDowell's catalogue/stats; split of Starlink DTC per data/constellations.json note.
 OSHELLS = {'starlink-dtc': [(310 / 637, 53, 360, 24), (327 / 637, 43, 360, 24)], 'ast': [(1, 53, 520, 3)],
            'globalstar': [(1, 52, 1414, 8)], 'lynk': [(1, 97.5, 510, 4)]}
+OSHORT = {'starlink-dtc': 'Starlink DTC', 'ast': 'BlueBirds', 'globalstar': 'Globalstar', 'lynk': 'Lynk'}
 def orbit_panel(root):
     items = [i for i in CONST['direct_to_device'] if i['count'] and i['id'] in OSHELLS]
     cfg = [{'id': i['id'], 'n': i['count'], 'c': OCOL[i['id']], 's': [[round(f, 4), inc, alt, planes] for f, inc, alt, planes in OSHELLS[i['id']]]} for i in items]
@@ -782,6 +867,16 @@ def orbit_panel(root):
     ups = [x for x in (liftoff(l) for l in UPCOMING) if x]
     demo = next((liftoff(l) for l in UPCOMING if l['tag'] in ('starlink-dtc', 'ast', 'd2d-other') and liftoff(l)), ups[0] if ups else None)
     queue = [x for x in (liftoff(l) for l in next_launches()) if x]
+    big = sorted(items, key=lambda i: -i['count'])
+    chip_order = sorted(items, key=lambda i: list(OSHORT).index(i['id']) if i['id'] in OSHORT else 9)
+    osh = share_item('orbit-view', text=f'Every satellite that can talk to an ordinary phone, one dot each: {total:,} in orbit today. '
+                     f'{big[0]["short"]} has {big[0]["count"]:,} of them; AST’s BlueBirds are far fewer but each one is huge.',
+                     title=f'{total:,} phone-capable satellites, one dot each', path='launches/', anchor='ov-h',
+                     desc='Every satellite that can talk straight to an ordinary phone, on one globe: ' + ', '.join(f'{i["count"]:,} {i["short"]}' for i in items) + '.',
+                     alt=f'Globe with {total:,} dots, one per phone-capable satellite in orbit',
+                     render={'kind': 'canvas', 'page': 'launches/?nowelcome', 'sel': '#orbitview', 'layout': 'square', 'kicker': f'Orbit view · {human(asof, False)}',
+                             'title': f'{total:,} satellites that can talk to your phone', 'sub': 'One dot = one satellite',
+                             'chips': [[f'{i["count"]:,} {OSHORT.get(i["id"], i["short"])}', OCOL[i['id']]] for i in chip_order]})
     desc = (f'Illustrative globe with {total:,} dots, one for each phone-capable satellite in orbit: '
             + ', '.join(f'{i["count"]:,} {i["short"]}' for i in items) + '. Dots circle the Earth on representative orbits.')
     return (f'<section class=orbit aria-labelledby=ov-h data-base="{root}" data-orbits="{esc(json.dumps(cfg, separators=(",", ":")))}"'
@@ -790,7 +885,7 @@ def orbit_panel(root):
             f'<p class=ov-intro>{total:,} satellites can talk straight to ordinary phones today. Starlink has the numbers; AST’s BlueBirds are far fewer but each one is huge.</p>'
             f'<ul class=ov-legend aria-label="Phone-capable satellites in orbit by network">{li}</ul>'
             f'<p class=ov-scale><strong>1 dot = 1 satellite.</strong> Heights are to scale; the orbits are illustrative, not live positions.</p>'
-            f'<p class=ov-act><button type=button class="btn sm" id=ov-launch>Watch a launch moment</button></p>'
+            f'<p class=ov-act><button type=button class="btn sm" id=ov-launch>Watch a launch moment</button>{share_bar(osh, root, "the orbit view globe", canvas="#orbitview canvas", tag="span", extra="shr-in")}</p>'
             f'<p class=ov-status id=ov-status role=status aria-live=polite></p>'
             f'<p class=checked>Counts as of {human(asof)}, with sources <a href="#cnt-h">below</a>.</p></div>'
             f'<figure class=ov-fig><div id=orbitview class="globe ov-globe" role=img aria-label="{esc(desc)}"></div>'
@@ -814,6 +909,13 @@ def race_section(root):
     evs = ''.join(f'<li><time datetime="{e["d"]}">{human(e["d"], False)}</time> {esc(e["t"])} (<a href="{esc(e["src"]["url"])}">{esc(e["src"]["label"])}</a>)</li>' for e in R['events'])
     data = {'f': [[f['d'], [f['v'][k] for k in ser]] for f in R['frames']], 'k': list(ser), 't': t['value'], 'e': [[e['d'], e['t'], e['s']] for e in R['events']]}
     first = R['frames'][0]['d']
+    rsh = share_item('race', text=f'The race for satellites that talk to your phone, month by month since {human(first, False)[-4:]}: '
+                     + ', '.join(f'{ser[k]["label"]} {fin["v"][k]:,}' for k in order[:3]) + f'. AST is aiming for about {t["value"]} BlueBirds.',
+                     title='Phone-capable satellites in orbit, month by month', path='launches/', anchor='race-h',
+                     desc=f'Starlink, AST SpaceMobile and the rest: phone-capable satellites in orbit from {human(first, False)} to today, with sources.',
+                     alt='Bar chart race of phone-capable satellites in orbit by network',
+                     render={'kind': 'dom', 'page': 'launches/?nowelcome', 'sel': '.race-chart', 'layout': 'wide', 'kicker': f'The race so far · {human(fin["d"], False)}',
+                             'title': 'Satellites that can talk to your phone', 'sub': 'Working satellites in orbit, by network'})
     summary = (f'From {human(first)} to {human(fin["d"])}: ' + ', '.join(f'{ser[k]["label"]} went from {R["frames"][0]["v"][k]:,} to {fin["v"][k]:,}' for k in ser) + f'. AST’s target is about {t["value"]} BlueBirds by mid-2027.')
     return (f'<section class=race aria-labelledby=race-h data-race="{esc(json.dumps(data, ensure_ascii=False, separators=(",", ":")))}">'
             f'<p class=kicker>The race so far</p><h2 id=race-h>Phone-capable satellites in orbit, month by month</h2>'
@@ -821,7 +923,7 @@ def race_section(root):
             f'<div class=race-chart aria-hidden=true><p class=race-date>{human(fin["d"], False)}</p><div class=race-plot>{rows}{tl}</div><p class=race-event>Today, working satellites</p></div>'
             f'<p class=sr>{esc(summary)}</p>'
             f'<div class=race-ctl><button type=button class="btn sm" id=race-play>Replay the race</button>'
-            f'<button type=button class="btn ghost sm" id=race-zoom aria-pressed=false>Zoom in on the smaller networks</button>'
+            f'<button type=button class="btn ghost sm" id=race-zoom aria-pressed=false>Zoom in on the smaller networks</button>{share_bar(rsh, root, "the satellite race chart", tag="span", extra="shr-in")}'
             f'<label class=race-scrub>Month <input id=race-range type=range min=0 max="{len(R["frames"]) - 1}" value="{len(R["frames"]) - 1}" step=1 aria-valuetext="{human(fin["d"], False)}"></label></div>'
             f'<details class=race-data><summary>Data and sources</summary><p class=l-credit>{esc(R["metric"])} Bars move smoothly between month ends for the animation only; every month-end value comes from the sources below.</p>'
             f'<div class=tablewrap><table><caption class=sr>Phone-capable satellites in orbit, by quarter</caption><thead>{thead}</thead><tbody>{trows}</tbody></table></div>'
@@ -872,7 +974,7 @@ def launches_page():
          full_title='Launch tracker: SpaceX, AST SpaceMobile and phone-satellite launches | Full Duplex',
          description='Upcoming SpaceX, AST SpaceMobile, Amazon Leo and direct-to-cell launches, tagged by what they mean for your phone, plus a sourced count of phone-capable satellites in orbit.',
          body=body, root=root, current='launches/index.html', jsonld=ld, cls='is-launches', lastmod=(fetched or BUILD_NOW.isoformat())[:10],
-         scripts=f'<script defer src="{root}assets/launches.js"></script><script defer src="{root}assets/orbits.js"></script><script defer src="{root}assets/race.js"></script>',
+         scripts=f'<script defer src="{root}assets/launches.js"></script><script defer src="{root}assets/orbits.js"></script><script defer src="{root}assets/race.js"></script><script defer src="{root}assets/share.js"></script>',
          search_text='Launch tracker. ' + ' '.join(f"{l.get('mission')} {l.get('rocket')} {TAG[l['tag']][0]}." for l in UPCOMING) + ' ' + ' '.join(f"{i['network']} {i['operator']} {i['note']}" for i in CONST['direct_to_device'] + CONST['broadband_only']))
 # ---------------------------------------------------------------- flight view (/launches/flight/; assets/flight.js + lazy assets/flight-globe.js)
 FLIGHT = json.loads((SRC / 'flight-profiles.json').read_text())['profiles']
@@ -901,7 +1003,8 @@ def flight_page():
     if not ls: return
     data = [{'id': l['id'], 's': l['slug'], 'm': l.get('mission') or l['name'], 'r': l.get('rocket') or '', 'pv': l.get('provider') or '', 'n': l['net'], 'pr': l['precision'],
              'w': when_text(l), 'loc': l.get('location') or '', 'st': l.get('status') or '', 'tag': TAG[l['tag']][0], 'tc': TAG[l['tag']][1], 'why': TAG[l['tag']][2],
-             'p': flight_profile(l)['id'], 'net': fl_net(l), 'ph': 'phone' in l['who']} for l in ls]
+             'p': flight_profile(l)['id'], 'net': fl_net(l), 'ph': 'phone' in l['who'],
+             'x': share_launch(l)['text'], 'sh': share_launch(l)['slug'], 'pg': int(share_has_png(share_launch(l)))} for l in ls]
     profs = {p['id']: {k: p[k] for k in ('title', 'vehicle', 'events', 'keypoints', 'booster') if k in p} | {'src': p.get('source'), 'basis': p.get('basis', ''), 'pay': p.get('payload_note', ''), 'gen': bool(p.get('generic'))} for p in FLIGHT}
     d0 = ls[0]; p0 = flight_profile(d0)
     quick = [l for l in ls if l['tag'] != 'other'][:6]
@@ -913,6 +1016,14 @@ def flight_page():
     if GPR:
         n_sat = sum(g['n'] for g in GPR['groups']); n_l = len(GPR['groups'])
         gp_note = f'{n_sat} satellites from {n_l} recent broadband and phone-network launches'
+    gsh = share_item('flight-globe', text=f'Where the newest broadband and phone satellites are right now'
+                     + (f': {GPR and sum(g["n"] for g in GPR["groups"])} satellites from the last 30 days of launches' if GPR else '')
+                     + ', placed on their real orbits. Fresh batches fly as a tight “train”, then spread out.',
+                     title='Where the newest satellites are right now', path='launches/flight/', anchor='gl-h',
+                     desc='Real orbits of satellites launched in the last 30 days for broadband and phone networks, computed from CelesTrak data.',
+                     alt='Globe of recently launched broadband and phone satellites at their computed positions',
+                     render={'kind': 'canvas', 'page': 'launches/flight/?nowelcome', 'sel': '#glview', 'layout': 'square', 'kicker': 'After deployment · real orbits',
+                             'title': 'Where the newest satellites are right now', 'sub': gp_note[:1].upper() + gp_note[1:] if gp_note else 'From CelesTrak orbit data'})
     body = (f'<header class=page-head><p class=kicker><a href="{root}launches/">Launches</a> · Flight view</p><h1>Flight view: follow a launch, stage by stage</h1>'
             f'<p class=lede>See a launch the way the webcasts show it: the climb, each stage event and the moment the satellites are let go. Then see where the newest satellites are right now.</p></header>'
             f'<section class=fl aria-labelledby=fl-h data-base="{root}"><h2 id=fl-h class=sr>Launch infographic</h2>'
@@ -930,6 +1041,7 @@ def flight_page():
             f'<div class=fl-ctl><div class=fl-btns role=group aria-label="Clock mode"><button type=button class="btn sm" id=fl-live aria-pressed=true>Live clock</button>'
             f'<button type=button class="btn ghost sm" id=fl-replay aria-pressed=false>Replay the flight</button></div>'
             f'<label class=fl-scrub>Scrub through the flight <input id=fl-range type=range min=0 max=1000 value=0 step=1></label></div>'
+            + share_bar(share_launch(d0), root, 'this launch', extra='fl-share" id="fl-share', keep_save=True) +
             f'<p class=fl-status id=fl-status role=status aria-live=polite></p>'
             f'<p class=fl-fine id=fl-note>The clock counts to the launch time in our launch data, refreshed every 6 hours. Speed and altitude follow the planned profile as if the rocket flies exactly on time and on plan. They’re our estimates, not readings from the rocket.</p></div>'
             f'<div class=fl-cols><div><h2 id=fe-h>What happens, step by step</h2><ol class=fl-events id=fl-events aria-labelledby=fe-h>{flight_events_html(p0)}</ol></div>'
@@ -945,6 +1057,7 @@ def flight_page():
             f'<p class=gl-sel id=gl-sel role=status aria-live=polite></p>'
             f'<div class=gl-chips id=gl-chips role=group aria-label="Highlight a launch"></div>'
             f'<p class=gl-sum id=gl-sum></p><p class=gl-time id=gl-time></p>'
+            + (share_bar(gsh, root, 'the live satellite globe', canvas='#glview canvas') if GPR else '') +
             f'<div class=gl-speed role=group aria-label="Playback speed"><button type=button class="chip" data-x=1 aria-pressed=true>Real time</button><button type=button class=chip data-x=60 aria-pressed=false>×60</button><button type=button class=chip data-x=600 aria-pressed=false>×600</button></div>'
             f'<p class=checked id=gl-credit>Orbits: <a href="https://celestrak.org/">CelesTrak</a> GP data'
             + (f', fetched <time datetime="{GPR["fetched_at"]}">{human_dt(GPR["fetched_at"])}</time> ({gp_note})' if GPR else '')
@@ -961,7 +1074,7 @@ def flight_page():
     page(og=('Launches', 'Flight view: follow a launch, stage by stage'), path='launches/flight/index.html', title='Flight view: follow a launch, stage by stage',
          description='A webcast-style infographic for upcoming launches: ascent profile, stage events and mission clock, plus a live globe of newly launched broadband and phone satellites.',
          body=body, root=root, current='launches/index.html', jsonld=ld, cls='is-flight', lastmod=BUILD_NOW.isoformat()[:10],
-         scripts=f'<script defer src="{root}assets/flight-globe.js"></script><script defer src="{root}assets/flight.js"></script>',
+         scripts=f'<script defer src="{root}assets/flight-globe.js"></script><script defer src="{root}assets/flight.js"></script><script defer src="{root}assets/share.js"></script>',
          search_text='Flight view. Launch infographic: ascent profile, Max-Q, MECO, stage separation, fairing, booster landing, SECO, payload deployment. Globe of new Starlink, Amazon Leo and phone satellites.')
 # ---------------------------------------------------------------- journey explainer (src/pages/journey.html; animations in style.css + assets/journey.js)
 JOURNEY_MINI = ('<svg viewBox="0 0 150 90" aria-hidden=true focusable=false><rect width=150 height=90 rx=12 fill="#0c1830"/><path d="M0 78C30 62 60 58 90 64S130 80 150 76V90H0z" fill="#16243d"/>'
@@ -993,6 +1106,16 @@ def SAT_CHIPS():
         c = const_item(cid)
         if c and c.get('count') is not None: out.append((f'{c["count"]:,} {nm}', col))
     return out
+def sat_share(f, ci):
+    n = ci['count'] if ci and ci.get('count') is not None else None
+    lede = first_sentence(f['lede'], 150)
+    if lede.split(' ', 1)[0] in ('A', 'An', 'The', 'Few'): lede = lede[:1].lower() + lede[1:]
+    cnt = f' {n:,} in orbit today.' if n else ''
+    return share_item(f'sat-{f["id"]}', text=f'Meet {f["short"] if f["short"] != f["name"] else f["name"]}: {lede}{cnt}{" What it looks like and how it reaches your phone:" if f["phone"] else " Why it doesn’t talk to your phone (yet):"}',
+                      title=f'Meet the satellites: {f["name"]}', path='satellites/', anchor=f['id'], desc=f['lede'][:157] + ('…' if len(f['lede']) > 157 else ''),
+                      alt=f'Illustration of {SAT_NAME.get(f["anim"], f["name"])} by Full Duplex',
+                      render={'kind': 'dom', 'page': 'satellites/?nowelcome', 'sel': f'#{f["id"]} .sc-art > :first-child', 'layout': 'square', 'kicker': f'Meet the satellites · {f["operator"]}',
+                              'title': f['name'], 'sub': (f'{n:,} in orbit · ' if n else '') + ('Talks to ordinary phones' if f['phone'] else 'Dishes only, not phones'), 'color': f['color']})
 def satellites_page():
     root = '../'; url = BASE + 'satellites/'; S = SATS['sources']
     def src(keys):
@@ -1011,7 +1134,14 @@ def satellites_page():
     scale_html = (f'<section class=sat-info aria-labelledby=scale-h><p class=kicker>To scale</p><h2 id=scale-h>How big is the bit that talks to your phone?</h2>'
                   f'<p class=l-intro>Bigger antennas can hear a phone’s weak signal from further away. Drawn to the same scale, next to a 1.8 m person. BlueBird squares have the same area as the real arrays.</p>'
                   f'<ul class=scale-row><li class=sp style="--h:1.8"><span class=sqbox>{person}</span><b>Person</b><span>1.8 m tall</span></li>{sc_li}</ul>'
-                  f'<p class=l-credit>Globalstar’s antenna size: TBC. Amazon Leo isn’t shown because it doesn’t talk to phones. {sc_src}</p></section>')
+                  f'<p class=l-credit>Globalstar’s antenna size: TBC. Amazon Leo isn’t shown because it doesn’t talk to phones. {sc_src}</p>'
+                  + share_bar(share_item('sat-scale', text='How big is the bit that talks to your phone? Lynk, Starlink and BlueBird antennas drawn to the same scale, next to a 1.8 m person. BlueBird’s is about 223 m².',
+                                         title='How big is the bit that talks to your phone?', path='satellites/', anchor='scale-h',
+                                         desc='Phone antennas on Lynk, Starlink Direct to Cell and AST’s BlueBirds, drawn to the same scale next to a person.',
+                                         alt='Satellite phone antennas drawn to scale next to a person',
+                                         render={'kind': 'dom', 'page': 'satellites/?nowelcome', 'sel': '.scale-row', 'layout': 'wide', 'kicker': 'To scale',
+                                                 'title': 'How big is the bit that talks to your phone?', 'sub': 'Antennas drawn to the same scale, next to a 1.8 m person'}),
+                              root, 'the antennas-to-scale chart') + '</section>')
     # infographic 2: how high they fly
     alts = [('Starlink DTC', 360, 'about 360 km', '#00cfff', ['keeptrack-dtc']), ('BlueBird', 520, 'about 520 km', '#ff9a3c', ['keeptrack-ast']),
             ('Amazon Leo', 630, '590 to 630 km', '#f5c26b', ['wiki-leo']), ('Globalstar', 1414, 'about 1,414 km', '#b58cff', ['gs-fcc-c3'])]
@@ -1019,7 +1149,14 @@ def satellites_page():
     alt_html = (f'<section class=sat-info aria-labelledby=alt-h><p class=kicker>Height</p><h2 id=alt-h>How high they fly</h2>'
                 f'<p class=l-intro>Lower satellites are closer to your phone, so the signal has less distance to cover, but each one passes overhead faster and you need more of them.</p>'
                 f'<ul class=alt-chart>{al_li}<li style="--c:#6ee79a"><span class=al-n>Lynk</span><span class="al-bar tbc"></span><span class=al-v>low orbit, height TBC</span></li></ul>'
-                f'<p class=l-credit>{src(["keeptrack-dtc", "keeptrack-ast", "wiki-leo", "gs-fcc-c3", "keeptrack-lynk"])}</p></section>')
+                f'<p class=l-credit>{src(["keeptrack-dtc", "keeptrack-ast", "wiki-leo", "gs-fcc-c3", "keeptrack-lynk"])}</p>'
+                + share_bar(share_item('sat-height', text='How high the satellites that talk to phones fly: ' + ', '.join(f'{n} {t}' for n, v, t, c, _ in alts) + '. Closer means a stronger signal, but you need more of them.',
+                                       title='How high phone satellites fly', path='satellites/', anchor='alt-h',
+                                       desc='Starlink Direct to Cell, BlueBird, Amazon Leo and Globalstar altitudes compared, with sources.',
+                                       alt='Bar chart of satellite altitudes',
+                                       render={'kind': 'dom', 'page': 'satellites/?nowelcome', 'sel': '.alt-chart', 'layout': 'wide', 'kicker': 'Height',
+                                               'title': 'How high phone satellites fly', 'sub': 'Lower is closer to your phone, but each one passes faster'}),
+                            root, 'the satellite heights chart') + '</section>')
     cards = []; rows = []
     for f in fams:
         ci = const_item(f['count_id'])
@@ -1035,7 +1172,7 @@ def satellites_page():
         cards.append(f'<article class=satcard id="{f["id"]}" style="--c:{f["color"]}" aria-labelledby="h-{f["id"]}">'
                      f'<figure class=sc-art>{satviz.scene(f["anim"], "card")}<figcaption>Illustration drawn by Full Duplex from public descriptions. Not to scale.</figcaption></figure>'
                      f'<div class=sc-body><p class=kicker>{esc(f["operator"])}</p>{badge}<h2 id="h-{f["id"]}">{esc(f["name"])}</h2><p class=sc-lede>{esc(f["lede"])}</p>'
-                     f'{cnt}<dl class=sc-facts>{facts}</dl>{nxt}</div></article>')
+                     f'{cnt}<dl class=sc-facts>{facts}</dl>{nxt}{share_bar(sat_share(f, ci), root, f["name"])}</div></article>')
         rows.append(f'<tr><th scope=row><a href="#{f["id"]}">{esc(f["short"])}</a></th><td data-l="Ordinary phones?">{"Yes" if f["phone"] else "No, dishes only"}</td><td data-l="Frequencies">{esc(f["glance"]["spec"])}</td><td data-l="Today">{esc(f["glance"]["today"])}</td><td data-l="In orbit">{cnt_s}</td></tr>')
     glance = ('<section class=sat-info aria-labelledby=gl-h><p class=kicker>At a glance</p><h2 id=gl-h>Which is which</h2><div class=tablewrap><table class=sat-table>'
               '<thead><tr><th scope=col>Satellite</th><th scope=col>Talks to ordinary phones?</th><th scope=col>Whose frequencies</th><th scope=col>What works today</th><th scope=col>In orbit</th></tr></thead>'
@@ -1055,11 +1192,43 @@ def satellites_page():
     page(og=('Explainer', 'Meet the satellites that talk to your phone', SAT_CHIPS()), gloss=True, path='satellites/index.html', title='Meet the satellites',
          full_title='Meet the satellites: Starlink, BlueBird, Lynk, Globalstar and Amazon Leo explained | Full Duplex',
          description='What Starlink Direct to Cell, AST SpaceMobile BlueBird, Amazon Leo, Lynk and Globalstar satellites look like, how high they fly and how they reach an ordinary phone. Plain English, with sources.',
-         body=body, root=root, current='satellites/index.html', jsonld=ld, cls='is-sats', lastmod=SATS['checked'])
+         body=body, root=root, current='satellites/index.html', jsonld=ld, cls='is-sats', lastmod=SATS['checked'], scripts=f'<script defer src="{root}assets/share.js"></script>')
 launches_page()
 flight_page()
 journey_page()
 satellites_page()
+
+def share_pages():
+    """share/<slug>/index.html for every share item: per-item X card tags, then straight on to the deep link. Prunes stale items."""
+    SHARE_DIR.mkdir(exist_ok=True)
+    for it in SHARE.values():
+        png = share_has_png(it)
+        img = f'{BASE}share/{it["slug"]}/card.jpg?v={SHARE_MAN.get(it["slug"], {}).get("key", "0")}' if png else f'{BASE}assets/og/{"launches-flight" if it["slug"].startswith("l-") else "launches"}.jpg'
+        t = f'{it["title"]} | Full Duplex'; tj = json.dumps(it['target'])
+        out = ('<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+               f'<title>{esc(t)}</title><meta name="description" content="{esc(it["desc"])}"><meta name="robots" content="noindex,follow">'
+               f'<meta property="og:site_name" content="Full Duplex"><meta property="og:locale" content="en_GB"><meta property="og:type" content="website">'
+               f'<meta property="og:title" content="{esc(t)}"><meta property="og:description" content="{esc(it["desc"])}"><meta property="og:url" content="{share_link(it)}">'
+               f'<meta property="og:image" content="{img}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="{esc(it["alt"])}">'
+               f'<meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@{X}"><meta name="twitter:title" content="{esc(t)}">'
+               f'<meta name="twitter:description" content="{esc(it["desc"])}"><meta name="twitter:image" content="{img}"><meta name="twitter:image:alt" content="{esc(it["alt"])}">'
+               f'<meta http-equiv="refresh" content="0; url={esc(it["target"])}"><link rel="icon" href="../../assets/favicon-32.png" sizes="32x32" type="image/png">'
+               f'<script>location.replace({tj})</script>'
+               '<style>body{background:#070b14;color:#e8eef7;font:16px/1.5 system-ui,sans-serif;display:grid;place-items:center;min-height:90vh;margin:0}a{color:#5ec8ff}</style></head>'
+               f'<body><p>Opening <a href="{esc(it["target"])}">{esc(it["title"])}</a> on Full Duplex…</p></body></html>\n')
+        d = SHARE_DIR / it['slug']; d.mkdir(exist_ok=True)
+        if not it.get('render') and (d / 'card.jpg').exists(): (d / 'card.jpg').unlink()  # dropped out of the pre-rendered set
+        if (d / 'card.png').exists(): (d / 'card.png').unlink()  # PNG cards replaced by JPEG (Sam, 16 Nov 2026)
+        if not (d / 'index.html').exists() or (d / 'index.html').read_text() != out: (d / 'index.html').write_text(out)
+    for d in SHARE_DIR.iterdir():  # launches that have gone (or items we no longer make) lose their share page and card
+        if d.is_dir() and d.name not in SHARE:
+            for f in d.iterdir(): f.unlink()
+            d.rmdir()
+    items = [{'slug': it['slug'], 'key': it['key'], **it['render']} for it in SHARE.values() if it.get('render')]
+    (SHARE_DIR / 'items.json').write_text(json.dumps({'_readme': 'What scripts/render_share.py renders into share/<slug>/card.jpg. Written by build.py.', 'items': items}, ensure_ascii=False, indent=1) + '\n')
+    long = [it['slug'] for it in SHARE.values() if len(it['text']) + 24 + len(VIA) > 280]
+    if long: print('WARNING: share text too long', long)
+share_pages()
 
 
 # ---------------------------------------------------------------- "Can my phone connect?" checker (src/phones.json + data/tracker.json; logic in assets/check.js)

@@ -1,0 +1,294 @@
+{
+ "_readme": "What scripts/render_share.py renders into share/<slug>/card.jpg. Written by build.py.",
+ "items": [
+  {
+   "slug": "l-ariane-64-block-2-amazon-leo-le-04",
+   "key": "b49cddab1e",
+   "kind": "flight",
+   "page": "launches/flight/?l=ariane-64-block-2-amazon-leo-le-04&nowelcome",
+   "sel": "#fl-hud",
+   "layout": "wide",
+   "kicker": "Launch · 23 Nov",
+   "title": "Amazon Leo (LE-04)",
+   "sub": "Ariane 64 Block 2",
+   "tag": "amazon-leo"
+  },
+  {
+   "slug": "l-falcon-9-block-5-oneweb-21",
+   "key": "295879ce36",
+   "kind": "flight",
+   "page": "launches/flight/?l=falcon-9-block-5-oneweb-21&nowelcome",
+   "sel": "#fl-hud",
+   "layout": "wide",
+   "kicker": "Launch · November 2026",
+   "title": "OneWeb 21",
+   "sub": "Falcon 9 · 32 OneWeb broadband satellites",
+   "tag": "other"
+  },
+  {
+   "slug": "l-falcon-9-block-5-starlink-group-15-21",
+   "key": "f052dce61d",
+   "kind": "flight",
+   "page": "launches/flight/?l=falcon-9-block-5-starlink-group-15-21&nowelcome",
+   "sel": "#fl-hud",
+   "layout": "wide",
+   "kicker": "Launch · November 2026",
+   "title": "Starlink Group 15-21",
+   "sub": "Falcon 9 · 27 Starlink broadband satellites",
+   "tag": "starlink"
+  },
+  {
+   "slug": "l-falcon-9-block-5-globalstar-2-r-mission-2-x-9",
+   "key": "5c960a14bd",
+   "kind": "flight",
+   "page": "launches/flight/?l=falcon-9-block-5-globalstar-2-r-mission-2-x-9&nowelcome",
+   "sel": "#fl-hud",
+   "layout": "wide",
+   "kicker": "Launch · December 2026",
+   "title": "Globalstar 2-R Mission 2 (x 9)",
+   "sub": "Falcon 9 · 9 Globalstar replacement satellites",
+   "tag": "d2d-other"
+  },
+  {
+   "slug": "l-falcon-9-block-5-bluebird-14-16-block-2-9-11",
+   "key": "d3ff24ec42",
+   "kind": "flight",
+   "page": "launches/flight/?l=falcon-9-block-5-bluebird-14-16-block-2-9-11&nowelcome",
+   "sel": "#fl-hud",
+   "layout": "wide",
+   "kicker": "Launch · Q4 2026",
+   "title": "BlueBird 14-16 (Block 2 #9-11)",
+   "sub": "Falcon 9 · 3 BlueBird Block 2 satellites",
+   "tag": "ast"
+  },
+  {
+   "slug": "l-falcon-9-block-5-rivada-1",
+   "key": "9df31cef8d",
+   "kind": "flight",
+   "page": "launches/flight/?l=falcon-9-block-5-rivada-1&nowelcome",
+   "sel": "#fl-hud",
+   "layout": "wide",
+   "kicker": "Launch · 2026",
+   "title": "Rivada 1",
+   "sub": "Falcon 9 · 24 Rivada satellites",
+   "tag": "other"
+  },
+  {
+   "slug": "l-falcon-9-block-5-rivada-10",
+   "key": "0f1a1443ca",
+   "kind": "flight",
+   "page": "launches/flight/?l=falcon-9-block-5-rivada-10&nowelcome",
+   "sel": "#fl-hud",
+   "layout": "wide",
+   "kicker": "Launch · 2026",
+   "title": "Rivada 10",
+   "sub": "Falcon 9 · 24 Rivada satellites",
+   "tag": "other"
+  },
+  {
+   "slug": "l-falcon-9-block-5-rivada-11",
+   "key": "bb47934a05",
+   "kind": "flight",
+   "page": "launches/flight/?l=falcon-9-block-5-rivada-11&nowelcome",
+   "sel": "#fl-hud",
+   "layout": "wide",
+   "kicker": "Launch · 2026",
+   "title": "Rivada 11",
+   "sub": "Falcon 9 · 24 Rivada satellites",
+   "tag": "other"
+  },
+  {
+   "slug": "l-new-glenn-bluebird-block-2",
+   "key": "b690216417",
+   "kind": "flight",
+   "page": "launches/flight/?l=new-glenn-bluebird-block-2&nowelcome",
+   "sel": "#fl-hud",
+   "layout": "wide",
+   "kicker": "Launch · 2026",
+   "title": "BlueBird Block 2",
+   "sub": "New Glenn",
+   "tag": "ast"
+  },
+  {
+   "slug": "l-new-glenn-amazon-leo-ln-01",
+   "key": "076130b993",
+   "kind": "flight",
+   "page": "launches/flight/?l=new-glenn-amazon-leo-ln-01&nowelcome",
+   "sel": "#fl-hud",
+   "layout": "wide",
+   "kicker": "Launch · 2026",
+   "title": "Amazon Leo (LN-01)",
+   "sub": "New Glenn",
+   "tag": "amazon-leo"
+  },
+  {
+   "slug": "l-falcon-9-block-5-5x-astranis-microgeo",
+   "key": "a19da080d6",
+   "kind": "flight",
+   "page": "launches/flight/?l=falcon-9-block-5-5x-astranis-microgeo&nowelcome",
+   "sel": "#fl-hud",
+   "layout": "wide",
+   "kicker": "Launch · Q1 2027",
+   "title": "5x Astranis MicroGEO",
+   "sub": "Falcon 9",
+   "tag": "other"
+  },
+  {
+   "slug": "l-falcon-9-block-5-telesat-lightspeed-1",
+   "key": "07a2506153",
+   "kind": "flight",
+   "page": "launches/flight/?l=falcon-9-block-5-telesat-lightspeed-1&nowelcome",
+   "sel": "#fl-hud",
+   "layout": "wide",
+   "kicker": "Launch · Q3 2027",
+   "title": "Telesat Lightspeed 1",
+   "sub": "Falcon 9",
+   "tag": "other"
+  },
+  {
+   "slug": "l-falcon-9-block-5-arabsat-7a",
+   "key": "599f38987c",
+   "kind": "flight",
+   "page": "launches/flight/?l=falcon-9-block-5-arabsat-7a&nowelcome",
+   "sel": "#fl-hud",
+   "layout": "wide",
+   "kicker": "Launch · October 2027",
+   "title": "Arabsat 7A",
+   "sub": "Falcon 9",
+   "tag": "other"
+  },
+  {
+   "slug": "orbit-view",
+   "key": "1c3a2e7c2f",
+   "kind": "canvas",
+   "page": "launches/?nowelcome",
+   "sel": "#orbitview",
+   "layout": "square",
+   "kicker": "Orbit view · 9 Nov 2026",
+   "title": "689 satellites that can talk to your phone",
+   "sub": "One dot = one satellite",
+   "chips": [
+    [
+     "637 Starlink DTC",
+     "#00cfff"
+    ],
+    [
+     "12 BlueBirds",
+     "#ff9a3c"
+    ],
+    [
+     "32 Globalstar",
+     "#b58cff"
+    ],
+    [
+     "8 Lynk",
+     "#6ee79a"
+    ]
+   ]
+  },
+  {
+   "slug": "race",
+   "key": "8723eed4dd",
+   "kind": "dom",
+   "page": "launches/?nowelcome",
+   "sel": ".race-chart",
+   "layout": "wide",
+   "kicker": "The race so far · 9 Nov 2026",
+   "title": "Satellites that can talk to your phone",
+   "sub": "Working satellites in orbit, by network"
+  },
+  {
+   "slug": "flight-globe",
+   "key": "1b7941938c",
+   "kind": "canvas",
+   "page": "launches/flight/?nowelcome",
+   "sel": "#glview",
+   "layout": "square",
+   "kicker": "After deployment · real orbits",
+   "title": "Where the newest satellites are right now",
+   "sub": "117 satellites from 6 recent broadband and phone-network launches"
+  },
+  {
+   "slug": "sat-scale",
+   "key": "e532f2e1a3",
+   "kind": "dom",
+   "page": "satellites/?nowelcome",
+   "sel": ".scale-row",
+   "layout": "wide",
+   "kicker": "To scale",
+   "title": "How big is the bit that talks to your phone?",
+   "sub": "Antennas drawn to the same scale, next to a 1.8 m person"
+  },
+  {
+   "slug": "sat-height",
+   "key": "3659855079",
+   "kind": "dom",
+   "page": "satellites/?nowelcome",
+   "sel": ".alt-chart",
+   "layout": "wide",
+   "kicker": "Height",
+   "title": "How high phone satellites fly",
+   "sub": "Lower is closer to your phone, but each one passes faster"
+  },
+  {
+   "slug": "sat-starlink-dtc",
+   "key": "78b3564a45",
+   "kind": "dom",
+   "page": "satellites/?nowelcome",
+   "sel": "#starlink-dtc .sc-art > :first-child",
+   "layout": "square",
+   "kicker": "Meet the satellites · SpaceX",
+   "title": "Starlink Direct to Cell",
+   "sub": "637 in orbit · Talks to ordinary phones",
+   "color": "#00cfff"
+  },
+  {
+   "slug": "sat-bluebird",
+   "key": "a0ee484364",
+   "kind": "dom",
+   "page": "satellites/?nowelcome",
+   "sel": "#bluebird .sc-art > :first-child",
+   "layout": "square",
+   "kicker": "Meet the satellites · AST SpaceMobile",
+   "title": "BlueBird (Block 1 and Block 2)",
+   "sub": "12 in orbit · Talks to ordinary phones",
+   "color": "#ff9a3c"
+  },
+  {
+   "slug": "sat-amazon-leo",
+   "key": "aa237153ff",
+   "kind": "dom",
+   "page": "satellites/?nowelcome",
+   "sel": "#amazon-leo .sc-art > :first-child",
+   "layout": "square",
+   "kicker": "Meet the satellites · Amazon",
+   "title": "Amazon Leo (formerly Project Kuiper)",
+   "sub": "392 in orbit · Dishes only, not phones",
+   "color": "#f5c26b"
+  },
+  {
+   "slug": "sat-lynk",
+   "key": "f4d66d76cc",
+   "kind": "dom",
+   "page": "satellites/?nowelcome",
+   "sel": "#lynk .sc-art > :first-child",
+   "layout": "square",
+   "kicker": "Meet the satellites · Elveo Mobile (Lynk + Omnispace)",
+   "title": "Lynk",
+   "sub": "8 in orbit · Talks to ordinary phones",
+   "color": "#6ee79a"
+  },
+  {
+   "slug": "sat-globalstar",
+   "key": "d33ad2464b",
+   "kind": "dom",
+   "page": "satellites/?nowelcome",
+   "sel": "#globalstar .sc-art > :first-child",
+   "layout": "square",
+   "kicker": "Meet the satellites · Globalstar (agreed to be bought by Amazon)",
+   "title": "Globalstar",
+   "sub": "32 in orbit · Talks to ordinary phones",
+   "color": "#b58cff"
+  }
+ ]
+}

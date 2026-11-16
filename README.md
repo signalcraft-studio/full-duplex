@@ -18,6 +18,13 @@ Live site: https://signalcraft-studio.github.io/full-duplex/ (GitHub Pages, serv
 - Satellite counts for the comparison panel live in `data/constellations.json`. Every number needs a source URL and an `as_of` date; use `null` (shown as "Not disclosed") rather than an estimate. Phone-capable and broadband-only networks are kept in separate lists.
 - Calendar files are generated in `launches/cal/` for launches with a set day or time.
 
+## Share to X (`share/`, preview 16 Nov 2026, needs Sam's approval)
+- Launch cards, the flight view, the orbit view, the race chart and each section of `/satellites/` have **Post to X** (a plain `x.com/intent/post` link, no X scripts) and **Save image**.
+- Each share points at a static page `share/<slug>/index.html` with its own `og:image`/`twitter:image` (`summary_large_image`), which sends people straight on to the deep link (`launches/flight/?l=<slug>`, or a `#anchor`) with `utm_source=x&utm_medium=share&utm_campaign=infographic`. X's crawler runs no JavaScript, so this is the only way to get a different card per infographic on GitHub Pages.
+- `scripts/build.py` writes the share pages and `share/items.json` (what to render), and deletes share pages for launches that have gone. `scripts/render_share.py` screenshots the real globe/infographic in headless Chromium and adds logo A and a caption (Pillow) -> `share/<slug>/card.jpg` (1200x630 JPEG, quality 88). It only renders cards that are missing or whose details changed (`share/manifest.json`); `--all` re-renders everything. Run `python3 scripts/build.py` again afterwards.
+- Pre-rendered cards: 16 launches, phone/direct-to-cell first, then Starlink/Amazon Leo/OneWeb broadband, then other commercial communications; military/NRO launches never get one plus the orbit view, race chart, flight-view globe and the satellites sections. Other launches share the flight view's normal card. The refresh workflow renders new cards only when needed.
+- Save image downloads the pre-rendered card; on the two globes it saves the live globe with a small Full Duplex watermark.
+
 ## Images
 All artwork below was approved by Sam on 9 Nov 2026. New artwork needs a preview approved before it goes on the site.
 
