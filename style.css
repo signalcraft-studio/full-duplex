@@ -830,3 +830,16 @@ header.site nav{gap:.2rem 1rem}
   .l-act .shr-in .shr-save .shr-t{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
   .fl-share{justify-content:flex-start}
 }
+
+/* Starship explainer videos (/explainers/, 16 Nov 2026) */
+.xlist{display:grid;gap:1.6rem;margin:1.8rem 0 2.4rem}
+.xv{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:1.8rem;align-items:start;padding:1.3rem;border:1px solid var(--line);border-radius:var(--r);background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01));scroll-margin-top:5rem}
+.xv-media video{display:block;width:100%;height:auto;aspect-ratio:4/5;border-radius:10px;border:1px solid var(--line-2);background:var(--bg)}
+.xv-copy h2{margin:.1rem 0 .7rem}
+.xv-copy p{max-width:60ch}
+.xv-facts{color:var(--muted);font-size:.95rem}
+.xv-why{border-left:2px solid var(--cyan);padding-left:.8rem;color:#cfdbe8}
+.xv .shr{margin-top:1rem}
+.fl-expl{display:flex;align-items:center;flex-wrap:wrap;gap:.5rem .9rem;margin:.4rem 0 0;color:var(--muted);font-size:.95rem}
+.xcard{margin-top:2.5rem}
+@media (max-width:760px){.xv{grid-template-columns:1fr;padding:1rem;gap:1rem}.xv-media{max-width:440px}}
