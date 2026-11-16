@@ -86,7 +86,7 @@ def signal_block(root, surface, variant='full', heading_level=2, heading=None, i
             f'<a class=more href="{esc(SITE["archive_url"])}">Read past issues</a></p>{privacy}</div></section>')
 
 # ---------------------------------------------------------------- chrome
-NAV = [('index.html', 'Home'), ('articles/index.html', 'Articles'), ('tracker.html', 'Tracker'), ('launches/index.html', 'Launches'), ('satellites/index.html', 'Satellites'), ('check/index.html', 'Check my phone'), ('search.html', 'Search'), ('about.html', 'About'), ('sponsor.html', 'Sponsor')]
+NAV = [('index.html', 'Home'), ('articles/index.html', 'Articles'), ('tracker.html', 'Tracker'), ('launches/index.html', 'Launches'), ('explainers/index.html', 'Explainers'), ('satellites/index.html', 'Satellites'), ('check/index.html', 'Check my phone'), ('search.html', 'Search'), ('about.html', 'About')]  # Sponsor moved to the footer only to make room for Explainers (Sam, 16 Nov 2026)
 
 LOGO_MARK = ('<svg class=mark viewBox="254 250 516 516" width="44" height="44" aria-hidden="true" focusable="false">'
              '<g fill="none" stroke-width="32" stroke-linecap="round"><path d="M279 505A233 233 0 0 1 644.3 313.2" stroke="#00cfff"/><path d="M744.9 511.9A233 233 0 0 1 383.7 699.5" stroke="#fff"/></g><circle cx="423" cy="432" r="10" fill="#00cfff"/><path transform="translate(426 517.5) rotate(-15)" fill="#00cfff" fill-rule="evenodd" d="M-23.5 -57.5h47a5 5 0 0 1 5 5v105a5 5 0 0 1 -5 5h-47a5 5 0 0 1 -5 -5v-105a5 5 0 0 1 5 -5zM-8.5 -48h17.0a5.5 5.5 0 0 1 5.5 5.5v0.0a5.5 5.5 0 0 1 -5.5 5.5h-17.0a5.5 5.5 0 0 1 -5.5 -5.5v-0.0a5.5 5.5 0 0 1 5.5 -5.5z"/><g fill="#fff"><path d="M583 488h21l33 32-22 22-32-32z"/><path d="M620 492l20-21 15 14-21 22z"/><path d="M567 545l21-21 14 14-20 20z"/><circle cx="635" cy="541" r="8"/></g>' + '</svg>')  # logo A, approved by Sam 9 Nov 2026 (same as assets/logo.svg)
@@ -1241,7 +1241,7 @@ def explainers_page():
     page(og=('Explainers', 'Starship explained in 30 seconds', [('Hot staging', OGC['cyan']), ('Satellite release', OGC['live']), ('Tower catch', OGC['trial'])]),
          path='explainers/index.html', title='Starship explained in 30 seconds', full_title='Starship explainers: launch, deploy and catch | Full Duplex',
          description='Three 30-second Starship explainers from Flight 15: hot staging, how 26 Starlink satellites leave the ship, and the first tower catch from orbit.',
-         body=body, root=root, current='launches/index.html', jsonld=ld_v, cls='is-explainers', lastmod=EXPL['updated'],
+         body=body, root=root, current='explainers/index.html', jsonld=ld_v, cls='is-explainers', lastmod=EXPL['updated'],
          scripts=f'<script defer src="{root}assets/share.js"></script>')
 launches_page()
 flight_page()

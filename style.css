@@ -843,3 +843,6 @@ header.site nav{gap:.2rem 1rem}
 .fl-expl{display:flex;align-items:center;flex-wrap:wrap;gap:.5rem .9rem;margin:.4rem 0 0;color:var(--muted);font-size:.95rem}
 .xcard{margin-top:2.5rem}
 @media (max-width:760px){.xv{grid-template-columns:1fr;padding:1rem;gap:1rem}.xv-media{max-width:440px}}
+/* Explainers joined the main nav (16 Nov 2026): tighten spacing just above the 1000px and 860px breakpoints so it stays on one row */
+@media (max-width:1060px) and (min-width:1001px){header.site .wrap{gap:.7rem}header.site nav{gap:.2rem .62rem}header.site nav a{font-size:.86rem}}
+@media (max-width:920px) and (min-width:861px){header.site .wrap{gap:.6rem}header.site nav{gap:.2rem .45rem}header.site nav a{font-size:.8rem}}
