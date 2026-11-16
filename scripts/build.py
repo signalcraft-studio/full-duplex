@@ -107,7 +107,7 @@ def footer(root, sticky=True):
             f'<nav aria-label="Footer"><a href="{esc(sub_url("footer"))}">Subscribe to Signal</a><a href="https://x.com/{X}" target=_blank rel="noopener me">Follow @{X} on X</a>'
             f'<a href="{root}articles/index.html">Articles</a><a href="{root}tracker.html">Tracker</a><a href="{root}tracker/changes/">Tracker changes</a><a href="{root}launches/">Launches</a><a href="{root}explainers/">Starship explainers</a><a href="{root}journey/">What happens when you hit send</a><a href="{root}satellites/">Meet the satellites</a><a href="{root}check/">Can my phone connect?</a><a href="{root}glossary/">Glossary</a>'
             f'<a href="{root}play/constellation.html">Constellation</a><a href="{root}search.html">Search</a><a href="{root}feed.xml">RSS</a>'
-            f'<a href="{root}about.html">About</a><a href="{root}sponsor.html">Sponsor</a><a href="{root}privacy.html">Privacy</a></nav></div></footer>{bar}')
+            f'<a href="{root}resources/">Resources</a><a href="{root}about.html">About</a><a href="{root}sponsor.html">Sponsor</a><a href="{root}privacy.html">Privacy</a></nav></div></footer>{bar}')
 
 import hashlib
 _AV = {}
@@ -161,7 +161,20 @@ SEO = json.loads((SRC / 'seo.json').read_text())['pages']
 CRUMB = {'tracker.html': [('Tracker', 'tracker.html')], 'tracker/changes/index.html': [('Tracker', 'tracker.html'), ('Change log', 'tracker/changes/')],
          'articles/index.html': [('Articles', 'articles/')], 'about.html': [('About', 'about.html')], 'sponsor.html': [('Sponsor', 'sponsor.html')],
          'privacy.html': [('Privacy', 'privacy.html')], 'search.html': [('Search', 'search.html')], 'check/index.html': [('Phone checker', 'check/')],
-         'glossary/index.html': [('Glossary', 'glossary/')], 'explainers/index.html': [('Launches', 'launches/'), ('Explainers', 'explainers/')], 'play/constellation.html': [('Constellation', 'play/constellation.html')]}
+         'glossary/index.html': [('Glossary', 'glossary/')], 'explainers/index.html': [('Launches', 'launches/'), ('Explainers', 'explainers/')], 'resources/index.html': [('Resources', 'resources/')], 'play/constellation.html': [('Constellation', 'play/constellation.html')]}
+# ---------------------------------------------------------------- outbound links: /resources/ and the "Sources and further reading" boxes (src/resources.json)
+RES = json.loads((SRC / 'resources.json').read_text())
+def ext_link(l, label=None):
+    """Plain text link to another organisation's own page: new tab, no referrer-opener, no logos, no partnership wording."""
+    return f'<a href="{esc(l["url"])}" target=_blank rel="noopener">{esc(label or l["label"])}<span class=sr> (opens in a new tab)</span></a>'
+def sources_box(root, key):
+    """Compact box at the foot of a content page: 3-6 official links plus a pointer to /resources/."""
+    ids = RES['boxes'].get(key)
+    if not ids: return ''
+    li = ''.join(f'<li>{ext_link(RES["links"][i])}</li>' for i in ids)
+    return (f'<aside class=srcbox aria-labelledby=src-h><h2 id=src-h>Sources and further reading</h2><ul>{li}</ul>'
+            f'<p class=src-more>More on the <a href="{root}resources/">Resources page</a>. Independent site, not affiliated with any company listed. Links open in a new tab.</p></aside>')
+
 SEARCH = []
 
 def page(*, path, title, description, body, root='', current='', og_type='website', jsonld=None, head_extra='', scripts='',
@@ -451,6 +464,7 @@ for i, a in enumerate(arts):
             f'<figure class=art-plate><img src="{root}assets/img/article-plate-1280.webp" srcset="{root}assets/img/article-plate-640.webp 640w, {root}assets/img/article-plate-960.webp 960w, {root}assets/img/article-plate-1280.webp 1280w" sizes="(min-width:860px) 820px, 100vw" width="1280" height="512" alt="" decoding="async" fetchpriority="high"></figure>'
             f'<div class=prose>' + insert_mid(a['body'], signal_block(root, 'mid-article', 'mid')) + '</div>'
             f'<div class=share-end><p>Found this useful? Share it, or follow us for daily updates.</p>{share_btn(a["title"], url)}{follow_btn()}</div></article>'
+            + sources_box(root, path)
             + signal_block(root, 'end-article')
             + f'<section class=related aria-labelledby=rel-h><h2 id=rel-h>Keep reading</h2><div class=grid3>{"".join(art_card(b, root) for b in related)}</div></section>')
     ld = [{'@context': 'https://schema.org', '@type': 'NewsArticle', 'headline': a['title'], 'description': a['description'],
@@ -974,6 +988,7 @@ def launches_page():
             f'<p>{C["live"]} live direct-to-cell services in {NLIVE_C} countries, plus {C["trial"]} trials and {C["announced"]} announced. See who’s live, country by country, with sources.</p>'
             f'<p class=row-cta><a class="btn ghost" href="{root}tracker.html">Open the tracker</a><a class="btn ghost" href="{root}articles/why-starship-is-a-telco-story.html">Why Starship is a telco story</a></p></section>'
             + explainers_card(root) + journey_card(root) + sats_card(root)
+            + sources_box(root, 'launches/index.html')
             + signal_block(root, 'launches', heading='Get launch alerts in Signal', intro='Signal is our free weekly direct-to-cell briefing. Subscribe for the launches that matter for your phone and what changed in the tracker, in one email a week.'))
     ld = [crumbs([('Home', ''), ('Launches', 'launches/')]),
           {'@context': 'https://schema.org', '@type': 'Dataset', 'name': 'Full Duplex: phone-capable satellites in orbit by operator', 'description': 'Direct-to-device satellite counts by operator, each with a source and an as-of date, kept separate from broadband-only constellations.',
@@ -1077,6 +1092,7 @@ def flight_page():
             f'<section class="card fl-why" aria-labelledby=sp-h><h2 id=sp-h>Why new satellites spread out</h2>'
             f'<p>Rockets drop a whole batch of satellites in one place. To cover the planet, each satellite needs its own slot, so over the following weeks they use small thrusters to climb to slightly different heights. Lower satellites go round faster than higher ones, so the batch slowly stretches into a line, then a ring.</p>'
             f'<p><strong>Why it matters for your phone:</strong> a satellite only helps your phone when it’s overhead. Until a new batch has spread out and reached its working height, it adds little coverage. That’s why a launch today usually means better gaps-in-signal coverage weeks later, not tonight.</p></section>'
+            + sources_box(root, 'launches/flight/index.html')
             + signal_block(root, 'flight', heading='Get launch alerts in Signal', intro='Signal is our free weekly direct-to-cell briefing: the launches that matter for your phone, in one email a week.'))
     fdata = json.dumps({'l': data, 'p': profs}, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
     body += f'<script type="application/json" id=fl-data>{fdata}</script>'
@@ -1196,6 +1212,7 @@ def satellites_page():
             + scale_html + alt_html + ''.join(cards) + glance
             + f'<p class=l-credit>Checked {human(SATS["checked"])}. Illustrations are drawn by Full Duplex from public descriptions and are not to scale. Where we couldn’t find a reliable figure we say TBC. Watch the next launches on our <a href="{root}launches/">launch tracker</a>.</p>'
             + f'<div class=share-end><p>Know someone who thinks every satellite is the same? Send them this.</p>{share}{follow_btn()}</div>'
+            + sources_box(root, 'satellites/index.html')
             + signal_block(root, 'satellites', heading='Get Signal: the weekly direct-to-cell briefing', intro='One email a week on satellite-to-phone, mobile networks and what it means for you, from a mobile network insider with over 13 years in GSM. Plain English, with sources.'))
     ld = [crumbs([('Home', ''), ('Meet the satellites', 'satellites/')]),
           {'@context': 'https://schema.org', '@type': 'Article', 'headline': 'Meet the satellites', 'description': 'What Starlink Direct to Cell, AST SpaceMobile BlueBird, Amazon Leo, Lynk and Globalstar satellites look like, how high they fly and how they reach an ordinary phone.',
@@ -1237,15 +1254,40 @@ def explainers_page():
             f'<p>Cheaper, bigger launches change how many satellites can be put up, and that includes the satellites that talk straight to ordinary phones.</p>'
             f'<p class=row-cta><a class="btn ghost" href="{root}articles/why-starship-is-a-telco-story.html">Read the analysis</a><a class="btn ghost" href="{root}launches/flight/">Open the flight view</a><a class="btn ghost" href="{root}launches/">Upcoming launches</a></p></section>'
             f'<p class=l-credit>The animations use illustrative physics (simple models with round-number inputs), not flight telemetry. Mission times and facts: {srcs}. Videos have captions burned in, so they work with the sound off.</p>'
+            + sources_box(root, 'explainers/index.html')
             + signal_block(root, 'explainers', heading='Get launch alerts in Signal', intro='Signal is our free weekly direct-to-cell briefing: the launches that matter for your phone, explained simply, in one email a week.'))
     page(og=('Explainers', 'Starship explained in 30 seconds', [('Hot staging', OGC['cyan']), ('Satellite release', OGC['live']), ('Tower catch', OGC['trial'])]),
          path='explainers/index.html', title='Starship explained in 30 seconds', full_title='Starship explainers: launch, deploy and catch | Full Duplex',
          description='Three 30-second Starship explainers from Flight 15: hot staging, how 26 Starlink satellites leave the ship, and the first tower catch from orbit.',
          body=body, root=root, current='explainers/index.html', jsonld=ld_v, cls='is-explainers', lastmod=EXPL['updated'],
          scripts=f'<script defer src="{root}assets/share.js"></script>')
+
+# ---------------------------------------------------------------- /resources/ (src/resources.json)
+def resources_page():
+    root = '../'
+    secs, ld_items = '', []
+    for s in RES['sections']:
+        li = ''.join(f'<li>{ext_link(RES["links"][i])}<span class=res-why>{esc(RES["links"][i]["why"])}</span></li>' for i in s['items'])
+        secs += (f'<section class=res-sec id={s["id"]} aria-labelledby={s["id"]}-h><h2 id={s["id"]}-h>{esc(s["title"])}</h2><p class=res-intro>{s["intro"].replace("{root}", root)}</p><ul class=res-list>{li}</ul></section>')
+        ld_items += [{'@type': 'ListItem', 'position': len(ld_items) + 1, 'name': RES['links'][i]['label'], 'url': RES['links'][i]['url']} for i in s['items']]
+    jump = ''.join(f'<li><a href="#{s["id"]}">{esc(s["title"])}</a></li>' for s in RES['sections'])
+    body = (f'<header class=page-head><p class=kicker>Resources</p><h1>Sources and further reading</h1>'
+            f'<p class=lede>The official pages, regulators, standards and data sets we use when we write about satellite-to-phone, launches and mobile networks. One line on why each is worth your time.</p>'
+            f'<p class=res-disc><strong>Independent site, not affiliated with any company listed.</strong> {esc(RES["disclaimer"])}</p>'
+            f'<ul class=res-jump aria-label="Jump to a section">{jump}</ul></header>'
+            f'{secs}'
+            f'<p class=l-credit>Links last checked {human(RES["checked"])}. Pages change and some sites block automated checks, so if a link has moved, <a href="https://x.com/{X}" target=_blank rel="noopener me">tell us on X</a>. Our own data and sources are on the <a href="{root}tracker.html">tracker</a>, the <a href="{root}launches/">launch tracker</a> and <a href="{root}satellites/">Meet the satellites</a>.</p>'
+            + signal_block(root, 'resources', heading='Get Signal: the weekly direct-to-cell briefing', intro='One email a week on satellite-to-phone, mobile networks and what it means for you, from a mobile network insider with over 13 years in GSM. Plain English, with sources.'))
+    ld = [{'@context': 'https://schema.org', '@type': 'CollectionPage', 'name': 'Sources and further reading', 'url': BASE + 'resources/', 'publisher': PUBLISHER, 'inLanguage': 'en-GB',
+           'mainEntity': {'@type': 'ItemList', 'itemListElement': ld_items}}]
+    page(og=('Resources', 'Sources and further reading', [('Launches', OGC['cyan']), ('Satellites', OGC['live']), ('Regulators', OGC['trial'])]),
+         path='resources/index.html', title='Sources and further reading', full_title='Satellite, carrier and regulator links | Full Duplex',
+         description='Official sites, regulators, standards and data sets for satellite-to-phone, launches and mobile networks, each with a line on why it is useful.',
+         body=body, root=root, current='', jsonld=ld, cls='is-resources', lastmod=RES['checked'])
 launches_page()
 flight_page()
 explainers_page()
+resources_page()
 journey_page()
 satellites_page()
 
