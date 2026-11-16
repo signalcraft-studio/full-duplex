@@ -33,13 +33,25 @@ jobs:
       - run: python3 scripts/fetch_gp.py
         continue-on-error: true
       - run: python3 scripts/build.py
+      # Share cards for "Post to X" (share/<slug>/card.jpg): headless Chromium screenshots of the real globe/infographic.
+      # Only when a card is missing or its launch details changed, so most runs skip the ~1 min browser install.
+      # A render failure never blocks the launch refresh; the share pages fall back to the page's normal card.
+      - name: Render share cards if needed
+        continue-on-error: true
+        run: |
+          if python3 scripts/render_share.py --pending; then
+            pip install playwright
+            python -m playwright install --with-deps chromium
+            python3 scripts/render_share.py
+            python3 scripts/build.py
+          fi
       - name: Commit if changed
         run: |
           git config user.name "Full Duplex bot"
           git config user.email "actions@users.noreply.github.com"
           # Only stage launch-derived outputs. Never tracker rows, satellite
           # counts, race data or manual Direct to Cell tags.
-          git add data/launches.json data/gp-recent.json index.html launches/ sitemap.xml
+          git add data/launches.json data/gp-recent.json index.html launches/ sitemap.xml share/
           if git diff --cached --name-only | grep -E '^(data/(constellations|race|launch-tags)\.json|tracker\.html|tracker/)'; then
             echo "Refusing to commit protected tracker or constellation files"
             git diff --cached --name-only
