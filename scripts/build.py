@@ -843,7 +843,9 @@ def count_rows(items, root):
         plan = f'<p class=cplan><strong>Plan:</strong> {esc(i["planned"]["text"])}. <a href="{esc(i["planned"]["source"]["url"])}">Source</a></p>' if i.get('planned') else ''
         out.append(f'<li class="crow f-{i["filter"]}"><div class=chead><div><h3>{esc(i["network"])}</h3><p class=cop>{esc(i["operator"])}</p></div>'
                    f'<p class=cnum><b{" class=nd" if n is None else ""}>{num}</b><span>{esc(i["count_label"])}</span></p></div>{bar}'
-                   f'<p class=cnote>{esc(i["note"])}</p>{plan}<p class=csrc>As of <time datetime="{i["as_of"]}">{human(i["as_of"])}</time> · Source: {src}</p></li>')
+                   f'<p class=cnote>{esc(i["note"])}</p>'
+                   + (f'<p class=cnote>{esc(i["count_note"])}</p>' if i.get("count_note") else '')
+                   + f'{plan}<p class=csrc>As of <time datetime="{i["as_of"]}">{human(i["as_of"])}</time> · Source: {src}</p></li>')
     return '<ul class=counts>' + ''.join(out) + '</ul>'
 
 def glance(root):
@@ -1162,7 +1164,8 @@ def satellites_page():
         ci = const_item(f['count_id'])
         if ci and ci['count'] is not None:
             cnt = (f'<p class=sc-count><b>{ci["count"]:,}</b><span>{esc(ci["count_label"])} · as of <time datetime="{ci["as_of"]}">{human(ci["as_of"])}</time> · '
-                   f'Source: <a href="{esc(ci["source"]["url"])}">{esc(ci["source"]["label"])}</a></span></p>')
+                   f'Source: <a href="{esc(ci["source"]["url"])}">{esc(ci["source"]["label"])}</a></span>'
+                   + (f'<span class=sc-cnote>{esc(ci["count_note"])}</span>' if ci.get("count_note") else '') + '</p>')
             cnt_s = f'{ci["count"]:,} ({human(ci["as_of"], False)})'
         else:
             cnt = '<p class=sc-count><b>TBC</b><span>No sourced count yet</span></p>'; cnt_s = 'TBC'

@@ -133,7 +133,7 @@
    "short": "Amazon Leo",
    "count": 392,
    "count_label": "satellites in orbit and working",
-   "as_of": "2026-11-09",
+   "as_of": "2026-11-16",
    "source": {
     "label": "Jonathan McDowell, Amazon Leo (Kuiper) statistics",
     "url": "https://planet4589.org/space/con/kp/stats.html"
@@ -145,7 +145,8 @@
      "label": "SatNews, 3 Nov 2026",
      "url": "https://satnews.com/2026/11/03/amazon-navigates-launch-delays-with-under-400-satellites-in-orbit-ahead-of-nov-13-vulcan-return/"
     }
-   ]
+   ],
+   "count_note": "40 more lost when Vulcan LV-01 failed to reach orbit on 15 Nov 2026."
   }
  ]
 }

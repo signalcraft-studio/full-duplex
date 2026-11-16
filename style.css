@@ -576,6 +576,7 @@ footer.site .logo .mark{width:40px;height:40px}
 .sc-count b{font-family:var(--f-head);font-size:2rem;line-height:1;color:var(--c)}
 .sc-count span{color:var(--muted);font-size:.84rem}
 .sc-count a{color:var(--muted)}
+.sc-cnote{flex-basis:100%;margin:.2rem 0 0;color:var(--muted);font-size:.84rem;max-width:70ch}
 .sc-facts{margin:0}
 .sc-facts div{display:grid;gap:.15rem 1rem;padding:.6rem 0;border-top:1px solid var(--line)}
 @media (min-width:600px){.sc-facts div{grid-template-columns:10.5rem 1fr}}
