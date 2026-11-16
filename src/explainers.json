@@ -1,0 +1,32 @@
+{
+ "_note": "30-second Starship explainer videos for /explainers/ (built by explainers_page() in scripts/build.py). Videos and posters live in assets/explainers/. Illustrative physics; mission times and facts are sourced below.",
+ "updated": "2026-11-16",
+ "videos": [
+  {"id": "hot-staging", "title": "Hot staging: how Starship splits in two",
+   "kicker": "Launch · Flight 15 · 13 Nov 2026",
+   "intro": "About two and a half minutes after liftoff, Super Heavy shuts down most of its engines and the ship lights its own while the two are still joined. Then they part, and the booster flips round to fly home. The chart shows why a rocket keeps speeding up as it burns off weight, using the rocket equation.",
+   "facts": "Flight 15 timings from SpaceX: max-Q at T+0:58, main engine cut-off at T+2:19, hot staging at T+2:21, boostback burn from T+2:26.",
+   "phone": "A booster that flies home can fly again, which is what makes launches cheaper.",
+   "share": "Hot staging in 30 seconds: Starship’s upper stage lights its engines while still attached to the booster, then the booster flips and flies home. The maths, simply:",
+   "alt": "Animated explainer of Starship hot staging with a velocity chart"},
+  {"id": "satellite-deploy", "title": "How Starship releases 26 Starlink satellites",
+   "kicker": "In orbit · Flight 15 · T+35 min",
+   "intro": "Starship lets its satellites out one at a time through a slot in its side, like a sweets dispenser. On Flight 15 all 26 Starlink V3 satellites left between T+35:01 and T+1:17:40, about one every 102 seconds, from an orbit about 277 km up. Each satellite then climbs to its working orbit on its own thrusters.",
+   "facts": "V3 satellites serve Starlink dishes, not phones. Phone service runs on separate direct-to-cell satellites.",
+   "phone": "Bigger batches per launch make space networks cheaper to build, including the next-generation satellites built for phones.",
+   "share": "26 satellites, one door, one at a time: how Starship let out its 26 Starlink V3 satellites on Flight 15, in 30 seconds with the maths:",
+   "alt": "Animated explainer of Starship releasing Starlink satellites with a separation chart"},
+  {"id": "tower-catch", "title": "Catching a Starship back from orbit",
+   "kicker": "Landing · Flight 15 · 14 Nov 2026",
+   "intro": "After about 14 orbits and 22.5 hours in space, Ship 42 fell back to Starbase sideways, flipped upright, fired its engines to brake and was caught by the tower’s arms. No Starship had been caught coming back from orbit before. The chart shows how the speed at the flip sets how hard the engines have to brake.",
+   "facts": "Ship 42 was caught at T+22:32 on 14 Nov 2026. The Super Heavy booster called off its own catch and was lost in the Gulf of Mexico.",
+   "phone": "Reusable rockets mean cheaper launches, and more satellites that can talk to phones.",
+   "share": "No Starship had ever been caught coming back from orbit. Until Ship 42. The physics of the flip, the landing burn and the catch, in 30 seconds:",
+   "alt": "Animated explainer of Starship Ship 42 being caught by the tower arms, with a height chart"}
+ ],
+ "sources": [
+  {"label": "Wikipedia: Starship flight 15 (SpaceX timeline)", "url": "https://en.wikipedia.org/wiki/Starship_flight_15"},
+  {"label": "Converge Digest", "url": "https://convergedigest.com/starship-flight-15-starlink-v3-satellites-orbital-catch/"},
+  {"label": "TeslaNorth", "url": "https://teslanorth.com/2026/11/13/spacex-starship-flight-15-starlink-deployment/"}
+ ]
+}
