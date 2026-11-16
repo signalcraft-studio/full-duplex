@@ -177,6 +177,15 @@ def sources_box(root, key):
 
 SEARCH = []
 
+def blank_external(h):
+    """Every link to another site opens in a new tab with rel=noopener (approved by Sam, 16 Nov 2026). Links to this site and links that already set a target are left alone."""
+    def fix(m):
+        tag = m[0]
+        if re.search(r'\starget=', tag) or BASE.rstrip('/') in m[1] or 'beehiiv.com' in m[1]: return tag
+        tag = re.sub(r'\srel=("[^"]*"|\S+)', lambda r: ' rel="' + ' '.join(dict.fromkeys(r[1].strip('"').split() + ['noopener'])) + '"', tag) if re.search(r'\srel=', tag) else tag[:-1] + ' rel="noopener">'
+        return tag[:-1] + ' target=_blank>'
+    return re.sub(r'<a\s[^>]*?href="(https?://[^"]+)"[^>]*>', fix, h)
+
 def page(*, path, title, description, body, root='', current='', og_type='website', jsonld=None, head_extra='', scripts='',
          viewport='width=device-width,initial-scale=1', sticky=True, full_title=None, lastmod=None, search=True, cls='', index=True, search_text=None, og=None, gloss=False):
     url = BASE + (path[:-len('index.html')] if path.endswith('index.html') else path)
@@ -218,6 +227,7 @@ def page(*, path, title, description, body, root='', current='', og_type='websit
             f'{head_extra}{ld}</head><body{" class=" + cls if cls else ""}>')
     out = (head + header(root, current) + f'<main id=main>{body}</main>' + footer(root, sticky)
            + f'<script src="{root}assets/site.js" defer></script>{scripts}</body></html>\n')
+    out = blank_external(out)
     out = re.sub(r'((?:href|src)="((?:\.\./)*)(style\.css|assets/[\w.-]+\.js))"', lambda m: f'{m[1]}?v={asset_v(m[3])}"', out)
     (ROOT / path).parent.mkdir(parents=True, exist_ok=True)
     (ROOT / path).write_text(out)
