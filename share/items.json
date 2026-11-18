@@ -3,12 +3,12 @@
  "items": [
   {
    "slug": "l-ariane-64-block-2-amazon-leo-le-04",
-   "key": "b49cddab1e",
+   "key": "50c60a72a8",
    "kind": "flight",
    "page": "launches/flight/?l=ariane-64-block-2-amazon-leo-le-04&nowelcome",
    "sel": "#fl-hud",
    "layout": "wide",
-   "kicker": "Launch · 23 Nov",
+   "kicker": "Launch · Mon 23 Nov",
    "title": "Amazon Leo (LE-04)",
    "sub": "Ariane 64 Block 2",
    "tag": "amazon-leo"
