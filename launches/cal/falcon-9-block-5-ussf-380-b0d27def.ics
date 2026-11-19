@@ -1,0 +1,19 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Full Duplex//Launch tracker//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:b0d27def-0a88-44c3-a947-1fd5b8503e2c@fullduplex
+DTSTAMP:20261119T073332Z
+DTSTART:20261128T045300Z
+DTEND:20261128T085300Z
+SUMMARY:Launch: USSF-380 (Falcon 9 Block 5)
+DESCRIPTION:Falcon 9 Block 5 from Space Launch Complex 4E\, Vandenberg SFB
+ \, CA\, USA. Other: Not a phone-satellite launch. Listed so you can see e
+ verything SpaceX and its rivals are flying. Launch times move: check http
+ s://signalcraft-studio.github.io/full-duplex/launches/ before you watch.
+LOCATION:Space Launch Complex 4E\, Vandenberg SFB\, CA\, USA
+URL:https://signalcraft-studio.github.io/full-duplex/launches/
+END:VEVENT
+END:VCALENDAR

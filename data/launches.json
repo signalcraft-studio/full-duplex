@@ -1,15 +1,15 @@
 {
- "fetched_at": "2026-11-16T22:13:20Z",
+ "fetched_at": "2026-11-19T07:33:32Z",
  "source": "The Space Devs Launch Library 2 (https://ll.thespacedevs.com/2.3.0/launches/upcoming/)",
  "launches": [
   {
    "id": "76617033-4dc0-4448-b50c-e5b0d5a18539",
    "slug": "falcon-9-block-5-ussf-317",
    "name": "Falcon 9 Block 5 | USSF-317",
-   "net": "2026-11-19T03:00:00Z",
-   "window_start": "2026-11-19T03:00:00Z",
-   "window_end": "2026-11-19T07:00:00Z",
-   "precision": "Minute",
+   "net": "2026-11-20T04:28:55Z",
+   "window_start": "2026-11-20T02:46:00Z",
+   "window_end": "2026-11-20T06:46:00Z",
+   "precision": "Second",
    "status": "Go for Launch",
    "status_abbrev": "Go",
    "provider": "SpaceX",
@@ -26,7 +26,7 @@
    "pad_lat": 34.632,
    "pad_lon": -120.611,
    "webcast_live": false,
-   "last_updated": "2026-11-16T16:32:59Z",
+   "last_updated": "2026-11-19T05:08:14Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/76617033-4dc0-4448-b50c-e5b0d5a18539/",
    "queries": [
     "spacex"
@@ -66,12 +66,12 @@
    "id": "7bdc412b-c965-4517-a131-f57a01189803",
    "slug": "ariane-64-block-2-amazon-leo-le-04",
    "name": "Ariane 64 Block 2 | Amazon Leo (LE-04)",
-   "net": "2026-11-23T00:00:00Z",
-   "window_start": "2026-11-23T00:00:00Z",
-   "window_end": "2026-11-23T00:00:00Z",
-   "precision": "Day",
-   "status": "To Be Determined",
-   "status_abbrev": "TBD",
+   "net": "2026-11-23T11:09:00Z",
+   "window_start": "2026-11-23T11:09:00Z",
+   "window_end": "2026-11-23T11:38:00Z",
+   "precision": "Minute",
+   "status": "Go for Launch",
+   "status_abbrev": "Go",
    "provider": "Arianespace",
    "rocket": "Ariane 64 Block 2",
    "mission": "Amazon Leo (LE-04)",
@@ -86,7 +86,7 @@
    "pad_lat": 5.256319,
    "pad_lon": -52.786838,
    "webcast_live": false,
-   "last_updated": "2026-10-15T05:35:18Z",
+   "last_updated": "2026-11-18T13:41:03Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/7bdc412b-c965-4517-a131-f57a01189803/",
    "queries": [
     "amazon-leo"
@@ -118,6 +118,36 @@
    "webcast_live": false,
    "last_updated": "2026-11-13T17:46:32Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/460d9db7-eaf6-4cd9-b095-cff433534c09/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "b0d27def-0a88-44c3-a947-1fd5b8503e2c",
+   "slug": "falcon-9-block-5-ussf-380",
+   "name": "Falcon 9 Block 5 | USSF-380",
+   "net": "2026-11-28T04:53:00Z",
+   "window_start": "2026-11-28T04:53:00Z",
+   "window_end": "2026-11-28T08:53:00Z",
+   "precision": "Minute",
+   "status": "Go for Launch",
+   "status_abbrev": "Go",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "USSF-380",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "A classified mission for the United States Space Force. It is possibly a batch of classified LEO satellites based on SpaceX’s Starshield satellite bus, based on locations of rocket stage drop zones being exact fits with previous Starlink Group 15 launches.",
+   "orbit": "LEO",
+   "mission_agencies": [
+    "United States Space Force"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "pad_lat": 34.632,
+   "pad_lon": -120.611,
+   "webcast_live": false,
+   "last_updated": "2026-11-18T19:03:08Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/b0d27def-0a88-44c3-a947-1fd5b8503e2c/",
    "queries": [
     "spacex"
    ]
