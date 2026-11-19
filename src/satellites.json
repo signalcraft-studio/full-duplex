@@ -129,6 +129,10 @@
   "fd-tracker": [
    "Full Duplex tracker",
    "../tracker.html"
+  ],
+  "gs-10q": [
+   "Globalstar Form 10-Q, 5 Nov 2026 (SEC filing)",
+   "https://www.sec.gov/Archives/edgar/data/1366868/000136686826000046/gsat-20260930.htm"
   ]
  },
  "families": [
@@ -522,8 +526,9 @@
     }
    ],
    "next": {
-    "v": "Nine more MDA-built replacement satellites are due on the next Globalstar launch (in our launch list). After that comes C-3, a new 48-satellite system (plus 6 spares) at 1,414 km built for phones. Launches start in 2027.",
+    "v": "Nine more MDA-built replacement satellites are scheduled to launch in December 2026, according to Globalstar’s filing. After that comes C-3, a new 48-satellite system (plus 6 spares) at 1,414 km built for phones. Launches start in 2027.",
     "s": [
+     "gs-10q",
      "mda-2r",
      "gs-fr-c3"
     ]
