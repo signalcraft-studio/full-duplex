@@ -1,12 +1,12 @@
 {
- "fetched_at": "2026-11-19T07:33:32Z",
+ "fetched_at": "2026-11-19T20:43:41Z",
  "source": "The Space Devs Launch Library 2 (https://ll.thespacedevs.com/2.3.0/launches/upcoming/)",
  "launches": [
   {
    "id": "76617033-4dc0-4448-b50c-e5b0d5a18539",
    "slug": "falcon-9-block-5-ussf-317",
    "name": "Falcon 9 Block 5 | USSF-317",
-   "net": "2026-11-20T04:28:55Z",
+   "net": "2026-11-20T04:32:55Z",
    "window_start": "2026-11-20T02:46:00Z",
    "window_end": "2026-11-20T06:46:00Z",
    "precision": "Second",
@@ -26,7 +26,7 @@
    "pad_lat": 34.632,
    "pad_lon": -120.611,
    "webcast_live": false,
-   "last_updated": "2026-11-19T05:08:14Z",
+   "last_updated": "2026-11-19T18:30:33Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/76617033-4dc0-4448-b50c-e5b0d5a18539/",
    "queries": [
     "spacex"
@@ -174,7 +174,7 @@
    "pad_lat": 28.56194122,
    "pad_lon": -80.57735736,
    "webcast_live": false,
-   "last_updated": "2026-11-13T12:35:58Z",
+   "last_updated": "2026-11-19T12:34:08Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/d74afbc7-0de5-491c-be05-4e9c31f736ac/",
    "queries": [
     "spacex"
