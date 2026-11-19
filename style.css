@@ -867,3 +867,13 @@ header.site nav{gap:.2rem 1rem}
 .srcbox li a:hover{border-color:var(--cyan);color:var(--cyan-2)}
 .src-more{margin:.8rem 0 0;font-size:.85rem;color:var(--dim)}
 .is-article .srcbox{max-width:var(--measure);margin-left:auto;margin-right:auto}
+
+/* Satellite explainer videos (/explainers/) and "Watch it unfold" buttons on the satellites page (19 Nov 2026) */
+.xsat{margin:2.6rem 0 2.4rem}
+.xsat>h2{margin:.2rem 0 .6rem}
+.xsat .xlist{margin-top:1.4rem}
+.xv-src{color:var(--dim);font-size:.82rem;line-height:1.5}
+.xv-src a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+.xv-src a:hover{color:var(--cyan-2)}
+.xv .row-cta{margin:1rem 0 0}
+.sc-watch{margin:1rem 0 0}

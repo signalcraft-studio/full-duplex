@@ -1,32 +1,141 @@
 {
  "_note": "30-second Starship explainer videos for /explainers/ (built by explainers_page() in scripts/build.py). Videos and posters live in assets/explainers/. Illustrative physics; mission times and facts are sourced below.",
- "updated": "2026-11-16",
+ "updated": "2026-11-19",
  "videos": [
-  {"id": "hot-staging", "title": "Hot staging: how Starship splits in two",
+  {
+   "id": "hot-staging",
+   "title": "Hot staging: how Starship splits in two",
    "kicker": "Launch · Flight 15 · 13 Nov 2026",
    "intro": "About two and a half minutes after liftoff, Super Heavy shuts down most of its engines and the ship lights its own while the two are still joined. Then they part, and the booster flips round to fly home. The chart shows why a rocket keeps speeding up as it burns off weight, using the rocket equation.",
    "facts": "Flight 15 timings from SpaceX: max-Q at T+0:58, main engine cut-off at T+2:19, hot staging at T+2:21, boostback burn from T+2:26.",
    "phone": "A booster that flies home can fly again, which is what makes launches cheaper.",
    "share": "Hot staging in 30 seconds: Starship’s upper stage lights its engines while still attached to the booster, then the booster flips and flies home. The maths, simply:",
-   "alt": "Animated explainer of Starship hot staging with a velocity chart"},
-  {"id": "satellite-deploy", "title": "How Starship releases 26 Starlink satellites",
+   "alt": "Animated explainer of Starship hot staging with a velocity chart"
+  },
+  {
+   "id": "satellite-deploy",
+   "title": "How Starship releases 26 Starlink satellites",
    "kicker": "In orbit · Flight 15 · T+35 min",
    "intro": "Starship lets its satellites out one at a time through a slot in its side, like a sweets dispenser. On Flight 15 all 26 Starlink V3 satellites left between T+35:01 and T+1:17:40, about one every 102 seconds, from an orbit about 277 km up. Each satellite then climbs to its working orbit on its own thrusters.",
    "facts": "V3 satellites serve Starlink dishes, not phones. Phone service runs on separate direct-to-cell satellites.",
    "phone": "Bigger batches per launch make space networks cheaper to build, including the next-generation satellites built for phones.",
    "share": "26 satellites, one door, one at a time: how Starship let out its 26 Starlink V3 satellites on Flight 15, in 30 seconds with the maths:",
-   "alt": "Animated explainer of Starship releasing Starlink satellites with a separation chart"},
-  {"id": "tower-catch", "title": "Catching a Starship back from orbit",
+   "alt": "Animated explainer of Starship releasing Starlink satellites with a separation chart"
+  },
+  {
+   "id": "tower-catch",
+   "title": "Catching a Starship back from orbit",
    "kicker": "Landing · Flight 15 · 14 Nov 2026",
    "intro": "After about 14 orbits and 22.5 hours in space, Ship 42 fell back to Starbase sideways, flipped upright, fired its engines to brake and was caught by the tower’s arms. No Starship had been caught coming back from orbit before. The chart shows how the speed at the flip sets how hard the engines have to brake.",
    "facts": "Ship 42 was caught at T+22:32 on 14 Nov 2026. The Super Heavy booster called off its own catch and was lost in the Gulf of Mexico.",
    "phone": "Reusable rockets mean cheaper launches, and more satellites that can talk to phones.",
    "share": "No Starship had ever been caught coming back from orbit. Until Ship 42. The physics of the flip, the landing burn and the catch, in 30 seconds:",
-   "alt": "Animated explainer of Starship Ship 42 being caught by the tower arms, with a height chart"}
+   "alt": "Animated explainer of Starship Ship 42 being caught by the tower arms, with a height chart"
+  }
  ],
  "sources": [
-  {"label": "Wikipedia: Starship flight 15 (SpaceX timeline)", "url": "https://en.wikipedia.org/wiki/Starship_flight_15"},
-  {"label": "Converge Digest", "url": "https://convergedigest.com/starship-flight-15-starlink-v3-satellites-orbital-catch/"},
-  {"label": "TeslaNorth", "url": "https://teslanorth.com/2026/11/13/spacex-starship-flight-15-starlink-deployment/"}
+  {
+   "label": "Wikipedia: Starship flight 15 (SpaceX timeline)",
+   "url": "https://en.wikipedia.org/wiki/Starship_flight_15"
+  },
+  {
+   "label": "Converge Digest",
+   "url": "https://convergedigest.com/starship-flight-15-starlink-v3-satellites-orbital-catch/"
+  },
+  {
+   "label": "TeslaNorth",
+   "url": "https://teslanorth.com/2026/11/13/spacex-starship-flight-15-starlink-deployment/"
+  }
+ ],
+ "sat_videos": [
+  {
+   "id": "watch-starlink-dtc",
+   "file": "sat-starlink-dtc",
+   "sat": "starlink-dtc",
+   "kicker": "Satellite · SpaceX",
+   "title": "Starlink Direct to Cell: a phone mast, in orbit",
+   "intro": "A Starlink V2 Mini carries a large phased-array antenna, about 2.7 m × 2.3 m, that works like a mobile mast in space. It talks to ordinary 4G phones on partner networks, and passes your text along the Starlink constellation by laser.",
+   "alt": "Animated, stylised 3D model of a Starlink Direct to Cell satellite unfolding its antenna",
+   "sources": [
+    [
+     "SpaceX updates, Jan 2024",
+     "https://www.spacex.com/updates/"
+    ],
+    [
+     "Via Satellite, 10 Jan 2024",
+     "https://www.satellitetoday.com/connectivity/2024/01/10/spacex-sends-its-text-messages-via-direct-to-cell-starlink-satellites/"
+    ],
+    [
+     "Ars Technica, 11 Jan 2024",
+     "https://arstechnica.com/tech-policy/2024/01/starlink-shows-off-first-texts-to-t-mobile-phones-sent-via-spacex-satellite/"
+    ]
+   ]
+  },
+  {
+   "id": "watch-bluebird",
+   "file": "sat-bluebird",
+   "sat": "bluebird",
+   "kicker": "Satellite · AST SpaceMobile",
+   "title": "AST BlueBird: a giant antenna that unfolds in orbit",
+   "intro": "A Block 2 BlueBird unfolds a phased-array antenna of nearly 2,400 sq ft, about three times the size of the first BlueBirds. A big array helps it hear the small antenna in an ordinary phone, and it steers its beams electronically.",
+   "alt": "Animated, stylised 3D model of an AST SpaceMobile BlueBird unfolding its giant antenna",
+   "sources": [
+    [
+     "AST SpaceMobile release, 24 Dec 2025",
+     "https://www.businesswire.com/news/home/20251222922862/en/AST-SpaceMobile-Announces-Successful-Orbital-Launch-of-BlueBird-6-the-Largest-Commercial-Communications-Array-Ever-Deployed-in-Low-Earth-Orbit"
+    ],
+    [
+     "KeepTrack: BlueBirds deep dive",
+     "https://keeptrack.space/deep-dive/ast-spacemobile-bluebirds"
+    ]
+   ]
+  },
+  {
+   "id": "watch-lynk",
+   "file": "sat-lynk",
+   "sat": "lynk",
+   "kicker": "Satellite · Elveo Mobile (Lynk + Omnispace)",
+   "title": "Lynk, now Elveo Mobile: texts, straight from orbit",
+   "intro": "Lynk’s small satellites act like a cell tower in space, linking to ordinary phones through your own mobile network. Lynk merged with Omnispace in August 2026 and now trades as Elveo Mobile. Elveo plans 320 satellites and targets commercial service in early 2028: a plan, not a live service.",
+   "alt": "Animated, stylised 3D model of a Lynk satellite acting as a cell tower in space",
+   "sources": [
+    [
+     "Light Reading, 17 Aug 2026",
+     "https://www.lightreading.com/satellite/lynk-and-omnispace-merger-creates-d2d-challenger-elveo-mobile"
+    ],
+    [
+     "Lynk, 12 Mar 2024",
+     "https://www.businesswire.com/news/home/20240312390349/en/Lynk-Successfully-Deploys-Two-More-Orbital-Cell-Phone-Towers-in-Space"
+    ]
+   ]
+  },
+  {
+   "id": "watch-globalstar",
+   "file": "sat-globalstar",
+   "sat": "globalstar",
+   "kicker": "Satellite · Globalstar",
+   "title": "Globalstar: where does your iPhone’s SOS go?",
+   "intro": "An iPhone Emergency SOS goes up to a Globalstar satellite, down to a ground station, then on to emergency services or a relay team. Replacement satellites are being added, and a 48-satellite next generation (C-3) is planned, with launches expected in 2027. Amazon has agreed to buy Globalstar; the FCC approved the transfer on 27 Oct 2026, and the deal has not closed (closing is expected in 2027).",
+   "status": "Replacement satellites: 8 of 17 launched on 15 Aug 2026; MDA said on 10 Nov that all 8 passed initial tests and 2 had begun orbit-raising. Checked 19 Nov 2026.",
+   "alt": "Animated, stylised 3D model of a Globalstar satellite relaying an iPhone SOS to a ground station",
+   "sources": [
+    [
+     "MDA Space, 10 Nov 2026",
+     "https://mda.space/article/mda-space-and-globalstar-complete-initial-on-orbit-functional-tests-for-globalstar2-r-mission"
+    ],
+    [
+     "Via Satellite, 11 Nov 2026",
+     "https://www.satellitetoday.com/manufacturing/2026/11/11/8-globalstar-refresh-satellites-complete-initial-tests-in-orbit/"
+    ],
+    [
+     "FCC, 27 Oct 2026",
+     "https://docs.fcc.gov/public/attachments/DOC-426214A1.pdf"
+    ],
+    [
+     "Globalstar, 19 Oct 2026",
+     "https://investors.globalstar.com/news-releases/news-release-details/fcc-authorizes-globalstars-third-generation-c-3-system/"
+    ]
+   ]
+  }
  ]
 }

@@ -1206,10 +1206,12 @@ def satellites_page():
         facts = ''.join(f'<div><dt>{esc(x["k"])}</dt><dd>{esc(x["v"])} {src(x["s"])}</dd></div>' for x in f['facts'])
         nxt = f'<p class=sc-next><strong>What’s next:</strong> {esc(f["next"]["v"])} {src(f["next"]["s"])}</p>'
         badge = f'<span class="sc-badge{"" if f["phone"] else " no"}">{esc(f["badge"])}</span>'
+        wv = next((v for v in EXPL['sat_videos'] if v['sat'] == f['id']), None)
+        watch = (f'<p class=sc-watch><a class="btn ghost sm" href="{root}explainers/#{wv["id"]}">Watch it unfold<span class=sr>: 30-second video of {esc(f["short"])}</span></a></p>' if wv else '')
         cards.append(f'<article class=satcard id="{f["id"]}" style="--c:{f["color"]}" aria-labelledby="h-{f["id"]}">'
                      f'<figure class=sc-art>{satviz.scene(f["anim"], "card")}<figcaption>Illustration drawn by Full Duplex from public descriptions. Not to scale.</figcaption></figure>'
                      f'<div class=sc-body><p class=kicker>{esc(f["operator"])}</p>{badge}<h2 id="h-{f["id"]}">{esc(f["name"])}</h2><p class=sc-lede>{esc(f["lede"])}</p>'
-                     f'{cnt}<dl class=sc-facts>{facts}</dl>{nxt}{share_bar(sat_share(f, ci), root, f["name"])}</div></article>')
+                     f'{cnt}<dl class=sc-facts>{facts}</dl>{nxt}{watch}{share_bar(sat_share(f, ci), root, f["name"])}</div></article>')
         rows.append(f'<tr><th scope=row><a href="#{f["id"]}">{esc(f["short"])}</a></th><td data-l="Ordinary phones?">{"Yes" if f["phone"] else "No, dishes only"}</td><td data-l="Frequencies">{esc(f["glance"]["spec"])}</td><td data-l="Today">{esc(f["glance"]["today"])}</td><td data-l="In orbit">{cnt_s}</td></tr>')
     glance = ('<section class=sat-info aria-labelledby=gl-h><p class=kicker>At a glance</p><h2 id=gl-h>Which is which</h2><div class=tablewrap><table class=sat-table>'
               '<thead><tr><th scope=col>Satellite</th><th scope=col>Talks to ordinary phones?</th><th scope=col>Whose frequencies</th><th scope=col>What works today</th><th scope=col>In orbit</th></tr></thead>'
@@ -1255,11 +1257,26 @@ def explainers_page():
                  + share_bar(sh, root, v['title']) + '</div></article>')
         ld_v.append({'@context': 'https://schema.org', '@type': 'VideoObject', 'name': v['title'], 'description': v['intro'], 'thumbnailUrl': BASE + poster,
                      'contentUrl': BASE + mp4, 'uploadDate': EXPL['updated'] + 'T12:00:00+00:00', 'duration': 'PT30S', 'publisher': PUBLISHER, 'inLanguage': 'en-GB'})
+    sat_figs = ''
+    for v in EXPL['sat_videos']:
+        vid, mp4, poster = v['id'], f'assets/explainers/{v["file"]}.mp4', f'assets/explainers/{v["file"]}.jpg'
+        vsrc = ' · '.join(f'<a href="{esc(u)}">{esc(l)}</a>' for l, u in v['sources'])
+        stat = f'<p class=xv-facts>{esc(v["status"])}</p>' if v.get('status') else ''
+        sat_figs += (f'<article class=xv id={vid} aria-labelledby={vid}-h><div class=xv-media><video controls playsinline preload="none" width=864 height=1080 poster="{expl_file(poster, root)}" aria-label="{esc(v["alt"])}" aria-describedby={vid}-p>'
+                     f'<source src="{expl_file(mp4, root)}" type="video/mp4"><a href="{expl_file(mp4, root)}">Download the video (MP4)</a></video></div>'
+                     f'<div class=xv-copy><p class=kicker>{esc(v["kicker"])}</p><h2 id={vid}-h>{esc(v["title"])}</h2><p id={vid}-p>{esc(v["intro"])}</p>{stat}'
+                     f'<p class=xv-src>Sources: {vsrc}</p>'
+                     f'<p class=row-cta><a class="btn ghost sm" href="{root}satellites/#{v["sat"]}">See it on the satellites page</a></p></div></article>')
+        ld_v.append({'@context': 'https://schema.org', '@type': 'VideoObject', 'name': v['title'], 'description': v['intro'], 'thumbnailUrl': BASE + poster,
+                     'contentUrl': BASE + mp4, 'uploadDate': EXPL['updated'] + 'T12:00:00+00:00', 'duration': 'PT30S', 'publisher': PUBLISHER, 'inLanguage': 'en-GB'})
     srcs = ' · '.join(f'<a href="{esc(s["url"])}">{esc(s["label"])}</a>' for s in EXPL['sources'])
     body = (f'<header class=page-head><p class=kicker><a href="{root}launches/">Launches</a> · Explainers</p><h1>Starship explained in 30 seconds</h1>'
-            f'<p class=lede>Three short animations from Starship Flight 15 (13–14 Nov 2026): how the rocket splits in two, how 26 satellites leave one door, and how the tower caught the ship on its way back from orbit. Each shows the simple physics behind the moment.</p>'
+            f'<p class=lede>Three short animations from Starship Flight 15 (13–14 Nov 2026): how the rocket splits in two, how 26 satellites leave one door, and how the tower caught the ship on its way back from orbit. Each shows the simple physics behind the moment. Further down: four short models of the satellites that talk to phones.</p>'
             f'<p class=row-cta>{share_bar(psh, root, "the Starship explainers", tag="span", extra="shr-in")}{follow_btn("btn ghost sm")}</p></header>'
             f'<section class=xlist aria-label="Explainer videos">{figs}</section>'
+            f'<section class=xsat aria-labelledby=xs-h><p class=kicker>Satellites · 30 seconds each</p><h2 id=xs-h>The satellites, unfolded</h2>'
+            f'<p class=l-intro>Four stylised 3D models of the satellites we cover: how each one is built to reach a phone, with the sources underneath. Our <a href="{root}satellites/">Meet the satellites</a> page has the facts and counts.</p>'
+            f'<div class=xlist>{sat_figs}</div></section>'
             f'<section class="card tlink" aria-labelledby=xw-h><p class=kicker>Why Starship matters to telcos</p><h2 id=xw-h><a href="{root}articles/why-starship-is-a-telco-story.html">Why Starship is a telco story</a></h2>'
             f'<p>Cheaper, bigger launches change how many satellites can be put up, and that includes the satellites that talk straight to ordinary phones.</p>'
             f'<p class=row-cta><a class="btn ghost" href="{root}articles/why-starship-is-a-telco-story.html">Read the analysis</a><a class="btn ghost" href="{root}launches/flight/">Open the flight view</a><a class="btn ghost" href="{root}launches/">Upcoming launches</a></p></section>'
@@ -1268,7 +1285,7 @@ def explainers_page():
             + signal_block(root, 'explainers', heading='Get launch alerts in Signal', intro='Signal is our free weekly direct-to-cell briefing: the launches that matter for your phone, explained simply, in one email a week.'))
     page(og=('Explainers', 'Starship explained in 30 seconds', [('Hot staging', OGC['cyan']), ('Satellite release', OGC['live']), ('Tower catch', OGC['trial'])]),
          path='explainers/index.html', title='Starship explained in 30 seconds', full_title='Starship explainers: launch, deploy and catch | Full Duplex',
-         description='Three 30-second Starship explainers from Flight 15: hot staging, how 26 Starlink satellites leave the ship, and the first tower catch from orbit.',
+         description='Three 30-second Starship explainers from Flight 15, plus four short 3D models of the Starlink, BlueBird, Lynk and Globalstar satellites.',
          body=body, root=root, current='explainers/index.html', jsonld=ld_v, cls='is-explainers', lastmod=EXPL['updated'],
          scripts=f'<script defer src="{root}assets/share.js"></script>')
 
