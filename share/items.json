@@ -14,30 +14,6 @@
    "tag": "amazon-leo"
   },
   {
-   "slug": "l-falcon-9-block-5-oneweb-21",
-   "key": "295879ce36",
-   "kind": "flight",
-   "page": "launches/flight/?l=falcon-9-block-5-oneweb-21&nowelcome",
-   "sel": "#fl-hud",
-   "layout": "wide",
-   "kicker": "Launch · November 2026",
-   "title": "OneWeb 21",
-   "sub": "Falcon 9 · 32 OneWeb broadband satellites",
-   "tag": "other"
-  },
-  {
-   "slug": "l-falcon-9-block-5-starlink-group-15-21",
-   "key": "f052dce61d",
-   "kind": "flight",
-   "page": "launches/flight/?l=falcon-9-block-5-starlink-group-15-21&nowelcome",
-   "sel": "#fl-hud",
-   "layout": "wide",
-   "kicker": "Launch · November 2026",
-   "title": "Starlink Group 15-21",
-   "sub": "Falcon 9 · 27 Starlink broadband satellites",
-   "tag": "starlink"
-  },
-  {
    "slug": "l-falcon-9-block-5-globalstar-2-r-mission-2-x-9",
    "key": "5c960a14bd",
    "kind": "flight",
@@ -48,6 +24,30 @@
    "title": "Globalstar 2-R Mission 2 (x 9)",
    "sub": "Falcon 9 · 9 Globalstar replacement satellites",
    "tag": "d2d-other"
+  },
+  {
+   "slug": "l-falcon-9-block-5-oneweb-21",
+   "key": "de011e8b2c",
+   "kind": "flight",
+   "page": "launches/flight/?l=falcon-9-block-5-oneweb-21&nowelcome",
+   "sel": "#fl-hud",
+   "layout": "wide",
+   "kicker": "Launch · December 2026",
+   "title": "OneWeb 21",
+   "sub": "Falcon 9 · 32 OneWeb broadband satellites",
+   "tag": "other"
+  },
+  {
+   "slug": "l-falcon-9-block-5-starlink-group-15-21",
+   "key": "2a3210af37",
+   "kind": "flight",
+   "page": "launches/flight/?l=falcon-9-block-5-starlink-group-15-21&nowelcome",
+   "sel": "#fl-hud",
+   "layout": "wide",
+   "kicker": "Launch · December 2026",
+   "title": "Starlink Group 15-21",
+   "sub": "Falcon 9 · 27 Starlink broadband satellites",
+   "tag": "starlink"
   },
   {
    "slug": "l-falcon-9-block-5-bluebird-14-16-block-2-9-11",

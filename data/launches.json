@@ -1,15 +1,15 @@
 {
- "fetched_at": "2026-11-20T07:25:07Z",
+ "fetched_at": "2026-11-20T20:28:31Z",
  "source": "The Space Devs Launch Library 2 (https://ll.thespacedevs.com/2.3.0/launches/upcoming/)",
  "launches": [
   {
    "id": "76617033-4dc0-4448-b50c-e5b0d5a18539",
    "slug": "falcon-9-block-5-ussf-317",
    "name": "Falcon 9 Block 5 | USSF-317",
-   "net": "2026-11-21T02:32:00Z",
+   "net": "2026-11-21T04:20:35Z",
    "window_start": "2026-11-21T02:32:00Z",
    "window_end": "2026-11-21T06:32:00Z",
-   "precision": "Minute",
+   "precision": "Second",
    "status": "Go for Launch",
    "status_abbrev": "Go",
    "provider": "SpaceX",
@@ -26,7 +26,7 @@
    "pad_lat": 34.632,
    "pad_lon": -120.611,
    "webcast_live": false,
-   "last_updated": "2026-11-20T05:57:08Z",
+   "last_updated": "2026-11-20T17:41:31Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/76617033-4dc0-4448-b50c-e5b0d5a18539/",
    "queries": [
     "spacex"
@@ -36,9 +36,9 @@
    "id": "951a341f-236b-42fe-a667-4ab2fcf36eac",
    "slug": "falcon-9-block-5-nrol-136",
    "name": "Falcon 9 Block 5 | NROL-136",
-   "net": "2026-11-21T12:30:00Z",
-   "window_start": "2026-11-21T12:30:00Z",
-   "window_end": "2026-11-21T13:00:00Z",
+   "net": "2026-11-22T12:16:00Z",
+   "window_start": "2026-11-22T12:16:00Z",
+   "window_end": "2026-11-22T12:46:00Z",
    "precision": "Minute",
    "status": "Go for Launch",
    "status_abbrev": "Go",
@@ -56,7 +56,7 @@
    "pad_lat": 34.632,
    "pad_lon": -120.611,
    "webcast_live": false,
-   "last_updated": "2026-11-14T14:29:39Z",
+   "last_updated": "2026-11-20T17:43:32Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/951a341f-236b-42fe-a667-4ab2fcf36eac/",
    "queries": [
     "spacex"
@@ -86,7 +86,7 @@
    "pad_lat": 5.256319,
    "pad_lon": -52.786838,
    "webcast_live": false,
-   "last_updated": "2026-11-18T13:41:03Z",
+   "last_updated": "2026-11-20T18:43:43Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/7bdc412b-c965-4517-a131-f57a01189803/",
    "queries": [
     "amazon-leo"
@@ -96,9 +96,9 @@
    "id": "460d9db7-eaf6-4cd9-b095-cff433534c09",
    "slug": "falcon-9-block-5-ussf-266",
    "name": "Falcon 9 Block 5 | USSF-266",
-   "net": "2026-11-23T16:04:00Z",
-   "window_start": "2026-11-23T16:04:00Z",
-   "window_end": "2026-11-23T20:04:00Z",
+   "net": "2026-11-24T15:55:00Z",
+   "window_start": "2026-11-24T15:55:00Z",
+   "window_end": "2026-11-24T19:55:00Z",
    "precision": "Minute",
    "status": "Go for Launch",
    "status_abbrev": "Go",
@@ -116,7 +116,7 @@
    "pad_lat": 34.632,
    "pad_lon": -120.611,
    "webcast_live": false,
-   "last_updated": "2026-11-13T17:46:32Z",
+   "last_updated": "2026-11-20T18:31:34Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/460d9db7-eaf6-4cd9-b095-cff433534c09/",
    "queries": [
     "spacex"
@@ -126,9 +126,9 @@
    "id": "b0d27def-0a88-44c3-a947-1fd5b8503e2c",
    "slug": "falcon-9-block-5-ussf-380",
    "name": "Falcon 9 Block 5 | USSF-380",
-   "net": "2026-11-28T04:53:00Z",
-   "window_start": "2026-11-28T04:53:00Z",
-   "window_end": "2026-11-28T08:53:00Z",
+   "net": "2026-11-29T04:39:00Z",
+   "window_start": "2026-11-29T04:39:00Z",
+   "window_end": "2026-11-29T08:39:00Z",
    "precision": "Minute",
    "status": "Go for Launch",
    "status_abbrev": "Go",
@@ -146,7 +146,7 @@
    "pad_lat": 34.632,
    "pad_lon": -120.611,
    "webcast_live": false,
-   "last_updated": "2026-11-18T19:03:08Z",
+   "last_updated": "2026-11-20T18:32:41Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/b0d27def-0a88-44c3-a947-1fd5b8503e2c/",
    "queries": [
     "spacex"
@@ -156,9 +156,9 @@
    "id": "d74afbc7-0de5-491c-be05-4e9c31f736ac",
    "slug": "falcon-9-block-5-cygnus-crs-2-ng-25",
    "name": "Falcon 9 Block 5 | Cygnus CRS-2 NG-25",
-   "net": "2026-11-29T15:47:00Z",
-   "window_start": "2026-11-29T15:47:00Z",
-   "window_end": "2026-11-29T15:47:00Z",
+   "net": "2026-11-29T15:50:00Z",
+   "window_start": "2026-11-29T15:50:00Z",
+   "window_end": "2026-11-29T15:50:00Z",
    "precision": "Minute",
    "status": "Go for Launch",
    "status_abbrev": "Go",
@@ -174,98 +174,8 @@
    "pad_lat": 28.56194122,
    "pad_lon": -80.57735736,
    "webcast_live": false,
-   "last_updated": "2026-11-19T12:34:08Z",
+   "last_updated": "2026-11-20T17:43:33Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/d74afbc7-0de5-491c-be05-4e9c31f736ac/",
-   "queries": [
-    "spacex"
-   ]
-  },
-  {
-   "id": "56ca6058-7ccc-4ec0-b1b0-fb49f3bfee49",
-   "slug": "falcon-9-block-5-nrol-195",
-   "name": "Falcon 9 Block 5 | NROL-195",
-   "net": "2026-11-30T00:00:00Z",
-   "window_start": "2026-11-30T00:00:00Z",
-   "window_end": "2026-11-30T00:00:00Z",
-   "precision": "Month",
-   "status": "To Be Determined",
-   "status_abbrev": "TBD",
-   "provider": "SpaceX",
-   "rocket": "Falcon 9 Block 5",
-   "mission": "NROL-195",
-   "mission_type": "Government/Top Secret",
-   "mission_description": "Sixteenth batch of satellites for a reconnaissance satellite constellation built by SpaceX and Northrop Grumman for the National Reconnaissance Office to provide imaging and other reconnaissance capabilities.",
-   "orbit": "LEO",
-   "mission_agencies": [
-    "National Reconnaissance Office"
-   ],
-   "pad": "Space Launch Complex 4E",
-   "location": "Vandenberg SFB, CA, USA",
-   "pad_lat": 34.632,
-   "pad_lon": -120.611,
-   "webcast_live": false,
-   "last_updated": "2026-11-12T19:09:40Z",
-   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/56ca6058-7ccc-4ec0-b1b0-fb49f3bfee49/",
-   "queries": [
-    "spacex"
-   ]
-  },
-  {
-   "id": "b0dc988c-ea4a-423f-81b6-6b0fbe7cc17c",
-   "slug": "falcon-9-block-5-oneweb-21",
-   "name": "Falcon 9 Block 5 | OneWeb 21",
-   "net": "2026-11-30T00:00:00Z",
-   "window_start": "2026-11-30T00:00:00Z",
-   "window_end": "2026-11-30T00:00:00Z",
-   "precision": "Month",
-   "status": "To Be Determined",
-   "status_abbrev": "TBD",
-   "provider": "SpaceX",
-   "rocket": "Falcon 9 Block 5",
-   "mission": "OneWeb 21",
-   "mission_type": "Communications",
-   "mission_description": "A batch of 32 satellites for the OneWeb satellite constellation, which is intended to provide global Internet broadband service for individual consumers. The constellation is planned to have around 648 microsatellites (of which 60 are spares), around 150 kg each, operating in Ku-band from low Earth orbit.",
-   "orbit": "PO",
-   "mission_agencies": [
-    "Eutelsat OneWeb"
-   ],
-   "pad": "Space Launch Complex 4E",
-   "location": "Vandenberg SFB, CA, USA",
-   "pad_lat": 34.632,
-   "pad_lon": -120.611,
-   "webcast_live": false,
-   "last_updated": "2026-10-29T06:09:06Z",
-   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/b0dc988c-ea4a-423f-81b6-6b0fbe7cc17c/",
-   "queries": [
-    "spacex"
-   ]
-  },
-  {
-   "id": "3cdb9dee-b5cb-406c-bbd1-06a219930fb7",
-   "slug": "falcon-9-block-5-starlink-group-15-21",
-   "name": "Falcon 9 Block 5 | Starlink Group 15-21",
-   "net": "2026-11-30T00:00:00Z",
-   "window_start": "2026-11-30T00:00:00Z",
-   "window_end": "2026-11-30T00:00:00Z",
-   "precision": "Month",
-   "status": "To Be Determined",
-   "status_abbrev": "TBD",
-   "provider": "SpaceX",
-   "rocket": "Falcon 9 Block 5",
-   "mission": "Starlink Group 15-21",
-   "mission_type": "Communications",
-   "mission_description": "A batch of 27 satellites for the Starlink mega-constellation - SpaceX's project for space-based Internet communication system.",
-   "orbit": "LEO",
-   "mission_agencies": [
-    "SpaceX"
-   ],
-   "pad": "Space Launch Complex 4E",
-   "location": "Vandenberg SFB, CA, USA",
-   "pad_lat": 34.632,
-   "pad_lon": -120.611,
-   "webcast_live": false,
-   "last_updated": "2026-11-03T21:40:38Z",
-   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/3cdb9dee-b5cb-406c-bbd1-06a219930fb7/",
    "queries": [
     "spacex"
    ]
@@ -330,6 +240,66 @@
    ]
   },
   {
+   "id": "56ca6058-7ccc-4ec0-b1b0-fb49f3bfee49",
+   "slug": "falcon-9-block-5-nrol-195",
+   "name": "Falcon 9 Block 5 | NROL-195",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "NROL-195",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Sixteenth batch of satellites for a reconnaissance satellite constellation built by SpaceX and Northrop Grumman for the National Reconnaissance Office to provide imaging and other reconnaissance capabilities.",
+   "orbit": "LEO",
+   "mission_agencies": [
+    "National Reconnaissance Office"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "pad_lat": 34.632,
+   "pad_lon": -120.611,
+   "webcast_live": false,
+   "last_updated": "2026-11-20T18:32:25Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/56ca6058-7ccc-4ec0-b1b0-fb49f3bfee49/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "b0dc988c-ea4a-423f-81b6-6b0fbe7cc17c",
+   "slug": "falcon-9-block-5-oneweb-21",
+   "name": "Falcon 9 Block 5 | OneWeb 21",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "OneWeb 21",
+   "mission_type": "Communications",
+   "mission_description": "A batch of 32 satellites for the OneWeb satellite constellation, which is intended to provide global Internet broadband service for individual consumers. The constellation is planned to have around 648 microsatellites (of which 60 are spares), around 150 kg each, operating in Ku-band from low Earth orbit.",
+   "orbit": "PO",
+   "mission_agencies": [
+    "Eutelsat OneWeb"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "pad_lat": 34.632,
+   "pad_lon": -120.611,
+   "webcast_live": false,
+   "last_updated": "2026-11-20T18:32:42Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/b0dc988c-ea4a-423f-81b6-6b0fbe7cc17c/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
    "id": "71df1dd0-d658-4762-b0bc-0fca6886aea7",
    "slug": "falcon-9-block-5-sda-tranche-2-transport-layer-d",
    "name": "Falcon 9 Block 5 | SDA Tranche 2 Transport Layer D",
@@ -385,6 +355,36 @@
    "webcast_live": false,
    "last_updated": "2026-10-17T08:28:47Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/71ed4649-8d71-42e8-8548-d42ffa2c5a6e/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "3cdb9dee-b5cb-406c-bbd1-06a219930fb7",
+   "slug": "falcon-9-block-5-starlink-group-15-21",
+   "name": "Falcon 9 Block 5 | Starlink Group 15-21",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Starlink Group 15-21",
+   "mission_type": "Communications",
+   "mission_description": "A batch of 27 satellites for the Starlink mega-constellation - SpaceX's project for space-based Internet communication system.",
+   "orbit": "LEO",
+   "mission_agencies": [
+    "SpaceX"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "pad_lat": 34.632,
+   "pad_lon": -120.611,
+   "webcast_live": false,
+   "last_updated": "2026-11-20T18:33:02Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/3cdb9dee-b5cb-406c-bbd1-06a219930fb7/",
    "queries": [
     "spacex"
    ]
