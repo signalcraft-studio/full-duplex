@@ -1,4 +1,4 @@
-/* Full Duplex site script: hide-on-scroll mobile header, sticky subscribe bar, checker forms, glossary, welcome. No trackers. */
+/* Full Duplex site script: hide-on-scroll mobile header, sticky subscribe bar, checker forms, glossary, welcome. No third-party trackers; see privacy.html. */
 (function(){
   /* (The lazy beehiiv iframe loader lived here until 14 Nov 2026; every Signal block is now our own button.) */
   // 1. Phones and small tablets (860px and below): the header hides while you scroll down and comes back when you scroll up.
@@ -97,4 +97,33 @@
   if(!intro||still||!window.HTMLCanvasElement)return show();
   var s=document.createElement('script'); s.src=root+'assets/intro.js?v='+(me.src.split('v=')[1]||'0');
   s.onload=function(){if(window.FDIntro)window.FDIntro({onDone:show});else show();}; s.onerror=show; document.head.appendChild(s);
+})();
+
+/* Source passthrough: if a visitor lands with utm_* tags in the URL (e.g. from an X post), keep them for this visit only
+   (sessionStorage, cleared when the tab closes; no cookies, no third-party calls) and carry them onto beehiiv subscribe links,
+   so beehiiv credits the signup to X instead of "fullduplex-site". The link's own placement (header, footer, ...) moves to
+   utm_content; an existing utm_content (e.g. the checker's country/network) is never overwritten. Documented in privacy.html. */
+(function(){
+  try{
+    var KEYS=['utm_source','utm_medium','utm_campaign'], SEL='a[href^="https://fullduplexhq.beehiiv.com/subscribe"]';
+    var q=new URLSearchParams(location.search), saved=null;
+    try{saved=JSON.parse(sessionStorage.getItem('fd_utm')||'null');}catch(e){}
+    if(q.get('utm_source')&&q.get('utm_source')!=='fullduplex-site'){
+      saved={}; KEYS.forEach(function(k){if(q.get(k))saved[k]=q.get(k);});
+      try{sessionStorage.setItem('fd_utm',JSON.stringify(saved));}catch(e){}
+    }
+    if(!saved||!saved.utm_source)return;
+    function tag(a){
+      var u=new URL(a.href), placement=u.searchParams.get('utm_medium');
+      KEYS.forEach(function(k){if(saved[k])u.searchParams.set(k,saved[k]);});
+      if(placement&&!u.searchParams.get('utm_content'))u.searchParams.set('utm_content',placement);
+      a.href=u.toString();
+    }
+    function all(){Array.prototype.forEach.call(document.querySelectorAll(SEL),tag);}
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',all);else all();
+    /* links added later (welcome card, Check my phone results, game end card) are tagged just before they are used */
+    ['click','auxclick','contextmenu'].forEach(function(ev){
+      document.addEventListener(ev,function(e){var a=e.target.closest&&e.target.closest(SEL);if(a)tag(a);},true);
+    });
+  }catch(e){/* never break the page */}
 })();

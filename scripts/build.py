@@ -65,8 +65,9 @@ def follow_btn(cls='btn ghost'):
     return f'<a class="{cls}" href="https://x.com/{X}" target=_blank rel="noopener me">Follow @{X}</a>'
 
 # ---------------------------------------------------------------- Signal blocks
+ISSUES_SHOWN = 5  # newest first; to add a new issue, put it at the top of "issues" in src/site.json and rebuild
 def issues_list():
-    li = ''.join(f'<li><a href="{esc(i["url"])}"><span class=ino>#{i["no"]}</span><span>{esc(i["title"])}</span></a></li>' for i in SITE['issues'][:3])
+    li = ''.join(f'<li><a href="{esc(i["url"])}"><span class=ino>#{i["no"]}</span><span>{esc(i["title"])}</span></a></li>' for i in SITE['issues'][:ISSUES_SHOWN])
     return f'<ul class=issues aria-label="Recent issues of Signal">{li}</ul>'
 
 def signal_block(root, surface, variant='full', heading_level=2, heading=None, intro=None):
