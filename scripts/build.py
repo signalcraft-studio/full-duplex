@@ -1132,6 +1132,19 @@ def journey_page():
     page(og=('Explainer', 'What happens when you hit send: one text, via satellite'), gloss=True, path='journey/index.html', title=meta['title'], description=meta['description'],
          body=body, root=root, current='', jsonld=ld, cls='is-journey', lastmod='2026-11-10', scripts=f'<script defer src="{root}assets/journey.js"></script>',
          full_title='What happens when you hit send: a text via satellite | Full Duplex')
+# ---------------------------------------------------------------- Inner Signal explainer (PREVIEW: src/pages/inner-signal.html; scroll animation in assets/inner-signal.js + .css)
+# Preview only: noindex, not in the sitemap or site search, not in the nav. To go live: index=True, search=True, add to NAV/footer/sitemap and an OG card.
+def inner_signal_page():
+    meta, body, _ = read_src(SRC / 'pages' / 'inner-signal.html'); root = '../'; url = BASE + 'inner-signal/'
+    share = share_btn('Inner Signal: follow one phone call from a landline to a hiker with no mast, via satellite, all the way to the bill.', url)
+    body = body.replace('<!--SHARE-TOP-->', f'<p class=row-cta>{share}{follow_btn()}</p>').replace('<!--SHARE-END-->',
+        f'<div class=share-end><p>Know someone who has always wondered what happens between dialling and ringing? Send them this.</p>{share}{follow_btn()}</div>')
+    cta = signal_block(root, 'inner-signal', heading='Get Signal: the weekly direct-to-cell briefing', intro='One email a week on satellite-to-phone, mobile networks and what it means for you, from a mobile network insider with over 13 years in GSM. Plain English, with sources.')
+    cta = cta.replace(esc(sub_url('inner-signal')), esc(SUB + '?' + urllib.parse.urlencode({'utm_source': 'site', 'utm_medium': 'inner-signal', 'utm_campaign': 'signal'})))
+    body += cta
+    css = f'<link rel="stylesheet" href="{root}assets/inner-signal.css?v={asset_v("assets/inner-signal.css")}">'
+    page(og=('Explainer', 'Inner Signal: the life of a phone call'), gloss=True, path='inner-signal/index.html', title=meta['title'], description=meta['description'],
+         body=body, root=root, current='', cls='is-inner', index=False, search=False, head_extra=css, scripts=f'<script defer src="{root}assets/inner-signal.js"></script>')
 # ---------------------------------------------------------------- satellites explainer (src/satellites.json; drawings in scripts/satviz.py)
 def const_item(cid): return next((i for i in CONST['direct_to_device'] + CONST['broadband_only'] if i['id'] == cid), None)
 def sats_card(root):
@@ -1317,6 +1330,7 @@ flight_page()
 explainers_page()
 resources_page()
 journey_page()
+inner_signal_page()
 satellites_page()
 
 def share_pages():
