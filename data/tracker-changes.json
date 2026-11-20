@@ -1,5 +1,59 @@
 [
  {
+  "date": "2026-11-20",
+  "commit": "51a3b3d68f2ffda496c1eb924f7c92bdbc5b067f",
+  "items": [
+   {
+    "type": "updated",
+    "status": "trial",
+    "country": "United States",
+    "text": "Updated details for United States: AT&T + AST SpaceMobile."
+   },
+   {
+    "type": "updated",
+    "status": "live",
+    "country": "Japan",
+    "text": "Updated details for Japan: KDDI (au) + Starlink."
+   },
+   {
+    "type": "updated",
+    "status": "live",
+    "country": "France",
+    "text": "Updated details for France: Orange + Skylo."
+   },
+   {
+    "type": "added",
+    "status": "live",
+    "country": "Costa Rica",
+    "text": "Added Costa Rica: Liberty Costa Rica (Liberty Latin America) + Starlink (live)."
+   },
+   {
+    "type": "added",
+    "status": "live",
+    "country": "Panama",
+    "text": "Added Panama: +Móvil (Cable & Wireless Panamá) + Starlink (live)."
+   },
+   {
+    "type": "added",
+    "status": "live",
+    "country": "Mongolia",
+    "text": "Added Mongolia: Mobicom + Starlink (live)."
+   },
+   {
+    "type": "added",
+    "status": "trial",
+    "country": "Italy",
+    "text": "Added Italy: Fastweb + Vodafone + Starlink (trial)."
+   },
+   {
+    "type": "added",
+    "status": "trial",
+    "country": "Zambia",
+    "text": "Added Zambia: MTN Zambia + Starlink (trial)."
+   }
+  ]
+ },
+ {
   "date": "2026-11-10",
   "commit": "c8cf0911bfa17f15fbaf94af2c8d52af12e2d3b8",
   "items": [
