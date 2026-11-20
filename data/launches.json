@@ -1,15 +1,15 @@
 {
- "fetched_at": "2026-11-19T20:43:41Z",
+ "fetched_at": "2026-11-20T07:25:07Z",
  "source": "The Space Devs Launch Library 2 (https://ll.thespacedevs.com/2.3.0/launches/upcoming/)",
  "launches": [
   {
    "id": "76617033-4dc0-4448-b50c-e5b0d5a18539",
    "slug": "falcon-9-block-5-ussf-317",
    "name": "Falcon 9 Block 5 | USSF-317",
-   "net": "2026-11-20T04:32:55Z",
-   "window_start": "2026-11-20T02:46:00Z",
-   "window_end": "2026-11-20T06:46:00Z",
-   "precision": "Second",
+   "net": "2026-11-21T02:32:00Z",
+   "window_start": "2026-11-21T02:32:00Z",
+   "window_end": "2026-11-21T06:32:00Z",
+   "precision": "Minute",
    "status": "Go for Launch",
    "status_abbrev": "Go",
    "provider": "SpaceX",
@@ -26,7 +26,7 @@
    "pad_lat": 34.632,
    "pad_lon": -120.611,
    "webcast_live": false,
-   "last_updated": "2026-11-19T18:30:33Z",
+   "last_updated": "2026-11-20T05:57:08Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/76617033-4dc0-4448-b50c-e5b0d5a18539/",
    "queries": [
     "spacex"
@@ -1104,64 +1104,6 @@
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/c1bd775a-2fff-45bb-9726-765b69817c19/",
    "queries": [
     "spacex"
-   ]
-  },
-  {
-   "id": "f0460950-3cb6-4889-8cbe-707f063d0565",
-   "slug": "new-glenn-bluebird-block-2",
-   "name": "New Glenn | BlueBird Block 2",
-   "net": "2026-12-31T00:00:00Z",
-   "window_start": "2026-12-31T00:00:00Z",
-   "window_end": "2026-12-31T00:00:00Z",
-   "precision": "Year",
-   "status": "To Be Determined",
-   "status_abbrev": "TBD",
-   "provider": "Blue Origin",
-   "rocket": "New Glenn",
-   "mission": "BlueBird Block 2",
-   "mission_type": "Communications",
-   "mission_description": "AST SpaceMobile’s Block 2 BlueBird satellites are designed to deliver up to 10 times the bandwidth capacity of the BlueBird Block 1 satellites, required to achieve 24/7 continuous cellular broadband service coverage in the United States, with beams designed to support a capacity of up to 40 MHz, enabling peak data transmission speeds up to 120 Mbps, supporting voice, full data and video applications. The Block 2 BlueBirds, featuring as large as 2400 square foot communications arrays, will be the largest satellites ever commercially deployed in Low Earth orbit once launched.\r\n\r\nThis launch will feature 8 satellites.",
-   "orbit": "LEO",
-   "mission_agencies": [],
-   "pad": "Launch Complex 36A",
-   "location": "Cape Canaveral SFS, FL, USA",
-   "pad_lat": 28.4705556,
-   "pad_lon": -80.542194,
-   "webcast_live": false,
-   "last_updated": "2026-05-28T23:52:24Z",
-   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/f0460950-3cb6-4889-8cbe-707f063d0565/",
-   "queries": [
-    "ast"
-   ]
-  },
-  {
-   "id": "ca3d56b7-2175-48e4-9a6a-2ecc9996d96b",
-   "slug": "new-glenn-amazon-leo-ln-01",
-   "name": "New Glenn | Amazon Leo (LN-01)",
-   "net": "2026-12-31T00:00:00Z",
-   "window_start": "2026-12-31T00:00:00Z",
-   "window_end": "2026-12-31T00:00:00Z",
-   "precision": "Year",
-   "status": "To Be Determined",
-   "status_abbrev": "TBD",
-   "provider": "Blue Origin",
-   "rocket": "New Glenn",
-   "mission": "Amazon Leo (LN-01)",
-   "mission_type": "Communications",
-   "mission_description": "Amazon Leo, formerly known as Project Kuiper, is a mega constellation of satellites in Low Earth Orbit that will offer broadband internet access, this constellation will be managed by Kuiper Systems LLC, a subsidiary of Amazon. This constellation is planned to be composed of 3,276 satellites. The satellites are projected to be placed in 98 orbital planes in three orbital layers, one at 590 km, 610 km and 630 km altitude.\r\n\r\n48 satellites will be carried on this New Glenn launch.",
-   "orbit": "LEO",
-   "mission_agencies": [
-    "Amazon Leo"
-   ],
-   "pad": "Launch Complex 36A",
-   "location": "Cape Canaveral SFS, FL, USA",
-   "pad_lat": 28.4705556,
-   "pad_lon": -80.542194,
-   "webcast_live": false,
-   "last_updated": "2026-05-29T11:16:01Z",
-   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/ca3d56b7-2175-48e4-9a6a-2ecc9996d96b/",
-   "queries": [
-    "amazon-leo"
    ]
   },
   {

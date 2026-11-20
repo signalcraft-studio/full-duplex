@@ -98,30 +98,6 @@
    "tag": "other"
   },
   {
-   "slug": "l-new-glenn-bluebird-block-2",
-   "key": "b690216417",
-   "kind": "flight",
-   "page": "launches/flight/?l=new-glenn-bluebird-block-2&nowelcome",
-   "sel": "#fl-hud",
-   "layout": "wide",
-   "kicker": "Launch · 2026",
-   "title": "BlueBird Block 2",
-   "sub": "New Glenn",
-   "tag": "ast"
-  },
-  {
-   "slug": "l-new-glenn-amazon-leo-ln-01",
-   "key": "076130b993",
-   "kind": "flight",
-   "page": "launches/flight/?l=new-glenn-amazon-leo-ln-01&nowelcome",
-   "sel": "#fl-hud",
-   "layout": "wide",
-   "kicker": "Launch · 2026",
-   "title": "Amazon Leo (LN-01)",
-   "sub": "New Glenn",
-   "tag": "amazon-leo"
-  },
-  {
    "slug": "l-falcon-9-block-5-5x-astranis-microgeo",
    "key": "a19da080d6",
    "kind": "flight",
