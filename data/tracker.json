@@ -1,5 +1,5 @@
 {
- "last_checked": "10 Nov 2026",
+ "last_checked": "20 Nov 2026",
  "note": "Single source of truth for tracker.html (table + map). Edit here, then run: python3 scripts/build_tracker.py. iso_n3 = ISO 3166-1 numeric code for the map; null = multi-country/non-country row, listed under the map.",
  "rows": [
   {
@@ -19,7 +19,7 @@
      "url": "https://www.t-mobile.com/news/un-carrier/reaching-for-the-stars-with-t-satellite"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "United States",
@@ -27,7 +27,7 @@
    "operator": "AT&T",
    "satellite": "AST SpaceMobile",
    "status": "trial",
-   "services": "First handoff between a ground-based cellular network and a direct-to-device satellite network, 21 Oct 2026 near Granite Falls, Washington (Ericsson and Nokia kit); builds on earlier voice, text and video calls; AST (9 Nov 2026) targets initial, intermittent nationwide US coverage before end-2026, with the first step a roll-out to strategic partners; moving towards beta, no commercial launch date",
+   "services": "First handoff between a ground-based cellular network and a direct-to-device satellite network, 21 Oct 2026 near Granite Falls, Washington (Ericsson and Nokia kit); builds on earlier voice, text and video calls; AST (9 Nov 2026) targets initial, intermittent nationwide US coverage before end-2026, with the first step a roll-out to strategic partners; moving towards beta; AT&T said on 18 Nov 2026 it is still targeting commercial availability next year (2027), with seamless handoff for FirstNet users, no firm launch date",
    "sources": [
     {
      "label": "Source",
@@ -40,9 +40,13 @@
     {
      "label": "Q3",
      "url": "https://www.sec.gov/Archives/edgar/data/1780312/000119312526453758/asts-ex99_1.htm"
+    },
+    {
+     "label": "FirstNet",
+     "url": "https://urgentcomm.com/satellite-direct-to-device/at-t-ast-spacemobile-test-terrestrial-satellite-d2d-handoff"
     }
    ],
-   "checked": "10 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "Canada",
@@ -61,7 +65,7 @@
      "url": "https://www.cbc.ca/news/canada/toronto/rogers-launching-new-satellite-mobile-text-trial-1.7585401"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "Canada",
@@ -84,7 +88,7 @@
      "url": "https://www.sec.gov/Archives/edgar/data/1780312/000119312526453758/asts-ex99_1.htm"
     }
    ],
-   "checked": "10 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "United Kingdom",
@@ -107,7 +111,7 @@
      "url": "https://www.lightreading.com/satellite/virgin-media-o2-feels-highs-and-lows-of-starlink-in-wales"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "United Kingdom",
@@ -130,7 +134,7 @@
      "url": "https://www.sec.gov/Archives/edgar/data/1780312/000119312526453758/asts-ex99_1.htm"
     }
    ],
-   "checked": "10 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "New Zealand",
@@ -149,7 +153,7 @@
      "url": "https://www.ookla.com/articles/d2d-comes-of-age-in-apac-2026"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "New Zealand",
@@ -168,7 +172,7 @@
      "url": "https://www.reseller.co.nz/article/4153392/mobile-space-race-is-on-as-spark-launches-starlink-satellite-to-mobile-services.html"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "New Zealand",
@@ -183,7 +187,7 @@
      "url": "https://www.2degrees.nz/media-release/2degrees-opens-ast-spacemobile-ground-station"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "Japan",
@@ -191,14 +195,18 @@
    "operator": "KDDI (au)",
    "satellite": "Starlink",
    "status": "live",
-   "services": "Messaging; data for SAT-enabled apps",
+   "services": "Messaging; data for SAT-enabled apps; signed an Asia-first Starlink Mobile V2 agreement on 10 Aug 2026 (announced 15 Sep), aiming for high-speed data and native voice calling outside coverage by end-2027",
    "sources": [
     {
      "label": "Source",
      "url": "https://newsroom.kddi.com/english/news/detail/kddi_nr-1135_4686.html"
+    },
+    {
+     "label": "V2 deal",
+     "url": "https://newsroom.kddi.com/english/news/detail/kddi_nr-1129_4719.html"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "Japan",
@@ -221,7 +229,7 @@
      "url": "https://www.ookla.com/articles/d2d-comes-of-age-in-apac-2026"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "Japan",
@@ -256,7 +264,7 @@
      "url": "https://www.sec.gov/Archives/edgar/data/1780312/000119312526453758/asts-ex99_2.htm"
     }
    ],
-   "checked": "10 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "Australia",
@@ -275,7 +283,7 @@
      "url": "https://www.ookla.com/articles/d2d-comes-of-age-in-apac-2026"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "Australia",
@@ -290,7 +298,7 @@
      "url": "https://blog.voiceplus.com.au/en-au/satellite-to-mobile-in-australia-market-and-regulatory-update-august-2026"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "Philippines",
@@ -309,7 +317,7 @@
      "url": "https://bworldonline.com/corporate/2026/06/30/759947/globe-launches-starlink-direct-to-cell-service-after-ntc-approval/"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "Ukraine",
@@ -332,7 +340,7 @@
      "url": "https://www.veon.com/newsroom/press-releases/in-less-than-one-year-starlink-mobile-connects-11-million-people-across-veons-three-high-growth-markets"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "Chile",
@@ -351,7 +359,7 @@
      "url": "https://informacioncorporativa.entel.cl/comunicados-de-prensa/entel-amplia-su-servicio-con-starlink-d2c-y-ahora-incluye-aplicaciones-como-whatsapp-y-google-maps"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "Peru",
@@ -366,7 +374,7 @@
      "url": "https://www.entel.pe/noticias/entel-starlink-conectividad-satelital-datos-whatsapp"
     }
    ],
-   "checked": "17 Oct 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "Switzerland",
@@ -385,7 +393,7 @@
      "url": "https://www.nau.ch/news/wirtschaft/salt-chef-rechnet-mit-handy-satellitenverbindung-nicht-mehr-2026-67112348"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "Spain",
@@ -408,7 +416,7 @@
      "url": "https://www.orange.es/static/pdf/260922_Nota_Prensa_Orange_Espana.pdf"
     }
    ],
-   "checked": "17 Oct 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "41 countries",
@@ -427,7 +435,7 @@
      "url": "https://rcrwireless.com/20261029/networks/direct-to-device-orange-kyivstar"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "60+ countries (contracts)",
@@ -442,7 +450,7 @@
      "url": "https://www.lightreading.com/satellite/lynk-and-omnispace-merger-creates-d2d-challenger-elveo-mobile"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "Bangladesh",
@@ -457,7 +465,7 @@
      "url": "https://www.veon.com/newsroom/press-releases/veon-brings-starlinks-satellite-to-mobile-service-to-south-asia-with-banglalink-launch"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "Kazakhstan",
@@ -480,7 +488,7 @@
      "url": "https://beeline.kz/ru/starlink"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "Uganda",
@@ -495,7 +503,7 @@
      "url": "https://ict.go.ug/media/news/airtel-uganda-launches-satellite-to-mobile-service-with-starlink-to-expand-connectivity"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "DR Congo",
@@ -514,7 +522,7 @@
      "url": "https://techafricanews.com/2026/10/15/from-towers-to-satellites-what-airtels-starlink-rollouts-actually-change/"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "Kenya",
@@ -533,7 +541,7 @@
      "url": "https://techafricanews.com/2026/10/15/from-towers-to-satellites-what-airtels-starlink-rollouts-actually-change/"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "Brazil",
@@ -556,7 +564,7 @@
      "url": "https://vivo.com.br/content/dam/vivo-sites/vivo-com-br/para-empresas/pdf/produtos-e-servicos/servicos-essenciais/ultrabanda-larga/vivo-empresas-satelite-termos-e-condicoes.pdf"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "Brazil",
@@ -579,7 +587,7 @@
      "url": "https://www.sec.gov/Archives/edgar/data/1780312/000119312526453758/asts-ex99_1.htm"
     }
    ],
-   "checked": "10 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "France",
@@ -587,7 +595,7 @@
    "operator": "Orange",
    "satellite": "Skylo",
    "status": "live",
-   "services": "Message Satellite: SMS and location sharing when there's no mobile or Wi-Fi coverage, since 11 Dec 2025 (consumers); Orange 5G/5G+ plans on Google Pixel 9 (not 9a), 10 and 11 only; no voice or data; free until 31 Dec 2026 for sign-ups up to 18 Nov 2026, paid after; Orange Business option €5 excl. VAT/month",
+   "services": "Message Satellite: SMS and location sharing when there's no mobile or Wi-Fi coverage, since 11 Dec 2025 (consumers); Orange 5G/5G+ plans on Google Pixel 9 (not 9a), Pixel 10 or later only; no voice or data; available in 34 countries; new sign-ups from 19 Nov 2026 pay €5/month, while customers who subscribed before 19 Nov get it free until 31 Dec 2026; Orange Business option €5 excl. VAT/month",
    "sources": [
     {
      "label": "Source",
@@ -602,7 +610,7 @@
      "url": "https://smartmobility.orange-business.com/nos-solutions/forfaits-et-connectivite/message-satellite/"
     }
    ],
-   "checked": "9 Nov 2026"
+   "checked": "20 Nov 2026"
   },
   {
    "country": "Saudi Arabia",
@@ -625,7 +633,102 @@
      "url": "https://www.sec.gov/Archives/edgar/data/1780312/000119312526453758/asts-ex99_1.htm"
     }
    ],
-   "checked": "10 Nov 2026"
+   "checked": "20 Nov 2026"
+  },
+  {
+   "country": "Costa Rica",
+   "iso_n3": "188",
+   "operator": "Liberty Costa Rica (Liberty Latin America)",
+   "satellite": "Starlink",
+   "status": "live",
+   "services": "Live since 27 Aug 2026, first in Central America: texts, plus WhatsApp (location, voice notes, messages), Google Maps and X from areas without mobile coverage; included for postpaid customers, prepaid customers buy a satellite connectivity pack",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://dplnews.com/liberty-activa-servicio-d2d-costa-rica-con-starlink/"
+    },
+    {
+     "label": "Update",
+     "url": "https://teslanorth.com/2026/08/28/starlink-costa-rica-mobile/"
+    }
+   ],
+   "checked": "20 Nov 2026"
+  },
+  {
+   "country": "Panama",
+   "iso_n3": "591",
+   "operator": "+Móvil (Cable & Wireless Panamá)",
+   "satellite": "Starlink",
+   "status": "live",
+   "services": "Más Starlink launched 16 Sep 2026: SMS, WhatsApp calls and messages, and apps such as Google Maps and X, for prepaid and postpaid customers; Android phones first, iOS from Dec 2026; postpaid plans from US$26/month, prepaid pack introductory price US$5 for 30 days",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://dplnews.com/movil-lanza-servicio-d2d-panama-con-starlink/"
+    },
+    {
+     "label": "Update",
+     "url": "https://teslanorth.com/2026/09/17/starlink-mobile-panama/"
+    }
+   ],
+   "checked": "20 Nov 2026"
+  },
+  {
+   "country": "Mongolia",
+   "iso_n3": "496",
+   "operator": "Mobicom",
+   "satellite": "Starlink",
+   "status": "live",
+   "services": "mobispace launched 16 Nov 2026 and Starlink confirmed availability on 18 Nov: SMS and selected apps (WhatsApp, Telegram, Viber, iMessage, Messenger, Google/Apple Maps) at limited speeds, no voice calls; first month's fee waived for activations until 30 Nov; needs open sky and Mobicom coverage to activate, not available near the border",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://x.com/Starlink/status/2123132631596556767"
+    },
+    {
+     "label": "Update",
+     "url": "https://teslanorth.com/2026/11/18/starlink-mobile-mongolia-mobispace-launch/"
+    }
+   ],
+   "checked": "20 Nov 2026"
+  },
+  {
+   "country": "Italy",
+   "iso_n3": "380",
+   "operator": "Fastweb + Vodafone",
+   "satellite": "Starlink",
+   "status": "trial",
+   "services": "Direct-to-cell trial agreed 16 Jul 2026; first Italian satellite WhatsApp video call on a standard 4G phone in the Umbrian Apennines on 14 Sep 2026; not yet open to customers, reportedly pending regulatory approval for the 2600 MHz band, no launch date",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://www.repubblica.it/economia/2026/07/16/news/fastweb_vodafone_starlink_rete_mobile_aree_remote_accordo-425474450/"
+    },
+    {
+     "label": "Update",
+     "url": "https://www.webmasterpoint.org/notizie/business/starlink-mobile-italia-fastweb-come-funziona-e-quando-arriva-ai-clienti_p67323.html"
+    }
+   ],
+   "checked": "20 Nov 2026"
+  },
+  {
+   "country": "Zambia",
+   "iso_n3": "894",
+   "operator": "MTN Zambia",
+   "satellite": "Starlink",
+   "status": "trial",
+   "services": "Field tests completed Mar 2026 (first satellite data session and first MoMo transaction over satellite in Zambia); MTN targeted commercial service pending ZICTA approval; no commercial launch found as of 20 Nov 2026",
+   "sources": [
+    {
+     "label": "Source",
+     "url": "https://spaceinafrica.com/2026/03/07/mtn-zambia-becomes-first-african-operator-to-complete-starlink-direct-to-cell-testing/"
+    },
+    {
+     "label": "Update",
+     "url": "https://itweb.africa/article/mtn-zambia-starlink-first-to-direct-to-cell-connectivity/mQwkoM6Ym8x73r9A"
+    }
+   ],
+   "checked": "20 Nov 2026"
   }
  ]
 }
