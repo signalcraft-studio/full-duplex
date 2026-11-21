@@ -56,7 +56,7 @@
       }
       if(on){chs[i].classList.add('in','seen');}else chs[i].classList.remove('in');
       if(r.top<vh*0.4){n=i;frac=Math.max(0,Math.min(1,(vh*0.4-r.top)/r.height));}
-      if(chs[i].id==='ch-10')meterRun(on&&r.top<vh*0.6);
+      if(chs[i].id==='ch-12')meterRun(on&&r.top<vh*0.6);
     }
     if(rail){
       var f=chs[0].getBoundingClientRect(), l=chs[chs.length-1].getBoundingClientRect();

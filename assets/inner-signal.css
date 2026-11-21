@@ -154,3 +154,38 @@ html{scroll-padding-top:8.5rem}
 @keyframes isring{0%{transform:scale(.5);opacity:.7}100%{transform:scale(3.2);opacity:0}}
 @keyframes isbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
 @media (prefers-reduced-motion:reduce){.sv .ring{display:none}.art img{transform:none}}
+
+/* v2: mobile-to-mobile recast */
+.cast-strip-wrap{margin:0 0 1.2rem}
+.cast-hint{margin:0 0 .5rem;color:var(--dim);font-size:.88rem}
+.cast-strip{list-style:none;margin:0;padding:.2rem 0 .6rem;display:flex;gap:.7rem;overflow-x:auto;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-color:rgba(94,200,255,.4) transparent}
+.cast-strip li{flex:0 0 7.6rem;scroll-snap-align:start}
+.cast-strip a{display:grid;gap:.3rem;text-decoration:none;color:#dbe5f0;text-align:center}
+.cast-strip img{width:7.6rem;height:7.6rem;object-fit:cover;border-radius:14px;border:1px solid rgba(94,200,255,.28);background:#070b14}
+.cast-strip .cs-name{font-family:var(--f-head);font-weight:600;font-size:.88rem;color:#fff;line-height:1.2}
+.cast-strip .cs-role{font-family:var(--f-mono);font-size:.64rem;letter-spacing:.04em;color:var(--cyan);line-height:1.3}
+.cast-fig{margin:0 auto 1.2rem;border-radius:18px;overflow:hidden;border:1px solid rgba(94,200,255,.22);box-shadow:0 24px 70px rgba(0,0,0,.4);background:#070b14;max-width:36rem}
+.cast-fig img{display:block;width:100%;height:auto}
+.cast-l{list-style:none;margin:0 0 1rem;padding:0;display:grid;gap:.9rem}
+@media (min-width:700px){.cast-l{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1100px){.cast-l{grid-template-columns:repeat(3,1fr)}}
+/* was 2/3; keep existing cc-card rules, just allow 3 cols on wide */
+
+.cameo{margin:1rem 0 0;padding:.85rem 1rem;border:1px solid rgba(94,200,255,.22);border-radius:12px;background:rgba(94,200,255,.05);max-width:62ch}
+.cameo .kicker{margin:0 0 .3rem}
+.cameo p{margin:0;color:#cfdbe8;font-size:.95rem}
+
+.art-chars{display:grid;gap:.7rem;margin:0}
+.art-chars.n1{grid-template-columns:1fr;max-width:22rem}
+.art-chars.n2{grid-template-columns:repeat(2,1fr)}
+.art-chars.n3{grid-template-columns:repeat(3,1fr)}
+@media (max-width:639px){.art-chars.n3{grid-template-columns:repeat(3,1fr)}}
+.art-chars figure{margin:0;border-radius:16px;overflow:hidden;border:1px solid rgba(94,200,255,.22);background:#070b14;text-align:center}
+.art-chars img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover}
+.art-chars figcaption{padding:.35rem .5rem .5rem;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.04em;color:var(--cyan)}
+
+.z-her .strip{background:radial-gradient(500px 200px at 50% 0,rgba(94,200,255,.12),transparent 70%),linear-gradient(180deg,#0b1a2e,#08111f)}
+.z-join .strip{background:radial-gradient(500px 200px at 50% 0,rgba(142,219,255,.14),transparent 70%),linear-gradient(180deg,#0c1830,#0a1222)}
+.z-his .strip{background:radial-gradient(500px 200px at 50% 0,rgba(94,200,255,.12),transparent 70%),linear-gradient(180deg,#0b1a2e,#08111f)}
+.z-back .strip{background:radial-gradient(500px 200px at 50% 0,rgba(245,194,107,.12),transparent 70%),linear-gradient(180deg,#14161d,#0a0e18)}
+.z-space .strip{background:radial-gradient(1px 1px at 12% 22%,#cfe6ff,transparent),radial-gradient(1px 1px at 33% 70%,#cfe6ff,transparent),radial-gradient(1.4px 1.4px at 58% 18%,#cfe6ff,transparent),radial-gradient(1px 1px at 78% 62%,#cfe6ff,transparent),radial-gradient(1.2px 1.2px at 91% 25%,#cfe6ff,transparent),radial-gradient(1px 1px at 46% 90%,#cfe6ff,transparent),linear-gradient(180deg,#040711,#0b1630)}
