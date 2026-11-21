@@ -1,37 +1,7 @@
 {
- "fetched_at": "2026-11-20T20:28:31Z",
+ "fetched_at": "2026-11-21T07:17:48Z",
  "source": "The Space Devs Launch Library 2 (https://ll.thespacedevs.com/2.3.0/launches/upcoming/)",
  "launches": [
-  {
-   "id": "76617033-4dc0-4448-b50c-e5b0d5a18539",
-   "slug": "falcon-9-block-5-ussf-317",
-   "name": "Falcon 9 Block 5 | USSF-317",
-   "net": "2026-11-21T04:20:35Z",
-   "window_start": "2026-11-21T02:32:00Z",
-   "window_end": "2026-11-21T06:32:00Z",
-   "precision": "Second",
-   "status": "Go for Launch",
-   "status_abbrev": "Go",
-   "provider": "SpaceX",
-   "rocket": "Falcon 9 Block 5",
-   "mission": "USSF-317",
-   "mission_type": "Government/Top Secret",
-   "mission_description": "A classified mission for the United States Space Force. It is possibly a batch of classified LEO satellites based on SpaceX’s Starshield satellite bus, based on locations of rocket stage drop zones being exact fits with previous Starlink Group 15 launches.",
-   "orbit": "LEO",
-   "mission_agencies": [
-    "United States Space Force"
-   ],
-   "pad": "Space Launch Complex 4E",
-   "location": "Vandenberg SFB, CA, USA",
-   "pad_lat": 34.632,
-   "pad_lon": -120.611,
-   "webcast_live": false,
-   "last_updated": "2026-11-20T17:41:31Z",
-   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/76617033-4dc0-4448-b50c-e5b0d5a18539/",
-   "queries": [
-    "spacex"
-   ]
-  },
   {
    "id": "951a341f-236b-42fe-a667-4ab2fcf36eac",
    "slug": "falcon-9-block-5-nrol-136",
@@ -146,7 +116,7 @@
    "pad_lat": 34.632,
    "pad_lon": -120.611,
    "webcast_live": false,
-   "last_updated": "2026-11-20T18:32:41Z",
+   "last_updated": "2026-11-20T21:29:36Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/b0d27def-0a88-44c3-a947-1fd5b8503e2c/",
    "queries": [
     "spacex"
