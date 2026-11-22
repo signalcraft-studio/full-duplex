@@ -451,6 +451,7 @@ footer.site .logo .mark{width:40px;height:40px}
 .jcard{margin:2.5rem 0 0;display:grid;gap:1rem;align-items:center}
 @media (min-width:760px){.jcard{grid-template-columns:auto 1fr}}
 .jcard svg{width:150px;height:auto}
+.jcard .is-thumb{width:150px;height:150px;object-fit:cover;border-radius:14px;border:1px solid rgba(94,200,255,.18);background:#0a1220}
 .jcard h2{margin:.1rem 0 .3rem}
 .anim{animation-play-state:paused!important}
 .scene.in .anim{animation-play-state:running!important}
@@ -843,9 +844,32 @@ header.site nav{gap:.2rem 1rem}
 .fl-expl{display:flex;align-items:center;flex-wrap:wrap;gap:.5rem .9rem;margin:.4rem 0 0;color:var(--muted);font-size:.95rem}
 .xcard{margin-top:2.5rem}
 @media (max-width:760px){.xv{grid-template-columns:1fr;padding:1rem;gap:1rem}.xv-media{max-width:440px}}
+
 /* Explainers joined the main nav (16 Nov 2026): tighten spacing just above the 1000px and 860px breakpoints so it stays on one row */
 @media (max-width:1060px) and (min-width:1001px){header.site .wrap{gap:.7rem}header.site nav{gap:.2rem .62rem}header.site nav a{font-size:.86rem}}
 @media (max-width:920px) and (min-width:861px){header.site .wrap{gap:.6rem}header.site nav{gap:.2rem .45rem}header.site nav a{font-size:.8rem}}
+/* Inner Signal joined the main nav (22 Nov 2026): keep the bar on one row from 861px up. Follow stays in the footer when space is tight. */
+@media (min-width:861px){
+  header.site .wrap{flex-wrap:nowrap;gap:.9rem}
+  header.site nav{flex-wrap:nowrap;gap:.2rem .62rem;min-width:0}
+  header.site nav a{font-size:.88rem;white-space:nowrap}
+}
+@media (max-width:1500px) and (min-width:861px){.xlink .xl-t{display:none}}
+@media (max-width:1400px) and (min-width:861px){.xlink{display:none}}
+@media (max-width:1180px) and (min-width:861px){
+  header.site .wrap{gap:.7rem}
+  header.site nav{gap:.2rem .48rem}
+  header.site nav a{font-size:.82rem}
+  header.site .logo{font-size:1.12rem}
+}
+@media (max-width:1000px) and (min-width:861px){
+  header.site .wrap{gap:.55rem}
+  header.site nav{gap:.2rem .36rem}
+  header.site nav a{font-size:.74rem}
+  header.site .logo{font-size:1rem}
+  header.site .logo .mark{width:34px;height:34px}
+  header.site .btn.pill{padding:.4rem .75rem;font-size:.8rem}
+}
 /* Outbound links (17 Nov 2026 preview): /resources/ page and the "Sources and further reading" box */
 .res-disc{margin:1rem 0 0;max-width:72ch;font-size:.92rem;color:var(--muted);border-left:3px solid var(--cyan);padding:.1rem 0 .1rem .9rem}
 .res-disc strong{color:var(--text)}
