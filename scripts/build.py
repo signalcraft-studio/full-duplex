@@ -87,7 +87,7 @@ def signal_block(root, surface, variant='full', heading_level=2, heading=None, i
             f'<a class=more href="{esc(SITE["archive_url"])}">Read past issues</a></p>{privacy}</div></section>')
 
 # ---------------------------------------------------------------- chrome
-NAV = [('index.html', 'Home'), ('articles/index.html', 'Articles'), ('tracker.html', 'Tracker'), ('launches/index.html', 'Launches'), ('explainers/index.html', 'Explainers'), ('satellites/index.html', 'Satellites'), ('check/index.html', 'Check my phone'), ('search.html', 'Search'), ('about.html', 'About')]  # Sponsor moved to the footer only to make room for Explainers (Sam, 16 Nov 2026)
+NAV = [('index.html', 'Home'), ('articles/index.html', 'Articles'), ('tracker.html', 'Tracker'), ('launches/index.html', 'Launches'), ('explainers/index.html', 'Explainers'), ('inner-signal/index.html', 'Inner Signal'), ('satellites/index.html', 'Satellites'), ('check/index.html', 'Check my phone'), ('search.html', 'Search'), ('about.html', 'About')]  # Inner Signal added for launch prep (22 Nov 2026); Sponsor stays footer-only so the bar can stay on one desktop row
 
 LOGO_MARK = ('<svg class=mark viewBox="254 250 516 516" width="44" height="44" aria-hidden="true" focusable="false">'
              '<g fill="none" stroke-width="32" stroke-linecap="round"><path d="M279 505A233 233 0 0 1 644.3 313.2" stroke="#00cfff"/><path d="M744.9 511.9A233 233 0 0 1 383.7 699.5" stroke="#fff"/></g><circle cx="423" cy="432" r="10" fill="#00cfff"/><path transform="translate(426 517.5) rotate(-15)" fill="#00cfff" fill-rule="evenodd" d="M-23.5 -57.5h47a5 5 0 0 1 5 5v105a5 5 0 0 1 -5 5h-47a5 5 0 0 1 -5 -5v-105a5 5 0 0 1 5 -5zM-8.5 -48h17.0a5.5 5.5 0 0 1 5.5 5.5v0.0a5.5 5.5 0 0 1 -5.5 5.5h-17.0a5.5 5.5 0 0 1 -5.5 -5.5v-0.0a5.5 5.5 0 0 1 5.5 -5.5z"/><g fill="#fff"><path d="M583 488h21l33 32-22 22-32-32z"/><path d="M620 492l20-21 15 14-21 22z"/><path d="M567 545l21-21 14 14-20 20z"/><circle cx="635" cy="541" r="8"/></g>' + '</svg>')  # logo A, approved by Sam 9 Nov 2026 (same as assets/logo.svg)
@@ -106,7 +106,7 @@ def footer(root, sticky=True):
     return (f'<footer class=site><div class=wrap><div><a class=logo href="{root}index.html">{LOGO_MARK}Full<span>Duplex</span></a><p>Independent analysis of satellite-to-phone and mobile networks. Made in the UK.</p>'
             f'<p class=copy>© 2026 Full Duplex.</p></div>'
             f'<nav aria-label="Footer"><a href="{esc(sub_url("footer"))}">Subscribe to Signal</a><a href="https://x.com/{X}" target=_blank rel="noopener me">Follow @{X} on X</a>'
-            f'<a href="{root}articles/index.html">Articles</a><a href="{root}tracker.html">Tracker</a><a href="{root}tracker/changes/">Tracker changes</a><a href="{root}launches/">Launches</a><a href="{root}explainers/">Starship explainers</a><a href="{root}journey/">What happens when you hit send</a><a href="{root}satellites/">Meet the satellites</a><a href="{root}check/">Can my phone connect?</a><a href="{root}glossary/">Glossary</a>'
+            f'<a href="{root}articles/index.html">Articles</a><a href="{root}tracker.html">Tracker</a><a href="{root}tracker/changes/">Tracker changes</a><a href="{root}launches/">Launches</a><a href="{root}explainers/">Starship explainers</a><a href="{root}journey/">What happens when you hit send</a><a href="{root}inner-signal/">Inner Signal</a><a href="{root}satellites/">Meet the satellites</a><a href="{root}check/">Can my phone connect?</a><a href="{root}glossary/">Glossary</a>'
             f'<a href="{root}play/constellation.html">Constellation</a><a href="{root}search.html">Search</a><a href="{root}feed.xml">RSS</a>'
             f'<a href="{root}resources/">Resources</a><a href="{root}about.html">About</a><a href="{root}sponsor.html">Sponsor</a><a href="{root}privacy.html">Privacy</a></nav></div></footer>{bar}')
 
@@ -162,7 +162,7 @@ SEO = json.loads((SRC / 'seo.json').read_text())['pages']
 CRUMB = {'tracker.html': [('Tracker', 'tracker.html')], 'tracker/changes/index.html': [('Tracker', 'tracker.html'), ('Change log', 'tracker/changes/')],
          'articles/index.html': [('Articles', 'articles/')], 'about.html': [('About', 'about.html')], 'sponsor.html': [('Sponsor', 'sponsor.html')],
          'privacy.html': [('Privacy', 'privacy.html')], 'search.html': [('Search', 'search.html')], 'check/index.html': [('Phone checker', 'check/')],
-         'glossary/index.html': [('Glossary', 'glossary/')], 'explainers/index.html': [('Launches', 'launches/'), ('Explainers', 'explainers/')], 'resources/index.html': [('Resources', 'resources/')], 'play/constellation.html': [('Constellation', 'play/constellation.html')]}
+         'glossary/index.html': [('Glossary', 'glossary/')], 'explainers/index.html': [('Launches', 'launches/'), ('Explainers', 'explainers/')], 'inner-signal/index.html': [('Inner Signal', 'inner-signal/')], 'resources/index.html': [('Resources', 'resources/')], 'play/constellation.html': [('Constellation', 'play/constellation.html')]}
 # ---------------------------------------------------------------- outbound links: /resources/ and the "Sources and further reading" boxes (src/resources.json)
 RES = json.loads((SRC / 'resources.json').read_text())
 def ext_link(l, label=None):
@@ -188,7 +188,7 @@ def blank_external(h):
     return re.sub(r'<a\s[^>]*?href="(https?://[^"]+)"[^>]*>', fix, h)
 
 def page(*, path, title, description, body, root='', current='', og_type='website', jsonld=None, head_extra='', scripts='',
-         viewport='width=device-width,initial-scale=1', sticky=True, full_title=None, lastmod=None, search=True, cls='', index=True, search_text=None, og=None, gloss=False):
+         viewport='width=device-width,initial-scale=1', sticky=True, full_title=None, lastmod=None, search=True, cls='', index=True, search_text=None, og=None, gloss=False, og_art=None, og_sub=None):
     url = BASE + (path[:-len('index.html')] if path.endswith('index.html') else path)
     ft = full_title or f'{title} | Full Duplex'
     o = SEO.get(path, {})
@@ -203,7 +203,12 @@ def page(*, path, title, description, body, root='', current='', og_type='websit
     slug = 'home' if path == 'index.html' else re.sub(r'(/index)?\.html$', '', path).replace('/', '-')
     kicker, og_title, *og_more = og or ('Full Duplex', title)
     if not index: slug = 'home'
-    elif IMGS: IMGS.og_card(ROOT / 'assets' / 'og' / f'{slug}.jpg', kicker, og_title, chips=og_more[0] if og_more else None)
+    elif IMGS:
+        dest = ROOT / 'assets' / 'og' / f'{slug}.jpg'
+        if og_art:
+            IMGS.og_card_art(dest, kicker, og_title, og_art, sub=og_sub)
+        else:
+            IMGS.og_card(dest, kicker, og_title, chips=og_more[0] if og_more else None)
     raw_body = body
     if gloss: body = gloss_html(body, root)
     og_img = f'{BASE}assets/og/{slug}.jpg'
@@ -998,7 +1003,7 @@ def launches_page():
             f'<section class="card tlink" aria-labelledby=tl-h><p class=kicker>From the tracker</p><h2 id=tl-h><a href="{root}tracker.html">Where these satellites already reach phones</a></h2>'
             f'<p>{C["live"]} live direct-to-cell services in {NLIVE_C} countries, plus {C["trial"]} trials and {C["announced"]} announced. See who’s live, country by country, with sources.</p>'
             f'<p class=row-cta><a class="btn ghost" href="{root}tracker.html">Open the tracker</a><a class="btn ghost" href="{root}articles/why-starship-is-a-telco-story.html">Why Starship is a telco story</a></p></section>'
-            + explainers_card(root) + journey_card(root) + sats_card(root)
+            + explainers_card(root) + inner_signal_card(root) + journey_card(root) + sats_card(root)
             + sources_box(root, 'launches/index.html')
             + signal_block(root, 'launches', heading='Get launch alerts in Signal', intro='Signal is our free weekly direct-to-cell briefing. Subscribe for the launches that matter for your phone and what changed in the tracker, in one email a week.'))
     ld = [crumbs([('Home', ''), ('Launches', 'launches/')]),
@@ -1132,8 +1137,12 @@ def journey_page():
     page(og=('Explainer', 'What happens when you hit send: one text, via satellite'), gloss=True, path='journey/index.html', title=meta['title'], description=meta['description'],
          body=body, root=root, current='', jsonld=ld, cls='is-journey', lastmod='2026-11-10', scripts=f'<script defer src="{root}assets/journey.js"></script>',
          full_title='What happens when you hit send: a text via satellite | Full Duplex')
-# ---------------------------------------------------------------- Inner Signal explainer (PREVIEW: src/pages/inner-signal.html; scroll animation in assets/inner-signal.js + .css)
-# Preview only: noindex, not in the sitemap or site search, not in the nav. To go live: index=True, search=True, add to NAV/footer/sitemap and an OG card.
+# ---------------------------------------------------------------- Inner Signal explainer (src/pages/inner-signal.html; scroll animation in assets/inner-signal.js + .css)
+def inner_signal_card(root):
+    return (f'<section class="card jcard" aria-labelledby=is-h>'
+            f'<img class=is-thumb src="{root}assets/img/inner-signal/p-sat.webp" width="400" height="400" alt="" decoding="async">'
+            f'<div><p class=kicker>Explainer · new</p><h2 id=is-h><a href="{root}inner-signal/">Inner Signal: the life of a phone call</a></h2>'
+            f'<p>Ride a phone call from a mobile in Warminster to a hiker with no mast, via satellite, then on to the bill. Fourteen animated chapters, in plain English.</p></div></section>')
 def inner_signal_page():
     meta, body, _ = read_src(SRC / 'pages' / 'inner-signal.html'); root = '../'; url = BASE + 'inner-signal/'
     share = share_btn('Inner Signal: follow one phone call from a mobile in Warminster to a hiker with no mast, via satellite, all the way to the bill.', url)
@@ -1143,8 +1152,13 @@ def inner_signal_page():
     cta = cta.replace(esc(sub_url('inner-signal')), esc(SUB + '?' + urllib.parse.urlencode({'utm_source': 'site', 'utm_medium': 'inner-signal', 'utm_campaign': 'signal'})))
     body += cta
     css = f'<link rel="stylesheet" href="{root}assets/inner-signal.css?v={asset_v("assets/inner-signal.css")}">'
+    ld = [crumbs([('Home', ''), ('Inner Signal', 'inner-signal/')]),
+          {'@context': 'https://schema.org', '@type': 'Article', 'headline': meta['title'], 'description': meta['description'], 'author': AUTHOR, 'publisher': PUBLISHER,
+           'mainEntityOfPage': url, 'inLanguage': 'en-GB', 'image': [f'{BASE}assets/og/inner-signal.jpg'], 'datePublished': '2026-11-22'}]
     page(og=('Explainer', 'Inner Signal: the life of a phone call'), gloss=True, path='inner-signal/index.html', title=meta['title'], description=meta['description'],
-         body=body, root=root, current='', cls='is-inner', index=False, search=False, head_extra=css, scripts=f'<script defer src="{root}assets/inner-signal.js"></script>')
+         body=body, root=root, current='inner-signal/index.html', cls='is-inner', index=True, search=True, lastmod='2026-11-22', jsonld=ld, head_extra=css,
+         og_art=ROOT / 'assets' / 'img' / 'inner-signal' / 'satellite-beam.webp', og_sub='Fourteen chapters. One phone call. Via satellite.',
+         scripts=f'<script defer src="{root}assets/inner-signal.js"></script>')
 # ---------------------------------------------------------------- satellites explainer (src/satellites.json; drawings in scripts/satviz.py)
 def const_item(cid): return next((i for i in CONST['direct_to_device'] + CONST['broadband_only'] if i['id'] == cid), None)
 def sats_card(root):
@@ -1470,7 +1484,7 @@ home = (f'<section class=hero><div class=hero-art aria-hidden=true><img src="ass
           f'<div class=cclist>{"".join(f"<a class=\"cc s-{CLS[best(rs)]}\" href=\"tracker/{country_slug(c)}/\">{esc(c)}</a>" for c, rs in sorted(COUNTRIES.items(), key=lambda kv: -RANK[best(kv[1])])[:8])}</div></div></div></section>'
         + f'<section aria-labelledby=more-h><h2 id=more-h class=sec>More analysis</h2><div class=list>{"".join(art_card(a, "", 3, "row") for a in rest[3:])}</div><p><a href="articles/index.html">All articles</a></p></section>'
         + '<section aria-labelledby=play-h class="card play"><p class=kicker>Play</p><h2 id=play-h><a href="play/constellation.html">Constellation</a></h2><p>Deploy direct-to-cell satellites into orbit. A 75-second browser game: hit the slots before time runs out.</p></section>'
-        + journey_card('')
+        + inner_signal_card('') + journey_card('')
         + '<aside class=sponsor-card aria-label="Sponsorship"><p class=kicker>Presented by · slot available</p><h2>Put your brand in front of the people building satellite-to-phone</h2>'
           '<p>Engineers, operator teams, investors and early adopters read Full Duplex. One sponsor at a time, always clearly labelled.</p>'
           '<p><a class="btn ghost" href="sponsor.html">See sponsor options</a></p></aside>')

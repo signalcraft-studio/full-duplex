@@ -337,7 +337,7 @@ toc = ''.join(f'<li><a href="#ch-{c["n"]}"><span>{c["n"]:02d}</span>{c["title"]}
 HEAD = f'''{POD}
 <header class="page-head is-head"><p class="kicker">Explainer · the life of a phone call</p><h1>Inner Signal: the life of a phone call</h1>
 <p class="lede">A woman in Warminster rings her son’s mobile from her own phone. He is hiking in the Highlands, miles from the nearest mast. We shrink down and ride the call, from the moment she presses call to the line on her bill.</p>
-<p class="jcred">Written by a mobile network insider with over 13 years in GSM, from IVR and SMS to call routing and thin and thick MVNOs. <span class="prot">Preview build</span></p>
+<p class="jcred">Written by a mobile network insider with over 13 years in GSM, from IVR and SMS to call routing and thin and thick MVNOs.</p>
 <p class="honest top"><strong>An honest note.</strong> As of November 2026, the only live UK satellite-to-phone service is Virgin Media O2’s O2 Satellite service, over Starlink Direct to Cell. It offers texts, location sharing and a short list of apps, including WhatsApp. WhatsApp calls can work, but they are internet (VoIP) calls over the app’s data, not a normal phone call, so quality varies and they can drop as satellites pass. Standard phone calls, including 999, are not supported yet. This story’s satellite voice leg is the near future being built, not something you can dial today.</p>
 <p class="row-cta"><a class="btn" href="#ch-1">Start the journey <span aria-hidden="true">↓</span></a><button type="button" class="btn ghost" id="all-real" aria-pressed="false">Show me the real thing, everywhere</button></p>
 <!--SHARE-TOP-->

@@ -92,6 +92,59 @@ def og_card(out, kicker, title, foot='signalcraft-studio.github.io/full-duplex  
     d.text((72, 548), foot, font=font('JetBrainsMono-500.woff2', 22), fill=(160, 176, 200))
     return save(im, out, 'JPEG', quality=84, optimize=True, progressive=True)
 
+
+def og_card_art(out, kicker, title, art, sub=None, foot='signalcraft-studio.github.io/full-duplex  ·  @FullDuplexHQ'):
+    """1200x630 share card: brand plate, title, and a hero still in a rounded frame.
+    Same typography and footer as og_card / render_share.py, with artwork in the lower band."""
+    W, H = 1200, 630
+    global _plate
+    if _plate is None:
+        _plate = fit(Image.open(SRC / 'og-plate.jpg').convert('RGB'), W, H)
+    im = Image.blend(_plate.copy(), Image.new('RGB', (W, H), BG), 0.45)
+    d = ImageDraw.Draw(im)
+    logo = Image.open(SRC / 'logo-a-512.png').convert('RGBA').resize((64, 64), Image.LANCZOS)
+    im.paste(logo, (52, 36), logo)
+    fh = font('InterTight-600.woff2', 34)
+    d.text((128, 48), 'Full', font=fh, fill=WHITE)
+    d.text((128 + d.textlength('Full', font=fh), 48), 'Duplex', font=fh, fill=CYAN)
+    mono_k = font('JetBrainsMono-500.woff2', 20)
+    kw = d.textlength(kicker.upper(), font=mono_k)
+    d.text((W - 52 - kw, 54), kicker.upper(), font=mono_k, fill=CYAN)
+    for size in (48, 42, 38, 34):
+        ft = font('InterTight-600.woff2', size)
+        lines = wrap(d, title, ft, 1090)
+        if len(lines) <= 2:
+            break
+    y = 112
+    for ln in lines[:2]:
+        d.text((56, y), ln, font=ft, fill=WHITE)
+        y += round(size * 1.14)
+    if sub:
+        ms = font('JetBrainsMono-500.woff2', 20)
+        d.text((56, y + 4), sub, font=ms, fill=(176, 192, 214))
+        y += 32
+    # hero still in the remaining band
+    art_im = Image.open(art).convert('RGB')
+    box = (56, y + 18, W - 56, 572)
+    bw, bh = box[2] - box[0], box[3] - box[1]
+    s = max(bw / art_im.width, bh / art_im.height)
+    gg = art_im.resize((max(1, round(art_im.width * s)), max(1, round(art_im.height * s))), Image.LANCZOS)
+    ax = box[0] + (bw - gg.width) // 2
+    ay = box[1] + (bh - gg.height) // 2
+    gg = gg.crop((max(0, -ax), max(0, -ay), max(0, -ax) + bw, max(0, -ay) + bh))
+    ax, ay = box[0], box[1]
+    m = Image.new('L', gg.size, 0)
+    ImageDraw.Draw(m).rounded_rectangle((0, 0, gg.width - 1, gg.height - 1), radius=18, fill=255)
+    sh = Image.new('L', (W, H), 0)
+    ImageDraw.Draw(sh).rounded_rectangle((ax - 2, ay + 6, ax + gg.width + 2, ay + gg.height + 10), radius=20, fill=150)
+    im.paste(Image.new('RGB', (W, H), (0, 0, 0)), (0, 0), sh.filter(ImageFilter.GaussianBlur(14)))
+    im.paste(gg, (ax, ay), m)
+    ImageDraw.Draw(im).rounded_rectangle((ax, ay, ax + gg.width - 1, ay + gg.height - 1), radius=18, outline=(40, 64, 96), width=2)
+    d = ImageDraw.Draw(im)
+    mf = font('JetBrainsMono-500.woff2', 18)
+    d.text((W - 56 - d.textlength(foot, font=mf), 588), foot, font=mf, fill=(150, 166, 190))
+    return save(im, out, 'JPEG', quality=88, subsampling=0, optimize=True, progressive=True)
+
 # ------------------------------------------------------------------ responsive assets + icons
 def build():
     ch = []
