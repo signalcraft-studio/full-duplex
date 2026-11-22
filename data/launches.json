@@ -1,15 +1,15 @@
 {
- "fetched_at": "2026-11-21T19:22:48Z",
+ "fetched_at": "2026-11-22T06:58:33Z",
  "source": "The Space Devs Launch Library 2 (https://ll.thespacedevs.com/2.3.0/launches/upcoming/)",
  "launches": [
   {
    "id": "951a341f-236b-42fe-a667-4ab2fcf36eac",
    "slug": "falcon-9-block-5-nrol-136",
    "name": "Falcon 9 Block 5 | NROL-136",
-   "net": "2026-11-22T12:16:00Z",
+   "net": "2026-11-22T12:23:56Z",
    "window_start": "2026-11-22T12:16:00Z",
    "window_end": "2026-11-22T12:46:00Z",
-   "precision": "Minute",
+   "precision": "Second",
    "status": "Go for Launch",
    "status_abbrev": "Go",
    "provider": "SpaceX",
@@ -26,7 +26,7 @@
    "pad_lat": 34.632,
    "pad_lon": -120.611,
    "webcast_live": false,
-   "last_updated": "2026-11-20T17:43:32Z",
+   "last_updated": "2026-11-22T05:25:07Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/951a341f-236b-42fe-a667-4ab2fcf36eac/",
    "queries": [
     "spacex"
@@ -86,7 +86,7 @@
    "pad_lat": 34.632,
    "pad_lon": -120.611,
    "webcast_live": false,
-   "last_updated": "2026-11-21T15:55:17Z",
+   "last_updated": "2026-11-21T20:29:25Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/460d9db7-eaf6-4cd9-b095-cff433534c09/",
    "queries": [
     "spacex"
