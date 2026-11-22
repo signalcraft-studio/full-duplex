@@ -158,8 +158,26 @@ CH = [
   portraits=['hlr']),
 ]
 
-CAMEO = '''<aside class="cameo" aria-label="How it used to work"><p class="kicker">How it used to work</p>
-<p>If she had placed this call from a landline, the first hop would have been a copper wire into a local exchange, which would have handed the call to a transit switch and then to the mobile operator. The UK’s old analogue phone network, the PSTN, is due to go digital on <a href="https://www.openreach.com/big-switch-off">31 January 2027</a>. After that, a “landline” call is really a broadband call that arrives at the same mobile front door.</p></aside>'''
+CAMEO = '''<aside class="cameo" aria-labelledby="cameo-h">
+<h3 id="cameo-h" class="kicker">How it used to work</h3>
+<p>If she had placed this call from a landline, the first hop would have been a copper wire into a local exchange, which would have handed the call to a transit switch and then to the mobile operator. The UK’s old analogue phone network, the PSTN, is due to go digital on <a href="https://www.openreach.com/big-switch-off">31 January 2027</a>. After that, a “landline” call is really a broadband call that arrives at the same mobile front door.</p>
+<ul class="era-strip" aria-label="Characters from earlier eras of the telephone">
+<li><figure><img src="../assets/img/inner-signal/era/past-switchboard.webp" width="960" height="540" alt="A switchboard operator in a navy uniform plugs a cord into a wooden board" loading="lazy" decoding="async"><figcaption>Switchboard operator</figcaption></figure></li>
+<li><figure><img src="../assets/img/inner-signal/era/past-strowger.webp" width="960" height="540" alt="A brass automaton whose torso is a Strowger stepping switch, with a vertical bank of contacts and a wiper arm" loading="lazy" decoding="async"><figcaption>Strowger switch</figcaption></figure></li>
+<li><figure><img src="../assets/img/inner-signal/era/past-telegraph.webp" width="960" height="540" alt="A telegraph messenger in a peaked cap, holding an envelope beside a bicycle" loading="lazy" decoding="async"><figcaption>Telegraph messenger</figcaption></figure></li>
+<li><figure><img src="../assets/img/inner-signal/era/past-rotary.webp" width="960" height="540" alt="A friendly character in the shape of a dark red rotary-dial telephone" loading="lazy" decoding="async"><figcaption>Rotary telephone</figcaption></figure></li>
+<li><figure><img src="../assets/img/inner-signal/era/past-k6.webp" width="960" height="540" alt="A character in the shape of a red K6 telephone box" loading="lazy" decoding="async"><figcaption>K6 phone box</figcaption></figure></li>
+<li><figure><img src="../assets/img/inner-signal/era/past-brick.webp" width="960" height="540" alt="A chunky 1980s brick mobile phone standing as a character" loading="lazy" decoding="async"><figcaption>1985 brick phone</figcaption></figure></li>
+<li><figure><img src="../assets/img/inner-signal/era/past-nokia.webp" width="960" height="540" alt="A Nokia 3310 character with a small separate screen, oval navigation key and 12-button keypad" loading="lazy" decoding="async"><figcaption>Nokia 3310</figcaption></figure></li>
+<li><figure><img src="../assets/img/inner-signal/era/past-lineman.webp" width="960" height="540" alt="A copper lineman in a peaked cap, holding a coil of cable beside a telegraph pole" loading="lazy" decoding="async"><figcaption>Copper lineman</figcaption></figure></li>
+</ul>
+<div class="baton">
+<figure><img src="../assets/img/inner-signal/era/past-switchboard.webp" width="960" height="540" alt="The switchboard operator at her board" loading="lazy" decoding="async"><figcaption>Switchboard operator</figcaption></figure>
+<p class="baton-mark" aria-hidden="true"><span class="baton-stick"></span></p>
+<figure><img src="../assets/img/inner-signal/era/today-msc.webp" width="960" height="540" alt="Today’s MSC signalman, ready to take the call on" loading="lazy" decoding="async"><figcaption>MSC signalman</figcaption></figure>
+</div>
+<p class="baton-cap">The switchboard operator hands the baton to today’s MSC signalman. The job is the same: take the call, and send it on.</p>
+</aside>'''
 
 # ---- helpers (route diagrams, eggs, chapters)
 def chip(x, y, text, at, anchor='middle', cls='chip'):
@@ -276,17 +294,18 @@ def chapter(c):
     egg = EGGS.get(c.get('egg'), '')
     honesty = ''
     if c.get('honesty'):
-        honesty = '<p class="honest"><strong>An honest note.</strong> As of November 2026, the live UK service is O2 Satellite (Virgin Media O2, over Starlink Direct to Cell): texts, location sharing and a short list of apps, including WhatsApp. Standard phone calls, including 999, are not supported yet. VodafoneThree has said its planned AST SpaceMobile service is expected to include voice, with beta testing expected in early 2027. This leg of the story shows that near future, not a native voice call you can place over satellite today.</p>'
+        honesty = '<p class="honest"><strong>An honest note.</strong> As of November 2026, the only live UK satellite-to-phone service is Virgin Media O2’s O2 Satellite service, over Starlink Direct to Cell: texts, location sharing and a short list of apps, including WhatsApp. WhatsApp calls can work, but they are internet (VoIP) calls over the app’s data, not a normal phone call, so quality varies and they can drop as satellites pass. Standard phone calls, including 999, are not supported yet. VodafoneThree has said its planned AST SpaceMobile service is expected to include voice, with beta testing expected in early 2027. This leg of the story shows that near future, not a native voice call you can place over satellite today.</p>'
     on = ''.join(f'<li><img src="../assets/img/inner-signal/c-{k}.webp" width="24" height="24" alt="" loading="lazy">{esc(lab)}</li>' for k, lab in c['on'])
     notes = ''.join(f'<li>{x}</li>' for x in c['notes'])
     cameo = CAMEO if n == 1 else ''
     return f'''<section class="ch z-{zone}" id="ch-{n}" data-n="{n}" data-zone="{ZONES[zone]}" data-title="{esc(c['title'])}" aria-labelledby="ch{n}-h">
 <header class="ch-h"><span class="num" aria-hidden="true">{n:02d}</span><p class="kicker">Chapter {n} of 14 · {ZONES[zone]}</p><h2 id="ch{n}-h">{c['title']}</h2></header>
 <div class="ch-vis">{art}<div class="strip">{strip_svg(c, False)}{strip_svg(c, True)}{egg}</div>{extras}</div>
-<div class="ch-txt"><p class="cap">{c['cap']}</p>{("<p class=\"cap cap2\">"+c["cap2"]+"</p>") if c.get("cap2") else ""}{honesty}{cameo}<ul class="onscr" aria-label="On screen in this chapter">{on}</ul>
+<div class="ch-txt"><p class="cap">{c['cap']}</p>{("<p class=\"cap cap2\">"+c["cap2"]+"</p>") if c.get("cap2") else ""}{honesty}<ul class="onscr" aria-label="On screen in this chapter">{on}</ul>
 <button type="button" class="real-b" aria-expanded="false" aria-controls="real-{n}">Show me the real thing</button>
 <div class="real" id="real-{n}"><p class="proto">{esc(c['proto'])}</p><pre><code>{esc(c['real'])}</code></pre><ul class="rn">{notes}</ul></div></div>
-</section>'''
+</section>
+{cameo}'''
 
 # sleek new pod: bubble canopy, cyan stripes, brown hair
 POD = '''<svg class="jdefs" width="0" height="0" aria-hidden="true" focusable="false"><defs>
@@ -319,7 +338,7 @@ HEAD = f'''{POD}
 <header class="page-head is-head"><p class="kicker">Explainer · the life of a phone call</p><h1>Inner Signal: the life of a phone call</h1>
 <p class="lede">A woman in Warminster rings her son’s mobile from her own phone. He is hiking in the Highlands, miles from the nearest mast. We shrink down and ride the call, from the moment she presses call to the line on her bill.</p>
 <p class="jcred">Written by a mobile network insider with over 13 years in GSM, from IVR and SMS to call routing and thin and thick MVNOs. <span class="prot">Preview build</span></p>
-<p class="honest top"><strong>An honest note.</strong> As of November 2026, the only live UK satellite-to-phone service is O2 Satellite, from Virgin Media O2 over Starlink Direct to Cell. It offers texts, location sharing and a short list of apps, including WhatsApp. Standard phone calls, including 999, are not supported yet. This story’s satellite voice leg is the near future being built, not something you can dial today.</p>
+<p class="honest top"><strong>An honest note.</strong> As of November 2026, the only live UK satellite-to-phone service is Virgin Media O2’s O2 Satellite service, over Starlink Direct to Cell. It offers texts, location sharing and a short list of apps, including WhatsApp. WhatsApp calls can work, but they are internet (VoIP) calls over the app’s data, not a normal phone call, so quality varies and they can drop as satellites pass. Standard phone calls, including 999, are not supported yet. This story’s satellite voice leg is the near future being built, not something you can dial today.</p>
 <p class="row-cta"><a class="btn" href="#ch-1">Start the journey <span aria-hidden="true">↓</span></a><button type="button" class="btn ghost" id="all-real" aria-pressed="false">Show me the real thing, everywhere</button></p>
 <!--SHARE-TOP-->
 </header>
@@ -336,16 +355,56 @@ HEAD = f'''{POD}
 '''
 
 END = '''</div>
+<section class="next" id="what-comes-next" aria-labelledby="next-h">
+<h2 id="next-h">What comes next</h2>
+<p>Today’s crew still does the work you have just ridden through. These characters are a look at what is arriving, or still expected, around that same journey.</p>
+<ul class="next-grid">
+<li>
+<figure><img src="../assets/img/inner-signal/era/future-satellite.webp" width="960" height="540" alt="A lighthouse-shaped satellite with the Full Duplex logo glowing on its face screen, beaming down towards Earth" loading="lazy" decoding="async">
+<figcaption>Direct-to-cell satellite</figcaption></figure>
+<p>In the UK, Virgin Media O2’s O2 Satellite service is already live for texts, location sharing and some apps, over Starlink Direct to Cell. A native voice call to an ordinary phone, of the kind this story rides, is the next step being built, using 3GPP Non-Terrestrial Networks from Release 17 onwards.</p>
+</li>
+<li>
+<figure><img src="../assets/img/inner-signal/era/future-beam.webp" width="960" height="540" alt="A living cyan radio-beam sprite with a disc-shaped wavefront and concentric rings" loading="lazy" decoding="async">
+<figcaption>Orbital beam</figcaption></figure>
+<p>Those NTN standards give the radio extra help with long delay and Doppler shift, so a phone in a glen can treat a fast-moving satellite as a cell. Later 3GPP releases add further enhancements.</p>
+</li>
+<li>
+<figure><img src="../assets/img/inner-signal/era/future-orchestrator.webp" width="960" height="540" alt="A holographic conductor whose orchestra is made of phones, masts, network nodes and satellites" loading="lazy" decoding="async">
+<figcaption>AI orchestrator</figcaption></figure>
+<p>AI-driven networks are being trialled and are emerging. They are not deployed everywhere, and this character stands for that work in progress, not a system you will find in every core today.</p>
+</li>
+<li>
+<figure><img src="../assets/img/inner-signal/era/future-esim.webp" width="960" height="540" alt="A friendly character in the shape of an eSIM chip" loading="lazy" decoding="async">
+<figcaption>eSIM</figcaption></figure>
+<p>An eSIM is a downloadable profile. It still holds the IMSI and the Ki, so the same authentication you met in this story applies, whether the profile arrived on a plastic SIM or over the air.</p>
+</li>
+<li>
+<figure><img src="../assets/img/inner-signal/era/future-ntn.webp" width="960" height="540" alt="A ring-shaped NTN core station in orbit, with solar wings and a friendly face at the centre" loading="lazy" decoding="async">
+<figcaption>NTN core</figcaption></figure>
+<p>3GPP’s Non-Terrestrial Networks work, from Release 17 onwards, is how ordinary phones and satellites are being standardised to talk to each other. 6G is expected around 2030, as 3GPP studies the groundwork in Releases 20 and 21. That date is an expectation, not a fact.</p>
+</li>
+<li>
+<figure><img src="../assets/img/inner-signal/era/future-gateway.webp" width="960" height="540" alt="A ground-station keeper in a navy coat, holding a glowing tablet between three satellite dishes" loading="lazy" decoding="async">
+<figcaption>Gateway station</figcaption></figure>
+<p>Many designs still bring the call down through a ground station before it reaches the core. The keeper is expected to remain part of the path, even as more of the radio moves into orbit.</p>
+</li>
+</ul>
+<figure class="family-fig">
+<img src="../assets/img/inner-signal/era/family-tree.webp" width="1600" height="1067" alt="A family tree of Inner Signal characters in three eras, past, today and future, across switching, the handset and the radio path" loading="lazy" decoding="async">
+<figcaption>Three eras, one family. Today’s crew still carries the 14 chapters you have just read.</figcaption>
+</figure>
+</section>
 <section class="wrapup" aria-labelledby="wu-h"><h2 id="wu-h">The whole trip in one breath</h2>
 <p>One tap on a mobile, two networks, two secret agents who meet in the middle, a satellite moving at 17,000 mph, and a pair of billing systems that would not give up. It all took a few seconds to connect and left a single line on her bill: <strong>07700 900123, 4 min 12s</strong>.</p>
-<p>Standard voice calls from an ordinary UK phone, over a satellite, are not here yet. O2 Satellite is live for texts and some apps, and other operators have voice in their plans. Signal is where we follow what comes next.</p>
+<p>Standard voice calls from an ordinary UK phone, over a satellite, are not here yet. Virgin Media O2’s O2 Satellite service is live for texts, some apps, and WhatsApp calls over the app’s data. Other operators have native voice in their plans. Signal is where we follow what comes next.</p>
 <details class="srcs"><summary>Where the details come from</summary><ul>
 <li>Call setup and routing: ITU-T <a href="https://www.itu.int/rec/T-REC-Q.763">Q.763</a> (ISUP message formats) and <a href="https://www.itu.int/rec/T-REC-Q.764">Q.764</a> (ISUP procedures); 3GPP <a href="https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=796">TS 23.018</a> (basic call handling) and <a href="https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=1660">TS 29.002</a> (MAP).</li>
 <li>Mobile-originated prepaid and CAMEL: 3GPP <a href="https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=598">TS 23.078</a> and <a href="https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=1678">TS 29.078</a> (CAP). On a mobile-originated call the usual trigger is DP Collected_Info, at the originating MSC. 4G and 5G online charging uses Diameter or a CHF, with the same job.</li>
 <li>Numbers and identities (IMSI, TMSI, IMEI, MSRN, MSISDN): 3GPP <a href="https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=730">TS 23.003</a>. Drama numbers: Ofcom’s reserved range <a href="https://www.ofcom.org.uk/phones-telecoms-and-internet/information-for-industry/numbering/numbers-for-drama">07700 900000 to 900999</a>.</li>
 <li>GSM security (RAND, SRES, Kc, A3, A8, A5): 3GPP <a href="https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=2713">TS 43.020</a>. 4G and 5G use AKA to do the same job, in <a href="https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=2296">TS 33.401</a> and <a href="https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=3169">TS 33.501</a>.</li>
 <li>VoLTE / IMS: 3GPP <a href="https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=821">TS 23.228</a>. We keep the older MSC and HLR names in the story because the roles are easier to follow; today’s UK voice calls usually run this way over IMS.</li>
-<li>Satellite access to ordinary phones: 3GPP Non-Terrestrial Networks, <a href="https://www.3gpp.org/technologies/ntn-overview">Release 17 onwards</a>, including radio adaptations for long delay and Doppler shift. Later releases add further enhancements. UK service in November 2026: <a href="https://www.o2.co.uk/help/products-and-services/offers-and-extras/o2-satellite">O2 Satellite</a> (texts, location and some apps; not standard voice).</li>
+<li>Satellite access to ordinary phones: 3GPP Non-Terrestrial Networks, <a href="https://www.3gpp.org/technologies/ntn-overview">Release 17 onwards</a>, including radio adaptations for long delay and Doppler shift. Later releases add further enhancements. UK service in November 2026: Virgin Media O2’s <a href="https://www.o2.co.uk/help/products-and-services/offers-and-extras/o2-satellite">O2 Satellite</a> service (texts, location and some apps; WhatsApp calls over the app’s data, with variable quality; not standard voice). Launch: <a href="https://news.virginmediao2.co.uk/virgin-media-o2-becomes-the-first-uk-mobile-network-to-switch-on-direct-to-device-satellite-connectivity-with-the-launch-of-o2-satellite/">Virgin Media O2, 26 February 2026</a>.</li>
 <li>UK landline switch-off: <a href="https://www.openreach.com/big-switch-off">Openreach, Big Switch Off</a>, 31 January 2027.</li>
 <li>Wholesale settlement: the originating operator pays the terminating operator a regulated mobile termination rate. Ofcom reviews this market periodically.</li>
 </ul></details></section>
