@@ -86,6 +86,7 @@ html{scroll-padding-top:8.5rem}
 
 .ch-txt{min-width:0}
 .cap{font-family:var(--f-body);font-size:clamp(1.12rem,1.6vw,1.3rem);line-height:1.5;color:#dbe5f0;margin:0 0 .9rem}
+.cap2{margin-top:.95rem;padding-top:.95rem;border-top:1px solid rgba(94,200,255,.18)}
 .onscr{list-style:none;display:flex;flex-wrap:wrap;gap:.35rem;margin:0 0 1rem;padding:0}
 .onscr li{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.04em;color:var(--cyan-2);border:1px solid rgba(94,200,255,.3);border-radius:999px;padding:.12rem .6rem}
 .onscr li img{width:24px;height:24px;border-radius:50%;object-fit:cover;margin-left:-.45rem;background:#070b14}

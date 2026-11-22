@@ -31,9 +31,9 @@ CH = [
   node=[('phone', 'Her mobile', 0), ('bts', 'Nearest mast', 0)],
   chip='07700 900123', reply='', proto='Radio · call setup',
   cap='In a kitchen in Warminster, she types her son’s mobile number and presses call. We shrink down and climb aboard the Call Pod. Her phone is already on a normal UK mast, so the first hop is a short radio hop: the number, and a request to place the call, go up to the lighthouse on the hill.',
-  real='Phone  →  mast (BTS / eNodeB)   radio signalling\n   CM Service Request  (mobile-originated call)     [GSM-style name]\n   or SIP  INVITE  to her IMS core                    [today’s VoLTE name]\n   Called number : 07700 900123   (Ofcom drama range, not a real person)',
+  real='Phone  →  mast (BTS / eNodeB)   radio signalling\n   GSM-style:  CM Service Request  (MO call), then  SETUP\n              with calledPartyBCDNumber = 07700 900123\n   Today’s VoLTE:  SIP  INVITE  to her IMS core (via the P-CSCF)\n              Request-URI / To: +447700900123\n   07700 900000 to 900999 is Ofcom’s reserved drama range',
   notes=['On a mobile she does not send each digit as a musical tone, the way a landline does. The whole number travels in the setup message once she presses call.',
-         '07700 900xxx is a range Ofcom sets aside for TV and drama, so no real person will ever answer it.'],
+         '07700 900000 to 07700 900999 is the mobile range Ofcom sets aside for TV and drama, so no real person will ever answer it.'],
   on=[('pod', 'Call Pod')],
   art=('she-dials', 'A woman at her kitchen table taps a smartphone while the sleek Call Pod hovers beside it, linked by a swirl of cyan light')),
  dict(n=2, zone='her', title='Up the mast',
@@ -47,9 +47,9 @@ CH = [
  dict(n=3, zone='her', title='“Prove you’re you”',
   node=[('exchange', 'Her VLR / AuC', 0), ('sim', 'Her SIM', 0)],
   chip='RAND', reply='SRES', proto='GSM security · DTAP  (or AKA in 4G/5G)',
-  cap='Before the network will place the call, it checks that her secret agent is genuine, without ever asking for the secret itself. It sends a random number, the RAND. Inside her SIM, the glowing key (Ki) scrambles it into an answer (SRES). In the network’s AuC vault, the twin key has already worked out the right answer. If they match, the agent is real. Both sides also make a one-off ciphering key, and her conversation is scrambled from here on. Ki itself never leaves either vault. Over the air she wears her TMSI disguise, not her real name.',
+  cap='The network must be sure her secret agent is genuine, without ever asking for the secret itself. In a live network this check usually ran when her phone last signed on, and it can run again when she starts a call. We show it here so you can see it happen. The network sends a random number, the RAND. Inside her SIM, the glowing key (Ki) scrambles it into an answer (SRES). In the network’s AuC vault, the twin key has already worked out the right answer. If they match, the agent is real. Both sides also make a one-off ciphering key, and her conversation is scrambled from here on. Ki itself never leaves either vault. Over the air she wears her TMSI disguise, not her real name.',
   real='AuC (in advance)  RAND → A3(Ki) = SRES,  A8(Ki) = Kc   →  triplet to her VLR\nVLR → phone   Authentication Request   RAND (128 bit)\nHer SIM        SRES′ = A3(Ki, RAND);   Kc = A8(Ki, RAND)\nphone → VLR    Authentication Response   SRES′\nVLR            SRES′ = SRES ?   yes →  Cipher Mode Command',
-  notes=['In a live network this check often ran when her phone last signed on, and can run again when she starts a call. We show it here so you can see it happen.',
+  notes=['An eSIM is only a downloadable profile. It still holds the IMSI and the Ki, so the same authentication applies whether the profile arrived on a plastic SIM or over the air.',
          'Newer networks (3G, 4G, 5G) also make the network prove itself to the phone. Original GSM only checked the phone.',
          'The TMSI is a temporary mask, handed out by the VLR and changed regularly, so one hidden number cannot be followed from place to place.'],
   on=[('imsi-her', 'Her IMSI'), ('tmsi', 'TMSI mask'), ('ki', 'Ki'), ('auc', 'AuC vault guardian')],
@@ -58,8 +58,8 @@ CH = [
   node=[('exchange', 'Her MSC', 0), ('scp', 'Online charging (SCP)', 0)],
   chip='InitialDP', reply='Continue ✓', proto='CAMEL · CAP  (or online charging over Diameter)',
   cap='She is the one placing the call, so she is the one who pays. Before the call is allowed out of her network, the charging system is asked: is this call allowed, and is there credit? The question travels over CAMEL, a rulebook that lets a prepaid platform step into any call. Credit is fine, so the bouncer waves the Call Pod through. If she had been out of credit, the journey would have ended here, with a short recorded message instead of a ring.',
-  real='Originating MSC → SCP   CAP  InitialDP\n   serviceKey, callingPartyNumber, calledPartyNumber (07700 900123),\n   imsi (hers), eventTypeBCSM = origAttemptAuthorized\nSCP → charging   balance and rate check  (a UK-to-UK mobile call, plus any satellite surcharge)\nSCP → MSC       CAP  Continue     (or ReleaseCall to refuse, ApplyCharging to set a time limit)',
-  notes=['This is why the credit check sits on her side. Receiving a call on your home network is usually free in the UK. The person who dials is the person who is charged.',
+  real='Originating MSC → SCP   CAP  InitialDP\n   serviceKey, callingPartyNumber, calledPartyNumber (07700 900123),\n   imsi (hers), eventTypeBCSM = collectedInfo\nSCP → charging   balance and rate check  (a UK-to-UK mobile call, plus any satellite surcharge)\nSCP → MSC       CAP  Continue     (or ReleaseCall to refuse, ApplyCharging to set a time limit)',
+  notes=['This is why the credit check sits on her side. In the UK the caller usually pays. Receiving a call on your home network is typically free, though there are exceptions, for example if you are roaming abroad and someone rings you.',
          'On a 4G or 5G network the same job is done by online charging over Diameter, talking to a CHF or OCS. The bouncer is the same, the doorway is newer.',
          'SCP stands for Service Control Point, the “brain” that runs prepaid rules. This is where a lot of real operator money is made and lost.'],
   on=[('bouncer', 'Charging bouncer'), ('imsi-her', 'Her IMSI')],
@@ -95,9 +95,9 @@ CH = [
  dict(n=8, zone='space', title='The twist: there is no mast',
   node=[('vault', 'His serving MSC', 0), ('dish', 'Ground gateway', 0), ('sat', 'Satellite', -26), ('phone', 'His phone', 0)],
   chip='feeder up, service down', reply='', proto='Satellite radio',
-  cap='Here is the clever bit. Her son is in a glen with no ordinary mobile signal, but a satellite overhead is acting as a mobile mast in space: our orbiting lighthouse. The Call Pod rides a beam from a ground station (the gateway) up to the satellite, which relays it down to his phone on ordinary mobile frequencies. His phone does not know it is not talking to a mast on a hill.',
+  cap='Here is the clever bit. Her son is in a glen with no ordinary mobile signal, but a satellite overhead is acting as a mobile mast in space: our orbiting lighthouse. The Call Pod rides a beam from a ground station (the gateway) up to the satellite, which relays it down to his phone on ordinary mobile frequencies. His phone treats it as an ordinary cell.',
   real='Mobile core  ↔  Ground gateway      fibre\nGround gateway  ↔  Satellite         FEEDER LINK: radio link between satellite and ground\nSatellite  ↔  His phone              SERVICE LINK: mobile-band spectrum, standard handset',
-  notes=['Some designs put the base station inside the satellite. Others keep it on the ground and use the satellite as a relay. Either way the phone sees a normal cell.',
+  notes=['Some designs put the base station inside the satellite. Others keep it on the ground and use the satellite as a relay. Direct-to-cell services such as Starlink’s are built so an ordinary phone can treat the satellite as a normal cell. 3GPP’s NTN standards (Release 17 onwards) also give the phone extra help with long delay and Doppler shift.',
          'Real satellite-to-phone systems are 4G or 5G based (the 3GPP “NTN” standards), so voice would run as VoLTE rather than through an MSC. We draw the classic path because it is the clearest way to see who does what.'],
   on=[('sat', 'Satellite lighthouse'), ('pod', 'Call Pod')],
   art=('satellite-beam', 'A hiker on a misty Highland hillside holds up a phone while a friendly satellite-lighthouse beams cyan light over the glen and the Call Pod rides the beam upward'),
@@ -121,17 +121,18 @@ CH = [
  dict(n=11, zone='his', title='Border control for the ship',
   node=[('phone', 'His handset (IMEI)', 0), ('eir', 'EIR register', 0)],
   chip='CheckIMEI', reply='white list ✓', proto='SS7 · MAP',
-  cap='The agent checks out, but what about the ship he is travelling in? Every phone has a unique 15-digit serial number, the IMEI, stamped on its hull. The network asks the EIR, the border-control register, and the sniffer dog is sent out. The hull number is not on the stolen-phone list. Green light: cleared to proceed.',
+  cap='The agent checks out, but what about the ship he is travelling in? Every phone has a unique 15-digit serial number, the IMEI, stamped on its hull. Many operators then ask the EIR, the border-control register, and the sniffer dog is sent out. The check is optional and depends on the operator’s policy. In this story the hull number is not on the stolen-phone list. Green light: cleared to proceed.',
   real='MSC → phone   DTAP  Identity Request (IMEI)\nphone → MSC   Identity Response   IMEI 35 123456 654321 1   (illustrative)\nMSC → EIR     MAP  CheckIMEI (imei)\nEIR → MSC     equipmentStatus = whiteListed',
   notes=['The first 8 digits say which make and model (the TAC), the next 6 are the serial number, and the last is a check digit.',
-         'Stolen phones are added to a shared block list, so a phone reported stolen on one UK network can be blocked on all of them.'],
+         'When the check is done, the EIR can return white, grey or black list. Stolen phones are often added to a shared industry list, so a phone reported stolen on one UK network can be blocked on others. Not every network checks the IMEI on every call.'],
   on=[('imei', 'IMEI'), ('dog', 'EIR sniffer dog')],
   art=('border-control', 'A robot sniffer dog inspects a small grey smartphone-shaped ship in a cyan scanner ring while the Call Pod waits; a soft green glow shows the all-clear')),
  dict(n=12, zone='join', title='Ring ring: the agents meet',
   node=[('phone', 'His phone', 0), ('exchange', 'Her MSC', 0)],
   chip='ACM, then ANM', reply='', proto='ISUP · DTAP', meter=True, bars=True,
-  cap='His phone buzzes in his pocket. A message called ACM (Address Complete) races all the way back to her network, which plays her the ringing tone. He answers, and a second message, ANM (Answer), tells every exchange along the route that the call is connected. At that moment the meter starts, and the two secret agents meet in the middle: her IMSI and his IMSI, shaking hands over a living call. Her voice can often stay in the compact mobile format (AMR) the whole way. It only gets transcoded into the old 64 kbit/s telephone format if the join between the two operators still needs it. Up at the satellite, travelling at about 17,000 mph, the network constantly adjusts timing and frequency to cancel the Doppler effect: the same trick that makes an ambulance siren change pitch as it passes.',
-  real='phone → MSC   DTAP  Alerting         →  ISUP  ACM  back to her network  →  ringback tone\nphone → MSC   DTAP  Connect          →  ISUP  ANM  →  charging starts\nSCP           CAP  EventReportBCSM (oAnswer)  →  her prepaid timer begins\nVoice path    AMR end to end where the interconnect allows it;\n              otherwise transcoded (AMR ↔ G.711) at a media gateway\nSatellite     low orbit ~550 km, speed ≈ 7.6 km/s ≈ 17,000 mph;\n              Doppler and timing advance pre-compensated (3GPP NTN, Release 17)',
+  cap='His phone buzzes in his pocket. A message called ACM (Address Complete) races all the way back to her network, which plays her the ringing tone. He answers, and a second message, ANM (Answer), tells every exchange along the route that the call is connected. At that moment the meter starts, and the two secret agents meet in the middle: her IMSI and his IMSI, shaking hands over a living call.',
+  cap2='Now her voice is on the move. Because both ends are mobiles, it can often stay in the compact mobile format (AMR) the whole way. It only gets transcoded into the old 64 kbit/s telephone format if the join between the two operators still needs it. Up at the satellite, travelling at about 17,000 mph, the network constantly adjusts timing and frequency to cancel the Doppler effect: the same trick that makes an ambulance siren change pitch as it passes.',
+  real='phone → MSC   DTAP  Alerting         →  ISUP  ACM  back to her network  →  ringback tone\nphone → MSC   DTAP  Connect          →  ISUP  ANM  →  charging starts\nSCP           CAP  EventReportBCSM (oAnswer)  →  her prepaid timer begins\nVoice path    AMR end to end where the interconnect allows it;\n              otherwise transcoded (AMR ↔ G.711) at a media gateway\nSatellite     typical low orbit a few hundred kilometres up, speed about 7.5 km/s (about 17,000 mph);\n              Doppler and timing advance pre-compensated (3GPP NTN, Release 17 onwards)',
   notes=['No ANM means no billing. Until someone answers, the call is free, which is why a lot of fraud tries to get calls “answered” without a person.',
          'Standard GSM timing only copes with distances up to about 35 km. Satellite systems need extra timing tricks, which is part of what the NTN standards add.'],
   on=[('imsi-her', 'Her IMSI'), ('imsi-him', 'His IMSI'), ('pod', 'Call Pod')],
@@ -152,7 +153,7 @@ CH = [
   real='GMSC/MSC   no-reply timer (NRy, typically 20 to 30 s) expires\nHLR profile  call forwarding on no reply → voicemail access number\nISUP IAM     redirecting number = his number, redirection reason = no reply  →  voicemail platform\nIVR          plays greeting, records message\nVoicemail    SMS to him: “You have a new voicemail”   (MAP MT-ForwardSM)',
   notes=['The “not reachable” case (switched off, no signal at all) is a separate setting and diverts immediately.',
          'IVR means Interactive Voice Response: any computer that talks to callers and listens to their key presses or voice.',
-         'If this ending had happened, her charging bouncer would usually stop the meter when the voicemail platform answered, or apply a short voicemail rate, depending on the tariff.'],
+         'When voicemail answers, the network treats the call as connected (an ANM is sent). Whether she is charged, and how much, depends on her tariff: some UK tariffs make voicemail free or cheap, others apply a short rate.'],
   on=[('pod', 'Call Pod'), ('hlr', 'HLR archivist')],
   portraits=['hlr']),
 ]
@@ -275,14 +276,14 @@ def chapter(c):
     egg = EGGS.get(c.get('egg'), '')
     honesty = ''
     if c.get('honesty'):
-        honesty = '<p class="honest"><strong>An honest note.</strong> In the UK today, satellite-to-phone means texts and some apps. Voice calls are the next step. This leg of the story shows the near future being built, not something you can dial today.</p>'
+        honesty = '<p class="honest"><strong>An honest note.</strong> As of November 2026, the live UK service is O2 Satellite (Virgin Media O2, over Starlink Direct to Cell): texts, location sharing and a short list of apps, including WhatsApp. Standard phone calls, including 999, are not supported yet. VodafoneThree has said its planned AST SpaceMobile service is expected to include voice, with beta testing expected in early 2027. This leg of the story shows that near future, not a native voice call you can place over satellite today.</p>'
     on = ''.join(f'<li><img src="../assets/img/inner-signal/c-{k}.webp" width="24" height="24" alt="" loading="lazy">{esc(lab)}</li>' for k, lab in c['on'])
     notes = ''.join(f'<li>{x}</li>' for x in c['notes'])
     cameo = CAMEO if n == 1 else ''
     return f'''<section class="ch z-{zone}" id="ch-{n}" data-n="{n}" data-zone="{ZONES[zone]}" data-title="{esc(c['title'])}" aria-labelledby="ch{n}-h">
 <header class="ch-h"><span class="num" aria-hidden="true">{n:02d}</span><p class="kicker">Chapter {n} of 14 · {ZONES[zone]}</p><h2 id="ch{n}-h">{c['title']}</h2></header>
 <div class="ch-vis">{art}<div class="strip">{strip_svg(c, False)}{strip_svg(c, True)}{egg}</div>{extras}</div>
-<div class="ch-txt"><p class="cap">{c['cap']}</p>{honesty}{cameo}<ul class="onscr" aria-label="On screen in this chapter">{on}</ul>
+<div class="ch-txt"><p class="cap">{c['cap']}</p>{("<p class=\"cap cap2\">"+c["cap2"]+"</p>") if c.get("cap2") else ""}{honesty}{cameo}<ul class="onscr" aria-label="On screen in this chapter">{on}</ul>
 <button type="button" class="real-b" aria-expanded="false" aria-controls="real-{n}">Show me the real thing</button>
 <div class="real" id="real-{n}"><p class="proto">{esc(c['proto'])}</p><pre><code>{esc(c['real'])}</code></pre><ul class="rn">{notes}</ul></div></div>
 </section>'''
@@ -318,7 +319,7 @@ HEAD = f'''{POD}
 <header class="page-head is-head"><p class="kicker">Explainer · the life of a phone call</p><h1>Inner Signal: the life of a phone call</h1>
 <p class="lede">A woman in Warminster rings her son’s mobile from her own phone. He is hiking in the Highlands, miles from the nearest mast. We shrink down and ride the call, from the moment she presses call to the line on her bill.</p>
 <p class="jcred">Written by a mobile network insider with over 13 years in GSM, from IVR and SMS to call routing and thin and thick MVNOs. <span class="prot">Preview build</span></p>
-<p class="honest top"><strong>An honest note.</strong> In the UK today, satellite-to-phone means texts and some apps. Voice calls are the next step. The satellite leg of this story shows the near future being built.</p>
+<p class="honest top"><strong>An honest note.</strong> As of November 2026, the only live UK satellite-to-phone service is O2 Satellite, from Virgin Media O2 over Starlink Direct to Cell. It offers texts, location sharing and a short list of apps, including WhatsApp. Standard phone calls, including 999, are not supported yet. This story’s satellite voice leg is the near future being built, not something you can dial today.</p>
 <p class="row-cta"><a class="btn" href="#ch-1">Start the journey <span aria-hidden="true">↓</span></a><button type="button" class="btn ghost" id="all-real" aria-pressed="false">Show me the real thing, everywhere</button></p>
 <!--SHARE-TOP-->
 </header>
@@ -337,15 +338,16 @@ HEAD = f'''{POD}
 END = '''</div>
 <section class="wrapup" aria-labelledby="wu-h"><h2 id="wu-h">The whole trip in one breath</h2>
 <p>One tap on a mobile, two networks, two secret agents who meet in the middle, a satellite moving at 17,000 mph, and a pair of billing systems that would not give up. It all took a few seconds to connect and left a single line on her bill: <strong>07700 900123, 4 min 12s</strong>.</p>
-<p>Satellite voice calls to ordinary phones are not here in the UK yet, but the pieces in this story are being built right now. Signal is where we follow them.</p>
+<p>Standard voice calls from an ordinary UK phone, over a satellite, are not here yet. O2 Satellite is live for texts and some apps, and other operators have voice in their plans. Signal is where we follow what comes next.</p>
 <details class="srcs"><summary>Where the details come from</summary><ul>
-<li>Call setup and routing: ITU-T Q.763 (ISUP messages), 3GPP TS 23.018 (basic call handling), 3GPP TS 29.002 (MAP).</li>
-<li>Mobile-originated prepaid and CAMEL: 3GPP TS 23.078 and TS 29.078 (CAP), at the originating MSC.</li>
-<li>Numbers and identities (IMSI, TMSI, IMEI, MSRN, MSISDN): 3GPP TS 23.003.</li>
-<li>GSM security (RAND, SRES, Kc, A3, A8, A5): 3GPP TS 43.020. 4G/5G use AKA (TS 33.401 / 33.501) to do the same job.</li>
-<li>VoLTE / IMS: 3GPP TS 23.228. We keep the older MSC and HLR names in the story because the roles are easier to follow; today’s UK voice calls usually run this way over IMS.</li>
-<li>Satellite access to ordinary phones: 3GPP NTN work, Release 17 onwards.</li>
+<li>Call setup and routing: ITU-T <a href="https://www.itu.int/rec/T-REC-Q.763">Q.763</a> (ISUP message formats) and <a href="https://www.itu.int/rec/T-REC-Q.764">Q.764</a> (ISUP procedures); 3GPP <a href="https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=796">TS 23.018</a> (basic call handling) and <a href="https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=1660">TS 29.002</a> (MAP).</li>
+<li>Mobile-originated prepaid and CAMEL: 3GPP <a href="https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=598">TS 23.078</a> and <a href="https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=1678">TS 29.078</a> (CAP). On a mobile-originated call the usual trigger is DP Collected_Info, at the originating MSC. 4G and 5G online charging uses Diameter or a CHF, with the same job.</li>
+<li>Numbers and identities (IMSI, TMSI, IMEI, MSRN, MSISDN): 3GPP <a href="https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=730">TS 23.003</a>. Drama numbers: Ofcom’s reserved range <a href="https://www.ofcom.org.uk/phones-telecoms-and-internet/information-for-industry/numbering/numbers-for-drama">07700 900000 to 900999</a>.</li>
+<li>GSM security (RAND, SRES, Kc, A3, A8, A5): 3GPP <a href="https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=2713">TS 43.020</a>. 4G and 5G use AKA to do the same job, in <a href="https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=2296">TS 33.401</a> and <a href="https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=3169">TS 33.501</a>.</li>
+<li>VoLTE / IMS: 3GPP <a href="https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=821">TS 23.228</a>. We keep the older MSC and HLR names in the story because the roles are easier to follow; today’s UK voice calls usually run this way over IMS.</li>
+<li>Satellite access to ordinary phones: 3GPP Non-Terrestrial Networks, <a href="https://www.3gpp.org/technologies/ntn-overview">Release 17 onwards</a>, including radio adaptations for long delay and Doppler shift. Later releases add further enhancements. UK service in November 2026: <a href="https://www.o2.co.uk/help/products-and-services/offers-and-extras/o2-satellite">O2 Satellite</a> (texts, location and some apps; not standard voice).</li>
 <li>UK landline switch-off: <a href="https://www.openreach.com/big-switch-off">Openreach, Big Switch Off</a>, 31 January 2027.</li>
+<li>Wholesale settlement: the originating operator pays the terminating operator a regulated mobile termination rate. Ofcom reviews this market periodically.</li>
 </ul></details></section>
 <!--SHARE-END-->
 '''
@@ -361,6 +363,6 @@ meta = {
 assert 70 <= len(meta['description']) <= 160, len(meta['description'])
 body = HEAD + '\n'.join(chapter(c) for c in CH) + END
 # no em dashes
-assert '—' not in body, 'em dash found'
+assert ' - ' not in body, 'em dash found'
 open(f'{ROOT}/src/pages/inner-signal.html', 'w').write('<!--meta\n' + json.dumps(meta, ensure_ascii=False, indent=1) + '\n-->\n' + body)
 print('ok', len(body), 'chars, chapters', len(CH))

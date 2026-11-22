@@ -1136,7 +1136,7 @@ def journey_page():
 # Preview only: noindex, not in the sitemap or site search, not in the nav. To go live: index=True, search=True, add to NAV/footer/sitemap and an OG card.
 def inner_signal_page():
     meta, body, _ = read_src(SRC / 'pages' / 'inner-signal.html'); root = '../'; url = BASE + 'inner-signal/'
-    share = share_btn('Inner Signal: follow one phone call from a landline to a hiker with no mast, via satellite, all the way to the bill.', url)
+    share = share_btn('Inner Signal: follow one phone call from a mobile in Warminster to a hiker with no mast, via satellite, all the way to the bill.', url)
     body = body.replace('<!--SHARE-TOP-->', f'<p class=row-cta>{share}{follow_btn()}</p>').replace('<!--SHARE-END-->',
         f'<div class=share-end><p>Know someone who has always wondered what happens between dialling and ringing? Send them this.</p>{share}{follow_btn()}</div>')
     cta = signal_block(root, 'inner-signal', heading='Get Signal: the weekly direct-to-cell briefing', intro='One email a week on satellite-to-phone, mobile networks and what it means for you, from a mobile network insider with over 13 years in GSM. Plain English, with sources.')
