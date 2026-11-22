@@ -420,7 +420,12 @@ meta = {
 }
 # SEO description length 70-160
 assert 70 <= len(meta['description']) <= 160, len(meta['description'])
-body = HEAD + '\n'.join(chapter(c) for c in CH) + END
+parts = []
+for c in CH:
+    parts.append(chapter(c))
+    if c['n'] == 7:
+        parts.append('<!--MID-SIGNAL-->')
+body = HEAD + '\n'.join(parts) + END
 # no em dashes
 assert ' - ' not in body, 'em dash found'
 open(f'{ROOT}/src/pages/inner-signal.html', 'w').write('<!--meta\n' + json.dumps(meta, ensure_ascii=False, indent=1) + '\n-->\n' + body)

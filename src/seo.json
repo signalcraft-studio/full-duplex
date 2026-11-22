@@ -29,6 +29,8 @@
   "search.html": {"title": "Search Full Duplex",
                   "description": "Search Full Duplex articles, tracker countries, operators and satellites for plain-English answers on satellite-to-phone services."},
   "sponsor.html": {"title": "Sponsor Full Duplex: newsletter and site slots"},
+  "start/index.html": {"title": "Start here: satellite-to-phone guides | Full Duplex",
+                       "description": "New to Full Duplex? Start with Inner Signal, Check my phone, the launch tracker, the Starship explainers and Meet the satellites, then get Signal each Friday."},
   "satellites/index.html": {"title": "Starlink, BlueBird, Lynk satellites explained | Full Duplex",
                             "description": "What Starlink Direct to Cell, AST BlueBird, Amazon Leo, Lynk and Globalstar satellites look like, how high they fly and how they reach your phone."},
   "tracker.html": {"title": "Satellite-to-phone tracker by country | Full Duplex"},

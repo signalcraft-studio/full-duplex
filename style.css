@@ -901,3 +901,19 @@ header.site nav{gap:.2rem 1rem}
 .xv-src a:hover{color:var(--cyan-2)}
 .xv .row-cta{margin:1rem 0 0}
 .sc-watch{margin:1rem 0 0}
+
+/* Free-growth preview: Start here hint, checker fine print, buttons that do not squash at 375px */
+.start-hint{margin:.35rem 0 0;color:var(--muted);font-size:.95rem}
+.start-hint a{color:var(--cyan);text-decoration:none;font-weight:600}
+.start-hint a:hover{color:var(--cyan-2)}
+.start-grid{margin:1.4rem 0 0}
+.ck-signal .fine{flex-basis:100%;margin:.45rem 0 0;color:var(--muted)}
+@media (max-width:600px){
+  .ck-signal{flex-direction:column;align-items:stretch}
+  .ck-signal .signal-btn,.signal .signal-btn{width:100%;justify-content:center;white-space:nowrap;box-sizing:border-box;padding:.8rem 1rem}
+}
+@media (max-width:400px){
+  .signal-btn,.ck-signal .signal-btn{white-space:nowrap;width:100%;justify-content:center;box-sizing:border-box;padding:.75rem .9rem;font-size:.95rem}
+  .signal.mid,.ck-signal,.signal{max-width:100%;min-width:0;box-sizing:border-box}
+}
+

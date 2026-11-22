@@ -234,3 +234,7 @@ html{scroll-padding-top:8.5rem}
 .family-fig figcaption{padding:.7rem 1rem .85rem;color:#cfdbe8;font-size:.92rem}
 
 .ch{width:100%;min-width:0}
+
+/* Mid-journey Signal CTA (after chapter 7). An aside, so chapter :nth-of-type(even) layout is unchanged. */
+.chapters > .signal{margin:1.4rem 0 1.6rem;max-width:100%;min-width:0;box-sizing:border-box}
+

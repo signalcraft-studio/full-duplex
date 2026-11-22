@@ -51,12 +51,16 @@
     return '<article class="ck-row s-'+CL[r.st]+'"><div class=ck-row-h><h3>'+e(r.o)+' <span class=plus>+</span> '+e(r.sat)+'</h3><span class="spill s-'+CL[r.st]+'">'+LAB[r.st]+'</span></div>'+
       '<p>'+e(r.sv)+'</p>'+(p?phoneHtml(phoneFor(r,p)):'')+'<p class=meta>'+srcs(r)+'</p></article>';
   }
-  /* Signal follow-up on every answer (UAT 14 Nov 2026): one link to beehiiv's hosted sign-up, tagged by country and network */
+  /* Signal follow-up on every answer: a link to beehiiv's hosted sign-up, tagged by country and network (utm_medium=check-my-phone, utm_content=…).
+     Kept as a link, not an embed, so the privacy notice stays accurate (no third-party cookies on this page). */
   function sig(op,the,c){
     var h=op?'Get told when '+op+' changes':(c==='other'?'Get told when satellite-to-phone reaches you':'Get told when anything changes in '+the);
-    var u=D.sub+'&utm_content='+encodeURIComponent((c||'none')+(op?'-'+op.toLowerCase().replace(/[^a-z0-9]+/g,'-'):''));
+    var uc=(c||'none')+(op?'-'+op.toLowerCase().replace(/[^a-z0-9]+/g,'-'):'');
+    var u=D.sub+'&utm_content='+encodeURIComponent(uc);
+    var priv=D.privacy||'../privacy.html';
     return '<div class=ck-signal><div><p class=ck-sig-h>'+e(h)+'</p><p class=ck-sig-p>Signal is free, one email a week: new launches, trials and status changes, with the sources.</p></div>'+
-      '<a class="btn signal-btn" href="'+e(u)+'">Get Signal free <span aria-hidden=true>→</span></a></div>';
+      '<a class="btn signal-btn" href="'+e(u)+'">Get Signal free <span aria-hidden=true>→</span></a>'+
+      '<p class=fine>Free, one email a week. Opens beehiiv’s sign-up page; your email is used only to send Signal. Unsubscribe any time. <a href="'+e(priv)+'">Privacy notice</a>.</p></div>';
   }
   function render(c,o,p,push){
     var rows=D.rows.filter(function(r){return r.cs===c;}), multi=D.rows.filter(function(r){return !r.cs;});

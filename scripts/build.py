@@ -55,8 +55,61 @@ def read_src(path):
     if '<!--SCRIPTS-->' in body: body, scripts = body.split('<!--SCRIPTS-->', 1)
     return meta, body.strip(), scripts.strip()
 
-def sub_url(surface):
-    return SUB + '?' + urllib.parse.urlencode({'utm_source': 'fullduplex-site', 'utm_medium': surface, 'utm_campaign': 'signal'})
+def sub_url(surface, source='fullduplex-site', content=None):
+    q = {'utm_source': source, 'utm_medium': surface, 'utm_campaign': 'signal'}
+    if content: q['utm_content'] = content
+    return SUB + '?' + urllib.parse.urlencode(q)
+
+def git_lastmod(*rels):
+    """YYYY-MM-DD of the latest commit touching any of these repo-relative paths.
+    Uncommitted or untracked changes count as today, so a preview build stays honest."""
+    paths = []
+    for r in rels:
+        if not r: continue
+        pth = pathlib.Path(r)
+        pth = pth if pth.is_absolute() else (ROOT / r)
+        if not pth.exists(): continue
+        try: paths.append(str(pth.resolve().relative_to(ROOT)))
+        except ValueError: continue
+    if not paths: return None
+    dates = []
+    try:
+        out = subprocess.check_output(['git', 'log', '-1', '--format=%cs', '--'] + paths, cwd=ROOT, text=True, stderr=subprocess.DEVNULL).strip()
+        if out: dates.append(out)
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        pass
+    try:
+        st = subprocess.check_output(['git', 'status', '--porcelain', '-uall', '--'] + paths, cwd=ROOT, text=True, stderr=subprocess.DEVNULL)
+        if st.strip(): dates.append(date.today().isoformat())
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        pass
+    return max(dates) if dates else None
+
+def inferred_sources(path):
+    """Source files that usually feed a built page, used to date the sitemap."""
+    rels = []
+    if path.endswith('/index.html'):
+        slug = path[:-len('/index.html')]
+        for cand in (SRC / 'pages' / f'{slug}.html', SRC / f'{slug}.json'):
+            if cand.exists(): rels.append(str(cand.relative_to(ROOT)))
+    elif path.endswith('.html'):
+        cand = SRC / 'pages' / path
+        if cand.exists(): rels.append(str(cand.relative_to(ROOT)))
+        base = pathlib.Path(path).name
+        cand2 = SRC / 'pages' / base
+        if cand2.exists() and str(cand2.relative_to(ROOT)) not in rels:
+            rels.append(str(cand2.relative_to(ROOT)))
+        if path.startswith('articles/') and path != 'articles/index.html':
+            art = SRC / 'articles' / path.split('/', 1)[1]
+            if art.exists(): rels.append(str(art.relative_to(ROOT)))
+    return rels
+
+def merge_lastmod(explicit, sources):
+    dates = []
+    if explicit: dates.append(str(explicit)[:10])
+    g = git_lastmod(*(sources or []))
+    if g: dates.append(g)
+    return max(dates) if dates else None
 def share_url(text, url):
     return 'https://x.com/intent/post?' + urllib.parse.urlencode({'text': text, 'url': url, 'via': X})
 def share_btn(text, url, label='Share on X'):
@@ -70,17 +123,20 @@ def issues_list():
     li = ''.join(f'<li><a href="{esc(i["url"])}"><span class=ino>#{i["no"]}</span><span>{esc(i["title"])}</span></a></li>' for i in SITE['issues'][:ISSUES_SHOWN])
     return f'<ul class=issues aria-label="Recent issues of Signal">{li}</ul>'
 
-def signal_block(root, surface, variant='full', heading_level=2, heading=None, intro=None):
-    """One on-brand call to action. The beehiiv iframe embed was removed (14 Nov 2026 UAT): it rendered as a white box with a
-    squashed email field on phones and doubled up with our own button. Signing up happens on beehiiv's hosted page."""
+def signal_block(root, surface, variant='full', heading_level=2, heading=None, intro=None, content='', source='fullduplex-site', label=None):
+    """One on-brand call to action. Signing up is a link to beehiiv's hosted page, not an embed: an iframe would
+    load third-party cookies and scripts before anyone chose to subscribe, which would make the privacy notice untrue.
+    The first iframe was removed in the 14 Nov 2026 UAT for that reason and because the form theme squashed on phones."""
     h = f'h{heading_level}'
     privacy = f'<p class=fine>Free, one email a week. Opens beehiiv’s sign-up page; your email is used only to send Signal. Unsubscribe any time. <a href="{root}privacy.html">Privacy notice</a>.</p>'
-    btn = f'<a class="btn signal-btn" href="{esc(sub_url(surface))}">Get Signal free <span aria-hidden=true>→</span></a>'
+    btn = f'<a class="btn signal-btn" href="{esc(sub_url(surface, source, content or None))}">Get Signal free <span aria-hidden=true>→</span></a>'
+    aria = f' aria-label="{esc(label or "Subscribe to Signal")}"'
+    intro_h = f'<p>{intro}</p>' if intro else ''
     if variant == 'mid':
-        return (f'<aside class="signal mid" aria-label="Subscribe to Signal"><p class=kicker>Signal · free weekly briefing</p>'
+        return (f'<aside class="signal mid"{aria}><p class=kicker>Signal · free weekly briefing</p>'
                 f'<{h} class=signal-h>{heading or "Signal: the weekly direct-to-cell briefing from a mobile network insider with over 13 years in GSM"}</{h}>'
-                f'<p class=signal-cta>{btn}</p>{privacy}</aside>')
-    return (f'<section class=signal aria-label="Subscribe to Signal"><div class=signal-copy><p class=kicker>Signal · free weekly briefing</p>'
+                f'{intro_h}<p class=signal-cta>{btn}</p>{privacy}</aside>')
+    return (f'<section class=signal{aria}><div class=signal-copy><p class=kicker>Signal · free weekly briefing</p>'
             f'<{h} class=signal-h>{heading or "Get Signal: what changed in satellite-to-phone this week"}</{h}>'
             f'<p>{intro or "One email a week on direct-to-cell, mobile networks and what it means for you, from a mobile network insider with over 13 years in GSM."}</p></div>'
             f'<div class=signal-form><p class=issues-h>Recent issues</p>{issues_list()}<p class=signal-cta>{btn}'
@@ -106,7 +162,7 @@ def footer(root, sticky=True):
     return (f'<footer class=site><div class=wrap><div><a class=logo href="{root}index.html">{LOGO_MARK}Full<span>Duplex</span></a><p>Independent analysis of satellite-to-phone and mobile networks. Made in the UK.</p>'
             f'<p class=copy>© 2026 Full Duplex.</p></div>'
             f'<nav aria-label="Footer"><a href="{esc(sub_url("footer"))}">Subscribe to Signal</a><a href="https://x.com/{X}" target=_blank rel="noopener me">Follow @{X} on X</a>'
-            f'<a href="{root}articles/index.html">Articles</a><a href="{root}tracker.html">Tracker</a><a href="{root}tracker/changes/">Tracker changes</a><a href="{root}launches/">Launches</a><a href="{root}explainers/">Starship explainers</a><a href="{root}journey/">What happens when you hit send</a><a href="{root}inner-signal/">Inner Signal</a><a href="{root}satellites/">Meet the satellites</a><a href="{root}check/">Can my phone connect?</a><a href="{root}glossary/">Glossary</a>'
+            f'<a href="{root}start/">Start here</a><a href="{root}articles/index.html">Articles</a><a href="{root}tracker.html">Tracker</a><a href="{root}tracker/changes/">Tracker changes</a><a href="{root}launches/">Launches</a><a href="{root}explainers/">Starship explainers</a><a href="{root}journey/">What happens when you hit send</a><a href="{root}inner-signal/">Inner Signal</a><a href="{root}satellites/">Meet the satellites</a><a href="{root}check/">Can my phone connect?</a><a href="{root}glossary/">Glossary</a>'
             f'<a href="{root}play/constellation.html">Constellation</a><a href="{root}search.html">Search</a><a href="{root}feed.xml">RSS</a>'
             f'<a href="{root}resources/">Resources</a><a href="{root}about.html">About</a><a href="{root}sponsor.html">Sponsor</a><a href="{root}privacy.html">Privacy</a></nav></div></footer>{bar}')
 
@@ -162,7 +218,7 @@ SEO = json.loads((SRC / 'seo.json').read_text())['pages']
 CRUMB = {'tracker.html': [('Tracker', 'tracker.html')], 'tracker/changes/index.html': [('Tracker', 'tracker.html'), ('Change log', 'tracker/changes/')],
          'articles/index.html': [('Articles', 'articles/')], 'about.html': [('About', 'about.html')], 'sponsor.html': [('Sponsor', 'sponsor.html')],
          'privacy.html': [('Privacy', 'privacy.html')], 'search.html': [('Search', 'search.html')], 'check/index.html': [('Phone checker', 'check/')],
-         'glossary/index.html': [('Glossary', 'glossary/')], 'explainers/index.html': [('Launches', 'launches/'), ('Explainers', 'explainers/')], 'inner-signal/index.html': [('Inner Signal', 'inner-signal/')], 'resources/index.html': [('Resources', 'resources/')], 'play/constellation.html': [('Constellation', 'play/constellation.html')]}
+         'glossary/index.html': [('Glossary', 'glossary/')], 'explainers/index.html': [('Launches', 'launches/'), ('Explainers', 'explainers/')], 'inner-signal/index.html': [('Inner Signal', 'inner-signal/')], 'resources/index.html': [('Resources', 'resources/')], 'play/constellation.html': [('Constellation', 'play/constellation.html')], 'start/index.html': [('Start here', 'start/')]}
 # ---------------------------------------------------------------- outbound links: /resources/ and the "Sources and further reading" boxes (src/resources.json)
 RES = json.loads((SRC / 'resources.json').read_text())
 def ext_link(l, label=None):
@@ -188,8 +244,9 @@ def blank_external(h):
     return re.sub(r'<a\s[^>]*?href="(https?://[^"]+)"[^>]*>', fix, h)
 
 def page(*, path, title, description, body, root='', current='', og_type='website', jsonld=None, head_extra='', scripts='',
-         viewport='width=device-width,initial-scale=1', sticky=True, full_title=None, lastmod=None, search=True, cls='', index=True, search_text=None, og=None, gloss=False, og_art=None, og_sub=None):
+         viewport='width=device-width,initial-scale=1', sticky=True, full_title=None, lastmod=None, sources=None, search=True, cls='', index=True, search_text=None, og=None, gloss=False, og_art=None, og_sub=None):
     url = BASE + (path[:-len('index.html')] if path.endswith('index.html') else path)
+    lastmod = merge_lastmod(lastmod, list(sources or []) + inferred_sources(path))
     ft = full_title or f'{title} | Full Duplex'
     o = SEO.get(path, {})
     if o.get('title'): ft = o['title']
@@ -535,16 +592,19 @@ tbody = re.sub(r'<span id=tracker-checked>.*?</span>', f"<span id=tracker-checke
 tbody = tbody.replace('<h1>Direct-to-cell around the world</h1>', '<header class=page-head><p class=kicker>Tracker</p><h1>Direct-to-cell around the world</h1></header>' + stats_strip() + race_board(''), 1)
 tbody = tbody.replace('<div class=tablewrap>', f'<section aria-labelledby=tbl-h><h2 id=tbl-h>Every tracked service</h2>{controls}{tools}<div class="tablewrap trackwrap">', 1)
 tbody = tbody.replace('</div><p class=note>Spotted a change?', '</div></section><p class=note>Spotted a change?', 1)
+# Signal sign-up directly under the map (22 Nov 2026), replacing the generic block that sat at the end of the page
+tbody = tbody.replace('</section><section aria-labelledby=tbl-h>', '</section>' + signal_block('', 'tracker', heading='Get told when this map changes',
+    intro=f"{C['live']} live services, {NLIVE_C} countries, last checked {TRACK['last_checked']}. Signal is the Friday email when those numbers move.", label='Get told when this map changes') + '<section aria-labelledby=tbl-h>', 1)
+assert 'utm_medium=tracker' in tbody, 'tracker: map section not found for the Signal block'
 tbody += (f'<section aria-labelledby=bc-h><h2 id=bc-h>Browse by country</h2><div class=cclist>{country_links}</div></section>'
           f'<p class=note>Next satellites going up: see the <a href="launches/">launch tracker</a> for upcoming SpaceX, AST SpaceMobile and other direct-to-cell launches, and how many phone-capable satellites each operator has in orbit.</p>'
-          f'<section aria-labelledby=ch-h><h2 id=ch-h>What changed</h2>{change_list(CHANGES, "", 8)}<p><a href="tracker/changes/">Full change log</a></p></section>'
-          + signal_block('', 'tracker', heading='Get tracker updates in Signal', intro='Every week, Signal covers what changed in the tracker: new launches, trials and status changes, with the sources.'))
+          f'<section aria-labelledby=ch-h><h2 id=ch-h>What changed</h2>{change_list(CHANGES, "", 8)}<p><a href="tracker/changes/">Full change log</a></p></section>')
 ld = [{'@context': 'https://schema.org', '@type': 'Dataset', 'name': 'Full Duplex direct-to-cell tracker', 'description': meta['description'],
        'url': BASE + 'tracker.html', 'creator': PUBLISHER, 'license': SITE['data_license'], 'isAccessibleForFree': True, 'inLanguage': 'en-GB', 'dateModified': parse_human(TRACK['last_checked']),
        'distribution': [{'@type': 'DataDownload', 'encodingFormat': 'text/csv', 'contentUrl': BASE + 'data/tracker.csv'},
                         {'@type': 'DataDownload', 'encodingFormat': 'application/json', 'contentUrl': BASE + 'data/tracker.json'}]}]
 page(og=('Tracker', 'Direct-to-cell around the world', [(f"{C['live']} live", OGC['live']), (f"{C['trial']} trials", OGC['trial']), (f"{C['announced']} announced", OGC['announced']), (f'{NLIVE_C} countries live', OGC['cyan'])]), path='tracker.html', title=meta['title'], description=meta['description'], body=tbody, current='tracker.html', cls='is-tracker',
-     head_extra=meta['head_extra'] + '<link rel="preload" as="image" href="assets/img/tracker-map-640.webp" media="(max-width:699px)"><link rel="preload" as="image" href="assets/img/tracker-map-1280.webp" media="(min-width:700px)">', scripts=tscripts + '<script defer src="assets/tracker-filters.js"></script>', jsonld=ld, lastmod=parse_human(TRACK['last_checked']),
+     head_extra=meta['head_extra'] + '<link rel="preload" as="image" href="assets/img/tracker-map-640.webp" media="(max-width:699px)"><link rel="preload" as="image" href="assets/img/tracker-map-1280.webp" media="(min-width:700px)">', scripts=tscripts + '<script defer src="assets/tracker-filters.js"></script>', jsonld=ld, lastmod=parse_human(TRACK['last_checked']), sources=['src/pages/tracker.html', 'data/tracker.json'],
      search_text=meta['description'] + ' ' + ' '.join(f"{r['country']} {r['operator']} {r['satellite']} {r['status']}. {strip_tags(r['services'])}." for r in ROWS))
 
 # country pages
@@ -568,7 +628,9 @@ for c, rs in sorted(COUNTRIES.items()):
             f'<p class=lede>{len(rs)} direct-to-cell partnership{"s" if len(rs) > 1 else ""} tracked in {esc(the(c))}: {parts}. Last checked {human(checked)}.</p>'
             f'<p class=row-cta>{share_btn(f"Satellite-to-phone in {the(c)}: who is live, trialling or announced, with sources.", BASE + path[:-10])}<a class="btn ghost" href="{root}tracker.html">All countries</a></p></header>'
             f'{cards}<p class=note>Status reflects what the source says on the date checked. Multi-country services such as Skylo are listed on the <a href="{root}tracker.html">main tracker</a>.</p>'
-            f'{chh}{relh}' + signal_block(root, 'tracker-country', heading=f'Get {esc(the(c))} updates in Signal', intro='Signal covers new launches, trials and status changes every week, with the sources.'))
+            + signal_block(root, 'tracker-country', heading=f'Get told when {esc(the(c))} changes', content=slug, label=f'Get told when {the(c)} changes',
+                           intro=f'Live, trial and announced satellite-to-phone services in {esc(the(c))}, with the sources. One email a week, when the row moves.')
+            + f'{chh}{relh}')
     ld = [crumbs([('Home', ''), ('Tracker', 'tracker.html'), (c, path[:-10])])]
     page(og=('Tracker', f'Satellite-to-phone in {the(c)}', status_chips(rs)), path=path, title=f'Satellite-to-phone in {the(c)}', description=desc, body=body, root=root, current='tracker.html', jsonld=ld, lastmod=checked,
          search_text=' '.join(f"{r['operator']} with {r['satellite']}: {r['status']}. {strip_tags(r['services'])}." for r in rs))
@@ -1148,15 +1210,19 @@ def inner_signal_page():
     share = share_btn('Inner Signal: follow one phone call from a mobile in Warminster to a hiker with no mast, via satellite, all the way to the bill.', url)
     body = body.replace('<!--SHARE-TOP-->', f'<p class=row-cta>{share}{follow_btn()}</p>').replace('<!--SHARE-END-->',
         f'<div class=share-end><p>Know someone who has always wondered what happens between dialling and ringing? Send them this.</p>{share}{follow_btn()}</div>')
-    cta = signal_block(root, 'inner-signal', heading='Get Signal: the weekly direct-to-cell briefing', intro='One email a week on satellite-to-phone, mobile networks and what it means for you, from a mobile network insider with over 13 years in GSM. Plain English, with sources.')
-    cta = cta.replace(esc(sub_url('inner-signal')), esc(SUB + '?' + urllib.parse.urlencode({'utm_source': 'site', 'utm_medium': 'inner-signal', 'utm_campaign': 'signal'})))
-    body += cta
+    mid = signal_block(root, 'inner-signal-mid', variant='mid', source='site', heading='Get the next chapter in your inbox',
+                       intro='The chapters below stay here. Signal is the Friday briefing on satellite-to-phone, from a mobile network insider with over 13 years in GSM.',
+                       label='Get the next chapter in your inbox')
+    if '<!--MID-SIGNAL-->' not in body:
+        raise SystemExit('inner-signal: missing <!--MID-SIGNAL--> placeholder after chapter 7')
+    body = body.replace('<!--MID-SIGNAL-->', mid)
+    body += signal_block(root, 'inner-signal', source='site', heading='Get Signal: the weekly direct-to-cell briefing', intro='One email a week on satellite-to-phone, mobile networks and what it means for you, from a mobile network insider with over 13 years in GSM. Plain English, with sources.')
     css = f'<link rel="stylesheet" href="{root}assets/inner-signal.css?v={asset_v("assets/inner-signal.css")}">'
     ld = [crumbs([('Home', ''), ('Inner Signal', 'inner-signal/')]),
           {'@context': 'https://schema.org', '@type': 'Article', 'headline': meta['title'], 'description': meta['description'], 'author': AUTHOR, 'publisher': PUBLISHER,
            'mainEntityOfPage': url, 'inLanguage': 'en-GB', 'image': [f'{BASE}assets/og/inner-signal.jpg'], 'datePublished': '2026-11-22'}]
     page(og=('Explainer', 'Inner Signal: the life of a phone call'), gloss=True, path='inner-signal/index.html', title=meta['title'], description=meta['description'],
-         body=body, root=root, current='inner-signal/index.html', cls='is-inner', index=True, search=True, lastmod='2026-11-22', jsonld=ld, head_extra=css,
+         body=body, root=root, current='inner-signal/index.html', cls='is-inner', index=True, search=True, lastmod='2026-11-22', sources=['src/pages/inner-signal.html', 'scripts/gen_inner_signal.py'], jsonld=ld, head_extra=css,
          og_art=ROOT / 'assets' / 'img' / 'inner-signal' / 'satellite-beam.webp', og_sub='Fourteen chapters. One phone call. Via satellite.',
          scripts=f'<script defer src="{root}assets/inner-signal.js"></script>')
 # ---------------------------------------------------------------- satellites explainer (src/satellites.json; drawings in scripts/satviz.py)
@@ -1386,7 +1452,7 @@ def check_data():
     rows = [{'c': r['country'], 'cs': country_slug(r['country']) if r['iso_n3'] else '', 'o': r['operator'], 'os': slugify(short_op(r['operator'])),
              'p': provider(r['satellite']), 'sat': r['satellite'], 'st': r['status'], 'sv': strip_tags(r['services']),
              'src': [[x['label'], x['url']] for x in r['sources']], 'chk': r['checked'], **({'on': op_names(r['operator'])} if ';' in r['operator'] else {})} for r in ROWS]
-    return {'rows': rows, 'phones': PHONES, 'checked': TRACK['last_checked'], 'base': BASE, 'sub': sub_url('checker-result')}
+    return {'rows': rows, 'phones': PHONES, 'checked': TRACK['last_checked'], 'base': BASE, 'sub': sub_url('check-my-phone'), 'privacy': '../privacy.html'}
 def op_names(o):
     """A tracker row can group several networks ("SoftBank; NTT docomo"); the checker offers each one on its own."""
     return {slugify(short_op(n)): n.strip() for n in o.split(';') if n.strip()}
@@ -1430,7 +1496,7 @@ def check_page():
     page(og=('Checker', 'Can my phone connect to a satellite?', [(f'{len(ROWS)} services', OGC['cyan']), (f'{NCOUNTRIES} countries', OGC['live']), ('No IMEI needed', OGC['muted'])]),
          path='check/index.html', title='Can my phone connect?', full_title='Can my phone connect to a satellite? Check by country, network and phone | Full Duplex',
          description='Check whether satellite-to-phone works on your network and phone: pick your country, network and handset for a plain-English answer with sources. No IMEI needed.',
-         body=body, root=root, current='check/index.html', cls='is-check', scripts='<script defer src="../assets/check.js"></script>', lastmod=parse_human(TRACK['last_checked']),
+         body=body, root=root, current='check/index.html', cls='is-check', scripts='<script defer src="../assets/check.js"></script>', lastmod=parse_human(TRACK['last_checked']), sources=['src/phones.json', 'data/tracker.json', 'assets/check.js'],
          search_text='Can my phone connect to a satellite? Phone checker by country, network and phone model. ' + ' '.join(f"{r['country']} {r['operator']}" for r in ROWS))
 
 def glossary_page():
@@ -1450,6 +1516,21 @@ def glossary_page():
 check_page()
 glossary_page()
 
+# ---------------------------------------------------------------- Start here (src/pages/start.html): reader onboarding, also a post-subscribe landing page
+def start_page():
+    meta, body, _ = read_src(SRC / 'pages' / 'start.html'); root = '../'
+    body = body.replace('{{root}}', root)
+    search_text = strip_tags(body)
+    body += signal_block(root, 'start-here', heading='Get Signal: the weekly direct-to-cell briefing',
+                         intro='One email a week on direct-to-cell, mobile networks and what it means for you, from a mobile network insider with over 13 years in GSM. Plain English, with sources.')
+    desc = meta['description']
+    ld = [{'@context': 'https://schema.org', '@type': 'WebPage', 'name': 'Start here', 'url': BASE + 'start/', 'description': desc,
+           'isPartOf': {'@id': PUBLISHER['@id']}, 'author': AUTHOR, 'inLanguage': 'en-GB'}]
+    page(og=('Start here', 'The best places to begin on Full Duplex', [('Inner Signal', OGC['cyan']), ('Check my phone', OGC['muted']), ('Launch tracker', OGC['live'])]),
+         path='start/index.html', title=meta['title'], description=desc, body=body, root=root, current='', jsonld=ld, cls='is-start',
+         sources=['src/pages/start.html'], search_text=search_text)
+start_page()
+
 # ---------------------------------------------------------------- search + 404
 body = ('<header class=page-head><p class=kicker>Search</p><h1>Search Full Duplex</h1></header>'
         '<form class=searchbox role=search action="search.html" method=get><label for=q class=sr>Search articles, countries and operators</label>'
@@ -1457,7 +1538,7 @@ body = ('<header class=page-head><p class=kicker>Search</p><h1>Search Full Duple
         '<p id=s-status class=t-count role=status aria-live=polite></p><ol id=s-results class=results></ol>'
         '<noscript><p>Search needs JavaScript. Browse the <a href="articles/index.html">articles</a> or the <a href="tracker.html">tracker</a>.</p></noscript>')
 page(path='search.html', title='Search', description='Search Full Duplex articles, tracker countries and operators.', body=body, current='search.html',
-     scripts='<script defer src="assets/search.js"></script>', search=False, index=True)
+     scripts='<script defer src="assets/search.js"></script>', search=False, index=True, sources=['scripts/build.py', 'assets/search.js'])
 body = ('<header class=page-head><p class=kicker>404</p><h1>Lost signal</h1><p class=lede>That page isn’t here. It may have moved.</p></header>'
         f'<p class=row-cta><a class=btn href="{BASE}">Go to the home page</a><a class="btn ghost" href="{BASE}search.html">Search the site</a><a class="btn ghost" href="{BASE}tracker.html">Open the tracker</a></p>')
 # 404 is served at any depth, so it uses absolute URLs
@@ -1468,6 +1549,7 @@ feat, rest = arts[0], arts[1:]
 home = (f'<section class=hero><div class=hero-art aria-hidden=true><img src="assets/img/home-hero-1600.webp" srcset="assets/img/home-hero-960.webp 960w, assets/img/home-hero-1600.webp 1600w" sizes="100vw" width="1600" height="687" alt="" decoding="async" fetchpriority="high"></div><div class=hero-copy><p class=kicker>Both directions, all at once</p><h1>Your phone is about to talk to space.</h1>'
         f'<p class=lede>Full Duplex explains direct-to-cell satellites, GSM and the shake-up coming to the mobile industry.</p>'
         f'<p class=hero-cta><a class=btn href="{esc(sub_url("home-hero"))}">Send me Signal</a><a class="btn ghost" href="check/">Check my phone</a></p>'
+        f'<p class=start-hint>New here? <a href="start/">Start here</a>.</p>'
         f'<p class=byl>By <a href="about.html">{esc(SITE["author"])}</a>, a mobile network insider with over 13 years in GSM · {follow_btn("xinline")}</p></div>'
         f'<figure class=globe-wrap><div id=globe class=globe role=img aria-label="Rotating globe: {NLIVE_C} countries with live direct-to-cell service in green, countries with trials in amber. Full data in the tracker."></div>'
         f'<figcaption><span class=k-live>Live</span><span class=k-trial>Trial</span><span class=k-ann>Announced</span> <a href="tracker.html">Open the map</a></figcaption></figure>'
@@ -1492,7 +1574,7 @@ ld = [{'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'Full Duple
        'potentialAction': {'@type': 'SearchAction', 'target': BASE + 'search.html?q={q}', 'query-input': 'required name=q'}}, ORG]
 page(og=('Full Duplex', 'Your phone is about to talk to space.', [(f"{C['live']} live services", OGC['live']), (f'{NLIVE_C} countries', OGC['cyan']), ('Weekly briefing: Signal', OGC['muted'])]), path='index.html', title='Satellite-to-phone and the future of mobile', full_title='Satellite-to-phone and the future of mobile | Full Duplex',
      description=SITE['home_description'], body=home, current='index.html', jsonld=ld, cls='is-home',
-     scripts='<script defer src="assets/globe.js"></script><script defer src="assets/launches.js"></script>', lastmod=max(a.get('updated', a['published']) for a in arts), search=False)
+     scripts='<script defer src="assets/globe.js"></script><script defer src="assets/launches.js"></script>', lastmod=max(a.get('updated', a['published']) for a in arts), sources=['scripts/build.py', 'src/site.json', 'data/tracker.json', 'data/launches.json', 'src/pages/inner-signal.html', 'src/pages/start.html'], search=False)
 
 # /tracker/ has country pages under it but the tracker itself is /tracker.html: send the bare folder there (UAT 14 Nov 2026)
 (ROOT / 'tracker' / 'index.html').write_text('<!doctype html><html lang=en-GB><head><meta charset=utf-8><title>Direct-to-cell tracker | Full Duplex</title>'
