@@ -27,10 +27,25 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
-      - name: Stage site without git metadata
+      - name: Stage only the built site
         run: |
+          # GitHub Pages was serving the whole repo, including raw article
+          # sources under /src/ and the Python build tooling under /scripts/.
+          # Stage the committed site, then drop source, tooling and git
+          # metadata so those URLs 404. Keep every runtime asset: HTML,
+          # assets/, style.css, sitemap.xml, robots.txt, feed.xml,
+          # search-index.json, share/, .nojekyll, site.webmanifest, and
+          # data files the pages fetch or link to (tracker.json/csv,
+          # gp-recent.json, launches.json, race.json, constellations.json,
+          # tracker-changes.json).
           mkdir -p _site
           tar --exclude='./.git' --exclude='./_site' -cf - . | tar -C _site -xf -
+          rm -rf _site/.github _site/src _site/scripts _site/.gitignore
+          rm -f _site/README.md \
+                _site/data/launch-overrides.json \
+                _site/data/launch-tags.json
+          find _site -type d -name '__pycache__' -prune -exec rm -rf {} +
+          find _site -type f -name '*.pyc' -delete
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

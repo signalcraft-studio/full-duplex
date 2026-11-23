@@ -1589,7 +1589,12 @@ for p, lm in sorted(built):
     sm.append(f'<url><loc>{loc}</loc>' + (f'<lastmod>{lm}</lastmod>' if lm else '') + '</url>')
 sm.append('</urlset>')
 (ROOT / 'sitemap.xml').write_text('\n'.join(sm) + '\n')
-(ROOT / 'robots.txt').write_text(f'User-agent: *\nAllow: /\n\nSitemap: {BASE}sitemap.xml\n')
+(ROOT / 'robots.txt').write_text(
+    'User-agent: *\nAllow: /\n'
+    'Disallow: /full-duplex/src/\n'
+    'Disallow: /full-duplex/scripts/\n'
+    f'\nSitemap: {BASE}sitemap.xml\n'
+)
 latest = max(a.get('updated', a['published']) for a in arts)
 items = ''.join(f'<item><title>{esc(a["title"])}</title><link>{BASE}articles/{a["slug"]}.html</link><guid>{BASE}articles/{a["slug"]}.html</guid>'
                 f'<pubDate>{rfc822(a["published"])}</pubDate><description>{esc(a["description"])}</description></item>'

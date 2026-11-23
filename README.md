@@ -6,7 +6,7 @@ Live site: https://signalcraft-studio.github.io/full-duplex/ (GitHub Pages, serv
 ## How the site is built
 - Page bodies live in `src/` (`src/articles/*.html`, `src/pages/*.html`), each with a JSON `<!--meta ... -->` header. Site settings (X handle, Signal issues, beehiiv form, article order) are in `src/site.json`.
 - Tracker data lives in `data/tracker.json` (single source of truth for the table and map).
-- Run `python3 scripts/build.py` (standard library only), then commit the generated files. GitHub Pages serves the committed output; there is no CI step.
+- Run `python3 scripts/build.py` (standard library only), then commit the generated files. The Deploy Pages workflow uploads only the built site to GitHub Pages (it leaves out `src/`, `scripts/`, `.github/` and build-only data files).
 - The build produces every page plus: shared header/footer, meta/OG tags, Signal subscribe blocks, the articles index, Tracker 2.0 (filters, CSV at `data/tracker.csv`), one page per country under `tracker/<country>/`, the change log (`tracker/changes/`, data in `data/tracker-changes.json`, rebuilt from the git history of `data/tracker.json`), the home globe data (`assets/globe-dots.json`), `search-index.json` for `search.html`, `sitemap.xml`, `robots.txt`, `feed.xml` and `404.html`. Do not hand-edit generated HTML.
 - New country in the tracker? Add its region to `regions` in `src/site.json` (the build warns if one is missing).
 - Fonts (Inter Tight, Newsreader, JetBrains Mono; SIL OFL, see `assets/fonts/OFL.txt`) are embedded in `assets/fonts.css` and load without blocking the page.
