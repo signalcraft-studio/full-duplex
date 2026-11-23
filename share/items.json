@@ -3,12 +3,12 @@
  "items": [
   {
    "slug": "l-ariane-64-block-2-amazon-leo-le-04",
-   "key": "50c60a72a8",
+   "key": "ff23da9939",
    "kind": "flight",
    "page": "launches/flight/?l=ariane-64-block-2-amazon-leo-le-04&nowelcome",
    "sel": "#fl-hud",
    "layout": "wide",
-   "kicker": "Launch · Mon 23 Nov",
+   "kicker": "Launch · Tue 24 Nov",
    "title": "Amazon Leo (LE-04)",
    "sub": "Ariane 64 Block 2",
    "tag": "amazon-leo"
@@ -175,14 +175,14 @@
   },
   {
    "slug": "flight-globe",
-   "key": "752b0a2a18",
+   "key": "833e3bbd4b",
    "kind": "canvas",
    "page": "launches/flight/?nowelcome",
    "sel": "#glview",
    "layout": "square",
    "kicker": "After deployment · real orbits",
    "title": "Where the newest satellites are right now",
-   "sub": "152 satellites from 8 recent broadband and phone-network launches"
+   "sub": "125 satellites from 7 recent broadband and phone-network launches"
   },
   {
    "slug": "sat-scale",
