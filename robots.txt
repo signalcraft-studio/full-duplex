@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
-Disallow: /full-duplex/src/
-Disallow: /full-duplex/scripts/
+Disallow: /src/
+Disallow: /scripts/
 
-Sitemap: https://signalcraft-studio.github.io/full-duplex/sitemap.xml
+Sitemap: https://fullduplexhq.com/sitemap.xml

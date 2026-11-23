@@ -18,7 +18,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / 'data' / 'gp-recent.json'
 GP = 'https://celestrak.org/NORAD/elements/gp.php?GROUP=last-30-days&FORMAT=json'
 SATCAT = 'https://celestrak.org/satcat/records.php?INTDES={}&FORMAT=json'
-UA = 'FullDuplexSite/1.0 (+https://signalcraft-studio.github.io/full-duplex/; cached 4x daily)'
+UA = 'FullDuplexSite/1.0 (+https://fullduplexhq.com/; cached 4x daily)'
 MIN_HOURS = 3
 # name pattern -> (network id, display name, phone-capable?)
 NETS = [

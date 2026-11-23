@@ -1,7 +1,7 @@
 # full-duplex
 Full Duplex: satellite-to-phone, GSM and the future of mobile.
 
-Live site: https://signalcraft-studio.github.io/full-duplex/ (GitHub Pages, served from `main`).
+Live site: https://fullduplexhq.com/ (GitHub Pages custom domain, served from `main`; the `CNAME` file and the Pages custom-domain setting must both say `fullduplexhq.com`. Old https://signalcraft-studio.github.io/full-duplex/ URLs redirect here).
 
 ## How the site is built
 - Page bodies live in `src/` (`src/articles/*.html`, `src/pages/*.html`), each with a JSON `<!--meta ... -->` header. Site settings (X handle, Signal issues, beehiiv form, article order) are in `src/site.json`.

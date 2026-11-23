@@ -31,6 +31,11 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / 'src'
 SITE = json.loads((SRC / 'site.json').read_text())
 BASE = SITE['base_url']
+from urllib.parse import urlsplit as _urlsplit
+BASE_PATH = _urlsplit(BASE).path or '/'  # '/' on the custom domain
+# GitHub Pages custom domain: keep CNAME in step with base_url (the Deploy Pages workflow ships it).
+if not _urlsplit(BASE).hostname.endswith('github.io'):
+    (ROOT / 'CNAME').write_text(_urlsplit(BASE).hostname + '\n')
 X = SITE['x_handle']
 SUB = SITE['subscribe_url']
 FORM = SITE['beehiiv_form']
@@ -1592,8 +1597,8 @@ sm.append('</urlset>')
 (ROOT / 'sitemap.xml').write_text('\n'.join(sm) + '\n')
 (ROOT / 'robots.txt').write_text(
     'User-agent: *\nAllow: /\n'
-    'Disallow: /full-duplex/src/\n'
-    'Disallow: /full-duplex/scripts/\n'
+    f'Disallow: {BASE_PATH}src/\n'
+    f'Disallow: {BASE_PATH}scripts/\n'
     f'\nSitemap: {BASE}sitemap.xml\n'
 )
 latest = max(a.get('updated', a['published']) for a in arts)

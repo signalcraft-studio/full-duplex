@@ -73,7 +73,7 @@ def chip_row(d, chips, x, y, maxw=1056):
 
 def hexrgb(h): h = h.lstrip('#'); return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
 
-def og_card(out, kicker, title, foot='signalcraft-studio.github.io/full-duplex  ·  @FullDuplexHQ', chips=None):
+def og_card(out, kicker, title, foot='fullduplexhq.com  ·  @FullDuplexHQ', chips=None):
     global _plate
     if _plate is None: _plate = fit(Image.open(SRC / 'og-plate.jpg').convert('RGB'), 1200, 630)
     im = _plate.copy(); d = ImageDraw.Draw(im)
@@ -93,7 +93,7 @@ def og_card(out, kicker, title, foot='signalcraft-studio.github.io/full-duplex  
     return save(im, out, 'JPEG', quality=84, optimize=True, progressive=True)
 
 
-def og_card_art(out, kicker, title, art, sub=None, foot='signalcraft-studio.github.io/full-duplex  ·  @FullDuplexHQ'):
+def og_card_art(out, kicker, title, art, sub=None, foot='fullduplexhq.com  ·  @FullDuplexHQ'):
     """1200x630 share card: brand plate, title, and a hero still in a rounded frame.
     Same typography and footer as og_card / render_share.py, with artwork in the lower band."""
     W, H = 1200, 630

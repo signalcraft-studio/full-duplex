@@ -70,7 +70,7 @@ def compose(shot, it):
     fh = I.font('InterTight-600.woff2', 32)
     d.text((122, 52), 'Full', font=fh, fill=I.WHITE); d.text((122 + d.textlength('Full', font=fh), 52), 'Duplex', font=fh, fill=I.CYAN)
     mono = lambda s: I.font('JetBrainsMono-500.woff2', s)
-    foot = 'signalcraft-studio.github.io/full-duplex  ·  @FullDuplexHQ'
+    foot = 'fullduplexhq.com  ·  @FullDuplexHQ'
     def place(box):
         x0, y0, x1, y1 = box; bw, bh = x1 - x0, y1 - y0
         s = min(bw / g.width, bh / g.height); gg = g.resize((max(1, round(g.width * s)), max(1, round(g.height * s))), Image.LANCZOS)

@@ -17,7 +17,7 @@ import json, pathlib, re, urllib.request
 from datetime import date, timedelta
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-UA = {'User-Agent': 'FullDuplex-site-build/1.0 (+https://signalcraft-studio.github.io/full-duplex/)'}
+UA = {'User-Agent': 'FullDuplex-site-build/1.0 (+https://fullduplexhq.com/)'}
 STAR_INDEX = 'https://planet4589.org/space/con/star/starindex.html'
 LYNK_LOG = 'https://planet4589.org/space/con/lynk/log.dat'
 GCAT = 'https://planet4589.org/space/gcat/'
