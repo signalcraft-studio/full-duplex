@@ -1,17 +1,17 @@
 {
- "fetched_at": "2026-11-23T07:48:19Z",
+ "fetched_at": "2026-11-23T23:58:42Z",
  "source": "The Space Devs Launch Library 2 (https://ll.thespacedevs.com/2.3.0/launches/upcoming/)",
  "launches": [
   {
    "id": "7bdc412b-c965-4517-a131-f57a01189803",
    "slug": "ariane-64-block-2-amazon-leo-le-04",
    "name": "Ariane 64 Block 2 | Amazon Leo (LE-04)",
-   "net": "2026-11-24T11:09:00Z",
-   "window_start": "2026-11-24T11:09:00Z",
-   "window_end": "2026-11-24T11:38:00Z",
-   "precision": "Hour",
-   "status": "To Be Confirmed",
-   "status_abbrev": "TBC",
+   "net": "2026-11-24T10:45:00Z",
+   "window_start": "2026-11-24T10:45:00Z",
+   "window_end": "2026-11-24T11:14:00Z",
+   "precision": "Minute",
+   "status": "Go for Launch",
+   "status_abbrev": "Go",
    "provider": "Arianespace",
    "rocket": "Ariane 64 Block 2",
    "mission": "Amazon Leo (LE-04)",
@@ -26,7 +26,7 @@
    "pad_lat": 5.256319,
    "pad_lon": -52.786838,
    "webcast_live": false,
-   "last_updated": "2026-11-23T06:54:19Z",
+   "last_updated": "2026-11-23T16:18:07Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/7bdc412b-c965-4517-a131-f57a01189803/",
    "queries": [
     "amazon-leo"
@@ -116,6 +116,36 @@
    "webcast_live": false,
    "last_updated": "2026-11-20T17:43:33Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/d74afbc7-0de5-491c-be05-4e9c31f736ac/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
+   "id": "5591cfa3-6336-41ab-a37a-7c57aa28ab5f",
+   "slug": "falcon-9-block-5-nrol-132",
+   "name": "Falcon 9 Block 5 | NROL-132",
+   "net": "2026-12-02T20:30:00Z",
+   "window_start": "2026-12-02T20:30:00Z",
+   "window_end": "2026-12-03T00:30:00Z",
+   "precision": "Minute",
+   "status": "To Be Confirmed",
+   "status_abbrev": "TBC",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "NROL-132",
+   "mission_type": "Government/Top Secret",
+   "mission_description": "Sixteenth batch of satellites for a reconnaissance satellite constellation built by SpaceX and Northrop Grumman for the National Reconnaissance Office to provide imaging and other reconnaissance capabilities.",
+   "orbit": "LEO",
+   "mission_agencies": [
+    "National Reconnaissance Office"
+   ],
+   "pad": "Space Launch Complex 4E",
+   "location": "Vandenberg SFB, CA, USA",
+   "pad_lat": 34.632,
+   "pad_lon": -120.611,
+   "webcast_live": false,
+   "last_updated": "2026-11-23T16:43:43Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/5591cfa3-6336-41ab-a37a-7c57aa28ab5f/",
    "queries": [
     "spacex"
    ]
