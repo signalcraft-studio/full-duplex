@@ -1574,6 +1574,7 @@ ld = [{'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'Full Duple
        'potentialAction': {'@type': 'SearchAction', 'target': BASE + 'search.html?q={q}', 'query-input': 'required name=q'}}, ORG]
 page(og=('Full Duplex', 'Your phone is about to talk to space.', [(f"{C['live']} live services", OGC['live']), (f'{NLIVE_C} countries', OGC['cyan']), ('Weekly briefing: Signal', OGC['muted'])]), path='index.html', title='Satellite-to-phone and the future of mobile', full_title='Satellite-to-phone and the future of mobile | Full Duplex',
      description=SITE['home_description'], body=home, current='index.html', jsonld=ld, cls='is-home',
+     head_extra="<meta name='impact-site-verification' value='129cb172-d554-4bf7-90f2-92a71d514675'>",
      scripts='<script defer src="assets/globe.js"></script><script defer src="assets/launches.js"></script>', lastmod=max(a.get('updated', a['published']) for a in arts), sources=['scripts/build.py', 'src/site.json', 'data/tracker.json', 'data/launches.json', 'src/pages/inner-signal.html', 'src/pages/start.html'], search=False)
 
 # /tracker/ has country pages under it but the tracker itself is /tracker.html: send the bare folder there (UAT 14 Nov 2026)
