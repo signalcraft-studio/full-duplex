@@ -17,8 +17,36 @@ concurrency:
   group: pages
   cancel-in-progress: false
 jobs:
+  # "Refresh launches" can now complete every 15 minutes without pushing.
+  # Only deploy when this was a normal push / manual dispatch, or when that
+  # workflow actually pushed a new commit to main. Branch runs must never
+  # redeploy main.
+  check:
+    if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
+    runs-on: ubuntu-latest
+    outputs:
+      should_deploy: ${{ steps.check.outputs.should_deploy }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+      - id: check
+        name: Should Pages deploy?
+        run: |
+          if [ "${{ github.event_name }}" != "workflow_run" ]; then
+            echo "should_deploy=true" >> "$GITHUB_OUTPUT"
+            echo "Deploy: triggered by ${{ github.event_name }}"
+          elif [ "$(git rev-parse HEAD)" = "${{ github.event.workflow_run.head_sha }}" ]; then
+            echo "should_deploy=false" >> "$GITHUB_OUTPUT"
+            echo "Refresh did not push a new commit; skip deploy"
+          else
+            echo "should_deploy=true" >> "$GITHUB_OUTPUT"
+            echo "Deploy: refresh pushed $(git rev-parse --short HEAD)"
+          fi
   deploy:
-    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    needs: check
+    if: needs.check.outputs.should_deploy == 'true'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

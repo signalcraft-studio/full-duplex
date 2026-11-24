@@ -1,14 +1,24 @@
-# Refresh upcoming launches from Launch Library 2 a few times a day, plus recent
-# satellite orbits from CelesTrak for the flight view (data/gp-recent.json).
+# Refresh upcoming launches from Launch Library 2, plus recent satellite orbits
+# from CelesTrak for the flight view (data/gp-recent.json).
 # Only updates data/launches.json and the pages built from it (home countdown,
 # /launches/ list, .ics files, sitemap). Keeps the cache if the API fails.
 # Does not touch tracker rows, satellite counts, race data or launch-tags.
 # A GITHUB_TOKEN push does not trigger the Pages deploy workflow, so
-# .github/workflows/pages.yml also runs on workflow_run of this workflow.
+# .github/workflows/pages.yml also runs on workflow_run of this workflow
+# (and skips the deploy if this run did not push a new commit to main).
+#
+# Schedule: every 15 minutes. A cheap gate reads the committed
+# data/launches.json and skips the rest unless:
+#   - a full (hourly) refresh is due, or this run was a workflow_dispatch, or
+#   - a precise tracked launch has NET in the next 6 hours, or in the past
+#     1 hour (to catch a scrub or slip).
+# Full refresh = 5 LL2 requests. Imminent tick = 1 request per in-window
+# launch, capped at 3. One full + three imminent ticks stay under the free
+# 15 requests/hour limit (5 + 3*3 = 14).
 name: Refresh launches
 on:
   schedule:
-    - cron: '17 0,6,12,18 * * *'   # 4 runs a day = 20 API calls/day, far below the free 15/hour limit
+    - cron: '*/15 * * * *'
   workflow_dispatch:
 permissions:
   contents: write
@@ -21,22 +31,50 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # build.py rebuilds the tracker change log from git history
+          fetch-depth: 1   # deepened below only if we actually need to rebuild
+      - id: gate
+        name: Decide whether a refresh is due
+        run: python3 scripts/launch_refresh_due.py --event "${{ github.event_name }}" >> "$GITHUB_OUTPUT"
+
+      - name: Fetch launch data
+        id: fetch
+        if: steps.gate.outputs.mode != 'skip'
+        run: |
+          if [ "${{ steps.gate.outputs.mode }}" = "full" ]; then
+            python3 scripts/fetch_launches.py --force
+            # Recent satellite orbits for /launches/flight/ (CelesTrak GP data).
+            # Cached in data/gp-recent.json; the script skips if the cache is
+            # under 3 hours old (CelesTrak updates GP data about every 2 hours)
+            # and keeps the cache if CelesTrak fails, so a CelesTrak problem
+            # never blocks the launch refresh.
+            python3 scripts/fetch_gp.py || true
+          else
+            python3 scripts/fetch_launches.py --imminent
+          fi
+          if git diff --quiet -- data/launches.json data/gp-recent.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Launch data unchanged"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Fetch full git history
+        if: steps.fetch.outputs.changed == 'true'
+        run: git fetch --prune --unshallow || git fetch --prune
+
       - uses: actions/setup-python@v5
+        if: steps.fetch.outputs.changed == 'true'
         with:
           python-version: '3.12'
-      - run: pip install pillow
-      - run: python3 scripts/fetch_launches.py --force
-      # Recent satellite orbits for /launches/flight/ (CelesTrak GP data). Cached in data/gp-recent.json;
-      # the script skips if the cache is under 3 hours old (CelesTrak updates GP data about every 2 hours)
-      # and keeps the cache if CelesTrak fails, so a CelesTrak problem never blocks the launch refresh.
-      - run: python3 scripts/fetch_gp.py
-        continue-on-error: true
-      - run: python3 scripts/build.py
+      - if: steps.fetch.outputs.changed == 'true'
+        run: pip install pillow
+      - if: steps.fetch.outputs.changed == 'true'
+        run: python3 scripts/build.py
       # Share cards for "Post to X" (share/<slug>/card.jpg): headless Chromium screenshots of the real globe/infographic.
       # Only when a card is missing or its launch details changed, so most runs skip the ~1 min browser install.
       # A render failure never blocks the launch refresh; the share pages fall back to the page's normal card.
       - name: Render share cards if needed
+        if: steps.fetch.outputs.changed == 'true'
         continue-on-error: true
         run: |
           if python3 scripts/render_share.py --pending; then
@@ -46,6 +84,7 @@ jobs:
             python3 scripts/build.py
           fi
       - name: Commit if changed
+        if: steps.fetch.outputs.changed == 'true'
         run: |
           git config user.name "Full Duplex bot"
           git config user.email "actions@users.noreply.github.com"
