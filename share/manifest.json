@@ -1,12 +1,12 @@
 {
  "flight-globe": {
-  "key": "833e3bbd4b"
- },
- "l-ariane-64-block-2-amazon-leo-le-04": {
-  "key": "ff23da9939"
+  "key": "5f132cba95"
  },
  "l-falcon-9-block-5-5x-astranis-microgeo": {
   "key": "a19da080d6"
+ },
+ "l-falcon-9-block-5-amazon-leo-lf-04": {
+  "key": "28be661bf6"
  },
  "l-falcon-9-block-5-arabsat-7a": {
   "key": "599f38987c"
@@ -19,15 +19,6 @@
  },
  "l-falcon-9-block-5-oneweb-21": {
   "key": "de011e8b2c"
- },
- "l-falcon-9-block-5-rivada-1": {
-  "key": "9df31cef8d"
- },
- "l-falcon-9-block-5-rivada-10": {
-  "key": "0f1a1443ca"
- },
- "l-falcon-9-block-5-rivada-11": {
-  "key": "bb47934a05"
  },
  "l-falcon-9-block-5-starlink-group-15-21": {
   "key": "2a3210af37"

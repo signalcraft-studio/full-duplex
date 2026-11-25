@@ -1,38 +1,8 @@
 {
- "fetched_at": "2026-11-24T16:07:01Z",
- "full_fetched_at": "2026-11-24T16:07:01Z",
+ "fetched_at": "2026-11-25T00:45:04Z",
+ "full_fetched_at": "2026-11-25T00:45:04Z",
  "source": "The Space Devs Launch Library 2 (https://ll.thespacedevs.com/2.3.0/launches/upcoming/)",
  "launches": [
-  {
-   "id": "460d9db7-eaf6-4cd9-b095-cff433534c09",
-   "slug": "falcon-9-block-5-ussf-266",
-   "name": "Falcon 9 Block 5 | USSF-266",
-   "net": "2026-11-24T16:08:59Z",
-   "window_start": "2026-11-24T15:55:00Z",
-   "window_end": "2026-11-24T19:55:00Z",
-   "precision": "Second",
-   "status": "Go for Launch",
-   "status_abbrev": "Go",
-   "provider": "SpaceX",
-   "rocket": "Falcon 9 Block 5",
-   "mission": "USSF-266",
-   "mission_type": "Government/Top Secret",
-   "mission_description": "A classified mission for the United States Space Force. It is possibly a batch of classified LEO satellites based on SpaceX’s Starshield satellite bus, based on locations of ascent rocket stage drop zones being fits with previous SDA Transport Layer launches.",
-   "orbit": "PO",
-   "mission_agencies": [
-    "United States Space Force"
-   ],
-   "pad": "Space Launch Complex 4E",
-   "location": "Vandenberg SFB, CA, USA",
-   "pad_lat": 34.632,
-   "pad_lon": -120.611,
-   "webcast_live": true,
-   "last_updated": "2026-11-24T15:56:16Z",
-   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/460d9db7-eaf6-4cd9-b095-cff433534c09/",
-   "queries": [
-    "spacex"
-   ]
-  },
   {
    "id": "b0d27def-0a88-44c3-a947-1fd5b8503e2c",
    "slug": "falcon-9-block-5-ussf-380",
@@ -67,9 +37,9 @@
    "id": "d74afbc7-0de5-491c-be05-4e9c31f736ac",
    "slug": "falcon-9-block-5-cygnus-crs-2-ng-25",
    "name": "Falcon 9 Block 5 | Cygnus CRS-2 NG-25",
-   "net": "2026-11-29T15:50:00Z",
-   "window_start": "2026-11-29T15:50:00Z",
-   "window_end": "2026-11-29T15:50:00Z",
+   "net": "2026-11-29T15:47:00Z",
+   "window_start": "2026-11-29T15:47:00Z",
+   "window_end": "2026-11-29T15:47:00Z",
    "precision": "Minute",
    "status": "Go for Launch",
    "status_abbrev": "Go",
@@ -85,7 +55,7 @@
    "pad_lat": 28.56194122,
    "pad_lon": -80.57735736,
    "webcast_live": false,
-   "last_updated": "2026-11-20T17:43:33Z",
+   "last_updated": "2026-11-24T19:47:23Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/d74afbc7-0de5-491c-be05-4e9c31f736ac/",
    "queries": [
     "spacex"
@@ -122,6 +92,37 @@
    ]
   },
   {
+   "id": "9b9db235-8ffb-4569-b09b-0e852ad231a0",
+   "slug": "falcon-9-block-5-amazon-leo-lf-04",
+   "name": "Falcon 9 Block 5 | Amazon Leo (LF-04)",
+   "net": "2026-12-31T00:00:00Z",
+   "window_start": "2026-12-31T00:00:00Z",
+   "window_end": "2026-12-31T00:00:00Z",
+   "precision": "Month",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Amazon Leo (LF-04)",
+   "mission_type": "Communications",
+   "mission_description": "Amazon Leo, formerly known as Project Kuiper, is a mega constellation of satellites in Low Earth Orbit designed to offer broadband internet access managed by Kuiper Systems LLC, a subsidiary of Amazon. This constellation is planned to be composed of 3,276 satellites. The satellites are projected to be placed in 98 orbital planes in three orbital layers, one at 590 km, 610 km and 630 km altitude.",
+   "orbit": "LEO",
+   "mission_agencies": [
+    "Amazon Leo"
+   ],
+   "pad": "Unknown Pad",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "pad_lat": 28.458,
+   "pad_lon": -80.528,
+   "webcast_live": false,
+   "last_updated": "2026-11-24T19:21:29Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/9b9db235-8ffb-4569-b09b-0e852ad231a0/",
+   "queries": [
+    "spacex",
+    "amazon-leo"
+   ]
+  },
+  {
    "id": "8bf5f61e-a7e1-41e6-aede-7b87e4beebab",
    "slug": "falcon-9-block-5-chorus",
    "name": "Falcon 9 Block 5 | CHORUS",
@@ -143,7 +144,7 @@
    "pad_lat": 28.458,
    "pad_lon": -80.528,
    "webcast_live": false,
-   "last_updated": "2026-11-05T18:00:50Z",
+   "last_updated": "2026-11-24T16:23:22Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/8bf5f61e-a7e1-41e6-aede-7b87e4beebab/",
    "queries": [
     "spacex"
@@ -1518,6 +1519,34 @@
    ]
   },
   {
+   "id": "f3a1a032-5cca-4733-9ca8-04a5a1dba222",
+   "slug": "falcon-9-block-5-vast-pam-1-vast-iss-mission-1",
+   "name": "Falcon 9 Block 5 | Vast-PAM-1 (Vast ISS Mission 1)",
+   "net": "2027-07-13T00:00:00Z",
+   "window_start": "2027-07-13T00:00:00Z",
+   "window_end": "2027-07-13T00:00:00Z",
+   "precision": "Day",
+   "status": "To Be Determined",
+   "status_abbrev": "TBD",
+   "provider": "SpaceX",
+   "rocket": "Falcon 9 Block 5",
+   "mission": "Vast-PAM-1 (Vast ISS Mission 1)",
+   "mission_type": "Tourism",
+   "mission_description": "Vast’s first private crew rotation to the International Space Station aboard a SpaceX Crew Dragon spacecraft, and NASA's 6th Private Astronaut Mission to the ISS.\r\n\r\nThe crew includes ESA/CNES astronaut Thomas Pesquet, who will serve as Commander for the mission, Czech astronaut Aleš Svoboda, and Greek astronaut Adrianos Golemis. The mission will carry 4 astronauts to and from the International Space Station for up to 2 weeks.",
+   "orbit": "LEO",
+   "mission_agencies": [],
+   "pad": "Space Launch Complex 40",
+   "location": "Cape Canaveral SFS, FL, USA",
+   "pad_lat": 28.56194122,
+   "pad_lon": -80.57735736,
+   "webcast_live": false,
+   "last_updated": "2026-11-24T19:49:08Z",
+   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/f3a1a032-5cca-4733-9ca8-04a5a1dba222/",
+   "queries": [
+    "spacex"
+   ]
+  },
+  {
    "id": "99875c7b-400c-40e2-b16c-bb9b2a02a0d8",
    "slug": "falcon-9-block-5-haven-1-crew-1",
    "name": "Falcon 9 Block 5 | Haven-1 Crew-1",
@@ -1601,34 +1630,6 @@
    "webcast_live": false,
    "last_updated": "2026-10-29T21:54:01Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/ce1317de-ec94-4479-9b28-38ebf11f13ae/",
-   "queries": [
-    "spacex"
-   ]
-  },
-  {
-   "id": "f3a1a032-5cca-4733-9ca8-04a5a1dba222",
-   "slug": "falcon-9-block-5-vast-pam-1-vast-iss-mission-1",
-   "name": "Falcon 9 Block 5 | Vast-PAM-1 (Vast ISS Mission 1)",
-   "net": "2027-09-30T00:00:00Z",
-   "window_start": "2027-09-30T00:00:00Z",
-   "window_end": "2027-09-30T00:00:00Z",
-   "precision": "Quarter 3",
-   "status": "To Be Determined",
-   "status_abbrev": "TBD",
-   "provider": "SpaceX",
-   "rocket": "Falcon 9 Block 5",
-   "mission": "Vast-PAM-1 (Vast ISS Mission 1)",
-   "mission_type": "Tourism",
-   "mission_description": "Vast’s first private crew rotation to the International Space Station aboard a SpaceX Crew Dragon spacecraft, and NASA's 6th Private Astronaut Mission to the ISS.\r\n\r\nThe crew includes ESA/CNES astronaut Thomas Pesquet, who will serve as Commander for the mission, Czech astronaut Aleš Svoboda, and Greek astronaut Adrianos Golemis. The mission will carry 4 astronauts to and from the International Space Station for up to 2 weeks.",
-   "orbit": "LEO",
-   "mission_agencies": [],
-   "pad": "Space Launch Complex 40",
-   "location": "Cape Canaveral SFS, FL, USA",
-   "pad_lat": 28.56194122,
-   "pad_lon": -80.57735736,
-   "webcast_live": false,
-   "last_updated": "2026-09-09T22:21:51Z",
-   "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/f3a1a032-5cca-4733-9ca8-04a5a1dba222/",
    "queries": [
     "spacex"
    ]

@@ -2,6 +2,18 @@
  "_readme": "What scripts/render_share.py renders into share/<slug>/card.jpg. Written by build.py.",
  "items": [
   {
+   "slug": "l-falcon-9-block-5-amazon-leo-lf-04",
+   "key": "28be661bf6",
+   "kind": "flight",
+   "page": "launches/flight/?l=falcon-9-block-5-amazon-leo-lf-04&nowelcome",
+   "sel": "#fl-hud",
+   "layout": "wide",
+   "kicker": "Launch · December 2026",
+   "title": "Amazon Leo (LF-04)",
+   "sub": "Falcon 9",
+   "tag": "amazon-leo"
+  },
+  {
    "slug": "l-falcon-9-block-5-globalstar-2-r-mission-2-x-9",
    "key": "5c960a14bd",
    "kind": "flight",
@@ -127,14 +139,14 @@
   },
   {
    "slug": "flight-globe",
-   "key": "833e3bbd4b",
+   "key": "5f132cba95",
    "kind": "canvas",
    "page": "launches/flight/?nowelcome",
    "sel": "#glview",
    "layout": "square",
    "kicker": "After deployment · real orbits",
    "title": "Where the newest satellites are right now",
-   "sub": "125 satellites from 7 recent broadband and phone-network launches"
+   "sub": "116 satellites from 6 recent broadband and phone-network launches"
   },
   {
    "slug": "sat-scale",

@@ -1,0 +1,20 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Full Duplex//Launch tracker//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:f3a1a032-5cca-4733-9ca8-04a5a1dba222@fullduplex
+DTSTAMP:20261125T004504Z
+DTSTART;VALUE=DATE:20270713
+DTEND;VALUE=DATE:20270714
+SUMMARY:Launch: Vast-PAM-1 (Vast ISS Mission 1) (Falcon 9 Block 5)
+DESCRIPTION:Falcon 9 Block 5 from Space Launch Complex 40\, Cape Canaveral
+  SFS\, FL\, USA. Other: Not a phone-satellite launch. Listed so you can s
+ ee everything SpaceX and its rivals are flying. Launch times move: check 
+ https://signalcraft-studio.github.io/full-duplex/launches/ before you wat
+ ch.
+LOCATION:Space Launch Complex 40\, Cape Canaveral SFS\, FL\, USA
+URL:https://signalcraft-studio.github.io/full-duplex/launches/
+END:VEVENT
+END:VCALENDAR
