@@ -169,7 +169,8 @@
           ctx.globalAlpha=a; ctx.textAlign='center'; ctx.fillStyle=v[2]; ctx.font='600 '+fs+'px "Inter Tight",system-ui'; ctx.fillText(Math.round(v[0]*k).toLocaleString('en-GB'),x,y);
           ctx.fillStyle='#cfdbe8'; ctx.font='500 '+Math.round(fs*.22)+'px "JetBrains Mono",monospace'; ctx.fillText(v[1].toUpperCase(),x,y+fs*.4);});}
     };
-    function size(){var r=cv.getBoundingClientRect(); W=r.width; H=r.height; DPR=Math.min(2,devicePixelRatio||1); cv.width=Math.round(W*DPR); cv.height=Math.round(H*DPR); stars=null; raceLayout();}
+    var hasRace=!!wrap.querySelector('[data-s=race]'), started=false;
+    function size(){var r=cv.getBoundingClientRect(); W=r.width; H=r.height; DPR=Math.min(2,devicePixelRatio||1); cv.width=Math.round(W*DPR); cv.height=Math.round(H*DPR); stars=null; if(hasRace) raceLayout();}
     function measure(){var vh=innerHeight, k=null, p=0;
       steps.forEach(function(s){var r=s.getBoundingClientRect(); if(r.top<vh*.65){k=s.getAttribute('data-s'); p=cl((vh*.65-r.top)/r.height);}});
       if(!k){k=first; p=0;}
@@ -182,14 +183,22 @@
       if(prev&&fa<1&&prev.k!=='race') S[prev.k](prev.p,1-fa); S[cur.k](cur.p,fa); ctx.globalAlpha=1;}
     function frame(ts){if(!running) return; var dt=last?Math.min(50,ts-last):16; last=ts; t+=dt; measure(); draw(); requestAnimationFrame(frame);}
     function play(){if(running) return; running=true; last=0; requestAnimationFrame(frame);}
-    size(); measure(); steps.forEach(function(s){s.classList.toggle('on',s.getAttribute('data-s')===cur.k);}); if(rw) rw.hidden=(cur.k!=='race'); draw();
-    var rz; addEventListener('resize',function(){clearTimeout(rz); rz=setTimeout(function(){size(); draw();},120);});
-    if(range) range.addEventListener('input',function(){override=timeOf(range.value/100); if(!running) draw();});
-    var api={render:function(dt){t+=dt; measure(); draw();}};
-    if(step) return api;
-    if(STILL){var pend=false; addEventListener('scroll',function(){if(pend) return; pend=true; requestAnimationFrame(function(){pend=false; var r=wrap.getBoundingClientRect(); if(r.bottom<0||r.top>innerHeight) return; measure(); draw();});},{passive:true}); return api;}
-    var vis=true; if('IntersectionObserver' in window) new IntersectionObserver(function(es){vis=es[0].isIntersecting; if(vis&&!document.hidden) play(); else running=false;}).observe(wrap); else play();
-    document.addEventListener('visibilitychange',function(){if(document.hidden) running=false; else if(vis) play();});
+    function start(){
+      if(started) return; started=true;
+      size(); measure(); steps.forEach(function(s){s.classList.toggle('on',s.getAttribute('data-s')===cur.k);}); if(rw) rw.hidden=(cur.k!=='race'); draw();
+      var rz; addEventListener('resize',function(){clearTimeout(rz); rz=setTimeout(function(){if(!started) return; size(); draw();},120);});
+      if(range) range.addEventListener('input',function(){override=timeOf(range.value/100); if(started&&!running) draw();});
+    }
+    var api={render:function(dt){if(!started) start(); t+=dt; measure(); draw();}};
+    if(step){ start(); return api; }
+    var vis=true;
+    var bootNow=fig.getBoundingClientRect().top <= innerHeight*1.5;
+    if(bootNow) start();
+    else if('IntersectionObserver' in window){var boot=new IntersectionObserver(function(es){if(es[0].isIntersecting){boot.disconnect(); start(); if(!STILL&&vis&&!document.hidden) play();}},{rootMargin:'200% 0px'}); boot.observe(wrap);}
+    else start();
+    if(STILL){var pend=false; addEventListener('scroll',function(){if(pend) return; pend=true; requestAnimationFrame(function(){pend=false; var r=wrap.getBoundingClientRect(); if(r.bottom<0||r.top>innerHeight) return; if(!started) start(); measure(); draw();});},{passive:true}); return api;}
+    if('IntersectionObserver' in window) new IntersectionObserver(function(es){vis=es[0].isIntersecting; if(vis&&!document.hidden){if(!started) start(); play();} else running=false;}).observe(wrap); else {if(!started) start(); play();}
+    document.addEventListener('visibilitychange',function(){if(document.hidden) running=false; else if(vis){if(!started) start(); play();}});
     return api;
   }
   if(step) window.__story={render:function(dt){insts.forEach(function(i){if(i) i.render(dt);});}};

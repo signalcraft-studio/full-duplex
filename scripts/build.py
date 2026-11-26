@@ -148,18 +148,78 @@ def signal_block(root, surface, variant='full', heading_level=2, heading=None, i
             f'<a class=more href="{esc(SITE["archive_url"])}">Read past issues</a></p>{privacy}</div></section>')
 
 # ---------------------------------------------------------------- chrome
-NAV = [('index.html', 'Home'), ('articles/index.html', 'Articles'), ('tracker.html', 'Tracker'), ('launches/index.html', 'Launches'), ('explainers/index.html', 'Explainers'), ('inner-signal/index.html', 'Inner Signal'), ('satellites/index.html', 'Satellites'), ('check/index.html', 'Check my phone'), ('search.html', 'Search'), ('about.html', 'About')]  # Inner Signal added for launch prep (22 Nov 2026); Sponsor stays footer-only so the bar can stay on one desktop row
+NAV = [('index.html', 'Home'), ('tracker.html', 'Tracker'), ('check/index.html', 'Check my phone'), ('launches/index.html', 'Launches'), ('articles/index.html', 'Articles'), ('explainers/index.html', 'Explainers'), ('inner-signal/index.html', 'Inner Signal'), ('satellites/index.html', 'Satellites'), ('resources/index.html', 'Resources'), ('search.html', 'Search'), ('about.html', 'About')]
 
 LOGO_MARK = ('<svg class=mark viewBox="254 250 516 516" width="44" height="44" aria-hidden="true" focusable="false">'
              '<g fill="none" stroke-width="32" stroke-linecap="round"><path d="M279 505A233 233 0 0 1 644.3 313.2" stroke="#00cfff"/><path d="M744.9 511.9A233 233 0 0 1 383.7 699.5" stroke="#fff"/></g><circle cx="423" cy="432" r="10" fill="#00cfff"/><path transform="translate(426 517.5) rotate(-15)" fill="#00cfff" fill-rule="evenodd" d="M-23.5 -57.5h47a5 5 0 0 1 5 5v105a5 5 0 0 1 -5 5h-47a5 5 0 0 1 -5 -5v-105a5 5 0 0 1 5 -5zM-8.5 -48h17.0a5.5 5.5 0 0 1 5.5 5.5v0.0a5.5 5.5 0 0 1 -5.5 5.5h-17.0a5.5 5.5 0 0 1 -5.5 -5.5v-0.0a5.5 5.5 0 0 1 5.5 -5.5z"/><g fill="#fff"><path d="M583 488h21l33 32-22 22-32-32z"/><path d="M620 492l20-21 15 14-21 22z"/><path d="M567 545l21-21 14 14-20 20z"/><circle cx="635" cy="541" r="8"/></g>' + '</svg>')  # logo A, approved by Sam 9 Nov 2026 (same as assets/logo.svg)
 
+# Inline 24px stroke icons for the sidebar / tab bar (no libraries). One sprite per page, <use> at each link.
+NAV_PATHS = {
+    'home': '<path d="M4 11.5 12 4l8 7.5"/><path d="M6.5 10.5V20h11V10.5"/>',
+    'tracker': '<path d="M5 19V10M10 19V5M15 19v-7M20 19V8"/>',
+    'check': '<rect x="8" y="3" width="8" height="18" rx="1.8"/><path d="M11 18.5h2"/>',
+    'launches': '<path d="M12 19c-3-1-5-5-5-9 0-5 5-8 5-8s5 3 5 8c0 4-2 8-5 9z"/><path d="M10 13.5 7 20l5-2 5 2-3-6.5"/>',
+    'articles': '<path d="M6 4.5h9.5A2.5 2.5 0 0 1 18 7v13H8a2 2 0 0 1-2-2V4.5z"/><path d="M8 19.5a2 2 0 0 1 2-2h8"/><path d="M10 8.5h5M10 12h5"/>',
+    'explainers': '<path d="M9 18h6M10 21h4"/><path d="M8.4 14A5 5 0 1 1 15.6 14c0 2-1 3-1.8 3.8-.5.5-.7 1-.7 1.7H10.9c0-.7-.2-1.2-.7-1.7C9.4 17 8.4 16 8.4 14"/>',
+    'signal': '<path d="M8 12a4 4 0 0 1 8 0"/><path d="M5.5 12a6.5 6.5 0 0 1 13 0"/><path d="M3 12a9 9 0 0 1 18 0"/><path d="M12 12v.01"/>',
+    'satellites': '<rect x="10" y="10" width="4" height="4" rx=".5"/><path d="M7 12H4M17 12h3M12 7V4M12 17v3M8.5 8.5 6 6M15.5 8.5 18 6M8.5 15.5 6 18M15.5 15.5 18 18"/>',
+    'resources': '<path d="M6 6.5h12v3.5H6zM6 11.5h12v3.5H6zM6 16.5h12v3H6z"/>',
+    'search': '<circle cx="10.5" cy="10.5" r="5.5"/><path d="M15 15l4.5 4.5"/>',
+    'about': '<circle cx="12" cy="8" r="3.2"/><path d="M5.5 19.5c1.2-3.2 3.5-4.8 6.5-4.8s5.3 1.6 6.5 4.8"/>',
+    'more-ico': '<circle cx="6" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="18" cy="12" r="1.2" fill="currentColor" stroke="none"/>',
+    'mail': '<rect x="3.5" y="6" width="17" height="12" rx="1.5"/><path d="M4 7l8 6 8-6"/>',
+}
+def nav_sprite():
+    syms = ''.join(
+        f'<symbol id=nav-{name} viewBox="0 0 24 24">{inner}</symbol>'
+        for name, inner in NAV_PATHS.items()
+    )
+    return (f'<svg class=nav-sprite xmlns="http://www.w3.org/2000/svg" width=0 height=0 aria-hidden=true focusable=false fill=none stroke=currentColor stroke-width=1.8 stroke-linecap=round stroke-linejoin=round>{syms}</svg>')
+def nav_ico(name, size=20):
+    return (f'<svg class=nav-ico width={size} height={size} aria-hidden=true focusable=false><use href="#nav-{name}"/></svg>')
+_NAV_MORE = ''
+NAV_ICO = {
+    'index.html': 'home', 'tracker.html': 'tracker', 'check/index.html': 'check',
+    'launches/index.html': 'launches', 'articles/index.html': 'articles',
+    'explainers/index.html': 'explainers', 'inner-signal/index.html': 'signal',
+    'satellites/index.html': 'satellites', 'resources/index.html': 'resources',
+    'search.html': 'search', 'about.html': 'about',
+}
+# Four most-used destinations on the mobile tab bar; everything else (plus Get Signal) lives in More.
+NAV_TABS = ['index.html', 'tracker.html', 'check/index.html', 'launches/index.html']
+NAV_TAB_LABEL = {'check/index.html': 'Check'}
 def header(root, current):
-    # "Search" is an icon on desktop and "Follow" an X mark, so the nav (now with "Check my phone") stays on one row from 861px up
-    lab = lambda h, t: (f'<svg class=nav-ico viewBox="0 0 24 24" width=18 height=18 aria-hidden=true focusable=false><circle cx=10.5 cy=10.5 r=6.5 fill=none stroke=currentColor stroke-width=2.2 /><path d="M15.5 15.5l5 5" stroke=currentColor stroke-width=2.2 stroke-linecap=round /></svg><span class=nav-t>{t}</span>' if h == 'search.html' else t)
-    links = ''.join(f'<a href="{root}{h}"{" class=nav-search" if h == "search.html" else ""}{" aria-current=page" if h == current else ""}>{lab(h, t)}</a>' for h, t in NAV)
-    return (f'<a class=skip href="#main">Skip to content</a><header class=site><div class=wrap><a class=logo href="{root}index.html">{LOGO_MARK}Full<span>Duplex</span></a>'
-            f'<nav aria-label="Main">{links}</nav><div class=hdr-cta><a class=xlink href="https://x.com/{X}" target=_blank rel="noopener me" title="Follow @{X} on X"><svg class=x-ico viewBox="0 0 24 24" width=17 height=17 aria-hidden=true focusable=false><path fill=currentColor d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.78L17.75 3zm-1.08 16.17h1.7L7.4 4.74H5.58l11.09 14.43z"/></svg><span class=xl-t>Follow</span><span class=sr> @{X} on X</span></a>'
-            f'<a class="btn pill" href="{esc(sub_url("header"))}">Subscribe</a></div></div></header>')
+    def link(h, t, label=None):
+        cur = ' aria-current=page' if h == current else ''
+        lab = label or t
+        al = f' aria-label="{esc(t)}"' if label and label != t else ''
+        return f'<a href="{root}{h}"{cur}{al} title="{esc(t)}">{nav_ico(NAV_ICO[h])}<span>{esc(lab)}</span></a>'
+    items = ''.join(f'<li>{link(h, t)}</li>' for h, t in NAV)
+    tabs = ''.join(f'{link(h, t, NAV_TAB_LABEL.get(h))}' for h, t in NAV if h in NAV_TABS)
+    more_pages = [(h, t) for h, t in NAV if h not in NAV_TABS]
+    more_cur = ' aria-current=true' if current in {h for h, _ in more_pages} else ''
+    more_links = ''.join(f'<li>{link(h, t)}</li>' for h, t in more_pages)
+    signal = esc(sub_url('nav-signal'))
+    global _NAV_MORE
+    _NAV_MORE = (
+        f'<div id=nav-more class=nav-more hidden>'
+        f'<div class=nav-more-panel role=dialog aria-modal=true aria-labelledby=nav-more-h tabindex=-1>'
+        f'<div class=nav-more-head><h2 id=nav-more-h>More</h2><button type=button class=nav-more-x aria-label=Close>×</button></div>'
+        f'<ul>{more_links}</ul>'
+        f'<a class="btn pill nav-signal" href="{signal}">{nav_ico("mail")}<span>Get Signal</span></a>'
+        f'</div></div>'
+    )
+    return (
+        f'<a class=skip href="#main">Skip to content</a>{nav_sprite()}'
+        f'<header class=site>'
+        f'<a class=logo href="{root}index.html">{LOGO_MARK}<span class=logo-t>Full<span>Duplex</span></span></a>'
+        f'<nav class=side-nav aria-label="Main"><ul>{items}</ul></nav>'
+        f'<div class=nav-foot><a class="btn pill nav-signal" href="{signal}">{nav_ico("mail")}<span>Get Signal</span></a></div>'
+        f'</header>'
+        f'<nav class=tabbar aria-label="Primary">{tabs}'
+        f'<button type=button class=tab-more aria-expanded=false aria-controls=nav-more{more_cur}>{nav_ico("more-ico")}<span>More</span></button>'
+        f'</nav>'
+    )
 
 def footer(root, sticky=True):
     bar = (f'<div class=stickybar hidden role=region aria-label="Subscribe to Signal"><p><strong>Signal</strong> · the weekly direct-to-cell briefing</p>'
@@ -169,7 +229,7 @@ def footer(root, sticky=True):
             f'<nav aria-label="Footer"><a href="{esc(sub_url("footer"))}">Subscribe to Signal</a><a href="https://x.com/{X}" target=_blank rel="noopener me">Follow @{X} on X</a>'
             f'<a href="{root}start/">Start here</a><a href="{root}articles/index.html">Articles</a><a href="{root}tracker.html">Tracker</a><a href="{root}tracker/changes/">Tracker changes</a><a href="{root}launches/">Launches</a><a href="{root}explainers/">Starship explainers</a><a href="{root}journey/">What happens when you hit send</a><a href="{root}inner-signal/">Inner Signal</a><a href="{root}satellites/">Meet the satellites</a><a href="{root}check/">Can my phone connect?</a><a href="{root}glossary/">Glossary</a>'
             f'<a href="{root}play/constellation.html">Constellation</a><a href="{root}search.html">Search</a><a href="{root}feed.xml">RSS</a>'
-            f'<a href="{root}resources/">Resources</a><a href="{root}about.html">About</a><a href="{root}sponsor.html">Partner with Full Duplex</a><a href="{root}privacy.html">Privacy</a><a href="{root}disclosure/">Disclosure</a></nav></div></footer>{bar}')
+            f'<a href="{root}resources/">Resources</a><a href="{root}about.html">About</a><a href="{root}sponsor.html">Partner with Full Duplex</a><a href="{root}privacy.html">Privacy</a><a href="{root}disclosure/">Disclosure</a></nav></div></footer>{bar}{_NAV_MORE}')
 
 import hashlib
 _AV = {}

@@ -1,17 +1,7 @@
 /* Full Duplex site script: hide-on-scroll mobile header, sticky subscribe bar, checker forms, glossary, welcome. No third-party trackers; see privacy.html. */
 (function(){
   /* (The lazy beehiiv iframe loader lived here until 14 Nov 2026; every Signal block is now our own button.) */
-  // 1. Phones and small tablets (860px and below): the header hides while you scroll down and comes back when you scroll up.
-  var hdr=document.querySelector('header.site'), mq=matchMedia('(max-width:860px)'), lastY=scrollY, ticking=false;
-  if(hdr){
-    var nav=hdr.querySelector('nav'), cur=nav&&nav.querySelector('[aria-current=page]');
-    if(cur&&mq.matches&&nav.scrollWidth>nav.clientWidth)nav.scrollLeft=Math.max(0,cur.offsetLeft-nav.clientWidth/2+cur.offsetWidth/2);
-    var upd=function(){ticking=false; var y=Math.max(0,scrollY), d=y-lastY;
-      if(!mq.matches||y<80||hdr.contains(document.activeElement)){hdr.classList.remove('hdr-hide');lastY=y;return;}
-      if(d>8){hdr.classList.add('hdr-hide');lastY=y;} else if(d<-8){hdr.classList.remove('hdr-hide');lastY=y;}};
-    addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(upd);}},{passive:true});
-    hdr.addEventListener('focusin',function(){hdr.classList.remove('hdr-hide');});
-  }
+  // 1. The top header used to hide on scroll below 860px. The new sidebar / tab bar stays put, so that behaviour is off.
   // 2. Mobile sticky subscribe bar: appears after 40% scroll, dismissible, remembered for 30 days.
   var bar=document.querySelector('.stickybar'); if(!bar)return;
   var KEY='fd_bar_dismissed', until=0; try{until=+localStorage.getItem(KEY)||0;}catch(e){}
@@ -126,4 +116,33 @@
       document.addEventListener(ev,function(e){var a=e.target.closest&&e.target.closest(SEL);if(a)tag(a);},true);
     });
   }catch(e){/* never break the page */}
+})();
+
+/* Mobile "More" sheet: button opens a dialog, Esc / overlay / close returns focus. */
+(function(){
+  var btn=document.querySelector('.tab-more'), sheet=document.getElementById('nav-more');
+  if(!btn||!sheet) return;
+  var panel=sheet.querySelector('.nav-more-panel'), closeBtn=sheet.querySelector('.nav-more-x'), last=null;
+  function focusables(){return [].slice.call(panel.querySelectorAll('a,button'));}
+  function open(){
+    last=document.activeElement; sheet.hidden=false; btn.setAttribute('aria-expanded','true');
+    document.body.classList.add('nav-more-open'); (closeBtn||panel).focus();
+  }
+  function close(){
+    if(sheet.hidden) return;
+    sheet.hidden=true; btn.setAttribute('aria-expanded','false');
+    document.body.classList.remove('nav-more-open'); if(last&&last.focus) last.focus();
+  }
+  btn.addEventListener('click',function(){ sheet.hidden?open():close(); });
+  if(closeBtn) closeBtn.addEventListener('click',close);
+  sheet.addEventListener('click',function(e){ if(e.target===sheet) close(); });
+  document.addEventListener('keydown',function(e){
+    if(sheet.hidden) return;
+    if(e.key==='Escape'){ close(); return; }
+    if(e.key!=='Tab') return;
+    var f=focusables(); if(!f.length) return;
+    var first=f[0], lastE=f[f.length-1];
+    if(e.shiftKey&&document.activeElement===first){ e.preventDefault(); lastE.focus(); }
+    else if(!e.shiftKey&&document.activeElement===lastE){ e.preventDefault(); first.focus(); }
+  });
 })();
