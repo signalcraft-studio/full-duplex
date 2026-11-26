@@ -1,14 +1,13 @@
 {
  "_readme": "Written by scripts/daily_refresh.py (daily-refresh.yml). \"date\" is the one shared \"data checked\" stamp; each item keeps its own as_of and only moves when its check passed.",
- "updated": "2026-11-26T20:02:54Z",
+ "updated": "2026-11-26T20:26:34Z",
  "date": "2026-11-26",
  "checks": [
   {
    "item": "count:starlink-dtc",
-   "status": "updated",
+   "status": "verified",
    "as_of": "2026-11-26",
-   "was_as_of": "2026-11-09",
-   "note": "637 -> 636 (McDowell)"
+   "was_as_of": "2026-11-26"
   },
   {
    "item": "count:ast",
@@ -20,13 +19,13 @@
    "item": "count:globalstar",
    "status": "verified",
    "as_of": "2026-11-26",
-   "was_as_of": "2026-11-09"
+   "was_as_of": "2026-11-26"
   },
   {
    "item": "count:lynk",
    "status": "verified",
    "as_of": "2026-11-26",
-   "was_as_of": "2026-11-09"
+   "was_as_of": "2026-11-26"
   },
   {
    "item": "count:skylo",
@@ -36,23 +35,22 @@
   },
   {
    "item": "count:starlink-broadband",
-   "status": "updated",
+   "status": "verified",
    "as_of": "2026-11-26",
-   "was_as_of": "2026-11-09",
-   "note": "10553 -> 10545 (McDowell)"
+   "was_as_of": "2026-11-26"
   },
   {
    "item": "count:amazon-leo",
-   "status": "updated",
+   "status": "verified",
    "as_of": "2026-11-26",
-   "was_as_of": "2026-11-16",
-   "note": "392 -> 428 (McDowell)"
+   "was_as_of": "2026-11-26"
   },
   {
    "item": "resources-links",
-   "status": "review",
-   "as_of": "2026-11-16",
-   "note": "1 of 48 links look broken: https://celestrak.org/ (error: URLError)"
+   "status": "verified",
+   "as_of": "2026-11-26",
+   "was_as_of": "2026-11-16",
+   "note": "48 links OK, 10 block robots"
   },
   {
    "item": "race-chart",
