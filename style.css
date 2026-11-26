@@ -323,6 +323,8 @@ footer.site .logo .mark{width:40px;height:40px}
 .launch[hidden]{display:none}
 @media (min-width:760px){.launch{grid-template-columns:14rem 1fr}}
 .l-when time{display:block;font-family:var(--f-mono);font-size:.85rem;color:#fff;line-height:1.4}
+.tz3{display:block}.tz3>*{display:block}.tz3 .tz-uk,.tz3 .tz-site{font-family:var(--f-mono);font-size:.78rem;color:var(--muted);line-height:1.45;font-weight:400}
+.nl-when .tz3 .tz-utc{font-weight:600;color:#fff}.nl-when .tz3 .tz-uk,.nl-when .tz3 .tz-site{font-size:.85rem}
 .lcd{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:.8rem;color:var(--cyan);margin:.25rem 0 0;min-height:1.3em}
 .l-top{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
 .lst{font-family:var(--f-mono);font-size:.7rem;color:var(--dim);text-transform:uppercase;letter-spacing:.06em}

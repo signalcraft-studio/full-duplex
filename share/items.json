@@ -195,17 +195,17 @@
   },
   {
    "slug": "orbit-view",
-   "key": "1c3a2e7c2f",
+   "key": "dbc3bc5452",
    "kind": "canvas",
    "page": "launches/?nowelcome",
    "sel": "#orbitview",
    "layout": "square",
-   "kicker": "Orbit view · 9 Nov 2026",
-   "title": "689 satellites that can talk to your phone",
+   "kicker": "Orbit view · 26 Nov 2026",
+   "title": "688 satellites that can talk to your phone",
    "sub": "One dot = one satellite",
    "chips": [
     [
-     "637 Starlink DTC",
+     "636 Starlink DTC",
      "#00cfff"
     ],
     [
@@ -224,12 +224,12 @@
   },
   {
    "slug": "race",
-   "key": "8723eed4dd",
+   "key": "ff9c42782d",
    "kind": "dom",
    "page": "launches/?nowelcome",
    "sel": ".race-chart",
    "layout": "wide",
-   "kicker": "The race so far · 9 Nov 2026",
+   "kicker": "The race so far · 26 Nov 2026",
    "title": "Satellites that can talk to your phone",
    "sub": "Working satellites in orbit, by network"
   },
@@ -268,14 +268,14 @@
   },
   {
    "slug": "sat-starlink-dtc",
-   "key": "78b3564a45",
+   "key": "586b20de4d",
    "kind": "dom",
    "page": "satellites/?nowelcome",
    "sel": "#starlink-dtc .sc-art > :first-child",
    "layout": "square",
    "kicker": "Meet the satellites · SpaceX",
    "title": "Starlink Direct to Cell",
-   "sub": "637 in orbit · Talks to ordinary phones",
+   "sub": "636 in orbit · Talks to ordinary phones",
    "color": "#00cfff"
   },
   {
@@ -292,14 +292,14 @@
   },
   {
    "slug": "sat-amazon-leo",
-   "key": "aa237153ff",
+   "key": "77b7baac35",
    "kind": "dom",
    "page": "satellites/?nowelcome",
    "sel": "#amazon-leo .sc-art > :first-child",
    "layout": "square",
    "kicker": "Meet the satellites · Amazon",
    "title": "Amazon Leo (formerly Project Kuiper)",
-   "sub": "392 in orbit · Dishes only, not phones",
+   "sub": "428 in orbit · Dishes only, not phones",
    "color": "#f5c26b"
   },
   {

@@ -498,12 +498,15 @@ def race_board(root, compact=False):
             'Skylo’s “via partners” figure is the 41-country row in the tracker. Globalstar works through Apple’s own iPhone features rather than operator deals, so it has no tracker rows.')
     if compact: note = (f'Ranked by live services, then countries live. From our <a href="{root}tracker.html">tracker</a> ({TRACK["last_checked"]}) and the '
                         f'<a href="{root}launches/#cnt-h">launch tracker</a> ({human(const["last_checked"])}), sources linked. <a href="{root}tracker.html#lb-h">Full leaderboard</a>.')
-    return (f'<section class="lboard{" compact" if compact else ""}" aria-labelledby=lb-h><div class=lb-top><div><p class=kicker>This week in the race · as of {human(BUILD_DAY.isoformat())}</p>'
+    return (f'<section class="lboard{" compact" if compact else ""}" aria-labelledby=lb-h><div class=lb-top><div><p class=kicker>This week in the race · data checked {human(CHECK_DAY)}</p>'
             f'<h2 id=lb-h>{"Who’s winning satellite-to-phone" if compact else "The race leaderboard"}</h2></div>'
             + ('' if compact else share_btn('Who’s winning satellite-to-phone this week? The Full Duplex race leaderboard, with sources.', BASE + 'tracker.html#lb-h'))
             + f'</div><div class=lb-grid><div class="tablewrap lbwrap"><table class=lb-table><thead>{head}</thead><tbody>{"".join(tr)}</tbody></table></div>'
             f'<div class=lb-countries><h3>Most connected countries</h3><ol>{cb}</ol></div></div><p class=l-credit>{note}</p></section>')
 BUILD_DAY = date.today()
+# One shared "data checked" stamp, written by scripts/daily_refresh.py (daily-refresh.yml). Falls back to the build day.
+REFRESH = json.loads((ROOT / 'data/refresh.json').read_text()) if (ROOT / 'data/refresh.json').exists() else {}
+CHECK_DAY = REFRESH.get('date') or BUILD_DAY.isoformat()
 
 # ---------------------------------------------------------------- articles
 arts = []
@@ -692,10 +695,65 @@ def who(l, tag):
     if (tag == 'd2d-other' and 'lynk' not in w) or (tag == 'other' and l.get('provider') != 'SpaceX'): w.append('others')
     return w
 PRECISE = ('Second', 'Minute', 'Hour')
+# ---- launch times (BB-2). Every time on a launch card comes from ONE UTC instant in data/launches.json
+# (net / window_start / window_end, all ISO with Z). We print it three ways: UTC, UK time (GMT or BST from the
+# Europe/London rules, never a fixed offset) and the launch site's local time (IANA zone per site).
+from zoneinfo import ZoneInfo
+UTC_Z = ZoneInfo('UTC'); UK_Z = ZoneInfo('Europe/London')
+# Launch site -> IANA zone. Launch Library 2's own location.timezone_name (l['tz'], stored by fetch_launches.py) wins;
+# this list covers older cached data and any site LL2 leaves blank. Unknown site = no local line (never a guess).
+SITE_TZ = [(r'\bFL, USA|Florida|Cape Canaveral|Kennedy Space', 'America/New_York'), (r'\bCA, USA|California|Vandenberg', 'America/Los_Angeles'),
+           (r'\bTX, USA|Texas|Starbase|Boca Chica', 'America/Chicago'), (r'\bVA, USA|Wallops', 'America/New_York'), (r'\bAK, USA|Kodiak|Alaska', 'America/Anchorage'),
+           (r'\bNM, USA|Spaceport America', 'America/Denver'), (r'Kwajalein|Marshall Islands', 'Pacific/Kwajalein'), (r'French Guiana|Kourou|Guiana Space', 'America/Cayenne'),
+           (r'New Zealand|Mahia|Rocket Lab LC-1', 'Pacific/Auckland'), (r'Baikonur|Kazakhstan', 'Asia/Almaty'), (r'Plesetsk|Russian Federation|Russia', 'Europe/Moscow'),
+           (r'Vostochny', 'Asia/Yakutsk'), (r'Jiuquan|Xichang|Taiyuan|Wenchang|Haiyang|China|Yellow Sea', 'Asia/Shanghai'), (r'Tanegashima|Uchinoura|Japan|Taiki', 'Asia/Tokyo'),
+           (r'Satish Dhawan|Sriharikota|India', 'Asia/Kolkata'), (r'Naro|South Korea|Republic of Korea', 'Asia/Seoul'), (r'Palmachim|Israel', 'Asia/Jerusalem'),
+           (r'Semnan|Shahroud|Iran', 'Asia/Tehran'), (r'SaxaVord|Shetland|Sutherland|Cornwall|United Kingdom', 'Europe/London'), (r'And(ø|o)ya|Norway', 'Europe/Oslo'),
+           (r'Esrange|Sweden', 'Europe/Stockholm'), (r'Woomera|Bowen|Australia', 'Australia/Adelaide'), (r'Alc[aâ]ntara|Brazil', 'America/Sao_Paulo')]
+# Abbreviations that clash or that tzdata only gives as a number.
+TZ_ABBR = {'Asia/Shanghai': 'CST China', 'Asia/Kolkata': 'IST India', 'Asia/Jerusalem': None}
+def site_zone(l):
+    if l.get('tz'):
+        try: return ZoneInfo(l['tz'])
+        except Exception: pass
+    t = f"{l.get('location') or ''} {l.get('pad') or ''}"
+    for pat, z in SITE_TZ:
+        if re.search(pat, t, re.I): return ZoneInfo(z)
+    return None
+def zabbr(dt, z):
+    key = getattr(z, 'key', '')
+    if TZ_ABBR.get(key): return TZ_ABBR[key]
+    a = dt.tzname() or ''
+    if a[:1] in '+-' or not a:  # tzdata has no letters for this zone: show the offset, e.g. UTC-3
+        off = dt.utcoffset(); m = int(off.total_seconds() // 60); sg = '+' if m >= 0 else '−'; m = abs(m)
+        return f'UTC{sg}{m // 60}' + (f':{m % 60:02d}' if m % 60 else '')
+    return a
+def long_day(d): return d.strftime('%a, %-d %b %Y')
+def time_lines(l):
+    """-> [(zone_kind, text)] for a precise launch: UTC first, then UK, then the launch site. All from the same UTC instants."""
+    net = iso_dt(l['net']); ws, we = l.get('window_start'), l.get('window_end')
+    a = iso_dt(ws) if ws else None; b = iso_dt(we) if we else None
+    if not (a and b) or b < a: a = b = None
+    def part(z, label, show_date, ref_day):
+        n = net.astimezone(z)
+        if l['precision'] == 'Hour': t = f'About {n.strftime("%H")}:00 ({label})'
+        elif a and b and a != b:
+            x, y = a.astimezone(z), b.astimezone(z)
+            t = f'Window {x:%H:%M}–{y:%H:%M} ({label})' + (f' · ends {y:%a %-d %b}' if y.date() != x.date() else '')
+            n = x
+        else: t = f'T-0 {n:%H:%M} ({label})' + (' · instantaneous window' if a and b and a == b and label == 'UTC' else '')
+        return (f'{long_day(n)} · ' if show_date or n.date() != ref_day else '') + t
+    u = (a or net).astimezone(UTC_Z); day = u.date()
+    out = [('utc', part(UTC_Z, 'UTC', True, day))]
+    uk = (a or net).astimezone(UK_Z); out.append(('uk', part(UK_Z, uk.tzname(), False, day)))
+    z = site_zone(l)
+    if z and getattr(z, 'key', '') not in ('Europe/London', 'UTC'):
+        lo = (a or net).astimezone(z); out.append(('site', part(z, zabbr(lo, z), False, day)))
+    return out
 def when_text(l):
     p = l['precision']; d = iso_dt(l['net'])
-    if p in ('Second', 'Minute'): return d.strftime('%a %-d %b %Y, %H:%M UTC')
-    if p == 'Hour': return d.strftime('%a %-d %b %Y, about %H:00 UTC')
+    if p in ('Second', 'Minute'): return long_day(d) + f', {d:%H:%M} (UTC)'
+    if p == 'Hour': return long_day(d) + f', about {d:%H}:00 (UTC)'
     if p == 'Day': return d.strftime('%a %-d %b %Y') + ' · time not set'
     if p == 'Month': return d.strftime('%B %Y') + ' · date not set'
     if p == 'Week': return 'Week of ' + d.strftime('%-d %b %Y')
@@ -705,6 +763,15 @@ def when_text(l):
     if m: return f'H{m.group(1)} {d.year} · date not set'
     if p.startswith('Year'): return f'{d.year} · date not set'
     return 'No earlier than ' + d.strftime('%-d %b %Y')
+def net_text3(l):
+    """Liftoff time (T-0) in UTC, UK and launch-site time, for the flight view's 'Planned liftoff' line."""
+    if l['precision'] not in PRECISE: return when_text(l)
+    d = iso_dt(l['net']); out = [when_text(l)]
+    k = d.astimezone(UK_Z); out.append((f'{k:%a %-d %b}, ' if k.date() != d.date() else '') + f'{k:%H:%M} ({k.tzname()})')
+    z = site_zone(l)
+    if z and getattr(z, 'key', '') not in ('Europe/London', 'UTC'):
+        lo = d.astimezone(z); out.append((f'{lo:%a %-d %b}, ' if lo.date() != d.date() else '') + f'{lo:%H:%M} ({zabbr(lo, z)})')
+    return ' · '.join(out)
 def ics_name(l): return f"{(l.get('slug') or slugify(l['name']))[:70]}-{l['id'][:8]}.ics"
 def ics(l, tag):
     d = iso_dt(l['net']); stamp = (LDATA.get('fetched_at') or BUILD_NOW.strftime('%Y-%m-%dT%H:%M:%SZ')).replace('-', '').replace(':', '')
@@ -742,7 +809,10 @@ for l in UPCOMING:
 def tag_pill(tag): return f'<span class="ltag l-{TAG[tag][1]}">{TAG[tag][0]}</span>'
 def local_time(l):
     d = iso_dt(l['net'])
-    if l['precision'] in PRECISE: return f'<time datetime="{l["net"]}" data-local>{esc(when_text(l))}</time>'
+    if l['precision'] in PRECISE:
+        ls = time_lines(l)
+        return (f'<span class=tz3><time datetime="{l["net"]}" class=tz-utc>{esc(ls[0][1])}</time>'
+                + ''.join(f'<span class=tz-{k}>{esc(t)}</span>' for k, t in ls[1:]) + '</span>')
     return f'<time datetime="{d.date().isoformat()}">{esc(when_text(l))}</time>'
 def cal_btn(l, root):
     if l['precision'] not in PRECISE + ('Day',): return ''
@@ -920,22 +990,17 @@ def human_dt(iso):
     d = iso_dt(iso); return d.strftime('%-d %b %Y, %H:%M UTC')
 def next_launches(n=6):
     return [l for l in UPCOMING if l['precision'] in PRECISE and iso_dt(l['net']) > BUILD_NOW - timedelta(hours=3)][:n]
-def window_text(l):
-    if not (l.get('window_start') and l.get('window_end')): return ''
-    a, b = iso_dt(l['window_start']), iso_dt(l['window_end'])
-    if a == b: return 'Instantaneous window (one exact time)'
-    return f"Window {a.strftime('%H:%M')}–{b.strftime('%H:%M')} UTC" + (' (ends next day)' if b.date() > a.date() else '')
 def next_card(root=''):
     q = next_launches()
     if not q: return ''
     l = q[0]
-    queue = json.dumps([{'n': x['net'], 'm': x.get('mission') or x['name'], 'r': x.get('rocket'), 'p': x.get('location'), 'w': window_text(x), 't': TAG[x['tag']][0], 'c': TAG[x['tag']][1]} for x in q], ensure_ascii=False, separators=(',', ':'))
+    queue = json.dumps([{'n': x['net'], 'm': x.get('mission') or x['name'], 'r': x.get('rocket'), 'p': x.get('location'), 'tl': time_lines(x), 't': TAG[x['tag']][0], 'c': TAG[x['tag']][1]} for x in q], ensure_ascii=False, separators=(',', ':'))
     ph = next((x for x in UPCOMING if x['tag'] in ('starlink-dtc', 'ast', 'd2d-other')), None)
     phone = (f'<p class=nl-phone>Next phone-satellite launch: <strong>{esc(ph.get("mission") or ph["name"])}</strong> · {esc(when_text(ph))}</p>') if ph else ''
     return (f'<section class=nextlaunch aria-labelledby=nl-h data-queue="{esc(queue)}"><div class=nl-main><p class=kicker>Next launch <span class=nl-tag>{tag_pill(l["tag"])}</span></p>'
             f'<h2 id=nl-h class=nl-title>{esc(l.get("mission") or l["name"])}</h2>'
             f'<p class=nl-meta><span class=nl-rocket>{esc(l.get("rocket") or "")}</span> · <span class=nl-pad>{esc(l.get("location") or "")}</span></p>'
-            f'<p class=nl-when>{local_time(l)}</p><p class=nl-window>{esc(window_text(l))}</p></div>'
+            f'<p class=nl-when>{local_time(l)}</p></div>'
             f'<div class=nl-side><p class=nl-cd data-countdown="{l["net"]}" role=timer aria-live=off>T− <span>--d --h --m --s</span></p>'
             f'<p class=nl-links><a class=btn href="{root}launches/">All launches</a><a class="btn ghost" href="{flight_url(l, root)}">Flight view</a>{cal_btn(l, root)}</p></div>{phone}</section>')
 def count_rows(items, root):
@@ -1062,14 +1127,14 @@ def launches_page():
             f'<div class=filters role=search aria-label="Filter launches"><div class=f-row><div class=chips role=group aria-label="Show launches for">{chips}</div>'
             f'<p id=l-count class=t-count role=status aria-live=polite>{len(UPCOMING)} launches</p></div></div>'
             f'<div id=launch-list><ol class=launches>{items}</ol>{more}</div><p class=l-allrow><button type=button class="btn ghost sm" id=l-all hidden>Show all {len(UPCOMING)} launches</button></p><p id=l-empty class=l-empty hidden{empty} data-empty="No upcoming launches match this filter right now.">No upcoming launches match this filter right now.</p>'
-            f'<p class=l-credit>{upd} Times are shown in UTC, or your local time where your browser allows. Launch dates slip often, so check again on the day. We tag a Starlink launch as Direct to Cell only when the launch data or a reliable source says it carries direct-to-cell satellites.</p></section>'
+            f'<p class=l-credit>{upd} Times are shown in UTC, then UK time (GMT or BST), then local time at the launch site. Launch dates slip often, so check again on the day. We tag a Starlink launch as Direct to Cell only when the launch data or a reliable source says it carries direct-to-cell satellites.</p></section>'
             + race_section(root) +
             f'<section aria-labelledby=cnt-h class=countsec><h2 id=cnt-h>Phone satellites in orbit: who has how many</h2>'
             f'<p class=l-intro>Satellites that can connect to ordinary phones, by operator. Every number has a source and a date. If a company doesn’t publish a figure and we can’t find a reliable independent one, we say so rather than guess.</p>'
             + count_rows(CONST['direct_to_device'], root) +
             f'<h3 class=bb-h>Broadband-only constellations (not phone-capable)</h3><p class=l-intro>For scale: these networks serve dishes and terminals, not phones directly.</p>'
             + count_rows(CONST['broadband_only'], root) +
-            f'<p class=l-credit>Counts last checked {human(CONST["last_checked"])}. Satellite totals change with every launch and re-entry. Data: <a href="{root}data/constellations.json">constellations.json</a> · <a href="{root}data/launches.json">launches.json</a></p></section>'
+            f'<p class=l-credit>Counts last checked {human(CONST["last_checked"])}' + (f' (daily check, last run <time datetime="{REFRESH["updated"]}">{human_dt(REFRESH["updated"])}</time>; a count only gets a new date when its source confirms it)' if REFRESH.get('updated') else '') + f'. Satellite totals change with every launch and re-entry. Data: <a href="{root}data/constellations.json">constellations.json</a> · <a href="{root}data/launches.json">launches.json</a></p></section>'
             f'<section class="card tlink" aria-labelledby=tl-h><p class=kicker>From the tracker</p><h2 id=tl-h><a href="{root}tracker.html">Where these satellites already reach phones</a></h2>'
             f'<p>{C["live"]} live direct-to-cell services in {NLIVE_C} countries, plus {C["trial"]} trials and {C["announced"]} announced. See who’s live, country by country, with sources.</p>'
             f'<p class=row-cta><a class="btn ghost" href="{root}tracker.html">Open the tracker</a><a class="btn ghost" href="{root}articles/why-starship-is-a-telco-story.html">Why Starship is a telco story</a></p></section>'
@@ -1112,7 +1177,7 @@ def flight_page():
     ls = [l for l in UPCOMING if l.get('slug')]
     if not ls: return
     data = [{'id': l['id'], 's': l['slug'], 'm': l.get('mission') or l['name'], 'r': l.get('rocket') or '', 'pv': l.get('provider') or '', 'n': l['net'], 'pr': l['precision'],
-             'w': when_text(l), 'loc': l.get('location') or '', 'st': l.get('status') or '', 'tag': TAG[l['tag']][0], 'tc': TAG[l['tag']][1], 'why': TAG[l['tag']][2],
+             'w': net_text3(l), 'loc': l.get('location') or '', 'st': l.get('status') or '', 'tag': TAG[l['tag']][0], 'tc': TAG[l['tag']][1], 'why': TAG[l['tag']][2],
              'p': flight_profile(l)['id'], 'net': fl_net(l), 'ph': 'phone' in l['who'],
              'x': share_launch(l)['text'], 'sh': share_launch(l)['slug'], 'pg': int(share_has_png(share_launch(l)))} for l in ls]
     profs = {p['id']: {k: p[k] for k in ('title', 'vehicle', 'events', 'keypoints', 'booster') if k in p} | {'src': p.get('source'), 'basis': p.get('basis', ''), 'pay': p.get('payload_note', ''), 'gen': bool(p.get('generic'))} for p in FLIGHT}
@@ -1154,7 +1219,7 @@ def flight_page():
             f'<label class=fl-scrub>Scrub through the flight <input id=fl-range type=range min=0 max=1000 value=0 step=1></label></div>'
             + share_bar(share_launch(d0), root, 'this launch', extra='fl-share" id="fl-share', keep_save=True) +
             f'<p class=fl-status id=fl-status role=status aria-live=polite></p>'
-            f'<p class=fl-fine id=fl-note>The clock counts to the launch time in our launch data, refreshed every 6 hours. Speed and altitude follow the planned profile as if the rocket flies exactly on time and on plan. They’re our estimates, not readings from the rocket.</p></div>'
+            f'<p class=fl-fine id=fl-note>The clock counts to the launch time in our launch data, refreshed every hour, and every 15 minutes in the six hours before a launch. Speed and altitude follow the planned profile as if the rocket flies exactly on time and on plan. They’re our estimates, not readings from the rocket.</p></div>'
             f'<div class=fl-cols><div><h2 id=fe-h>What happens, step by step</h2><ol class=fl-events id=fl-events aria-labelledby=fe-h>{flight_events_html(p0)}</ol></div>'
             f'<aside class="card fl-side"><p class=kicker>Why it matters for your phone</p><p id=fl-why>{esc(TAG[d0["tag"]][2])}</p>'
             f'<p class=fl-pay id=fl-pay>{esc(p0.get("payload_note", ""))}</p>'

@@ -1,12 +1,12 @@
 /* Full Duplex launch tracker: countdowns, local times, launch filters. No libraries, no trackers. */
 (function(){
-  var fmt;
-  try{fmt=new Intl.DateTimeFormat('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZoneName:'short'});}catch(e){}
-  function local(el){
-    if(!fmt)return; var d=new Date(el.getAttribute('datetime')); if(isNaN(d))return;
-    el.title=el.textContent; el.textContent=fmt.format(d);
+  // Launch times are written by scripts/build.py from one UTC value: UTC, UK (GMT/BST) and launch-site time.
+  // No browser time-zone conversion here, so every visitor sees the same three labelled lines.
+  function lines(el,tl){
+    var box=el.querySelector('.tz3'); if(!box||!tl||!tl.length)return;
+    box.innerHTML='';
+    tl.forEach(function(x,i){var e=document.createElement(i?'span':'time'); e.className='tz-'+x[0]; e.textContent=x[1]; box.appendChild(e);});
   }
-  [].forEach.call(document.querySelectorAll('time[data-local]'),local);
   function pad(n){return (n<10?'0':'')+n;}
   function left(ms){
     var s=Math.floor(ms/1000),d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60);
@@ -22,8 +22,7 @@
     var q=queue[0], t=card.querySelector('.nl-title');
     if(t.textContent!==q.m){
       t.textContent=q.m; card.querySelector('.nl-rocket').textContent=q.r||''; card.querySelector('.nl-pad').textContent=q.p||'';
-      card.querySelector('.nl-window').textContent=q.w||'';
-      var tm=card.querySelector('.nl-when time'); tm.setAttribute('datetime',q.n); tm.textContent=q.n; local(tm);
+      lines(card.querySelector('.nl-when'),q.tl); var tm=card.querySelector('.nl-when time'); if(tm)tm.setAttribute('datetime',q.n);
       card.querySelector('.nl-cd').setAttribute('data-countdown',q.n);
       var tg=card.querySelector('.nl-tag .ltag'); if(tg){tg.textContent=q.t; tg.className='ltag l-'+q.c;}
       var cal=card.querySelector('.nl-links a[download]'); if(cal)cal.remove();

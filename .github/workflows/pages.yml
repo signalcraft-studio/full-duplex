@@ -1,12 +1,12 @@
 # Deploy the already-built static site to GitHub Pages.
 # Runs on a normal push to main, and again after "Refresh launches"
-# because a GITHUB_TOKEN commit does not trigger on: push workflows.
+# and "Daily data refresh", because a GITHUB_TOKEN commit does not trigger on: push workflows.
 name: Deploy Pages
 on:
   push:
     branches: [main]
   workflow_run:
-    workflows: ["Refresh launches"]
+    workflows: ["Refresh launches", "Daily data refresh"]
     types: [completed]
   workflow_dispatch:
 permissions:
@@ -17,7 +17,7 @@ concurrency:
   group: pages
   cancel-in-progress: false
 jobs:
-  # "Refresh launches" can now complete every 15 minutes without pushing.
+  # "Refresh launches" can complete every 15 minutes without pushing (and the daily check may not push).
   # Only deploy when this was a normal push / manual dispatch, or when that
   # workflow actually pushed a new commit to main. Branch runs must never
   # redeploy main.

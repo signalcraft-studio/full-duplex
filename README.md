@@ -13,7 +13,13 @@ Live site: https://fullduplexhq.com/ (GitHub Pages custom domain, served from `m
 
 ## Launch tracker (`launches/`)
 - `python3 scripts/fetch_launches.py` pulls upcoming launches from The Space Devs Launch Library 2 (free API, 15 requests/hour) into `data/launches.json`. It makes 5 requests, skips the fetch if the cache is under 2 hours old (use `--force` to override), and keeps the cached file if the API fails. Then run `python3 scripts/build.py`.
-- `ci/launches.yml` (move to `.github/workflows/` to activate) does fetch + build + commit four times a day once it is on `main` (scheduled workflows only run from the default branch).
+- `.github/workflows/launches.yml` (Refresh launches) checks every 15 minutes and does a full fetch + build + commit hourly, plus extra checks in the 6 hours before a launch.
+- Launch times: every time on a launch card is printed from the one UTC value in `data/launches.json`, three ways: UTC, UK time (GMT or BST from Europe/London rules) and the launch site's local time (IANA zone from Launch Library 2's `timezone_name`, else the `SITE_TZ` list in `scripts/build.py`; unknown site = no local line). See `time_lines()` in `scripts/build.py`.
+
+## Daily data check (`.github/workflows/daily-refresh.yml`)
+- Runs `scripts/daily_refresh.py` once a day at 05:17 UTC (05:17 GMT / 06:17 BST), then rebuilds and commits. Separate from the 15-minute launch refresh.
+- Checks McDowell-sourced satellite counts in `data/constellations.json`, rebuilds `data/race.json`, and link-checks `/resources/`. A date only moves when its check passes; anything unverified keeps its old date. Big count changes (over 15% and over 10 satellites) are flagged, not applied.
+- Writes the one shared "data checked" stamp and a log of every check to `data/refresh.json`. Editorial dates (tracker, satellites, phones, glossary, explainers) are listed there but only change by hand.
 - Each launch is tagged by telco relevance in `scripts/build.py` (`classify`). A Starlink launch is tagged Direct to Cell only if the launch data says so; to tag one by hand, add its Launch Library id to `data/launch-tags.json` with a source.
 - Satellite counts for the comparison panel live in `data/constellations.json`. Every number needs a source URL and an `as_of` date; use `null` (shown as "Not disclosed") rather than an estimate. Phone-capable and broadband-only networks are kept in separate lists.
 - Calendar files are generated in `launches/cal/` for launches with a set day or time.

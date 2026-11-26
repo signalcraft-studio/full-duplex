@@ -1,0 +1,56 @@
+# One shared daily data check (BB-2). Runs scripts/daily_refresh.py, which checks every non-launch
+# date stamp in one go and writes the shared "data checked" stamp to data/refresh.json:
+#   - McDowell-sourced satellite counts in data/constellations.json (as_of moves only when confirmed)
+#   - data/race.json (rebuilt from McDowell when the Starlink DTC count was confirmed)
+#   - /resources/ links (src/resources.json "checked" moves only if none are broken)
+#   - editorial dates (tracker, satellites, phones, glossary, explainers) are listed, never changed
+# Anything that can't be verified keeps its old date. Then rebuilds the site and commits.
+# Separate from "Refresh launches" (every 15 min), which only touches launch data.
+# Schedule: 05:17 UTC every day = 05:17 GMT in winter, 06:17 BST in summer (after McDowell's
+# overnight update, about 01:40-02:00 UTC). A GITHUB_TOKEN push doesn't trigger on: push,
+# so pages.yml also runs on workflow_run of this workflow.
+name: Daily data refresh
+on:
+  schedule:
+    - cron: '17 5 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: daily-refresh
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # build.py reads git history for the tracker change log
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pillow
+      - name: Run the daily checks
+        run: python3 scripts/daily_refresh.py
+      - name: Build, commit and push
+        run: |
+          git config user.name "Full Duplex bot"
+          git config user.email "actions@users.noreply.github.com"
+          DATA="data/constellations.json data/race.json data/refresh.json src/resources.json"
+          mkdir -p /tmp/fd && for f in $DATA; do cp "$f" "/tmp/fd/$(echo $f | tr / _)"; done
+          # "Refresh launches" may push while we run. Each attempt starts from the latest main,
+          # puts our checked data files back and rebuilds, so generated pages never conflict.
+          for attempt in 1 2 3; do
+            git fetch origin main && git reset --hard origin/main
+            for f in $DATA; do cp "/tmp/fd/$(echo $f | tr / _)" "$f"; done
+            python3 scripts/build.py
+            git add -A
+            if git diff --cached --name-only | grep -E '^(data/(tracker|launches|launch-tags|launch-overrides)\.json)$'; then
+              echo "Refusing to commit tracker or launch data from the daily job"; exit 1
+            fi
+            if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+            git commit -q -m "Daily data check: $(python3 -c "import json;d=json.load(open('data/refresh.json'));print(d['date'],'·',', '.join(f\"{c['item']} {c['status']}\" for c in d['checks'] if c['status'] in ('updated','review','failed')) or 'all dates confirmed')")"
+            if git push origin HEAD:main; then exit 0; fi
+            echo "Push raced with another commit; retrying ($attempt)"; sleep 20
+          done
+          exit 1
