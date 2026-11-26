@@ -1039,3 +1039,6 @@ html.hr-clip .hr-clipcta b{background:linear-gradient(135deg,var(--violet),var(-
 @media (min-width:700px){.dtiles{grid-template-columns:repeat(4,minmax(0,1fr))}.dgrid{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"nl nl" "ck ck" "bd bd" "st ob"}}
 @media (min-width:1000px){.dgrid{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-areas:"nl nl ck" "bd bd st" "bd bd ob"}}
 @media (max-width:600px){.d-table thead th:nth-child(4),.d-table td:nth-child(4){display:none}.d-table th,.d-table td{padding:.55rem .3rem}.d-table tbody th{white-space:normal;font-size:.88rem}.d-table td:nth-child(5){white-space:normal;font-size:.85rem}.dpill{font-size:.6rem;padding:.05rem .4rem}}
+/* A: keep the hero copy off the left edge at every width */
+.hr-copy{padding-left:clamp(.25rem,1.6vw,1.1rem)}
+@media (max-width:899px){.hr{padding-left:.15rem;padding-right:.15rem}}
