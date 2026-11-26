@@ -98,4 +98,19 @@ jobs:
           fi
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
           git commit -m "Launches: refresh from Launch Library 2"
-          git push
+          if git push; then exit 0; fi
+          # main moved while we ran (e.g. the daily data check pushed). Start again from the latest
+          # main, put our fetched launch data back and rebuild, so generated pages never conflict.
+          mkdir -p /tmp/fdl && cp data/launches.json data/gp-recent.json /tmp/fdl/
+          for attempt in 1 2 3; do
+            echo "Push rejected; rebuilding on latest main ($attempt)"
+            git fetch origin main && git reset --hard origin/main
+            cp /tmp/fdl/launches.json /tmp/fdl/gp-recent.json data/
+            python3 scripts/build.py
+            git add data/launches.json data/gp-recent.json index.html launches/ sitemap.xml share/
+            if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+            git commit -q -m "Launches: refresh from Launch Library 2"
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 20
+          done
+          exit 1
