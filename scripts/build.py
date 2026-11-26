@@ -1750,18 +1750,20 @@ def weekly_strip():
     W = opt_json('data/weekly.json')
     items = [i for i in (W or {}).get('items', []) if i.get('t') and i.get('src', {}).get('url')][:5]
     if not items: return ''
-    li = ''.join(f'<li><time datetime="{esc(i["d"])}">{human(i["d"], False)}</time> {esc(i["t"])} <a href="{esc(i["src"]["url"])}">{esc(i["src"].get("label") or "Source")}</a></li>' for i in items)
-    return (f'<section class=wk aria-labelledby=wk-h><div class=wk-top><h2 id=wk-h>What changed this week</h2>'
+    li = ''.join(f'<li><time datetime="{esc(i["d"])}">{human(i["d"], False)}</time> ' + ('<span class=wk-sec>Secondary source</span> ' if i.get('secondary') else '') + f'{esc(i["t"])} <a href="{esc(i["src"]["url"])}">Source</a></li>' for i in items)
+    return (f'<section class=wk aria-labelledby=wk-h><div class=wk-top><h2 id=wk-h>What changed this week <small>w/c {human(W["week_of"], False) if W.get("week_of") else ""}</small></h2>'
             f'<a class="btn ghost sm" href="{esc(sub_url("weekly-strip"))}">Get these every Friday</a></div><ul>{li}</ul></section>')
 def switchoff_card():
-    """2G/3G switch-off countdown from data/switchoff.json (News Desk): {"items": [{"network", "country", "tech", "date", "src": {"label", "url"}}]}. Hidden without data."""
-    S_ = opt_json('data/switchoff.json')
-    items = sorted((i for i in (S_ or {}).get('items', []) if i.get('date') and i.get('src', {}).get('url') and i['date'] >= BUILD_DAY.isoformat()), key=lambda i: i['date'])
+    """Upcoming 2G/3G switch-offs from data/switchoffs.json (News Desk, sourced). Countdown only when the source gives an exact day. Hidden without data."""
+    S_ = opt_json('data/switchoffs.json')
+    items = sorted((i for i in (S_ or {}).get('items', []) if i.get('sort') and i.get('src', {}).get('url') and i['sort'] >= BUILD_DAY.isoformat()), key=lambda i: i['sort'])[:4]
     if not items: return ''
     i = items[0]
-    return (f'<section class="dcard d-switch" aria-labelledby=sw-h><p class=kicker>Next switch-off</p><h2 id=sw-h>{esc(i["network"])} {esc(i.get("tech", "3G"))}, {esc(i.get("country", ""))}</h2>'
-            f'<p class=nl-cd data-countdown="{esc(i["date"])}T00:00:00Z" role=timer aria-live=off>T− <span>{human(i["date"])}</span></p>'
-            f'<p class=d-stamp>Source: <a href="{esc(i["src"]["url"])}">{esc(i["src"].get("label") or "operator")}</a></p></section>')
+    cd = f'<p class=nl-cd data-countdown="{esc(i["start"])}T00:00:00Z" role=timer aria-live=off>T− <span>--d --h --m --s</span></p>' if i.get('start') else ''
+    li = ''.join(f'<li><b>{esc(x["operator"])} {esc(x["tech"])}</b>, {esc(x["country"])}: {esc(x["when"])} <a href="{esc(x["src"]["url"])}">source</a></li>' for x in items[1:])
+    return (f'<section class="dcard d-switch" aria-labelledby=sw-h><div class=d-head><h2 id=sw-h>2G/3G switch-offs</h2><a href="articles/2g-3g-switch-off.html">What it means →</a></div>'
+            f'<p class=sw-next><b>Next: {esc(i["operator"])} {esc(i["tech"])}, {esc(i["country"])}</b> · {esc(i["when"])} · <a href="{esc(i["src"]["url"])}">source</a></p>{cd}'
+            f'<ul class=sw-list>{li}</ul><p class=d-stamp>Official operator or regulator dates only · checked {human(i.get("checked") or CHECK_DAY)}</p></section>')
 PHONE_TAGS = ('starlink-dtc', 'ast', 'd2d-other')
 def launch_day():
     """Launch-day mode: a phone-satellite launch with a set time in the next 24 hours. Counts never change here; they move only when

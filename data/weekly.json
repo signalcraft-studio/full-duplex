@@ -1,0 +1,33 @@
+{
+ "_readme": "From News Desk, homepage-feed.md (26 Nov 2026). PREVIEW ONLY, pending Sam's approval. Each line has its source; unconfirmed items left out.",
+ "week_of": "2026-11-23",
+ "items": [
+  {
+   "d": "2026-11-23",
+   "t": "The FCC said it will vote next month on proposed rules to treat foreign satellite operators in the United States as their home countries treat US operators; the notice cites the EU’s planned overhaul of 2 GHz mobile-satellite licensing and the EU Space Act. This is a proposal, not a decision.",
+   "secondary": false,
+   "src": {
+    "label": "docs.fcc.gov",
+    "url": "https://docs.fcc.gov/public/attachments/DOC-427492A1.txt"
+   }
+  },
+  {
+   "d": "2026-11-24",
+   "t": "Beeline Kazakhstan’s CEO, Jabbor Kayumov, told a government briefing that about 130,000 customers have activated Starlink Mobile, and that the satellite signal covers an area with about 3 million subscribers; the company’s press office said more than 50,000 texts and over 16 TB of data had gone over the satellite link. No Beeline or VEON release with these figures was found.",
+   "secondary": true,
+   "src": {
+    "label": "zakon.kz (secondary source)",
+    "url": "https://www.zakon.kz/obshestvo/6539766-Ckolko-stoit-zhizn--glava-Beeline-o-razvitii-svyazi-i-Starlink-Mobile.html"
+   }
+  },
+  {
+   "d": "2026-11-25",
+   "t": "Hong Kong’s Communications Authority approved HKT’s request to switch off 3G on 25 February 2027.",
+   "secondary": false,
+   "src": {
+    "label": "info.gov.hk",
+    "url": "https://www.info.gov.hk/gia/general/202611/25/P2026112500189.htm"
+   }
+  }
+ ]
+}

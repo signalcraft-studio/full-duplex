@@ -1,0 +1,136 @@
+{
+ "_readme": "From News Desk, homepage-feed.md (26 Nov 2026). PREVIEW ONLY, pending Sam's approval. Each line has its source; unconfirmed items left out.",
+ "_note": "\"start\" is set only when the source gives an exact day (used for a countdown); \"sort\" orders rows; \"when\" is the source wording.",
+ "items": [
+  {
+   "country": "France",
+   "operator": "SFR",
+   "tech": "2G",
+   "when": "1–15 December 2026 (remainder of mainland France; large cities were due 16–30 November 2026)",
+   "start": "2026-12-01",
+   "sort": "2026-12-01",
+   "checked": "2026-11-26",
+   "src": {
+    "label": "static.s-sfr.fr",
+    "url": "https://static.s-sfr.fr/AlticeFrance/communiques/communiques-nationaux/20261116_CP_SFR2G.pdf"
+   }
+  },
+  {
+   "country": "France",
+   "operator": "Orange",
+   "tech": "2G",
+   "when": "By the end of 2026 (Mayotte only; mainland France was switched off on 20 October 2026)",
+   "start": null,
+   "sort": "2026-12-31",
+   "checked": "2026-11-26",
+   "src": {
+    "label": "newsroom.orange.com",
+    "url": "https://newsroom.orange.com/la-fin-de-la-2g-dorange-marque-une-etape-majeure-dans-la-modernisation-et-la-securisation-des-reseaux-en-france/"
+   }
+  },
+  {
+   "country": "Hong Kong",
+   "operator": "HKT",
+   "tech": "3G",
+   "when": "25 February 2027",
+   "start": "2027-02-25",
+   "sort": "2027-02-25",
+   "checked": "2026-11-26",
+   "src": {
+    "label": "info.gov.hk",
+    "url": "https://www.info.gov.hk/gia/general/202611/25/P2026112500189.htm"
+   }
+  },
+  {
+   "country": "Germany",
+   "operator": "Deutsche Telekom",
+   "tech": "2G",
+   "when": "30 June 2028 (Telekom’s published target; worded as planned/expected)",
+   "start": "2028-06-30",
+   "sort": "2028-06-30",
+   "checked": "2026-11-26",
+   "src": {
+    "label": "telekom.com",
+    "url": "https://www.telekom.com/en/media/media-information/archive/more-speed-on-old-frequencies-2g-switch-off-ensures-better-network-1081866"
+   }
+  },
+  {
+   "country": "Germany",
+   "operator": "Vodafone",
+   "tech": "2G",
+   "when": "September 2028 for consumer and standard business services; critical IoT until the end of 2030",
+   "start": null,
+   "sort": "2028-09-01",
+   "checked": "2026-11-26",
+   "src": {
+    "label": "newsroom.vodafone.de",
+    "url": "https://newsroom.vodafone.de/2g-abschaltung-macht-lte-und-5g-mobilfunk-netz-noch-besser"
+   }
+  },
+  {
+   "country": "Germany",
+   "operator": "Telefónica Deutschland (O2)",
+   "tech": "2G",
+   "when": "Second half of 2028",
+   "start": null,
+   "sort": "2028-07-01",
+   "checked": "2026-11-26",
+   "src": {
+    "label": "telefonica.de",
+    "url": "https://www.telefonica.de/news/press-releases-telefonica-germany/2026/06/2g-to-be-phased-out-by-the-end-of-2028-telefonica-deutschland-is-freeing-up-capacity-for-more-modern-mobile-networks.html"
+   }
+  },
+  {
+   "country": "France",
+   "operator": "SFR",
+   "tech": "3G",
+   "when": "End of 2028",
+   "start": null,
+   "sort": "2028-12-31",
+   "checked": "2026-11-26",
+   "src": {
+    "label": "static.s-sfr.fr",
+    "url": "https://static.s-sfr.fr/AlticeFrance/communiques/communiques-nationaux/20261116_CP_SFR2G.pdf"
+   }
+  },
+  {
+   "country": "United Kingdom",
+   "operator": "EE",
+   "tech": "2G",
+   "when": "From May 2029",
+   "start": null,
+   "sort": "2029-05-01",
+   "checked": "2026-11-26",
+   "src": {
+    "label": "ee.co.uk",
+    "url": "https://ee.co.uk/2g-3g-switch-off"
+   }
+  },
+  {
+   "country": "United Kingdom",
+   "operator": "Virgin Media O2",
+   "tech": "2G",
+   "when": "From summer 2029",
+   "start": null,
+   "sort": "2029-06-21",
+   "checked": "2026-11-26",
+   "src": {
+    "label": "virginmediao2business.co.uk",
+    "url": "https://www.virginmediao2business.co.uk/2g-switch-off/"
+   }
+  },
+  {
+   "country": "United Kingdom",
+   "operator": "VodafoneThree (Vodafone 2G; Three has no 2G network)",
+   "tech": "2G",
+   "when": "Spring 2030",
+   "start": null,
+   "sort": "2030-03-20",
+   "checked": "2026-11-26",
+   "src": {
+    "label": "ofcom.org.uk",
+    "url": "https://www.ofcom.org.uk/phones-and-broadband/coverage-and-speeds/2g-and-3g-switch-off-our-expectations-of-mobile-providers"
+   }
+  }
+ ]
+}

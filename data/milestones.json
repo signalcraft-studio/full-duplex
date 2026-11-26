@@ -1,0 +1,149 @@
+{
+ "_readme": "From News Desk, homepage-feed.md (26 Nov 2026). PREVIEW ONLY, pending Sam's approval. Each line has its source; unconfirmed items left out.",
+ "items": [
+  {
+   "d": "2020-02-24",
+   "t": "Lynk said it sent a text from a low-Earth-orbit satellite to an ordinary mobile phone on this date; the company announced the test on 18 March 2020.",
+   "src": {
+    "label": "lynk.world",
+    "url": "https://lynk.world/wp-content/uploads/2023/02/LynkHistoricFirstSatellite-to-phonePressReleaseNews_18Mar2020.pdf"
+   }
+  },
+  {
+   "d": "2022-11-15",
+   "t": "Apple switched on Emergency SOS via satellite on the iPhone 14 lineup in the US and Canada, so users can message emergency services when there is no cellular or Wi-Fi coverage.",
+   "src": {
+    "label": "apple.com",
+    "url": "https://www.apple.com/newsroom/2022/11/emergency-sos-via-satellite-available-today-on-iphone-14-lineup/"
+   }
+  },
+  {
+   "d": "2023-04-25",
+   "t": "AST SpaceMobile announced that it had completed two-way voice calls from its BlueWalker 3 satellite to unmodified smartphones, including a call from the Midland, Texas area to Rakuten in Japan over AT&T spectrum.",
+   "src": {
+    "label": "ast-science.com",
+    "url": "https://ast-science.com/ast-spacemobile-makes-history-in-cellular-connectivity-completing-the-first-ever-space-based-voice-call-using-everyday-unmodified-smartphones/"
+   }
+  },
+  {
+   "d": "2024-01-02",
+   "t": "SpaceX launched the first six Starlink satellites with Direct to Cell capability, at 7:44pm Pacific Time from Vandenberg Space Force Base (21 Starlink satellites in total on the flight).",
+   "src": {
+    "label": "spacex.com",
+    "url": "https://www.spacex.com/launches/sl-7-9"
+   }
+  },
+  {
+   "d": "2024-03-14",
+   "t": "The FCC adopted its Supplemental Coverage from Space framework (FCC-24-28), setting rules for satellite operators and terrestrial mobile providers to use certain flexible-use mobile bands to fill coverage gaps; the item was released on 15 March 2024.",
+   "src": {
+    "label": "fcc.gov",
+    "url": "https://www.fcc.gov/document/fcc-advances-supplemental-coverage-space-framework-0"
+   }
+  },
+  {
+   "d": "2024-12-19",
+   "t": "One NZ began rolling out Satellite TXT, a nationwide Starlink Direct to Cell text service, to customers on eligible phones and plans at no extra cost.",
+   "src": {
+    "label": "media.one.nz",
+    "url": "https://media.one.nz/onenzsatellite"
+   }
+  },
+  {
+   "d": "2025-04-10",
+   "t": "KDDI started au Starlink Direct across Japan, a direct-to-cell service for text messaging, location sharing and emergency alerts, free for the time being to au customers.",
+   "src": {
+    "label": "newsroom.kddi.com",
+    "url": "https://newsroom.kddi.com/english/news/detail/kddi_nr-533_3818.html"
+   }
+  },
+  {
+   "d": "2025-07-23",
+   "t": "T-Mobile launched T-Satellite commercially in the United States, available from that day to T-Mobile and non-T-Mobile customers for text and emergency use, with app access said to follow in October 2025.",
+   "src": {
+    "label": "t-mobile.com",
+    "url": "https://www.t-mobile.com/news/network/t-satellite-now-available"
+   }
+  },
+  {
+   "d": "2025-11-24",
+   "t": "Kyivstar made Starlink Direct to Cell available to its subscribers in Ukraine, starting with SMS on compatible 4G Android smartphones.",
+   "src": {
+    "label": "investors.kyivstar.ua",
+    "url": "https://investors.kyivstar.ua/news-releases/news-release-details/kyivstar-launches-starlink-direct-cell-satellite-connectivity"
+   }
+  },
+  {
+   "d": "2025-12-09",
+   "t": "Ofcom published its final statement enabling satellite direct-to-device services in UK mobile spectrum bands, completing the authorisation framework set out earlier in 2025.",
+   "src": {
+    "label": "ofcom.org.uk",
+    "url": "https://www.ofcom.org.uk/siteassets/resources/documents/consultations/category-1-10-weeks/consultation-enabling-satellite-direct-to-device-services-in-mobile-spectrum-bands/main-documents/dec2025/statement---enabling-satellite-direct-to-device-connectivity-in-mobile-spectrum-bands.pdf?v=408872"
+   }
+  },
+  {
+   "d": "2025-12-09",
+   "t": "Rogers launched Rogers Satellite commercially in Canada, with text messaging and selected apps including WhatsApp, Google Maps, AccuWeather, X and CalTopo.",
+   "src": {
+    "label": "about.rogers.com",
+    "url": "https://about.rogers.com/news-ideas/rogers-first-to-launch-satellite-to-mobile-service-with-must-have-apps/"
+   }
+  },
+  {
+   "d": "2025-12-11",
+   "t": "Orange made Message Satellite available to consumers in mainland France: SMS and location sharing via Skylo when there is no mobile or Wi-Fi coverage (announced 18 November 2025; consumer start date given as 11 December).",
+   "src": {
+    "label": "newsroom.orange.com",
+    "url": "https://newsroom.orange.com/orange-becomes-the-first-european-operator-to-offer-satellite-sms-service-using-direct-to-device-technology/?lang=eng"
+   }
+  },
+  {
+   "d": "2026-02-26",
+   "t": "Virgin Media O2 switched on O2 Satellite, a Starlink Direct to Cell service in the UK for messaging and app-based data on compatible phones.",
+   "src": {
+    "label": "news.virginmediao2.co.uk",
+    "url": "https://news.virginmediao2.co.uk/virgin-media-o2-becomes-the-first-uk-mobile-network-to-switch-on-direct-to-device-satellite-connectivity-with-the-launch-of-o2-satellite/"
+   }
+  },
+  {
+   "d": "2026-04-21",
+   "t": "The FCC authorised AST SpaceMobile to operate a 248-satellite constellation and to provide Supplemental Coverage from Space with mobile partners (DA-26-391).",
+   "src": {
+    "label": "fcc.gov",
+    "url": "https://www.fcc.gov/document/fcc-authorizes-ast-provide-supplemental-coverage-space"
+   }
+  },
+  {
+   "d": "2026-09-28",
+   "t": "Beeline Kazakhstan launched Starlink Mobile, a direct-to-cell service for compatible Android smartphones, the first such commercial service in Kazakhstan.",
+   "src": {
+    "label": "beeline.kz",
+    "url": "https://beeline.kz/ru/events/news/280926"
+   }
+  },
+  {
+   "d": "2026-10-20",
+   "t": "Orange switched off 2G in the last 43 departments of mainland France where it still ran; Mayotte is due by the end of 2026.",
+   "src": {
+    "label": "newsroom.orange.com",
+    "url": "https://newsroom.orange.com/la-fin-de-la-2g-dorange-marque-une-etape-majeure-dans-la-modernisation-et-la-securisation-des-reseaux-en-france/"
+   }
+  },
+  {
+   "d": "2026-11-16",
+   "t": "SFR began switching off 2G in large cities in mainland France (16–30 November), with the rest of the mainland due from 1 to 15 December 2026; SFR’s 3G is due at the end of 2028.",
+   "src": {
+    "label": "static.s-sfr.fr",
+    "url": "https://static.s-sfr.fr/AlticeFrance/communiques/communiques-nationaux/20261116_CP_SFR2G.pdf"
+   }
+  },
+  {
+   "d": "2026-11-17",
+   "t": "Iridium announced service activation for Iridium NTN Direct, a 3GPP NB-IoT and direct-to-device service running on Iridium’s existing low-Earth-orbit network and L-band spectrum.",
+   "src": {
+    "label": "investor.iridium.com",
+    "url": "https://investor.iridium.com/2026-11-17-Iridium-Activates-Iridium-NTN-Direct-Worlds-First-Standards-based-NB-IoT-and-D2D-Service-with-Truly-Global-Coverage"
+   }
+  }
+ ]
+}

@@ -1005,7 +1005,7 @@ html.hr-clip .hr-clipcta b{background:linear-gradient(135deg,var(--violet),var(-
 .d-split{display:flex;height:6px;border-radius:99px;overflow:hidden;margin-top:.6rem;background:rgba(255,255,255,.06)}
 .d-split i.s-live{background:var(--live)}.d-split i.s-trial{background:var(--trial)}.d-split i.s-ann{background:var(--ann)}
 .spark{display:block;margin-top:.5rem;color:var(--violet);width:100%;max-width:160px;height:auto}
-.dgrid{display:grid;gap:1rem;grid-template-columns:minmax(0,1fr);grid-template-areas:"nl" "ck" "bd" "st" "ob"}
+.dgrid{display:grid;gap:1rem;grid-template-columns:minmax(0,1fr);grid-template-areas:"nl" "ck" "bd" "st" "ob" "sw"}
 .d-nl{grid-area:nl;min-width:0}.d-ck{grid-area:ck;min-width:0}.d-board{grid-area:bd}.d-status{grid-area:st}.d-orbit{grid-area:ob}
 .dgrid .nextlaunch,.dgrid .chkbox{margin:0;height:100%;border-radius:16px}
 .dgrid .nextlaunch{grid-template-columns:1fr;align-content:space-between;border-color:var(--gline);background:radial-gradient(500px 220px at 100% 0,rgba(155,123,255,.16),transparent 70%),var(--glass)}
@@ -1058,3 +1058,11 @@ html.hr-clip .hr-clipcta b{background:linear-gradient(135deg,var(--violet),var(-
 .hsign .fine{font-size:.75rem;color:var(--dim)}.hsign .fine a{color:var(--muted)}
 .aff ul{margin:.3rem 0;padding-left:1.1rem}
 .fine{font-size:.78rem;color:var(--dim)}
+.wk h2 small{font:500 .7rem var(--f-mono);color:var(--dim);letter-spacing:.05em;text-transform:uppercase;margin-left:.4rem}
+.wk-sec{font:500 .62rem var(--f-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--trial);border:1px solid currentColor;border-radius:99px;padding:0 .4rem}
+.wk li{margin:.35rem 0;line-height:1.45}
+.sw-next{margin:.2rem 0;font-size:.92rem}.sw-list{margin:.5rem 0 0;padding-left:1.1rem;font-size:.84rem;color:#cfdbe8}.sw-list li{margin:.25rem 0}
+.d-switch .nl-cd{font:500 1.3rem var(--f-mono);margin:.4rem 0;color:#fff}
+@media (min-width:1000px){.dgrid{grid-template-areas:"nl nl ck" "bd bd st" "bd bd ob" "sw sw sw"}}
+@media (min-width:700px) and (max-width:999px){.dgrid{grid-template-areas:"nl nl" "ck ck" "bd bd" "st ob" "sw sw"}}
+.d-switch{grid-area:sw}
