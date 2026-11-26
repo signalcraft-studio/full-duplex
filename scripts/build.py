@@ -169,7 +169,7 @@ def footer(root, sticky=True):
             f'<nav aria-label="Footer"><a href="{esc(sub_url("footer"))}">Subscribe to Signal</a><a href="https://x.com/{X}" target=_blank rel="noopener me">Follow @{X} on X</a>'
             f'<a href="{root}start/">Start here</a><a href="{root}articles/index.html">Articles</a><a href="{root}tracker.html">Tracker</a><a href="{root}tracker/changes/">Tracker changes</a><a href="{root}launches/">Launches</a><a href="{root}explainers/">Starship explainers</a><a href="{root}journey/">What happens when you hit send</a><a href="{root}inner-signal/">Inner Signal</a><a href="{root}satellites/">Meet the satellites</a><a href="{root}check/">Can my phone connect?</a><a href="{root}glossary/">Glossary</a>'
             f'<a href="{root}play/constellation.html">Constellation</a><a href="{root}search.html">Search</a><a href="{root}feed.xml">RSS</a>'
-            f'<a href="{root}resources/">Resources</a><a href="{root}about.html">About</a><a href="{root}sponsor.html">Sponsor</a><a href="{root}privacy.html">Privacy</a><a href="{root}disclosure/">Disclosure</a></nav></div></footer>{bar}')
+            f'<a href="{root}resources/">Resources</a><a href="{root}about.html">About</a><a href="{root}sponsor.html">Partner with Full Duplex</a><a href="{root}privacy.html">Privacy</a><a href="{root}disclosure/">Disclosure</a></nav></div></footer>{bar}')
 
 import hashlib
 _AV = {}
@@ -1677,7 +1677,7 @@ def dash():
     last_ch = CHANGES[0] if CHANGES else None
     def added(st): return sum(1 for it in (last_ch or {}).get('items', []) if it['type'] == 'added' and it['status'] == st)
     skylo_multi = next((r for r in ROWS if provider(r['satellite']) == 'Skylo' and not r['iso_n3'] and r['status'] == 'live'), None)
-    trk = f'<p class=d-stamp>Tracker · checked <time datetime="{parse_human(TRACK["last_checked"])}">{TRACK["last_checked"]}</time></p>'
+    trk = f'<p class=d-stamp><a href="tracker.html">Source: tracker</a> · checked <time datetime="{parse_human(TRACK["last_checked"])}">{TRACK["last_checked"]}</time></p>'
     n_all = sum(C.values())
     split = ''.join(f'<i class=s-{CLS[k]} style="width:{100 * C[k] / n_all:.1f}%"></i>' for k in ('live', 'trial', 'announced'))
     tiles = (f'<li class="dtile t-live"><p class=d-lab>Live services</p><p class=d-num>{C["live"]}</p>'
@@ -1688,7 +1688,7 @@ def dash():
              + (f'<p class=d-sub>{added("trial")} added on {human(last_ch["date"], False)}, {added("live")} new live</p>' if last_ch and (added('trial') or added('live')) else '') + f'{trk}</li>'
              f'<li class="dtile t-sat"><p class=d-lab>Phone-capable satellites</p><p class=d-num>{SAT_TOTAL:,}</p>'
              f'<p class=d-sub>in orbit, by month since {human(race["frames"][0]["d"], False)}</p>{spark(tot_series)}'
-             f'<p class=d-stamp>Data checked <time datetime="{CHECK_DAY}">{human(CHECK_DAY)}</time></p></li>')
+             f'<p class=d-stamp><a href="launches/#cnt-h">Sources: launch tracker</a> · as of <time datetime="{SAT_ASOF}">{human(SAT_ASOF)}</time></p></li>')
     # provider leaderboard (same ranking as the tracker's leaderboard: board_rows)
     rows = board_rows(); top_live = max([x['n']['live'] for x in rows] or [1]) or 1
     tr = []
@@ -1705,7 +1705,8 @@ def dash():
                   f'<td data-l="Status">{pills}{bar}</td><td data-l="Countries live">{cn}</td><td data-l="Satellites">{sat}</td></tr>')
     board = (f'<section class="dcard d-board" aria-labelledby=db-h><div class=d-head><h2 id=db-h>Provider leaderboard</h2><a href="tracker.html#lb-h">Full leaderboard →</a></div>'
              f'<div class=tablewrap><table class=d-table><thead><tr><th scope=col><span class=sr>Rank</span>#</th><th scope=col>Provider</th><th scope=col>Tracker status</th><th scope=col>Countries live</th><th scope=col>Satellites</th></tr></thead>'
-             f'<tbody>{"".join(tr)}</tbody></table></div><p class=d-stamp>Ranked by live services, then countries. Tracker {TRACK["last_checked"]} · satellites {human(CONST["last_checked"])}, <a href="launches/#cnt-h">sources</a>.</p></section>')
+             f'<tbody>{"".join(tr)}</tbody></table></div><p class=d-stamp>Ranked by live services, then countries. Tracker {TRACK["last_checked"]} · satellites {human(CONST["last_checked"])}, <a href="launches/#cnt-h">sources</a>.</p>'
+             f'<p class=d-note>Why is Skylo No. 2? The ranking counts live services first, and Skylo has two live tracker rows (one covers 41 countries through partners). It doesn’t own satellites: it uses partners’ geostationary ones.</p></section>')
     # orbit heights, to scale (the orbit view's shells: OSHELLS, from McDowell's catalogue)
     items = [i for i in CONST['direct_to_device'] if i['count'] and i['id'] in OSHELLS]
     alts = sorted({(OSHELLS[i['id']][0][2], i['id']) for i in items})
@@ -1735,8 +1736,68 @@ def dash():
     nl = next_card('')
     return (f'<section class=dash aria-labelledby=dash-h><div class=dash-top><div><p class=kicker>Dashboard · real data, sources linked</p><h2 id=dash-h>Where satellite-to-phone stands today</h2></div>'
             f'<p class=d-stamp>Data checked <time datetime="{CHECK_DAY}">{human(CHECK_DAY)}</time></p></div>'
-            f'<ul class=dtiles aria-label="Key numbers">{tiles}</ul>'
-            f'<div class=dgrid><div class=d-nl>{nl}</div><div class=d-ck>{check_box("")}</div>{board}{status}{orbit}</div></section>')
+            f'<ul class=dtiles aria-label="Key numbers">{tiles}</ul>{sponsor_slot()}'
+            f'<div class=dgrid><div class=d-nl>{nl}</div><div class=d-ck>{check_box("")}</div>{board}{status}{orbit}{switchoff_card()}</div></section>')
+
+
+# ---- shared redesign components (variants B and C). Each one renders NOTHING unless its data exists: no placeholders.
+def opt_json(rel):
+    f = ROOT / rel
+    try: return json.loads(f.read_text()) if f.exists() else None
+    except Exception as e: print('WARNING: bad', rel, e); return None
+def weekly_strip():
+    """'What changed this week' from data/weekly.json (News Desk supplies it): {"week_of": "YYYY-MM-DD", "items": [{"d", "t", "src": {"label", "url"}}]}"""
+    W = opt_json('data/weekly.json')
+    items = [i for i in (W or {}).get('items', []) if i.get('t') and i.get('src', {}).get('url')][:5]
+    if not items: return ''
+    li = ''.join(f'<li><time datetime="{esc(i["d"])}">{human(i["d"], False)}</time> {esc(i["t"])} <a href="{esc(i["src"]["url"])}">{esc(i["src"].get("label") or "Source")}</a></li>' for i in items)
+    return (f'<section class=wk aria-labelledby=wk-h><div class=wk-top><h2 id=wk-h>What changed this week</h2>'
+            f'<a class="btn ghost sm" href="{esc(sub_url("weekly-strip"))}">Get these every Friday</a></div><ul>{li}</ul></section>')
+def switchoff_card():
+    """2G/3G switch-off countdown from data/switchoff.json (News Desk): {"items": [{"network", "country", "tech", "date", "src": {"label", "url"}}]}. Hidden without data."""
+    S_ = opt_json('data/switchoff.json')
+    items = sorted((i for i in (S_ or {}).get('items', []) if i.get('date') and i.get('src', {}).get('url') and i['date'] >= BUILD_DAY.isoformat()), key=lambda i: i['date'])
+    if not items: return ''
+    i = items[0]
+    return (f'<section class="dcard d-switch" aria-labelledby=sw-h><p class=kicker>Next switch-off</p><h2 id=sw-h>{esc(i["network"])} {esc(i.get("tech", "3G"))}, {esc(i.get("country", ""))}</h2>'
+            f'<p class=nl-cd data-countdown="{esc(i["date"])}T00:00:00Z" role=timer aria-live=off>T− <span>{human(i["date"])}</span></p>'
+            f'<p class=d-stamp>Source: <a href="{esc(i["src"]["url"])}">{esc(i["src"].get("label") or "operator")}</a></p></section>')
+PHONE_TAGS = ('starlink-dtc', 'ast', 'd2d-other')
+def launch_day():
+    """Launch-day mode: a phone-satellite launch with a set time in the next 24 hours. Counts never change here; they move only when
+    the daily check confirms new satellites in data/constellations.json."""
+    l = next((x for x in UPCOMING if x['tag'] in PHONE_TAGS and x['precision'] in PRECISE and timedelta(0) < iso_dt(x['net']) - BUILD_NOW <= timedelta(hours=24)), None)
+    if not l: return ''
+    return (f'<aside class=lday aria-label="Launch day"><p class=kicker>Launch day · {tag_pill(l["tag"])}</p><p><strong>{esc(l.get("mission") or l["name"])}</strong> · {local_time(l)}</p>'
+            f'<p class=nl-cd data-countdown="{l["net"]}" role=timer aria-live=off>T− <span>--h --m --s</span></p>'
+            f'<p class=d-stamp>New satellites join the count only after the operator confirms they’re deployed.</p></aside>')
+def signal_latest():
+    """'Latest from Signal': newest published issue from src/site.json. Bullets show only if the issue has a "bullets" list there."""
+    i = SITE['issues'][0]
+    bl = ''.join(f'<li>{esc(b)}</li>' for b in i.get('bullets', [])[:3])
+    return (f'<section class="dcard sig-latest" aria-labelledby=sl-h><p class=kicker>Latest from Signal · #{esc(i["no"])} · {human(i["date"])}</p>'
+            f'<h2 id=sl-h><a href="{esc(i["url"])}">{esc(i["title"])}</a></h2>' + (f'<ul>{bl}</ul>' if bl else '') +
+            f'<p class=sl-act><a class="btn sm" href="{esc(sub_url("latest-signal"))}">Get Signal free</a><a href="{esc(SITE["archive_url"])}">All past issues</a></p>'
+            f'<p class=d-stamp>New milestones and dashboard changes land in Signal first.</p></section>')
+def hero_signup(cls=''):
+    """Inline sign-up card. Deliberately a link to beehiiv's hosted page, not an email field: an embedded form loads beehiiv scripts and
+    cookies before anyone chooses to subscribe (the 14 Nov 2026 privacy decision in signal_block)."""
+    return (f'<div class="hsign {cls}"><p><strong>Get Signal:</strong> the direct-to-cell story, explained by a 13-year GSM insider.</p>'
+            f'<a class="btn hr-primary" href="{esc(sub_url("hero-signup"))}">Get Signal free <span aria-hidden=true>→</span></a>'
+            f'<p class=fine>Free, weekly. Opens beehiiv’s sign-up page. <a href="privacy.html">Privacy</a>.</p></div>')
+def sponsor_slot():
+    """'Dashboard supported by …' only when src/site.json has "dashboard_sponsor": {"name", "url"}. Always labelled Sponsored. Hidden today."""
+    sp = SITE.get('dashboard_sponsor')
+    if not sp: return ''
+    return f'<p class=d-sponsor><span class=spill>Sponsored</span> Dashboard supported by <a href="{esc(sp["url"])}" rel="sponsored noopener">{esc(sp["name"])}</a></p>'
+def affiliate_block(kind):
+    """Future affiliate block (eSIM, rugged phones): only when src/site.json "affiliates" has the kind. Always carries the commission line
+    and a /disclosure/ link. Hidden today."""
+    a = (SITE.get('affiliates') or {}).get(kind)
+    if not a: return ''
+    li = ''.join(f'<li><a href="{esc(x["url"])}" rel="sponsored noopener">{esc(x["name"])}</a> {esc(x.get("note", ""))}</li>' for x in a.get('items', []))
+    return (f'<aside class="dcard aff"><p class=kicker><span class=spill>Affiliate</span> {esc(a.get("title", ""))}</p><ul>{li}</ul>'
+            f'<p class=fine>We may earn a commission if you buy through these links. <a href="disclosure/">Disclosure</a>.</p></aside>')
 
 # ---------------------------------------------------------------- home
 feat, rest = arts[0], arts[1:]

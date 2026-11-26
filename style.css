@@ -1042,3 +1042,19 @@ html.hr-clip .hr-clipcta b{background:linear-gradient(135deg,var(--violet),var(-
 /* A: keep the hero copy off the left edge at every width */
 .hr-copy{padding-left:clamp(.25rem,1.6vw,1.1rem)}
 @media (max-width:899px){.hr{padding-left:.15rem;padding-right:.15rem}}
+/* ===== shared redesign components (B, C) ===== */
+.d-note{margin:.6rem 0 0;font-size:.82rem;color:var(--muted);line-height:1.45}
+.d-sponsor{margin:-.4rem 0 1rem;font-size:.8rem;color:var(--muted)}
+.wk{margin:1.6rem 0;padding:1rem 1.2rem;border:1px solid var(--gline);border-radius:16px;background:var(--glass)}
+.wk-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:.6rem}.wk h2{margin:0;font-size:1.15rem}
+.wk ul{margin:.6rem 0 0;padding-left:1.1rem;font-size:.92rem}.wk time{font-family:var(--f-mono);font-size:.78rem;color:var(--teal);margin-right:.3rem}
+.lday{margin:1rem 0;padding:.8rem 1rem;border:1px solid rgba(245,194,107,.45);border-radius:14px;background:rgba(245,194,107,.06)}
+.lday p{margin:.2rem 0}
+.sig-latest h2{font-size:1.3rem;margin:.2rem 0 .5rem}.sig-latest h2 a{color:#fff;text-decoration:none}.sig-latest h2 a:hover{text-decoration:underline}
+.sig-latest ul{margin:.3rem 0 .7rem;padding-left:1.1rem;color:#cfdbe8;font-size:.92rem}
+.sl-act{display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:center;margin:.6rem 0 0}
+.hsign{display:grid;gap:.5rem;padding:.9rem 1rem;border-radius:14px;border:1px solid var(--gline);background:var(--glass);max-width:34rem}
+.hsign p{margin:0;font-size:.95rem;color:#cfdbe8}.hsign strong{color:#fff}.hsign .btn{justify-self:start}
+.hsign .fine{font-size:.75rem;color:var(--dim)}.hsign .fine a{color:var(--muted)}
+.aff ul{margin:.3rem 0;padding-left:1.1rem}
+.fine{font-size:.78rem;color:var(--dim)}
