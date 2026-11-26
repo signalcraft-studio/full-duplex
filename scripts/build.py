@@ -1801,10 +1801,51 @@ def affiliate_block(kind):
     return (f'<aside class="dcard aff"><p class=kicker><span class=spill>Affiliate</span> {esc(a.get("title", ""))}</p><ul>{li}</ul>'
             f'<p class=fine>We may earn a commission if you buy through these links. <a href="disclosure/">Disclosure</a>.</p></aside>')
 
+
+# ---- VARIANT C "Signal story" (branch redesign-c): scroll-driven narrative with a sticky graphic (assets/story.js).
+# Data: race.json (monthly satellites in orbit), milestones.json (News Desk, sourced), constellations.json, tracker (board_rows).
+def story_data():
+    race = jdata('data/race.json'); M = opt_json('data/milestones.json') or {'items': []}
+    rows = board_rows()
+    return {'ser': [{'id': s['id'], 'l': s['label'], 'c': s['color']} for s in race['series']],
+            'f': [[f['d'], f['v']] for f in race['frames']],
+            'ms': [[m['d'], m['t'], m['src']['url'], m['src']['label']] for m in M['items']],
+            'b': [{'l': x['label'], 'c': x['col'], 'n': x['n'], 'cn': len(x['live_c']), 'm': x['multi_n'], 'sat': (x['const'] or {}).get('count')} for x in rows],
+            'tot': {'live': C['live'], 'cty': NLIVE_C, 'sats': SAT_TOTAL}}
+def story():
+    D = story_data(); race = jdata('data/race.json')
+    sats = ', '.join(f'{i["count"]:,} {i["short"]}' for i in CONST['direct_to_device'] if i['count'])
+    lead = rows_lead = board_rows()[0]
+    msn = len(D['ms'])
+    steps = [
+        ('phone', 'This is your phone.', 'It already talks to the sky, just not to space. Every call, text and scroll goes to a mast a few kilometres away.'),
+        ('tower', 'Out of range, it goes quiet.', 'Walk far enough from the masts, onto a hill, a boat or a rural road, and the signal has nowhere to go.'),
+        ('sat', 'Now a satellite can catch it.', f'Satellites in low orbit now act like masts in the sky, using the same mobile spectrum, so ordinary phones can connect. <b>{SAT_TOTAL:,}</b> phone-capable satellites are up today: {esc(sats)}.'),
+        ('race', 'The race, month by month.', f'Phone-capable satellites in orbit since {human(race["frames"][0]["d"], False)}, plus {msn} milestones from {D["ms"][0][0][:4] if D["ms"] else ""} on. Drag the rewind bar to step through them.'),
+        ('board', 'Who’s ahead.', f'{esc(lead["label"])} leads on live services. Ranked by live services, then countries, from our tracker ({TRACK["last_checked"]}). Skylo is second because it has two live tracker rows (one covers 41 countries via partners); it uses partners’ satellites, not its own.'),
+        ('today', 'Where it stands today.', f'<b>{C["live"]}</b> live services in <b>{NLIVE_C}</b> countries, and <b>{SAT_TOTAL:,}</b> satellites overhead. Is your phone one of them?'),
+    ]
+    st = ''.join(f'<div class=st-step data-s="{k}"><div class=st-card><h2>{h}</h2><p>{p}</p>'
+                 + (f'<p class=hr-cta><a class="btn hr-primary" href="check/">Check your phone</a><a class="btn ghost" href="{esc(sub_url("story-end"))}">Get Signal free</a></p>' if k == 'today' else '')
+                 + '</div></div>' for k, h, p in steps)
+    ms_list = ''.join(f'<li><time datetime="{m[0]}">{human(m[0])}</time> {esc(m[1])} <a href="{esc(m[2])}">Source</a></li>' for m in D['ms'])
+    return (f'<section class=story aria-labelledby=st-h data-story="{esc(json.dumps(D, ensure_ascii=False, separators=(",", ":")))}">'
+            f'<div class=st-intro><p class=kicker>Signal story · data checked {human(CHECK_DAY)}</p><h1 id=st-h>Satellites are starting to talk to ordinary phones.</h1>'
+            f'<p class=lede>Here’s how, who’s winning, and whether yours can join in, in six scrolls. Every number is sourced.</p>'
+            f'<p class=hr-cta><a class="btn hr-primary" href="check/">Check your phone</a><a class="btn ghost" href="{esc(sub_url("home-hero"))}">Get Signal free</a></p>'
+            f'<div class=hr-author><span class=hr-av aria-hidden=true>SB</span><p><strong>Plain English from a network insider.</strong> By <a href="about.html">{esc(SITE["author"])}</a>, 13+ years in mobile networks (GSM).</p></div>'
+            f'<p class=st-down aria-hidden=true>Scroll ↓</p></div>'
+            f'<div class=st-wrap><figure class=st-fig><canvas aria-hidden=true></canvas>'
+            f'<div class=st-rw hidden><label for=st-range>Rewind</label><input id=st-range type=range min=0 max=100 value=100 aria-describedby=st-ms><p id=st-ms class=st-ms aria-live=polite></p></div></figure>'
+            f'<div class=st-steps>{st}</div></div>'
+            f'<div class=st-after>{hero_signup("st-sign")}<details class=st-mslist><summary>All {msn} milestones, with sources</summary><ol>{ms_list}</ol></details></div></section>')
+
 # ---------------------------------------------------------------- home
 feat, rest = arts[0], arts[1:]
-home = (hero_race()
+home = (launch_day() + story()
+        + weekly_strip()
         + dash()
+        + signal_latest()
         + f'<section aria-labelledby=latest class=front><h2 id=latest class=sec>Latest analysis</h2><div class=front-grid>{art_card(feat, "", 3, "card feature")}'
           f'<div class=grid3>{"".join(art_card(a) for a in rest[:3])}</div></div></section>'
         + signal_block('', 'home')
@@ -1822,7 +1863,7 @@ ld = [{'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'Full Duple
 page(og=('Full Duplex', 'Your phone is about to talk to space.', [(f"{C['live']} live services", OGC['live']), (f'{NLIVE_C} countries', OGC['cyan']), ('Weekly briefing: Signal', OGC['muted'])]), path='index.html', title='Satellite-to-phone and the future of mobile', full_title='Satellite-to-phone and the future of mobile | Full Duplex',
      description=SITE['home_description'], body=home, current='index.html', jsonld=ld, cls='is-home',
      head_extra="<meta name='impact-site-verification' value='129cb172-d554-4bf7-90f2-92a71d514675'>",
-     scripts='<script defer src="assets/hero-race.js"></script><script defer src="assets/launches.js"></script>', lastmod=max(a.get('updated', a['published']) for a in arts), sources=['scripts/build.py', 'src/site.json', 'data/tracker.json', 'data/launches.json', 'data/race.json', 'data/constellations.json', 'data/refresh.json', 'assets/hero-race.js', 'src/pages/inner-signal.html', 'src/pages/start.html'], search=False)
+     scripts='<script defer src="assets/story.js"></script><script defer src="assets/launches.js"></script>', lastmod=max(a.get('updated', a['published']) for a in arts), sources=['scripts/build.py', 'src/site.json', 'data/tracker.json', 'data/launches.json', 'data/race.json', 'data/constellations.json', 'data/refresh.json', 'data/milestones.json', 'assets/story.js', 'src/pages/inner-signal.html', 'src/pages/start.html'], search=False)
 
 # /tracker/ has country pages under it but the tracker itself is /tracker.html: send the bare folder there (UAT 14 Nov 2026)
 (ROOT / 'tracker' / 'index.html').write_text('<!doctype html><html lang=en-GB><head><meta charset=utf-8><title>Direct-to-cell tracker | Full Duplex</title>'
