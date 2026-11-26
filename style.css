@@ -764,9 +764,9 @@ header.site nav{gap:.2rem 1rem}
 }
 /* ---- flight view (/launches/flight/) */
 .fl{margin:0 0 2.5rem}
-.fl-pick{display:grid;gap:.6rem;margin:0 0 1rem}
-.fl-pick select{font:inherit;font-size:.95rem;color:var(--text);background:var(--surface);border:1px solid var(--line-2);border-radius:10px;padding:.6rem .8rem;max-width:100%;min-height:44px}
-.fl-quick{display:flex;flex-wrap:wrap;gap:.45rem}.fl-quick .chip{text-decoration:none;font-size:.82rem}.fl-quick .chip[aria-current]{background:var(--cyan);color:#06101c;border-color:var(--cyan)}
+.fl-pick{display:grid;gap:.6rem;margin:0 0 1rem;min-width:0;max-width:100%}
+.fl-pick select{font:inherit;font-size:.95rem;color:var(--text);background:var(--surface);border:1px solid var(--line-2);border-radius:10px;padding:.6rem .8rem;width:100%;max-width:100%;min-width:0;box-sizing:border-box;min-height:44px}
+.fl-quick{display:flex;flex-wrap:wrap;gap:.45rem;min-width:0;max-width:100%}.fl-quick .chip{text-decoration:none;font-size:.82rem}.fl-quick .chip[aria-current]{background:var(--cyan);color:#06101c;border-color:var(--cyan)}
 .fl-hud{position:relative;border:1px solid rgba(94,200,255,.22);border-radius:18px;background:radial-gradient(900px 380px at 50% 0%,rgba(0,207,255,.10),transparent 70%),linear-gradient(180deg,#081022,#050a15);padding:1rem 1rem .8rem;overflow:hidden}
 .fl-top{display:flex;justify-content:space-between;align-items:flex-start;gap:.8rem;flex-wrap:wrap}
 .fl-mission{font-family:var(--f-head);font-size:clamp(1.1rem,2.4vw,1.5rem);margin:0;letter-spacing:.01em;text-transform:uppercase}
