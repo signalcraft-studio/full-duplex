@@ -1852,8 +1852,15 @@ def orbital_data():
 
 # ---- THE MIX (branch redesign-mix, Sam 26 Nov 2026): C's scroll story is the spine, B's globe is the "find yours" centrepiece,
 # A's race (clusters, 1 dot = 1 satellite, date counter, partner phones) is the race scene, driven by scroll and the rewind bar.
-# The H1 comes from one place: src/site.json "home_headline" (placeholder until Sam and News Desk pick a new one).
-HOME_H1 = SITE.get('home_headline') or 'Your phone is about to talk to space.'
+# The homepage H1 and deck come from one place: src/site.json "home_headline".
+# First sentence = the big headline; a second sentence, if present, is the subhead.
+def split_home_headline(text):
+    text = (text or '').replace("'", '’').strip()
+    if '. ' in text:
+        a, b = text.split('. ', 1)
+        return a.rstrip('.') + '.', b
+    return text, ''
+HOME_H1, HOME_DECK = split_home_headline(SITE.get('home_headline') or 'Your phone is about to talk to space.')
 def orbital_scene():
     D = orbital_data()
     items = [i for i in CONST['direct_to_device'] if i['count'] and i['id'] in OSHELLS]
@@ -1888,8 +1895,9 @@ def story():
     cta = lambda src: f'<p class=hr-cta><a class="btn hr-primary" href="#fy">Check your phone</a><a class="btn ghost" href="{esc(sub_url(src))}">Get Signal free</a></p>'
     race_alt = (f'Animation: Earth in the centre with one cluster of dots per network, one dot per phone-capable satellite, growing month by month from {human(race["frames"][0]["d"], False)} to '
                 f'{human(race["frames"][-1]["d"])}. Today: ' + ', '.join(f'{s["n"]:,} {s["l"]}' for s in D['race']['s'] if s['n']) + '. Then small phones appear for each partner network in our tracker.')
+    lede = HOME_DECK or 'Satellites that connect straight to ordinary phones are going up every month. Here’s how it works, who’s winning, and whether yours can join in. Every number is sourced.'
     hero = (f'<div class="st-step st-hero" data-s="intro"><div class=st-intro><p class=kicker>The race to your phone · data checked {human(CHECK_DAY)}</p><h1 id=st-h>{esc(HOME_H1)}</h1>'
-            f'<p class=lede>Satellites that connect straight to ordinary phones are going up every month. Here’s how it works, who’s winning, and whether yours can join in. Every number is sourced.</p>'
+            f'<p class=lede>{esc(lede)}</p>'
             + cta('home-hero') +
             f'<ul class=st-tot aria-label="Totals today"><li><b>{C["live"]}</b> live services</li><li><b>{NLIVE_C}</b> countries live</li><li><b>{SAT_TOTAL:,}</b> satellites</li></ul>'
             f'<div class=hr-author><span class=hr-av aria-hidden=true>SB</span><p><strong>Plain English from a network insider.</strong> By <a href="about.html">{esc(SITE["author"])}</a>, 13+ years in mobile networks (GSM).</p></div>'
@@ -1934,7 +1942,7 @@ home = (launch_day() + ST1 + orbital_scene() + ST2
           '<p><a class="btn ghost" href="sponsor.html">See sponsor options</a></p></aside>')
 ld = [{'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'Full Duplex', 'url': BASE, 'inLanguage': 'en-GB', 'publisher': PUBLISHER,
        'potentialAction': {'@type': 'SearchAction', 'target': BASE + 'search.html?q={q}', 'query-input': 'required name=q'}}, ORG]
-page(og=('Full Duplex', 'Your phone is about to talk to space.', [(f"{C['live']} live services", OGC['live']), (f'{NLIVE_C} countries', OGC['cyan']), ('Weekly briefing: Signal', OGC['muted'])]), path='index.html', title='Satellite-to-phone and the future of mobile', full_title='Satellite-to-phone and the future of mobile | Full Duplex',
+page(og=('Full Duplex', HOME_H1, [(f"{C['live']} live services", OGC['live']), (f'{NLIVE_C} countries', OGC['cyan']), ('Weekly briefing: Signal', OGC['muted'])]), path='index.html', title='Satellite-to-phone and the future of mobile', full_title='Satellite-to-phone and the future of mobile | Full Duplex',
      description=SITE['home_description'], body=home, current='index.html', jsonld=ld, cls='is-home',
      head_extra="<meta name='impact-site-verification' value='129cb172-d554-4bf7-90f2-92a71d514675'>",
      scripts='<script defer src="assets/story.js"></script><script defer src="assets/orbital.js"></script><script defer src="assets/launches.js"></script>', lastmod=max(a.get('updated', a['published']) for a in arts), sources=['scripts/build.py', 'src/site.json', 'data/tracker.json', 'data/launches.json', 'data/race.json', 'data/constellations.json', 'data/refresh.json', 'data/milestones.json', 'assets/story.js', 'assets/orbital.js', 'src/pages/inner-signal.html', 'src/pages/start.html'], search=False)
