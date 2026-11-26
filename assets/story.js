@@ -33,7 +33,7 @@
     var R={s:D.race.s,p:D.race.p,col:{}}, parts=[], emitAt={}, prevN={};
     R.s.forEach(function(s){R.col[s.id]=s.c;});
     function raceLayout(){
-      var nw=narrow(), bx=0, by=H*(nw?.02:.05), bw=W, bh=H*(nw?.5:.8), m=Math.min(bw,bh), wide=bw/bh>1.5;
+      var nw=narrow(), bx=0, by=H*(nw?.02:.05), bw=W, bh=H*(nw?.64:.8), m=Math.min(bw,bh), wide=bw/bh>1.5;
       R.K=wide?1.3:1; R.cx=bx+bw*.5; R.cy=by+bh*.5; R.re=m*(wide?.14:.11);
       var rx1=bw*(wide?.24:.3), ry1=bh*(wide?.3:.29), rx2=bw*(wide?.4:.44), ry2=bh*(wide?.43:.43);
       var ORDER=['starlink-dtc','ast','globalstar','lynk','skylo'], HANG={'starlink-dtc':180,'ast':-40,'globalstar':2,'lynk':34,'skylo':64};
@@ -144,7 +144,9 @@
       if(!k){k=first; p=0;}
       if(k!==cur.k){prev={k:cur.k,p:cur.k==='race'?1:cur.p}; fadeT=t; override=null; if(rw) rw.hidden=(k!=='race');
         steps.forEach(function(s){s.classList.toggle('on',s.getAttribute('data-s')===k);});}
-      if(override!=null&&Math.abs(p-lastP)>.04) override=null; lastP=p; cur={k:k,p:p};}
+      if(override!=null&&Math.abs(p-lastP)>.04) override=null; lastP=p; cur={k:k,p:p};
+      var ft=fig.getBoundingClientRect().top, stick=parseFloat(getComputedStyle(fig).top)||0;
+      wrap.classList.toggle('is-stuck', ft<=stick+1);}
     function draw(){ctx.setTransform(DPR,0,0,DPR,0,0); ctx.clearRect(0,0,W,H); var fa=STILL?1:cl((t-fadeT)/350);
       if(prev&&fa<1&&prev.k!=='race') S[prev.k](prev.p,1-fa); S[cur.k](cur.p,fa); ctx.globalAlpha=1;}
     function frame(ts){if(!running) return; var dt=last?Math.min(50,ts-last):16; last=ts; t+=dt; measure(); draw(); requestAnimationFrame(frame);}

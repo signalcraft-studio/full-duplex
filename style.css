@@ -1159,4 +1159,12 @@ html.hr-clip .hr-clipcta b{background:linear-gradient(135deg,var(--violet),var(-
 @media (min-width:1000px){.dgrid{grid-template-areas:"nl nl st" "bd bd ob" "bd bd sw"}}
 @media (max-width:899px){.st-steps{margin-top:calc(-100vh + 3.6rem);margin-top:calc(-100svh + 3.6rem)}.st-fig{margin:0 -5vw}}
 @media (max-width:899px){.st-hero{box-shadow:0 -3rem 0 var(--bg)}}
+@media (max-width:899px){
+  /* Inactive cards fade fully so they cannot sit over the next scene. */
+  .story.js .st-step:not(.on) .st-card{opacity:0;pointer-events:none}
+  /* Race: keep the story card in a bottom band, and the rewind bar just above it, so neither covers the chart while scrolling. */
+  .st-step[data-s=race]{min-height:185vh;min-height:185svh;display:block;padding:0 0 35vh;padding-top:calc(100svh - 3.6rem - 13.8rem)}
+  .story.js .st-wrap.is-stuck .st-step[data-s=race].on .st-card{position:fixed;left:5vw;right:5vw;bottom:.6rem;top:auto;z-index:3;margin:0;max-height:12.6rem;overflow:auto}
+  .story.st-2 .st-rw{top:auto;bottom:14.2rem}
+}
 .orb::before{content:"";position:absolute;left:0;right:0;top:-5rem;height:5rem;background:linear-gradient(rgba(3,6,13,0),#03060d);pointer-events:none}
