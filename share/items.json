@@ -195,12 +195,12 @@
   },
   {
    "slug": "orbit-view",
-   "key": "dbc3bc5452",
+   "key": "5463c1e1c3",
    "kind": "canvas",
    "page": "launches/?nowelcome",
    "sel": "#orbitview",
    "layout": "square",
-   "kicker": "Orbit view · 26 Nov 2026",
+   "kicker": "Orbit view · 9 Nov 2026 (AST); others 26 Nov",
    "title": "688 satellites that can talk to your phone",
    "sub": "One dot = one satellite",
    "chips": [

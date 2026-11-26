@@ -646,7 +646,10 @@ footer.site .logo .mark{width:40px;height:40px}
 /* Race leaderboard */
 .lboard{margin:0 0 2.2rem;border:1px solid var(--line);border-radius:var(--r);padding:1.1rem 1.2rem;background:rgba(15,22,38,.6)}
 .lb-top{display:flex;justify-content:space-between;align-items:flex-end;gap:.6rem 1rem;flex-wrap:wrap}
-.lb-top h2{margin:.1rem 0 .6rem}
+.lb-top h2{margin:.1rem 0 .35rem}
+.lb-dates{margin:0 0 .55rem;font-size:.82rem;color:var(--muted);line-height:1.45;max-width:54ch}
+.lb-dates a{color:var(--cyan)}
+.lb-dates time{color:var(--text)}
 .lb-grid{display:grid;gap:1.2rem}
 .lb-grid > *{min-width:0}
 @media (min-width:1280px){.lb-grid{grid-template-columns:minmax(0,1fr) 280px}}

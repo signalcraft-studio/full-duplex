@@ -495,6 +495,36 @@ _J = {}
 def jdata(rel):
     if rel not in _J: _J[rel] = json.loads((ROOT / rel).read_text()) if (ROOT / rel).exists() else None
     return _J[rel]
+def sat_name(i):
+    return (i.get('short') or i['id']).replace(' SpaceMobile', '').replace(' Direct to Cell', '').replace(' (iPhone)', '').replace(' / Elveo', '')
+def sat_date_phrase(short_year=True):
+    """Honest build-time date for phone-capable counts: oldest as_of among counted constellations, plus any newer checks. Never hard-coded."""
+    items = [i for i in ((jdata('data/constellations.json') or {}).get('direct_to_device') or []) if i.get('count')]
+    if not items:
+        return ''
+    newest, oldest = max(i['as_of'] for i in items), min(i['as_of'] for i in items)
+    hn = human(newest, False)
+    if short_year and newest[:4] == oldest[:4] and newest != oldest:
+        hn = hn.rsplit(' ', 1)[0]  # '26 Nov 2026' -> '26 Nov'
+    if oldest == newest:
+        return f'<time datetime="{newest}">{human(newest, False)}</time>'
+    stale = [i for i in items if i['as_of'] != newest]
+    by = {}
+    for i in stale:
+        by.setdefault(i['as_of'], []).append(sat_name(i))
+    parts = [f'<time datetime="{d}">{human(d, False)}</time> ({esc(", ".join(names))})'
+             for d, names in sorted(by.items())]
+    return '; '.join(parts) + f'; others <time datetime="{newest}">{hn}</time>'
+def sat_date_text():
+    return re.sub(r'<[^>]+>', '', sat_date_phrase())
+def tracker_when():
+    iso = parse_human(TRACK['last_checked'])
+    return iso, TRACK['last_checked']
+def board_dates_html(root=''):
+    """Services/countries/trials/announced from the tracker; satellite column from each constellation as_of."""
+    iso, label = tracker_when()
+    return (f'Services, countries, trials and announced: <a href="{root}tracker.html">tracker</a>, <time datetime="{iso}">{esc(label)}</time>. '
+            f'Satellites: <a href="{root}launches/#cnt-h">launch tracker</a>, {sat_date_phrase()}, each count linked to its source.')
 BOARD = [  # (label, tracker provider, constellations.json id, race.json series id, colour)
     ('Starlink Direct to Cell', 'Starlink', 'starlink-dtc', 'starlink-dtc', '#00cfff'),
     ('AST SpaceMobile', 'AST SpaceMobile', 'ast', 'ast', '#ff9a3c'),
@@ -531,11 +561,14 @@ def race_board(root, compact=False):
     for i, x in enumerate(rows, 1):
         c = x['const']
         if c and c.get('count') is not None:
-            sat = (f'<b>{c["count"]:,}</b><a class=lb-src href="{esc(c["source"]["url"])}" title="{esc(c["source"]["label"])}, as of {human(c["as_of"])}">source</a>')
+            sat = (f'<b>{c["count"]:,}</b><a class=lb-src href="{esc(c["source"]["url"])}" title="{esc(c["source"]["label"])}, as of {human(c["as_of"])}">source</a>'
+                   f'<span class=lb-d>as of {human(c["as_of"], False)}</span>')
             if x['delta'] and not compact:
                 dv, dd = x['delta']; sat += f'<span class="lb-d{" up" if dv > 0 else " dn" if dv < 0 else ""}">{"+" if dv > 0 else ""}{dv} since {human(dd, False)}</span>'
         else:
             sat = f'<span class=lb-na>{"Not disclosed" if c else "n/a"}</span>' + (f'<a class=lb-src href="{esc(c["source"]["url"])}">source</a>' if c and c.get('source') else '')
+            if c and c.get('as_of'):
+                sat += f'<span class=lb-d>as of {human(c["as_of"], False)}</span>'
         if x['prov']:
             cn = f'<b>{len(x["live_c"])}</b>' + (f'<span class=lb-m>+{x["multi_n"]} via partners</span>' if x['multi_n'] else '')
             live = f'<b>{x["n"]["live"]}</b>'; tri = f'{x["n"]["trial"]}'; ann = f'{x["n"]["announced"]}'
@@ -553,13 +586,12 @@ def race_board(root, compact=False):
                  + ' '.join(f'<span class="spill s-{CLS[r["status"]]}" title="{esc(r["operator"])} with {esc(r["satellite"])}">{esc(short_op(r["operator"]))}</span>' for r in sorted(rs, key=lambda r: -RANK[r['status']]))
                  + '</span></a></li>' for c, rs in country_board(4 if compact else 6))
     note = ('Ranked by live services, then countries with a live service, trials, announced deals and satellites in orbit. '
-            f'Services and countries come from our <a href="{root}tracker.html">tracker</a> (last checked {TRACK["last_checked"]}); satellite counts from the '
-            f'<a href="{root}launches/#cnt-h">launch tracker</a> (checked {human(const["last_checked"])}), each linked to its source. '
+            + board_dates_html(root) + ' '
             'Skylo’s “via partners” figure is the 41-country row in the tracker. Globalstar works through Apple’s own iPhone features rather than operator deals, so it has no tracker rows.')
-    if compact: note = (f'Ranked by live services, then countries live. From our <a href="{root}tracker.html">tracker</a> ({TRACK["last_checked"]}) and the '
-                        f'<a href="{root}launches/#cnt-h">launch tracker</a> ({human(const["last_checked"])}), sources linked. <a href="{root}tracker.html#lb-h">Full leaderboard</a>.')
-    return (f'<section class="lboard{" compact" if compact else ""}" aria-labelledby=lb-h><div class=lb-top><div><p class=kicker>This week in the race · data checked {human(CHECK_DAY)}</p>'
-            f'<h2 id=lb-h>{"Who’s winning satellite-to-phone" if compact else "The race leaderboard"}</h2></div>'
+    if compact: note = (f'Ranked by live services, then countries live. ' + board_dates_html(root) + f' <a href="{root}tracker.html#lb-h">Full leaderboard</a>.')
+    return (f'<section class="lboard{" compact" if compact else ""}" aria-labelledby=lb-h><div class=lb-top><div><p class=kicker>This week in the race</p>'
+            f'<h2 id=lb-h>{"Who’s winning satellite-to-phone" if compact else "The race leaderboard"}</h2>'
+            f'<p class=lb-dates>{board_dates_html(root)}</p></div>'
             + ('' if compact else share_btn('Who’s winning satellite-to-phone this week? The Full Duplex race leaderboard, with sources.', BASE + 'tracker.html#lb-h'))
             + f'</div><div class=lb-grid><div class="tablewrap lbwrap"><table class=lb-table><thead>{head}</thead><tbody>{"".join(tr)}</tbody></table></div>'
             f'<div class=lb-countries><h3>Most connected countries</h3><ol>{cb}</ol></div></div><p class=l-credit>{note}</p></section>')
@@ -1103,7 +1135,7 @@ def orbit_panel(root):
                      title=f'{total:,} phone-capable satellites, one dot each', path='launches/', anchor='ov-h',
                      desc='Every satellite that can talk straight to an ordinary phone, on one globe: ' + ', '.join(f'{i["count"]:,} {i["short"]}' for i in items) + '.',
                      alt=f'Globe with {total:,} dots, one per phone-capable satellite in orbit',
-                     render={'kind': 'canvas', 'page': 'launches/?nowelcome', 'sel': '#orbitview', 'layout': 'square', 'kicker': f'Orbit view · {human(asof, False)}',
+                     render={'kind': 'canvas', 'page': 'launches/?nowelcome', 'sel': '#orbitview', 'layout': 'square', 'kicker': f'Orbit view · {sat_date_text()}',
                              'title': f'{total:,} satellites that can talk to your phone', 'sub': 'One dot = one satellite',
                              'chips': [[f'{i["count"]:,} {OSHORT.get(i["id"], i["short"])}', OCOL[i['id']]] for i in chip_order]})
     desc = (f'Illustrative globe with {total:,} dots, one for each phone-capable satellite in orbit: '
@@ -1116,7 +1148,7 @@ def orbit_panel(root):
             f'<p class=ov-scale><strong>1 dot = 1 satellite.</strong> Heights are to scale; the orbits are illustrative, not live positions.</p>'
             f'<p class=ov-act><button type=button class="btn sm" id=ov-launch>Watch a launch moment</button>{share_bar(osh, root, "the orbit view globe", canvas="#orbitview canvas", tag="span", extra="shr-in")}</p>'
             f'<p class=ov-status id=ov-status role=status aria-live=polite></p>'
-            f'<p class=checked>Counts as of {human(asof)}, with sources <a href="#cnt-h">below</a>.</p></div>'
+            f'<p class=checked>Counts: {sat_date_phrase()}, with sources <a href="#cnt-h">below</a>.</p></div>'
             f'<figure class=ov-fig><div id=orbitview class="globe ov-globe" role=img aria-label="{esc(desc)}"></div>'
             f'<figcaption>Illustrative. Real satellites fly in many more orbital planes. Drag to spin.</figcaption></figure></section>')
 
@@ -1189,7 +1221,7 @@ def launches_page():
             + count_rows(CONST['direct_to_device'], root) +
             f'<h3 class=bb-h>Broadband-only constellations (not phone-capable)</h3><p class=l-intro>For scale: these networks serve dishes and terminals, not phones directly.</p>'
             + count_rows(CONST['broadband_only'], root) +
-            f'<p class=l-credit>Counts last checked {human(CONST["last_checked"])}' + (f' (daily check, last run <time datetime="{REFRESH["updated"]}">{human_dt(REFRESH["updated"])}</time>; a count only gets a new date when its source confirms it)' if REFRESH.get('updated') else '') + f'. Satellite totals change with every launch and re-entry. Data: <a href="{root}data/constellations.json">constellations.json</a> · <a href="{root}data/launches.json">launches.json</a></p></section>'
+            f'<p class=l-credit>Counts: {sat_date_phrase()}' + (f' (daily check, last run <time datetime="{REFRESH["updated"]}">{human_dt(REFRESH["updated"])}</time>; a count only gets a new date when its source confirms it)' if REFRESH.get('updated') else '') + f'. Satellite totals change with every launch and re-entry. Data: <a href="{root}data/constellations.json">constellations.json</a> · <a href="{root}data/launches.json">launches.json</a></p></section>'
             f'<section class="card tlink" aria-labelledby=tl-h><p class=kicker>From the tracker</p><h2 id=tl-h><a href="{root}tracker.html">Where these satellites already reach phones</a></h2>'
             f'<p>{C["live"]} live direct-to-cell services in {NLIVE_C} countries, plus {C["trial"]} trials and {C["announced"]} announced. See who’s live, country by country, with sources.</p>'
             f'<p class=row-cta><a class="btn ghost" href="{root}tracker.html">Open the tracker</a><a class="btn ghost" href="{root}articles/why-starship-is-a-telco-story.html">Why Starship is a telco story</a></p></section>'
@@ -1682,33 +1714,6 @@ SAT_ITEMS = [i for i in CONST['direct_to_device'] if i.get('count')]
 SAT_TOTAL = sum(i['count'] for i in SAT_ITEMS)
 SAT_ASOF = max(i['as_of'] for i in SAT_ITEMS) if SAT_ITEMS else ''
 SAT_ASOF_OLDEST = min(i['as_of'] for i in SAT_ITEMS) if SAT_ITEMS else ''
-def sat_name(i):
-    return (i.get('short') or i['id']).replace(' SpaceMobile', '').replace(' Direct to Cell', '').replace(' (iPhone)', '').replace(' / Elveo', '')
-def sat_date_phrase(short_year=True):
-    """Honest build-time date for the phone-capable total: oldest as_of among counted constellations, plus any newer checks. Never hard-coded."""
-    if not SAT_ITEMS:
-        return ''
-    newest, oldest = SAT_ASOF, SAT_ASOF_OLDEST
-    hn = human(newest, False)
-    ho = human(oldest, False)
-    if short_year and newest[:4] == oldest[:4] and newest != oldest:
-        hn = hn.rsplit(' ', 1)[0]  # '26 Nov 2026' -> '26 Nov'
-    if oldest == newest:
-        return f'<time datetime="{newest}">{human(newest, False)}</time>'
-    stale = [i for i in SAT_ITEMS if i['as_of'] != newest]
-    # group older counts by date, e.g. "9 Nov 2026 (AST); others 26 Nov"
-    by = {}
-    for i in stale:
-        by.setdefault(i['as_of'], []).append(sat_name(i))
-    parts = [f'<time datetime="{d}">{human(d, False) if d[:4] != newest[:4] or not short_year else human(d, False)}</time> ({esc(", ".join(names))})'
-             for d, names in sorted(by.items())]
-    # always show full year on the first (oldest) date
-    return '; '.join(parts) + f'; others <time datetime="{newest}">{hn}</time>'
-def sat_date_text():
-    return re.sub(r'<[^>]+>', '', sat_date_phrase())
-def tracker_when():
-    iso = parse_human(TRACK['last_checked'])
-    return iso, TRACK['last_checked']
 def totals_source_html():
     """Services/countries from the tracker; satellites from the launch-tracker counts, with an honest mixed-date line."""
     iso, label = tracker_when()
@@ -1743,7 +1748,7 @@ def hero_race():
     tot = (f'<ul class=hr-totals aria-label="Totals today"><li><b>{C["live"]}</b><span>live services</span></li><li><b>{NLIVE_C}</b><span>countries live</span></li>'
            f'<li><b>{SAT_TOTAL:,}</b><span>satellites</span></li></ul>')
     cta = (f'<p class=hr-cta><a class="btn hr-primary" href="check/">Check your phone</a><a class="btn ghost" href="{esc(sub_url("home-hero"))}">Get Signal free</a></p>')
-    return (f'<section class="hero hr" aria-labelledby=hr-h><div class=hr-copy><p class=kicker>The race to your phone · data checked {human(CHECK_DAY)}</p>'
+    return (f'<section class="hero hr" aria-labelledby=hr-h><div class=hr-copy><p class=kicker>The race to your phone</p>'
             f'<h1 id=hr-h>Your phone is about to talk to space.</h1>'
             f'<p class=lede>Satellites that connect straight to ordinary phones are going up every month. We track who’s live, where, and whether your phone can join in.</p>'
             + cta +
@@ -1857,7 +1862,7 @@ def switchoff_card():
     li = ''.join(f'<li><b>{esc(x["operator"])} {esc(x["tech"])}</b>, {esc(x["country"])}: {esc(x["when"])} <a href="{esc(x["src"]["url"])}">source</a></li>' for x in items[1:])
     return (f'<section class="dcard d-switch" aria-labelledby=sw-h><div class=d-head><h2 id=sw-h>2G/3G switch-offs</h2><a href="articles/2g-3g-switch-off.html">What it means →</a></div>'
             f'<p class=sw-next><b>Next: {esc(i["operator"])} {esc(i["tech"])}, {esc(i["country"])}</b> · {esc(i["when"])} · <a href="{esc(i["src"]["url"])}">source</a></p>{cd}'
-            f'<ul class=sw-list>{li}</ul><p class=d-stamp>Official operator or regulator dates only · checked {human(i.get("checked") or CHECK_DAY)}</p></section>')
+            f'<ul class=sw-list>{li}</ul><p class=d-stamp>Official operator or regulator dates only' + (f' · checked {human(i["checked"])}' if i.get('checked') else '') + '</p></section>')
 PHONE_TAGS = ('starlink-dtc', 'ast', 'd2d-other')
 def launch_day():
     """Launch-day mode: a phone-satellite launch with a set time in the next 24 hours. Counts never change here; they move only when
