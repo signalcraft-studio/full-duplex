@@ -1564,7 +1564,7 @@ def resources_page():
     page(og=('Resources', 'Sources and further reading', [('Launches', OGC['cyan']), ('Satellites', OGC['live']), ('Regulators', OGC['trial'])]),
          path='resources/index.html', title='Sources and further reading', full_title='Satellite, carrier and regulator links | Full Duplex',
          description='Official sites, regulators, standards and data sets for satellite-to-phone, launches and mobile networks, each with a line on why it is useful.',
-         body=body, root=root, current='', jsonld=ld, cls='is-resources', lastmod=RES['checked'])
+         body=body, root=root, current='resources/index.html', jsonld=ld, cls='is-resources', lastmod=RES['checked'])
 launches_page()
 flight_page()
 explainers_page()
