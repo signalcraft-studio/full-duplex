@@ -1,6 +1,6 @@
 {
- "fetched_at": "2026-11-26T02:29:35Z",
- "full_fetched_at": "2026-11-26T02:29:35Z",
+ "fetched_at": "2026-11-26T11:26:10Z",
+ "full_fetched_at": "2026-11-26T11:26:10Z",
  "source": "The Space Devs Launch Library 2 (https://ll.thespacedevs.com/2.3.0/launches/upcoming/)",
  "launches": [
   {
@@ -27,7 +27,7 @@
    "pad_lat": 34.632,
    "pad_lon": -120.611,
    "webcast_live": false,
-   "last_updated": "2026-11-20T21:29:36Z",
+   "last_updated": "2026-11-26T04:39:21Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/b0d27def-0a88-44c3-a947-1fd5b8503e2c/",
    "queries": [
     "spacex"

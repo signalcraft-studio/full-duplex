@@ -235,14 +235,14 @@
   },
   {
    "slug": "flight-globe",
-   "key": "5f132cba95",
+   "key": "f0cc73d39d",
    "kind": "canvas",
    "page": "launches/flight/?nowelcome",
    "sel": "#glview",
    "layout": "square",
    "kicker": "After deployment · real orbits",
    "title": "Where the newest satellites are right now",
-   "sub": "116 satellites from 6 recent broadband and phone-network launches"
+   "sub": "152 satellites from 7 recent broadband and phone-network launches"
   },
   {
    "slug": "sat-scale",
