@@ -1618,8 +1618,42 @@ HERO_IDS = [('starlink-dtc', 'Starlink Direct to Cell', 'Starlink'), ('ast', 'AS
             ('globalstar', 'Globalstar (iPhone)', None), ('lynk', 'Lynk / Elveo', 'Lynk / Elveo'), ('skylo', 'Skylo', 'Skylo')]
 BCOL = {cid: col for _, _, cid, _, col in BOARD}
 def d2d(cid): return next((i for i in CONST['direct_to_device'] if i['id'] == cid), None)
-SAT_TOTAL = sum(i['count'] for i in CONST['direct_to_device'] if i['count'])
-SAT_ASOF = max(i['as_of'] for i in CONST['direct_to_device'] if i['count'])
+SAT_ITEMS = [i for i in CONST['direct_to_device'] if i.get('count')]
+SAT_TOTAL = sum(i['count'] for i in SAT_ITEMS)
+SAT_ASOF = max(i['as_of'] for i in SAT_ITEMS) if SAT_ITEMS else ''
+SAT_ASOF_OLDEST = min(i['as_of'] for i in SAT_ITEMS) if SAT_ITEMS else ''
+def sat_name(i):
+    return (i.get('short') or i['id']).replace(' SpaceMobile', '').replace(' Direct to Cell', '').replace(' (iPhone)', '').replace(' / Elveo', '')
+def sat_date_phrase(short_year=True):
+    """Honest build-time date for the phone-capable total: oldest as_of among counted constellations, plus any newer checks. Never hard-coded."""
+    if not SAT_ITEMS:
+        return ''
+    newest, oldest = SAT_ASOF, SAT_ASOF_OLDEST
+    hn = human(newest, False)
+    ho = human(oldest, False)
+    if short_year and newest[:4] == oldest[:4] and newest != oldest:
+        hn = hn.rsplit(' ', 1)[0]  # '26 Nov 2026' -> '26 Nov'
+    if oldest == newest:
+        return f'<time datetime="{newest}">{human(newest, False)}</time>'
+    stale = [i for i in SAT_ITEMS if i['as_of'] != newest]
+    # group older counts by date, e.g. "9 Nov 2026 (AST); others 26 Nov"
+    by = {}
+    for i in stale:
+        by.setdefault(i['as_of'], []).append(sat_name(i))
+    parts = [f'<time datetime="{d}">{human(d, False) if d[:4] != newest[:4] or not short_year else human(d, False)}</time> ({esc(", ".join(names))})'
+             for d, names in sorted(by.items())]
+    # always show full year on the first (oldest) date
+    return '; '.join(parts) + f'; others <time datetime="{newest}">{hn}</time>'
+def sat_date_text():
+    return re.sub(r'<[^>]+>', '', sat_date_phrase())
+def tracker_when():
+    iso = parse_human(TRACK['last_checked'])
+    return iso, TRACK['last_checked']
+def totals_source_html():
+    """Services/countries from the tracker; satellites from the launch-tracker counts, with an honest mixed-date line."""
+    iso, label = tracker_when()
+    return (f'Services and countries: <a href="tracker.html">tracker</a>, <time datetime="{iso}">{esc(label)}</time>. '
+            f'Satellites: <a href="launches/#cnt-h">launch tracker</a>, {sat_date_phrase()}.')
 def hero_data():
     race = jdata('data/race.json')
     ser = []
@@ -1688,7 +1722,7 @@ def dash():
              + (f'<p class=d-sub>{added("trial")} added on {human(last_ch["date"], False)}, {added("live")} new live</p>' if last_ch and (added('trial') or added('live')) else '') + f'{trk}</li>'
              f'<li class="dtile t-sat"><p class=d-lab>Phone-capable satellites</p><p class=d-num>{SAT_TOTAL:,}</p>'
              f'<p class=d-sub>in orbit, by month since {human(race["frames"][0]["d"], False)}</p>{spark(tot_series)}'
-             f'<p class=d-stamp><a href="launches/#cnt-h">Sources: launch tracker</a> · as of <time datetime="{SAT_ASOF}">{human(SAT_ASOF)}</time></p></li>')
+             f'<p class=d-stamp><a href="launches/#cnt-h">Sources: launch tracker</a> · {sat_date_phrase()}</p></li>')
     # provider leaderboard (same ranking as the tracker's leaderboard: board_rows)
     rows = board_rows(); top_live = max([x['n']['live'] for x in rows] or [1]) or 1
     tr = []
@@ -1705,7 +1739,7 @@ def dash():
                   f'<td data-l="Status">{pills}{bar}</td><td data-l="Countries live">{cn}</td><td data-l="Satellites">{sat}</td></tr>')
     board = (f'<section class="dcard d-board" aria-labelledby=db-h><div class=d-head><h2 id=db-h>Provider leaderboard</h2><a href="tracker.html#lb-h">Full leaderboard →</a></div>'
              f'<div class=tablewrap><table class=d-table><thead><tr><th scope=col><span class=sr>Rank</span>#</th><th scope=col>Provider</th><th scope=col>Tracker status</th><th scope=col>Countries live</th><th scope=col>Satellites</th></tr></thead>'
-             f'<tbody>{"".join(tr)}</tbody></table></div><p class=d-stamp>Ranked by live services, then countries. Tracker {TRACK["last_checked"]} · satellites {human(CONST["last_checked"])}, <a href="launches/#cnt-h">sources</a>.</p>'
+             f'<tbody>{"".join(tr)}</tbody></table></div><p class=d-stamp>Ranked by live services, then countries. Tracker {TRACK["last_checked"]} · satellites {sat_date_phrase()}, <a href="launches/#cnt-h">sources</a>.</p>'
              f'<p class=d-note>Why is Skylo No. 2? The ranking counts live services first, and Skylo has two live tracker rows (one covers 41 countries through partners). It doesn’t own satellites: it uses partners’ geostationary ones.</p></section>')
     # orbit heights, to scale (the orbit view's shells: OSHELLS, from McDowell's catalogue)
     items = [i for i in CONST['direct_to_device'] if i['count'] and i['id'] in OSHELLS]
@@ -1735,7 +1769,7 @@ def dash():
               + f'<li><span class=dot aria-hidden=true></span>Tracker rows read by hand, last {TRACK["last_checked"]}</li></ul></section>')
     nl = next_card('')
     return (f'<section class=dash aria-labelledby=dash-h><div class=dash-top><div><p class=kicker>Dashboard · real data, sources linked</p><h2 id=dash-h>Where satellite-to-phone stands today</h2></div>'
-            f'<p class=d-stamp>Data checked <time datetime="{CHECK_DAY}">{human(CHECK_DAY)}</time></p></div>'
+            f'<p class=d-stamp>{totals_source_html()}</p></div>'
             f'<ul class=dtiles aria-label="Key numbers">{tiles}</ul>{sponsor_slot()}'
             f'<div class=dgrid><div class=d-nl>{nl}</div>{board}{status}{orbit}{switchoff_card()}</div></section>')
 
@@ -1875,7 +1909,7 @@ def orbital_scene():
             f'<form id=fy class=orb-find action="check/" method=get data-chk data-ops="{esc(check_ops())}" aria-labelledby=fy-h><h3 id=fy-h>Find your phone in the sky</h3>'
             f'{check_selects("fy", sorted(COUNTRIES), PHONES["models"])}<button class="btn hr-primary" type=submit>Find my satellite</button>'
             f'<div class=fy-out role=status aria-live=polite></div></form>'
-            f'<p class=orb-note>Heights to scale with the Earth; positions are illustrative, not live tracking. Counts as of {human(SAT_ASOF)} (<a href="launches/#cnt-h">sources</a>). Drag to spin.</p></section>')
+            f'<p class=orb-note>Heights to scale with the Earth; positions are illustrative, not live tracking. Counts: {sat_date_phrase()} (<a href="launches/#cnt-h">sources</a>). Drag to spin.</p></section>')
 def story_data():
     race = jdata('data/race.json'); M = opt_json('data/milestones.json') or {'items': []}
     rows = board_rows(); H = hero_data()
@@ -1883,7 +1917,7 @@ def story_data():
             'ms': [[m['d'], m['t'], m['src']['url'], m['src']['label']] for m in M['items']],
             'race': {'s': H['s'], 'p': H['p']},
             'b': [{'l': x['label'], 'c': x['col'], 'n': x['n'], 'cn': len(x['live_c']), 'm': x['multi_n'], 'sat': (x['const'] or {}).get('count')} for x in rows],
-            'tot': {'live': C['live'], 'cty': NLIVE_C, 'sats': SAT_TOTAL}}
+            'tot': {'live': C['live'], 'cty': NLIVE_C, 'sats': SAT_TOTAL, 'trk': TRACK['last_checked'], 'sat': sat_date_text()}}
 def story_step(k, h, p, extra=''):
     return f'<div class=st-step data-s="{k}"><div class=st-card><h2>{h}</h2><p>{p}</p>{extra}</div></div>'
 def story():
@@ -1896,10 +1930,11 @@ def story():
     race_alt = (f'Animation: Earth in the centre with one cluster of dots per network, one dot per phone-capable satellite, growing month by month from {human(race["frames"][0]["d"], False)} to '
                 f'{human(race["frames"][-1]["d"])}. Today: ' + ', '.join(f'{s["n"]:,} {s["l"]}' for s in D['race']['s'] if s['n']) + '. Then small phones appear for each partner network in our tracker.')
     lede = HOME_DECK or 'Satellites that connect straight to ordinary phones are going up every month. Here’s how it works, who’s winning, and whether yours can join in. Every number is sourced.'
-    hero = (f'<div class="st-step st-hero" data-s="intro"><div class=st-intro><p class=kicker>The race to your phone · data checked {human(CHECK_DAY)}</p><h1 id=st-h>{esc(HOME_H1)}</h1>'
+    hero = (f'<div class="st-step st-hero" data-s="intro"><div class=st-intro><p class=kicker>The race to your phone</p><h1 id=st-h>{esc(HOME_H1)}</h1>'
             f'<p class=lede>{esc(lede)}</p>'
             + cta('home-hero') +
             f'<ul class=st-tot aria-label="Totals today"><li><b>{C["live"]}</b> live services</li><li><b>{NLIVE_C}</b> countries live</li><li><b>{SAT_TOTAL:,}</b> satellites</li></ul>'
+            f'<p class=st-dates>{totals_source_html()}</p>'
             f'<div class=hr-author><span class=hr-av aria-hidden=true>SB</span><p><strong>Plain English from a network insider.</strong> By <a href="about.html">{esc(SITE["author"])}</a>, 13+ years in mobile networks (GSM).</p></div>'
             f'<p class=st-down aria-hidden=true>Scroll ↓</p></div></div>')
     p1 = [('phone', 'This is your phone.', 'It already talks to the sky, just not to space. Every call, text and scroll goes to a mast a few kilometres away.'),
@@ -1908,7 +1943,7 @@ def story():
     p2 = [('race', 'The race, month by month.', f'One dot per phone-capable satellite, month by month since {human(race["frames"][0]["d"], False)}, then the partner networks in our tracker. Drag the rewind bar through {msn} sourced milestones from {D["ms"][0][0][:4] if D["ms"] else ""} on.'
                      + (f' Amazon Leo ({leo["count"]:,}) isn’t shown: it serves dishes, not phones.' if leo and leo.get('count') else '')),
           ('board', 'Who’s ahead.', f'{esc(lead["label"])} leads on live services. Ranked by live services, then countries, from our <a href="tracker.html">tracker</a> ({TRACK["last_checked"]}). Skylo is second because it has two live tracker rows (one covers 41 countries via partners); it uses partners’ satellites, not its own.'),
-          ('today', 'Where it stands today.', f'<b>{C["live"]}</b> live services in <b>{NLIVE_C}</b> countries, and <b>{SAT_TOTAL:,}</b> satellites overhead. Is your phone one of them?')]
+          ('today', 'Where it stands today.', f'<b>{C["live"]}</b> live services in <b>{NLIVE_C}</b> countries, and <b>{SAT_TOTAL:,}</b> satellites overhead. Is your phone one of them? <span class=st-dates>{totals_source_html()}</span>')]
     ms_list = ''.join(f'<li><time datetime="{m[0]}">{human(m[0])}</time> {esc(m[1])} <a href="{esc(m[2])}">Source</a></li>' for m in D['ms'])
     data = json.dumps(D, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
     part1 = (f'<section class=story aria-labelledby=st-h><script type=application/json id=story-data>{data}</script>'
