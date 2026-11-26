@@ -2,10 +2,18 @@
 (function(){
   // Launch times are written by scripts/build.py from one UTC value: UTC, UK (GMT/BST) and launch-site time.
   // No browser time-zone conversion here, so every visitor sees the same three labelled lines.
+  // Launch time is one line built by scripts/build.py from one UTC value (UTC · UK · launch site). LW = launch window.
   function lines(el,tl){
-    var box=el.querySelector('.tz3'); if(!box||!tl||!tl.length)return;
-    box.innerHTML='';
-    tl.forEach(function(x,i){var e=document.createElement(i?'span':'time'); e.className='tz-'+x[0]; e.textContent=x[1]; box.appendChild(e);});
+    if(!el||!tl)return; el.textContent=''; var tm=document.createElement('time'); tm.className='tz1';
+    tl.split(' · ').forEach(function(x,i){
+      if(i)tm.appendChild(document.createTextNode(' · '));
+      var sp=document.createElement('span');
+      if(x.indexOf('LW ')===0){var ab=document.createElement('abbr'); ab.title='Launch window'; ab.textContent='LW'; sp.appendChild(ab); x=x.slice(2);}
+      var d=x.indexOf(') '); // a local date after the zone wraps as its own piece
+      sp.appendChild(document.createTextNode(d<0?x:x.slice(0,d+1))); tm.appendChild(sp);
+      if(d>=0){var s2=document.createElement('span'); s2.textContent=x.slice(d+2); tm.appendChild(document.createTextNode(' ')); tm.appendChild(s2);}
+    });
+    el.appendChild(tm);
   }
   function pad(n){return (n<10?'0':'')+n;}
   function left(ms){

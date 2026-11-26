@@ -730,26 +730,26 @@ def zabbr(dt, z):
     return a
 def long_day(d): return d.strftime('%a, %-d %b %Y')
 def time_lines(l):
-    """-> [(zone_kind, text)] for a precise launch: UTC first, then UK, then the launch site. All from the same UTC instants."""
+    """-> one-line launch time text for a precise launch, all from the same UTC instants:
+    'Sun, 29 Nov 2026 · LW 04:39–08:39 (UTC) · 04:39–08:39 (GMT) · 20:39–00:39 (PST) Sat, 28 Nov 2026'
+    or 'Sun, 29 Nov 2026 · T-0 15:47 (UTC) · 15:47 (GMT) · 10:47 (EST)'. LW = launch window.
+    The UK and launch-site parts add their own date only when it differs from the UTC date."""
     net = iso_dt(l['net']); ws, we = l.get('window_start'), l.get('window_end')
     a = iso_dt(ws) if ws else None; b = iso_dt(we) if we else None
-    if not (a and b) or b < a: a = b = None
-    def part(z, label, show_date, ref_day):
-        n = net.astimezone(z)
-        if l['precision'] == 'Hour': t = f'About {n.strftime("%H")}:00 ({label})'
-        elif a and b and a != b:
-            x, y = a.astimezone(z), b.astimezone(z)
-            t = f'Window {x:%H:%M}–{y:%H:%M} ({label})' + (f' · ends {y:%a %-d %b}' if y.date() != x.date() else '')
-            n = x
-        else: t = f'T-0 {n:%H:%M} ({label})' + (' · instantaneous window' if a and b and a == b and label == 'UTC' else '')
-        return (f'{long_day(n)} · ' if show_date or n.date() != ref_day else '') + t
-    u = (a or net).astimezone(UTC_Z); day = u.date()
-    out = [('utc', part(UTC_Z, 'UTC', True, day))]
-    uk = (a or net).astimezone(UK_Z); out.append(('uk', part(UK_Z, uk.tzname(), False, day)))
+    win = bool(a and b and b > a) and l['precision'] != 'Hour'
+    start = a if win else net
+    day = start.astimezone(UTC_Z).date()
+    def part(z, label):
+        x = start.astimezone(z)
+        if win: t = f'{x:%H:%M}–{b.astimezone(z):%H:%M} ({label})'
+        elif l['precision'] == 'Hour': t = f'{x:%H}:00 ({label})'
+        else: t = f'{x:%H:%M} ({label})'
+        return t + (f' {long_day(x)}' if x.date() != day else '')
+    lead = 'LW ' if win else ('About ' if l['precision'] == 'Hour' else 'T-0 ')
+    out = [long_day(start.astimezone(UTC_Z)), lead + part(UTC_Z, 'UTC'), part(UK_Z, start.astimezone(UK_Z).tzname())]
     z = site_zone(l)
-    if z and getattr(z, 'key', '') not in ('Europe/London', 'UTC'):
-        lo = (a or net).astimezone(z); out.append(('site', part(z, zabbr(lo, z), False, day)))
-    return out
+    if z and getattr(z, 'key', '') not in ('Europe/London', 'UTC'): out.append(part(z, zabbr(start.astimezone(z), z)))
+    return ' · '.join(out)
 def when_text(l):
     p = l['precision']; d = iso_dt(l['net'])
     if p in ('Second', 'Minute'): return long_day(d) + f', {d:%H:%M} (UTC)'
@@ -764,14 +764,8 @@ def when_text(l):
     if p.startswith('Year'): return f'{d.year} · date not set'
     return 'No earlier than ' + d.strftime('%-d %b %Y')
 def net_text3(l):
-    """Liftoff time (T-0) in UTC, UK and launch-site time, for the flight view's 'Planned liftoff' line."""
-    if l['precision'] not in PRECISE: return when_text(l)
-    d = iso_dt(l['net']); out = [when_text(l)]
-    k = d.astimezone(UK_Z); out.append((f'{k:%a %-d %b}, ' if k.date() != d.date() else '') + f'{k:%H:%M} ({k.tzname()})')
-    z = site_zone(l)
-    if z and getattr(z, 'key', '') not in ('Europe/London', 'UTC'):
-        lo = d.astimezone(z); out.append((f'{lo:%a %-d %b}, ' if lo.date() != d.date() else '') + f'{lo:%H:%M} ({zabbr(lo, z)})')
-    return ' · '.join(out)
+    """Flight view's 'Planned liftoff' text: the same one-line format as the launch cards."""
+    return time_lines(l) if l['precision'] in PRECISE else when_text(l)
 def ics_name(l): return f"{(l.get('slug') or slugify(l['name']))[:70]}-{l['id'][:8]}.ics"
 def ics(l, tag):
     d = iso_dt(l['net']); stamp = (LDATA.get('fetched_at') or BUILD_NOW.strftime('%Y-%m-%dT%H:%M:%SZ')).replace('-', '').replace(':', '')
@@ -807,12 +801,13 @@ for f in CAL.glob('*.ics'): f.unlink()
 for l in UPCOMING:
     if l['precision'] in PRECISE + ('Day',): (CAL / ics_name(l)).write_bytes(ics(l, l['tag']).encode())
 def tag_pill(tag): return f'<span class="ltag l-{TAG[tag][1]}">{TAG[tag][0]}</span>'
+LW_ABBR = '<abbr title="Launch window">LW</abbr>'
 def local_time(l):
     d = iso_dt(l['net'])
     if l['precision'] in PRECISE:
-        ls = time_lines(l)
-        return (f'<span class=tz3><time datetime="{l["net"]}" class=tz-utc>{esc(ls[0][1])}</time>'
-                + ''.join(f'<span class=tz-{k}>{esc(t)}</span>' for k, t in ls[1:]) + '</span>')
+        # each part stays on one line; the line wraps only between parts
+        parts = [f'<span>{esc(x)}</span>'.replace('<span>LW ', f'<span>{LW_ABBR} ', 1).replace(') ', ')</span> <span>', 1) for x in time_lines(l).split(' · ')]
+        return f'<time datetime="{l["net"]}" class=tz1>' + ' · '.join(parts) + '</time>'
     return f'<time datetime="{d.date().isoformat()}">{esc(when_text(l))}</time>'
 def cal_btn(l, root):
     if l['precision'] not in PRECISE + ('Day',): return ''
@@ -1127,7 +1122,7 @@ def launches_page():
             f'<div class=filters role=search aria-label="Filter launches"><div class=f-row><div class=chips role=group aria-label="Show launches for">{chips}</div>'
             f'<p id=l-count class=t-count role=status aria-live=polite>{len(UPCOMING)} launches</p></div></div>'
             f'<div id=launch-list><ol class=launches>{items}</ol>{more}</div><p class=l-allrow><button type=button class="btn ghost sm" id=l-all hidden>Show all {len(UPCOMING)} launches</button></p><p id=l-empty class=l-empty hidden{empty} data-empty="No upcoming launches match this filter right now.">No upcoming launches match this filter right now.</p>'
-            f'<p class=l-credit>{upd} Times are shown in UTC, then UK time (GMT or BST), then local time at the launch site. Launch dates slip often, so check again on the day. We tag a Starlink launch as Direct to Cell only when the launch data or a reliable source says it carries direct-to-cell satellites.</p></section>'
+            f'<p class=l-credit>{upd} Times are shown in UTC, then UK time (GMT or BST), then local time at the launch site, with that day’s date if it differs. Key: LW = launch window; T-0 = planned liftoff time. Launch dates slip often, so check again on the day. We tag a Starlink launch as Direct to Cell only when the launch data or a reliable source says it carries direct-to-cell satellites.</p></section>'
             + race_section(root) +
             f'<section aria-labelledby=cnt-h class=countsec><h2 id=cnt-h>Phone satellites in orbit: who has how many</h2>'
             f'<p class=l-intro>Satellites that can connect to ordinary phones, by operator. Every number has a source and a date. If a company doesn’t publish a figure and we can’t find a reliable independent one, we say so rather than guess.</p>'
