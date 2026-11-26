@@ -5,6 +5,9 @@
  "l-falcon-9-block-5-5x-astranis-microgeo": {
   "key": "a19da080d6"
  },
+ "l-falcon-9-block-5-al-yah-4": {
+  "key": "017329fe9f"
+ },
  "l-falcon-9-block-5-amazon-leo-lf-04": {
   "key": "28be661bf6"
  },
@@ -14,8 +17,20 @@
  "l-falcon-9-block-5-bluebird-14-16-block-2-9-11": {
   "key": "d3ff24ec42"
  },
+ "l-falcon-9-block-5-chinggis-sat": {
+  "key": "8123eb4b18"
+ },
+ "l-falcon-9-block-5-geo-kompsat-3": {
+  "key": "99f5dff0c7"
+ },
  "l-falcon-9-block-5-globalstar-2-r-mission-2-x-9": {
   "key": "5c960a14bd"
+ },
+ "l-falcon-9-block-5-inmarsat-7-f1-gx-7": {
+  "key": "f179c43dab"
+ },
+ "l-falcon-9-block-5-jsat-32": {
+  "key": "8ca215b6d0"
  },
  "l-falcon-9-block-5-oneweb-21": {
   "key": "de011e8b2c"
@@ -25,6 +40,15 @@
  },
  "l-falcon-9-block-5-telesat-lightspeed-1": {
   "key": "07a2506153"
+ },
+ "l-falcon-9-block-5-thor-8": {
+  "key": "1adada9e5b"
+ },
+ "l-new-glenn-amazon-leo-ln-01": {
+  "key": "8cdcee00fa"
+ },
+ "l-new-glenn-bluebird-block-2": {
+  "key": "8f578619f7"
  },
  "orbit-view": {
   "key": "1c3a2e7c2f"
