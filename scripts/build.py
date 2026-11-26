@@ -1612,20 +1612,136 @@ body = ('<header class=page-head><p class=kicker>404</p><h1>Lost signal</h1><p c
 # 404 is served at any depth, so it uses absolute URLs
 page(path='404.html', title='Page not found', description='Page not found.', body=body, root=BASE, search=False, index=False, sticky=False)
 
+# ---------------------------------------------------------------- home: "the race to your phone" hero (assets/hero-race.js) + real-data dashboard
+# REDESIGN PREVIEW (branch redesign-preview, 26 Nov 2026). Every number below is read from data/*.json; nothing is typed in by hand.
+HERO_IDS = [('starlink-dtc', 'Starlink Direct to Cell', 'Starlink'), ('ast', 'AST SpaceMobile', 'AST SpaceMobile'),
+            ('globalstar', 'Globalstar (iPhone)', None), ('lynk', 'Lynk / Elveo', 'Lynk / Elveo'), ('skylo', 'Skylo', 'Skylo')]
+BCOL = {cid: col for _, _, cid, _, col in BOARD}
+def d2d(cid): return next((i for i in CONST['direct_to_device'] if i['id'] == cid), None)
+SAT_TOTAL = sum(i['count'] for i in CONST['direct_to_device'] if i['count'])
+SAT_ASOF = max(i['as_of'] for i in CONST['direct_to_device'] if i['count'])
+def hero_data():
+    race = jdata('data/race.json')
+    ser = []
+    for cid, label, prov in HERO_IDS:
+        c = d2d(cid)
+        if not c: continue
+        mx = max([f['v'].get(cid, 0) for f in race['frames']] or [0])
+        ser.append({'id': cid, 'l': label, 'c': BCOL.get(cid, '#e8eef7'), 'n': c['count'], 'max': mx, **({} if c['count'] else {'note': c.get('count_label', '')})})
+    phones = {}
+    for cid, label, prov in HERO_IDS:
+        if prov: phones[cid] = [[short_op(r['operator']), r['status']] for r in sorted((r for r in ROWS if provider(r['satellite']) == prov), key=lambda r: -RANK[r['status']])]
+    # Globalstar has no operator deals in the tracker: its "phone" is the iPhone, per data/constellations.json
+    if d2d('globalstar'): phones['globalstar'] = [['iPhone', 'device']]
+    frames = [[f['d'], {k: v for k, v in f['v'].items()}] for f in race['frames']]
+    events = [[e['d'], e['s'], e['t']] for e in race['events']]
+    return {'s': ser, 'f': frames, 'e': events, 'p': phones}
+def hero_race():
+    D = hero_data(); race = jdata('data/race.json')
+    leo = next((i for i in CONST['broadband_only'] if i['id'] == 'amazon-leo'), None)
+    nph = {k: len(v) for k, v in D['p'].items()}
+    legend = ''.join(f'<li><i style="background:{s["c"]}" aria-hidden=true></i>{esc(s["l"])} <b>{s["n"]:,}</b></li>' if s['n'] else
+                     f'<li><i class=hollow style="border-color:{s["c"]}" aria-hidden=true></i>{esc(s["l"])} <b>{esc(s.get("note", ""))}</b></li>' for s in D['s'])
+    ms = ''.join(f'<li><time datetime="{e[0]}">{human(e[0])}</time> {esc(e[2])}</li>' for e in D['e'])
+    alt = (f'Animation: Earth in the centre with one cluster of dots per network, one dot per phone-capable satellite, growing month by month from {human(race["frames"][0]["d"], False)} to '
+           f'{human(race["frames"][-1]["d"])}. Today: ' + ', '.join(f'{s["n"]:,} {s["l"]}' for s in D['s'] if s['n']) +
+           f'. Then small phones appear for each partner network in our tracker, coloured live, trial or announced.')
+    tot = (f'<ul class=hr-totals aria-label="Totals today"><li><b>{C["live"]}</b><span>live services</span></li><li><b>{NLIVE_C}</b><span>countries live</span></li>'
+           f'<li><b>{SAT_TOTAL:,}</b><span>satellites</span></li></ul>')
+    cta = (f'<p class=hr-cta><a class="btn hr-primary" href="check/">Check your phone</a><a class="btn ghost" href="{esc(sub_url("home-hero"))}">Get Signal free</a></p>')
+    return (f'<section class="hero hr" aria-labelledby=hr-h><div class=hr-copy><p class=kicker>The race to your phone · data checked {human(CHECK_DAY)}</p>'
+            f'<h1 id=hr-h>Your phone is about to talk to space.</h1>'
+            f'<p class=lede>Satellites that connect straight to ordinary phones are going up every month. We track who’s live, where, and whether your phone can join in.</p>'
+            + cta +
+            f'<div class=hr-author><span class=hr-av aria-hidden=true>SB</span><p><strong>Plain English from a network insider.</strong> '
+            f'By <a href="about.html">{esc(SITE["author"])}</a>, 13+ years in mobile networks (GSM). {follow_btn("xinline")}</p></div>'
+            f'<p class=start-hint>New here? <a href="start/">Start here</a>.</p></div>'
+            f'<figure class=hr-fig><div id=hr-stage class=hr-stage data-race="{esc(json.dumps(D, ensure_ascii=False, separators=(",", ":")))}">'
+            f'<div class=hr-cv><canvas role=img aria-label="{esc(alt)}"></canvas><div class=hr-brand aria-hidden=true>{LOGO_MARK}Full<span>Duplex</span></div></div>'
+            f'<div class=hr-bar><div class=hr-clock aria-live=off><span class=hr-date>{esc(human(race["frames"][-1]["d"]))}</span><span class=hr-tot><b>{SAT_TOTAL:,}</b> phone-capable satellites in orbit</span></div>'
+            f'<div class=hr-msg><div class=hr-pops aria-hidden=true></div><div class=hr-end>{tot}<p class=hr-clipcta aria-hidden=true>Check your phone at <b>fullduplexhq.com</b></p></div></div>'
+            f'<button type=button id=hr-replay class="btn ghost sm hr-replay">↻ Replay<span class=sr> the animation</span></button></div></div>'
+            f'<figcaption><ul class=hr-legend aria-label="Phone-capable satellites in orbit, by network">{legend}</ul>'
+            f'<p>1 dot = 1 satellite, from <a href="launches/#cnt-h">our launch tracker</a> (as of {human(SAT_ASOF)}). Phones = partner networks in the <a href="tracker.html">tracker</a> '
+            f'(<span class=k-live>live</span> <span class=k-trial>trial</span> <span class=k-ann>announced</span>).'
+            + (f' Amazon Leo ({leo["count"]:,}) isn’t shown: it serves dishes, not phones.' if leo and leo.get('count') else '') + '</p>'
+            f'<details><summary>Milestones in this animation</summary><ol class=hr-ms>{ms}</ol><p>From <a href="launches/#race-h">the race chart</a> data, each with a source.</p></details></figcaption></figure></section>')
+
+def spark(vals, w=120, h=34):
+    if len(vals) < 2: return ''
+    lo, hi = min(vals), max(vals); rng = (hi - lo) or 1
+    pts = ' '.join(f'{i * w / (len(vals) - 1):.1f},{h - 3 - (v - lo) / rng * (h - 6):.1f}' for i, v in enumerate(vals))
+    return f'<svg class=spark viewBox="0 0 {w} {h}" width={w} height={h} aria-hidden=true focusable=false><polyline points="{pts}" fill=none stroke=currentColor stroke-width=1.6 stroke-linejoin=round /></svg>'
+def dash():
+    race = jdata('data/race.json'); tot_series = [sum(f['v'].values()) for f in race['frames']]
+    last_ch = CHANGES[0] if CHANGES else None
+    def added(st): return sum(1 for it in (last_ch or {}).get('items', []) if it['type'] == 'added' and it['status'] == st)
+    skylo_multi = next((r for r in ROWS if provider(r['satellite']) == 'Skylo' and not r['iso_n3'] and r['status'] == 'live'), None)
+    trk = f'<p class=d-stamp>Tracker · checked <time datetime="{parse_human(TRACK["last_checked"])}">{TRACK["last_checked"]}</time></p>'
+    n_all = sum(C.values())
+    split = ''.join(f'<i class=s-{CLS[k]} style="width:{100 * C[k] / n_all:.1f}%"></i>' for k in ('live', 'trial', 'announced'))
+    tiles = (f'<li class="dtile t-live"><p class=d-lab>Live services</p><p class=d-num>{C["live"]}</p>'
+             f'<p class=d-sub>of {n_all} tracked deals: {C["trial"]} trial, {C["announced"]} announced</p><span class=d-split aria-hidden=true>{split}</span>{trk}</li>'
+             f'<li class="dtile t-cty"><p class=d-lab>Countries with live service</p><p class=d-num>{NLIVE_C}</p>'
+             + (f'<p class=d-sub>plus Skylo in {esc(skylo_multi["country"])} via partners</p>' if skylo_multi else '') + f'{trk}</li>'
+             f'<li class="dtile t-trial"><p class=d-lab>Trials running</p><p class=d-num>{C["trial"]}</p>'
+             + (f'<p class=d-sub>{added("trial")} added on {human(last_ch["date"], False)}, {added("live")} new live</p>' if last_ch and (added('trial') or added('live')) else '') + f'{trk}</li>'
+             f'<li class="dtile t-sat"><p class=d-lab>Phone-capable satellites</p><p class=d-num>{SAT_TOTAL:,}</p>'
+             f'<p class=d-sub>in orbit, by month since {human(race["frames"][0]["d"], False)}</p>{spark(tot_series)}'
+             f'<p class=d-stamp>Data checked <time datetime="{CHECK_DAY}">{human(CHECK_DAY)}</time></p></li>')
+    # provider leaderboard (same ranking as the tracker's leaderboard: board_rows)
+    rows = board_rows(); top_live = max([x['n']['live'] for x in rows] or [1]) or 1
+    tr = []
+    for i, x in enumerate(rows, 1):
+        c = x['const']
+        sat = f'{c["count"]:,}' if c and c.get('count') is not None else esc((c or {}).get('count_display') or 'n/a')
+        if x['prov']:
+            pills = ''.join(f'<span class="dpill s-{CLS[k]}">{x["n"][k]} {LABEL[k].lower()}</span>' for k in ('live', 'trial', 'announced') if x['n'][k])
+            cn = f'{len(x["live_c"])}' + (f' <small>+{x["multi_n"]} via partners</small>' if x['multi_n'] else '')
+        else:
+            pills = '<span class="dpill s-dev">iPhone features</span>'; cn = '<span class=lb-na>n/a</span>'
+        bar = f'<span class=d-bar aria-hidden=true><i style="width:{max(2, 100 * x["n"]["live"] / top_live):.0f}%"></i></span>' if x['prov'] else ''
+        tr.append(f'<tr style="--c:{x["col"]}"><td class=d-rk>{i}</td><th scope=row><i aria-hidden=true></i>{esc(x["label"])}</th>'
+                  f'<td data-l="Status">{pills}{bar}</td><td data-l="Countries live">{cn}</td><td data-l="Satellites">{sat}</td></tr>')
+    board = (f'<section class="dcard d-board" aria-labelledby=db-h><div class=d-head><h2 id=db-h>Provider leaderboard</h2><a href="tracker.html#lb-h">Full leaderboard →</a></div>'
+             f'<div class=tablewrap><table class=d-table><thead><tr><th scope=col><span class=sr>Rank</span>#</th><th scope=col>Provider</th><th scope=col>Tracker status</th><th scope=col>Countries live</th><th scope=col>Satellites</th></tr></thead>'
+             f'<tbody>{"".join(tr)}</tbody></table></div><p class=d-stamp>Ranked by live services, then countries. Tracker {TRACK["last_checked"]} · satellites {human(CONST["last_checked"])}, <a href="launches/#cnt-h">sources</a>.</p></section>')
+    # orbit heights, to scale (the orbit view's shells: OSHELLS, from McDowell's catalogue)
+    items = [i for i in CONST['direct_to_device'] if i['count'] and i['id'] in OSHELLS]
+    alts = sorted({(OSHELLS[i['id']][0][2], i['id']) for i in items})
+    W_, H_, top_km = 300, 190, 1500
+    y = lambda km: H_ - 18 - km / top_km * (H_ - 34)
+    lines = []; ly_prev = -99
+    for alt, cid in sorted(alts, reverse=True):  # top to bottom; labels never overlap
+        it = d2d(cid); yy = y(alt); ly = max(yy - 5, ly_prev + 14); ly_prev = ly
+        lines.append(f'<line x1=8 x2={W_ - 8} y1={yy:.1f} y2={yy:.1f} stroke="{OCOL[cid]}" stroke-opacity=.55 stroke-dasharray="2 3" />'
+                     f'<circle cx={W_ - 24} cy={yy:.1f} r=3.4 fill="{OCOL[cid]}" />'
+                     f'<text x=12 y={ly:.1f} fill="#e8eef7" font-size=10.5><tspan fill="{OCOL[cid]}">●</tspan> {esc(OSHORT[cid])} · {it["count"]:,} sats · {alt:,} km</text>')
+    orbit = (f'<section class="dcard d-orbit" aria-labelledby=do-h><div class=d-head><h2 id=do-h>How high they fly</h2><a href="launches/#ov-h">Orbit view →</a></div>'
+             f'<svg viewBox="0 0 {W_} {H_}" role=img aria-label="Orbit heights to scale: ' + '; '.join(f'{OSHORT[c]} {a:,} km' for a, c in alts) + '">'
+             f'<defs><linearGradient id=dgE x1=0 x2=0 y1=0 y2=1><stop offset=0 stop-color="#2a5c9a"/><stop offset=1 stop-color="#081a33"/></linearGradient></defs>'
+             f'<rect x=0 y={H_ - 18} width={W_} height=18 fill="url(#dgE)" /><text x=8 y={H_ - 5} fill="#9fb0c3" font-size=10>Earth’s surface · 0 km</text>'
+             + ''.join(lines) + f'</svg><p class=d-stamp>Heights to scale. Skylo uses partners’ geostationary satellites, far above this chart.</p></section>')
+    # daily data status (data/refresh.json + data/launches.json)
+    chk = REFRESH.get('checks', []); ver = sum(1 for c in chk if c['status'] == 'verified'); man = sum(1 for c in chk if c['status'] == 'manual')
+    lf = LDATA.get('fetched_at')
+    status = (f'<section class="dcard d-status" aria-labelledby=ds-h><h2 id=ds-h>Mission control</h2>'
+              f'<nav aria-label="Dashboard shortcuts"><ul class=d-nav><li><a href="tracker.html">Tracker</a></li><li><a href="check/">Check my phone</a></li><li><a href="launches/">Launches</a></li>'
+              f'<li><a href="articles/index.html">Articles</a></li><li><a href="play/constellation.html">Play</a></li><li><a href="sponsor.html">Sponsor</a></li></ul></nav>'
+              f'<h3>Data status</h3><ul class=d-log>'
+              + (f'<li><span class="dot ok" aria-hidden=true></span>Daily check <time datetime="{REFRESH["updated"]}">{human_dt(REFRESH["updated"])}</time>: {ver} sources confirmed, {man} checked by hand</li>' if REFRESH.get('updated') else '')
+              + (f'<li><span class="dot ok" aria-hidden=true></span>Launches refreshed <time datetime="{lf}">{human_dt(lf)}</time></li>' if lf else '')
+              + f'<li><span class=dot aria-hidden=true></span>Tracker rows read by hand, last {TRACK["last_checked"]}</li></ul></section>')
+    nl = next_card('')
+    return (f'<section class=dash aria-labelledby=dash-h><div class=dash-top><div><p class=kicker>Dashboard · real data, sources linked</p><h2 id=dash-h>Where satellite-to-phone stands today</h2></div>'
+            f'<p class=d-stamp>Data checked <time datetime="{CHECK_DAY}">{human(CHECK_DAY)}</time></p></div>'
+            f'<ul class=dtiles aria-label="Key numbers">{tiles}</ul>'
+            f'<div class=dgrid><div class=d-nl>{nl}</div><div class=d-ck>{check_box("")}</div>{board}{status}{orbit}</div></section>')
+
 # ---------------------------------------------------------------- home
 feat, rest = arts[0], arts[1:]
-home = (f'<section class=hero><div class=hero-art aria-hidden=true><img src="assets/img/home-hero-1600.webp" srcset="assets/img/home-hero-960.webp 960w, assets/img/home-hero-1600.webp 1600w" sizes="100vw" width="1600" height="687" alt="" decoding="async" fetchpriority="high"></div><div class=hero-copy><p class=kicker>Both directions, all at once</p><h1>Your phone is about to talk to space.</h1>'
-        f'<p class=lede>Full Duplex explains direct-to-cell satellites, GSM and the shake-up coming to the mobile industry.</p>'
-        f'<p class=hero-cta><a class=btn href="{esc(sub_url("home-hero"))}">Send me Signal</a><a class="btn ghost" href="check/">Check my phone</a></p>'
-        f'<p class=start-hint>New here? <a href="start/">Start here</a>.</p>'
-        f'<p class=byl>By <a href="about.html">{esc(SITE["author"])}</a>, a mobile network insider with over 13 years in GSM · {follow_btn("xinline")}</p></div>'
-        f'<figure class=globe-wrap><div id=globe class=globe role=img aria-label="Rotating globe: {NLIVE_C} countries with live direct-to-cell service in green, countries with trials in amber. Full data in the tracker."></div>'
-        f'<figcaption><span class=k-live>Live</span><span class=k-trial>Trial</span><span class=k-ann>Announced</span> <a href="tracker.html">Open the map</a></figcaption></figure>'
-        f'</section>'
-        + stats_strip()
-        + check_box('')
-        + race_board('', compact=True)
-        + next_card('')
+home = (hero_race()
+        + dash()
         + f'<section aria-labelledby=latest class=front><h2 id=latest class=sec>Latest analysis</h2><div class=front-grid>{art_card(feat, "", 3, "card feature")}'
           f'<div class=grid3>{"".join(art_card(a) for a in rest[:3])}</div></div></section>'
         + signal_block('', 'home')
@@ -1643,7 +1759,7 @@ ld = [{'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'Full Duple
 page(og=('Full Duplex', 'Your phone is about to talk to space.', [(f"{C['live']} live services", OGC['live']), (f'{NLIVE_C} countries', OGC['cyan']), ('Weekly briefing: Signal', OGC['muted'])]), path='index.html', title='Satellite-to-phone and the future of mobile', full_title='Satellite-to-phone and the future of mobile | Full Duplex',
      description=SITE['home_description'], body=home, current='index.html', jsonld=ld, cls='is-home',
      head_extra="<meta name='impact-site-verification' value='129cb172-d554-4bf7-90f2-92a71d514675'>",
-     scripts='<script defer src="assets/globe.js"></script><script defer src="assets/launches.js"></script>', lastmod=max(a.get('updated', a['published']) for a in arts), sources=['scripts/build.py', 'src/site.json', 'data/tracker.json', 'data/launches.json', 'src/pages/inner-signal.html', 'src/pages/start.html'], search=False)
+     scripts='<script defer src="assets/hero-race.js"></script><script defer src="assets/launches.js"></script>', lastmod=max(a.get('updated', a['published']) for a in arts), sources=['scripts/build.py', 'src/site.json', 'data/tracker.json', 'data/launches.json', 'data/race.json', 'data/constellations.json', 'data/refresh.json', 'assets/hero-race.js', 'src/pages/inner-signal.html', 'src/pages/start.html'], search=False)
 
 # /tracker/ has country pages under it but the tracker itself is /tracker.html: send the bare folder there (UAT 14 Nov 2026)
 (ROOT / 'tracker' / 'index.html').write_text('<!doctype html><html lang=en-GB><head><meta charset=utf-8><title>Direct-to-cell tracker | Full Duplex</title>'
