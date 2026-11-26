@@ -169,7 +169,7 @@ def footer(root, sticky=True):
             f'<nav aria-label="Footer"><a href="{esc(sub_url("footer"))}">Subscribe to Signal</a><a href="https://x.com/{X}" target=_blank rel="noopener me">Follow @{X} on X</a>'
             f'<a href="{root}start/">Start here</a><a href="{root}articles/index.html">Articles</a><a href="{root}tracker.html">Tracker</a><a href="{root}tracker/changes/">Tracker changes</a><a href="{root}launches/">Launches</a><a href="{root}explainers/">Starship explainers</a><a href="{root}journey/">What happens when you hit send</a><a href="{root}inner-signal/">Inner Signal</a><a href="{root}satellites/">Meet the satellites</a><a href="{root}check/">Can my phone connect?</a><a href="{root}glossary/">Glossary</a>'
             f'<a href="{root}play/constellation.html">Constellation</a><a href="{root}search.html">Search</a><a href="{root}feed.xml">RSS</a>'
-            f'<a href="{root}resources/">Resources</a><a href="{root}about.html">About</a><a href="{root}sponsor.html">Sponsor</a><a href="{root}privacy.html">Privacy</a></nav></div></footer>{bar}')
+            f'<a href="{root}resources/">Resources</a><a href="{root}about.html">About</a><a href="{root}sponsor.html">Sponsor</a><a href="{root}privacy.html">Privacy</a><a href="{root}disclosure/">Disclosure</a></nav></div></footer>{bar}')
 
 import hashlib
 _AV = {}
@@ -567,6 +567,9 @@ for p in ['about', 'sponsor', 'privacy']:
     if p == 'sponsor': body += signal_block('', 'sponsor', heading='See the newsletter sponsors would appear in')
     ld = [{'@context': 'https://schema.org', '@type': 'AboutPage', 'url': BASE + 'about.html', 'name': 'About Full Duplex', 'about': {'@id': PUBLISHER['@id']}, 'mainEntity': {'@id': AUTHOR['@id']}}, PERSON, ORG] if p == 'about' else None
     page(path=f'{p}.html', title=meta['title'], description=meta['description'], body=body, current=f'{p}.html', jsonld=ld, sticky=(p != 'privacy'), search_text=strip_tags(read_src(SRC / 'pages' / f'{p}.html')[1]))
+
+meta, body, scripts = read_src(SRC / 'pages' / 'disclosure.html')
+page(path='disclosure/index.html', title=meta['title'], description=meta['description'], body=f'<div class=prose-page>{body}</div>', root='../', current='disclosure/index.html', search_text=strip_tags(body))
 
 meta, body, scripts = read_src(SRC / 'pages' / 'constellation.html')
 body = body + f'<div class=share-end><p>Beat your score? Challenge someone.</p>{share_btn("I just played Constellation: deploy direct-to-cell satellites before time runs out.", BASE + "play/constellation.html", "Share the game on X")}{follow_btn()}</div>' + signal_block('../', 'game')
