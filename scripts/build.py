@@ -405,6 +405,71 @@ C, NLIVE_C, NCOUNTRIES = counts()
 def pill(status): return f'<span class="spill s-{CLS[status]}">{LABEL[status]}</span>'
 def sources_html(r): return ' · '.join(f"<a href='{s['url']}'>{s['label']}</a>" for s in r['sources'])
 
+ISO2 = {
+    '036': 'AU', '050': 'BD', '076': 'BR', '124': 'CA', '152': 'CL', '180': 'CD',
+    '188': 'CR', '250': 'FR', '380': 'IT', '392': 'JP', '398': 'KZ', '404': 'KE',
+    '496': 'MN', '554': 'NZ', '591': 'PA', '604': 'PE', '608': 'PH', '682': 'SA',
+    '724': 'ES', '756': 'CH', '800': 'UG', '804': 'UA', '826': 'GB', '840': 'US',
+    '894': 'ZM',
+}
+def iso_flag(iso_n3):
+    code = ISO2.get(str(iso_n3).zfill(3)) if iso_n3 else None
+    if not code:
+        return ''
+    return ''.join(chr(0x1F1E6 + ord(c) - 65) for c in code)
+
+def deal_card(r, root=''):
+    st = r.get('status') if r.get('status') in LABEL else ''
+    prov = provider(r['satellite']) if r.get('satellite') else ''
+    data = (f' data-status="{esc(st)}"' if st else '') + (f' data-provider="{esc(prov)}"' if prov else '')
+    head = '<div class=deal-top>'
+    if r.get('operator'):
+        head += f'<h3 class=deal-op>{esc(r["operator"])}</h3>'
+    if st:
+        head += pill(st)
+    head += '</div>'
+    bits = []
+    if r.get('country'):
+        flag = iso_flag(r.get('iso_n3'))
+        flag_html = f'<span class=deal-flag aria-hidden=true>{flag}</span> ' if flag else ''
+        label = f'{flag_html}{esc(r["country"])}'
+        if r.get('iso_n3'):
+            bits.append(f'<span class=deal-country><a href="{root}tracker/{country_slug(r["country"])}/">{label}</a></span>')
+        else:
+            bits.append(f'<span class=deal-country>{label}</span>')
+    if r.get('satellite'):
+        bits.append(f'<span class=deal-sat><span class=sr>Satellite partner: </span>{esc(r["satellite"])}</span>')
+    meta = f'<p class=deal-meta>{" ".join(bits)}</p>' if bits else ''
+    svc = f'<p class=deal-svc>{esc(r["services"])}</p>' if r.get('services') else ''
+    foot = []
+    if r.get('checked'):
+        foot.append(f'<time datetime="{parse_human(r["checked"])}">{esc(r["checked"])}</time>')
+    if r.get('sources'):
+        foot.append(f'<span class=deal-src>{sources_html(r)}</span>')
+    foot_html = f'<p class=deal-foot>{" ".join(foot)}</p>' if foot else ''
+    return f'<article class=deal{data}>{head}{meta}{svc}{foot_html}</article>'
+
+def deal_cards(root=''):
+    cards = ''.join(deal_card(r, root) for r in ROWS)
+    present = {provider(r['satellite']) for r in ROWS if r.get('satellite')}
+    order = ['Starlink', 'AST SpaceMobile', 'Skylo', 'Lynk / Elveo', 'Other']
+    provs = [p for p in order if p in present] + sorted(present - set(order))
+    statuses = [s for s in ('live', 'trial', 'announced') if any(r.get('status') == s for r in ROWS)]
+    st_chips = '<button type=button class=chip data-deal-status=all aria-pressed=true>All</button>' + ''.join(
+        f'<button type=button class="chip c-{CLS[s]}" data-deal-status="{s}" aria-pressed=false>{LABEL[s]}</button>' for s in statuses)
+    pr_chips = '<button type=button class=chip data-deal-provider=all aria-pressed=true>All providers</button>' + ''.join(
+        f'<button type=button class=chip data-deal-provider="{esc(p)}" aria-pressed=false>{esc(p)}</button>' for p in provs)
+    n = len(ROWS)
+    return (f'<section class=deals id=deals aria-labelledby=deals-h>'
+            f'<div class=deals-head><h2 id=deals-h>Every deal, with sources</h2>'
+            f'<p class=deals-lede>One card for each operator and satellite partnership in the tracker. Status, services and dates are taken from the source on the card.</p></div>'
+            f'<div class=deals-filters role=search aria-label="Filter deals">'
+            f'<div class=chips role=group aria-label="Status">{st_chips}</div>'
+            f'<div class=chips role=group aria-label="Provider">{pr_chips}</div>'
+            f'<p id=deals-count class=deals-count role=status aria-live=polite>{n} deal{"s" if n != 1 else ""}</p></div>'
+            f'<div class=deals-grid>{cards}</div></section>')
+
+
 def stats_strip(root='', compact=False):
     items = [(C['live'], 'live services', 'live'), (NLIVE_C, 'countries with live service', 'live'), (C['trial'], 'trials', 'trial'), (C['announced'], 'announced', 'ann')]
     li = ''.join(f'<li class=s-{k}><b>{n}</b><span>{t}</span></li>' for n, t, k in items)
@@ -693,12 +758,18 @@ tbody = tbody.replace('<!--TRACKER-TABLE-->', tracker_table())
 tbody = re.sub(r'<span id=tracker-checked>.*?</span>', f"<span id=tracker-checked>{TRACK['last_checked']}</span>", tbody)
 # hero + stats before the intro; filters before the table; extras after
 tbody = tbody.replace('<h1>Direct-to-cell around the world</h1>', '<header class=page-head><p class=kicker>Tracker</p><h1>Direct-to-cell around the world</h1></header>' + stats_strip() + race_board(''), 1)
+# Deal cards sit after the leaderboard and the map, immediately before the country table:
+# the board ranks providers, the map shows geography, the cards unpack every operator deal
+# with its source, and the table remains the dense searchable reference. Keeping the long
+# card grid below the map also keeps the first screen closer to the pre-cards tracker (LCP).
 tbody = tbody.replace('<div class=tablewrap>', f'<section aria-labelledby=tbl-h><h2 id=tbl-h>Every tracked service</h2>{controls}{tools}<div class="tablewrap trackwrap">', 1)
 tbody = tbody.replace('</div><p class=note>Spotted a change?', '</div></section><p class=note>Spotted a change?', 1)
 # Signal sign-up directly under the map (22 Nov 2026), replacing the generic block that sat at the end of the page
 tbody = tbody.replace('</section><section aria-labelledby=tbl-h>', '</section>' + signal_block('', 'tracker', heading='Get told when this map changes',
     intro=f"{C['live']} live services, {NLIVE_C} countries, last checked {TRACK['last_checked']}. Signal is the Friday email when those numbers move.", label='Get told when this map changes') + '<section aria-labelledby=tbl-h>', 1)
 assert 'utm_medium=tracker' in tbody, 'tracker: map section not found for the Signal block'
+tbody = tbody.replace('<section aria-labelledby=tbl-h>', deal_cards() + '<section aria-labelledby=tbl-h>', 1)
+assert 'id=deals-h' in tbody, 'tracker: deal cards section missing'
 tbody += (f'<section aria-labelledby=bc-h><h2 id=bc-h>Browse by country</h2><div class=cclist>{country_links}</div></section>'
           f'<p class=note>Next satellites going up: see the <a href="launches/">launch tracker</a> for upcoming SpaceX, AST SpaceMobile and other direct-to-cell launches, and how many phone-capable satellites each operator has in orbit.</p>'
           f'<section aria-labelledby=ch-h><h2 id=ch-h>What changed</h2>{change_list(CHANGES, "", 8)}<p><a href="tracker/changes/">Full change log</a></p></section>')
@@ -707,7 +778,7 @@ ld = [{'@context': 'https://schema.org', '@type': 'Dataset', 'name': 'Full Duple
        'distribution': [{'@type': 'DataDownload', 'encodingFormat': 'text/csv', 'contentUrl': BASE + 'data/tracker.csv'},
                         {'@type': 'DataDownload', 'encodingFormat': 'application/json', 'contentUrl': BASE + 'data/tracker.json'}]}]
 page(og=('Tracker', 'Direct-to-cell around the world', [(f"{C['live']} live", OGC['live']), (f"{C['trial']} trials", OGC['trial']), (f"{C['announced']} announced", OGC['announced']), (f'{NLIVE_C} countries live', OGC['cyan'])]), path='tracker.html', title=meta['title'], description=meta['description'], body=tbody, current='tracker.html', cls='is-tracker',
-     head_extra=meta['head_extra'] + '<link rel="preload" as="image" href="assets/img/tracker-map-640.webp" media="(max-width:699px)"><link rel="preload" as="image" href="assets/img/tracker-map-1280.webp" media="(min-width:700px)">', scripts=tscripts + '<script defer src="assets/tracker-filters.js"></script>', jsonld=ld, lastmod=parse_human(TRACK['last_checked']), sources=['src/pages/tracker.html', 'data/tracker.json'],
+     head_extra=meta['head_extra'] + '<link rel="preload" as="image" href="assets/img/tracker-map-640.webp" media="(max-width:699px)"><link rel="preload" as="image" href="assets/img/tracker-map-1280.webp" media="(min-width:700px)">', scripts=tscripts + '<script defer src="assets/tracker-filters.js"></script><script defer src="assets/deal-filters.js"></script>', jsonld=ld, lastmod=parse_human(TRACK['last_checked']), sources=['src/pages/tracker.html', 'data/tracker.json'],
      search_text=meta['description'] + ' ' + ' '.join(f"{r['country']} {r['operator']} {r['satellite']} {r['status']}. {strip_tags(r['services'])}." for r in ROWS))
 
 # country pages

@@ -1302,3 +1302,39 @@ body.nav-more-open{overflow:hidden}
   .nav-more-panel{transition:none}
 }
 @media (max-width:899px){.tabbar .nav-ico,.nav-more .nav-ico,header.site .nav-ico{display:block}}
+
+/* ===== Tracker deal cards (deal-cards preview) ===== */
+.deals{margin:2.4rem 0 2.6rem}
+.deals-head h2{margin:.15rem 0 .4rem}
+.deals-lede{margin:0 0 1.05rem;color:var(--muted);max-width:62ch;line-height:1.5;font-size:.95rem}
+.deals-filters{display:flex;flex-wrap:wrap;gap:.65rem 1rem;align-items:center;margin:0 0 1.15rem}
+.deals-count{font-family:var(--f-mono);font-size:.82rem;color:var(--muted);margin:0 0 0 auto}
+.deals-grid{display:grid;grid-template-columns:1fr;gap:.9rem}
+@media (min-width:700px){.deals-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1100px){.deals-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.deal{display:flex;flex-direction:column;gap:.45rem;margin:0;padding:1rem 1.1rem 1.05rem;min-width:0;
+  background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01));
+  border:1px solid var(--line);border-radius:var(--r);border-left:3px solid var(--line)}
+.deal[data-status=live]{border-left-color:var(--live)}
+.deal[data-status=trial]{border-left-color:var(--trial)}
+.deal[data-status=announced]{border-left-color:var(--ann)}
+.deal[hidden]{display:none}
+.deal-top{display:flex;justify-content:space-between;align-items:flex-start;gap:.7rem}
+.deal-op{font-size:1.08rem;margin:0;line-height:1.25;color:#fff}
+.deal-meta{display:flex;flex-wrap:wrap;gap:.2rem .75rem;margin:0;font-size:.88rem;color:var(--muted)}
+.deal-flag{font-style:normal}
+.deal-sat{color:var(--cyan)}
+.deal-svc{margin:0;flex:1;color:#cfdbe8;font-size:.9rem;line-height:1.45}
+.deal-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.35rem .8rem;margin:.3rem 0 0;
+  font-family:var(--f-mono);font-size:.78rem;color:var(--muted)}
+.deal-src a{color:var(--cyan)}
+.deal:focus-within{border-color:var(--line-2)}
+.deals-filters .chip{font-family:var(--f-ui)}
+@media (max-width:699px){
+  .deals-count{margin-left:0;width:100%}
+  .deal-svc{font-size:.92rem}
+}
+
+.deal-country a,.deal-src a{display:inline-flex;align-items:center;min-height:24px;padding:.15rem 0}
+.deal-meta{row-gap:.35rem}
+
