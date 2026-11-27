@@ -1,12 +1,12 @@
 {
  "_readme": "Written by scripts/daily_refresh.py (daily-refresh.yml). \"date\" is the one shared \"data checked\" stamp; each item keeps its own as_of and only moves when its check passed.",
- "updated": "2026-11-26T20:26:34Z",
- "date": "2026-11-26",
+ "updated": "2026-11-27T15:11:38Z",
+ "date": "2026-11-27",
  "checks": [
   {
    "item": "count:starlink-dtc",
    "status": "verified",
-   "as_of": "2026-11-26",
+   "as_of": "2026-11-27",
    "was_as_of": "2026-11-26"
   },
   {
@@ -18,13 +18,13 @@
   {
    "item": "count:globalstar",
    "status": "verified",
-   "as_of": "2026-11-26",
+   "as_of": "2026-11-27",
    "was_as_of": "2026-11-26"
   },
   {
    "item": "count:lynk",
    "status": "verified",
-   "as_of": "2026-11-26",
+   "as_of": "2026-11-27",
    "was_as_of": "2026-11-26"
   },
   {
@@ -36,26 +36,25 @@
   {
    "item": "count:starlink-broadband",
    "status": "verified",
-   "as_of": "2026-11-26",
+   "as_of": "2026-11-27",
    "was_as_of": "2026-11-26"
   },
   {
    "item": "count:amazon-leo",
    "status": "verified",
-   "as_of": "2026-11-26",
+   "as_of": "2026-11-27",
    "was_as_of": "2026-11-26"
   },
   {
    "item": "resources-links",
-   "status": "verified",
+   "status": "review",
    "as_of": "2026-11-26",
-   "was_as_of": "2026-11-16",
-   "note": "48 links OK, 10 block robots"
+   "note": "1 of 48 links look broken: https://www.o2.co.uk/satellite (404)"
   },
   {
    "item": "race-chart",
    "status": "verified",
-   "as_of": "2026-11-26"
+   "as_of": "2026-11-27"
   },
   {
    "item": "tracker",
