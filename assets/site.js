@@ -123,7 +123,7 @@
   var btn=document.querySelector('.tab-more'), sheet=document.getElementById('nav-more');
   if(!btn||!sheet) return;
   var panel=sheet.querySelector('.nav-more-panel'), closeBtn=sheet.querySelector('.nav-more-x'), last=null;
-  function focusables(){return [].slice.call(panel.querySelectorAll('a,button'));}
+  function focusables(){return [].slice.call(panel.querySelectorAll('a,button,input:not([type=hidden])')).filter(function(x){return x.offsetParent!==null;});}
   function open(){
     last=document.activeElement; sheet.hidden=false; btn.setAttribute('aria-expanded','true');
     document.body.classList.add('nav-more-open'); (closeBtn||panel).focus();
@@ -144,5 +144,66 @@
     var first=f[0], lastE=f[f.length-1];
     if(e.shiftKey&&document.activeElement===first){ e.preventDefault(); lastE.focus(); }
     else if(!e.shiftKey&&document.activeElement===lastE){ e.preventDefault(); first.focus(); }
+  });
+})();
+
+/* On-site Signal sign-up (Nov 2026). Forms (.su) post to our Cloudflare Worker, which adds the subscriber through beehiiv's API,
+   so no beehiiv script or cookie loads here. Cloudflare Turnstile (spam check) loads only when someone focuses an email box.
+   Without JavaScript the form is a plain link-style GET to beehiiv's sign-up page. Documented in privacy.html. */
+(function(){
+  var forms=document.querySelectorAll('form.su'); if(!forms.length) return;
+  var RE=/^[^\s@<>()",;:]+@[^\s@<>()",;:]+\.[A-Za-z]{2,}$/, tsState=0, tsQ=[];
+  var SUB='https://fullduplexhq.beehiiv.com/subscribe';
+  function loadTS(cb){
+    if(tsState===2) return cb(); tsQ.push(cb); if(tsState===1) return; tsState=1;
+    window.__fdTs=function(){tsState=2; tsQ.splice(0).forEach(function(f){f();});};
+    var s=document.createElement('script'); s.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=__fdTs'; s.async=true;
+    s.onerror=function(){tsState=0; tsQ.splice(0).forEach(function(f){f(true);});}; document.head.appendChild(s);
+  }
+  function arm(f){
+    if(f._ts!==undefined) return; f._ts=null; f._tok='';
+    loadTS(function(err){
+      if(err||!window.turnstile) return;
+      try{ f._ts=turnstile.render(f.querySelector('.su-ts'),{sitekey:f.dataset.sk,appearance:'interaction-only',size:'flexible',action:'signup',
+        callback:function(t){f._tok=t;}, 'expired-callback':function(){f._tok='';}, 'error-callback':function(){f._tok='';}}); }catch(e){}
+    });
+  }
+  function msg(f,text,kind,html){var m=f.querySelector('.su-msg'); m.className='su-msg'+(kind?' '+kind:''); if(html) m.innerHTML=html; else m.textContent=text;}
+  function waitTok(f,ms){return new Promise(function(res){var t0=Date.now();(function p(){if(f._tok) return res(f._tok); if(Date.now()-t0>ms) return res(''); setTimeout(p,150);})();});}
+  var fallback=function(f){return 'Or <a href="'+SUB+'?utm_source=site&amp;utm_medium='+encodeURIComponent(f.dataset.su)+'&amp;utm_campaign=onsite-signup">sign up on beehiiv’s page</a> instead.';};
+  Array.prototype.forEach.call(forms,function(f){
+    f.noValidate=true;
+    var inp=f.querySelector('.su-in'), go=f.querySelector('.su-go');
+    inp.addEventListener('focus',function(){arm(f);});
+    inp.addEventListener('input',function(){if(f.querySelector('.su-msg').classList.contains('err')){inp.removeAttribute('aria-invalid'); msg(f,'');}});
+    f.addEventListener('submit',function(e){
+      e.preventDefault(); if(f._busy) return;
+      var email=(inp.value||'').trim();
+      if(!RE.test(email)){inp.setAttribute('aria-invalid','true'); msg(f,'That email address doesn’t look right. Check it and try again.','err'); inp.focus(); return;}
+      inp.removeAttribute('aria-invalid'); arm(f); f._busy=true; go.disabled=true; msg(f,'Signing you up…','wait');
+      waitTok(f,10000).then(function(tok){
+        return fetch(f.dataset.ep,{method:'POST',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({email:email,turnstileToken:tok,placement:f.dataset.su,page:location.pathname})})
+          .then(function(r){return r.json().catch(function(){return {ok:false,error:'server'};});});
+      }).catch(function(){return {ok:false,error:'server'};}).then(function(d){
+        f._busy=false; go.disabled=false;
+        if(d&&d.ok){ f.classList.add('done'); msg(f,'You’re in. Signal lands in your inbox on Fridays.','ok'); return; }
+        var err=d&&d.error;
+        if(err==='invalid_email'){inp.setAttribute('aria-invalid','true'); msg(f,'','err','That email address doesn’t look right. Check it and try again.');}
+        else if(err==='captcha'){msg(f,'','err','We couldn’t finish the quick spam check. Please try again. '+fallback(f));}
+        else if(err==='rate_limited'){msg(f,'','err','Too many tries just now. Please wait a minute and try again. '+fallback(f));}
+        else msg(f,'','err','Something went wrong on our side, sorry. '+fallback(f));
+        if(f._ts!==null&&f._ts!==undefined&&window.turnstile){try{f._tok=''; turnstile.reset(f._ts);}catch(e){}}
+      });
+    });
+  });
+  /* "Get Signal" in the sidebar and the More sheet opens the small form instead of leaving the site. */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-su-toggle]'),function(a){
+    var p=document.getElementById(a.getAttribute('data-su-toggle')); if(!p) return;
+    a.setAttribute('aria-expanded','false'); a.setAttribute('role','button');
+    function set(open){p.hidden=!open; a.setAttribute('aria-expanded',open?'true':'false'); if(open){var i=p.querySelector('.su-in'); if(i) i.focus();}}
+    a.addEventListener('click',function(e){e.preventDefault(); set(p.hidden);});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!p.hidden&&p.classList.contains('nav-su-pop')){set(false); a.focus();}});
+    document.addEventListener('click',function(e){if(!p.hidden&&p.classList.contains('nav-su-pop')&&!p.contains(e.target)&&!a.contains(e.target)) set(false);});
   });
 })();

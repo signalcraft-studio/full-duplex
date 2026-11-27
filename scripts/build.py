@@ -39,6 +39,8 @@ if not _urlsplit(BASE).hostname.endswith('github.io'):
 X = SITE['x_handle']
 SUB = SITE['subscribe_url']
 FORM = SITE['beehiiv_form']
+SIGNUP_EP = SITE.get('signup_endpoint', '')
+TS_KEY = SITE.get('turnstile_sitekey', '')
 MON = 'Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split()
 MONL = 'January February March April May June July August September October November December'.split()
 
@@ -128,24 +130,41 @@ def issues_list():
     li = ''.join(f'<li><a href="{esc(i["url"])}"><span class=ino>#{i["no"]}</span><span>{esc(i["title"])}</span></a></li>' for i in SITE['issues'][:ISSUES_SHOWN])
     return f'<ul class=issues aria-label="Recent issues of Signal">{li}</ul>'
 
+_SU_N = [0]
+SU_FINE = 'Free, one email a week. Your email goes straight to beehiiv, our newsletter provider, only to send Signal; a Cloudflare check keeps out spam. Unsubscribe any time.'
+def signup_form(placement, root='', cls='', button='Get Signal free', arrow=True, fine=True, label='Your email'):
+    """On-site sign-up (Nov 2026). The form posts, via assets/site.js, to our Cloudflare Worker (src/site.json "signup_endpoint"),
+    which adds the subscriber through beehiiv's API server-side: no beehiiv script, iframe or cookie loads on our pages.
+    Cloudflare Turnstile (spam check) loads only when someone focuses the email box. Without JavaScript the form
+    falls back to a plain GET to beehiiv's own sign-up page, with the same placement tags."""
+    if not SIGNUP_EP:
+        return f'<a class="btn signal-btn" href="{esc(sub_url(placement))}">{esc(button)}</a>'
+    _SU_N[0] += 1; i = f'su-{_SU_N[0]}'
+    hid = ''.join(f'<input type=hidden name={k} value="{esc(v)}">' for k, v in (('utm_source', 'site'), ('utm_medium', placement), ('utm_campaign', 'onsite-signup')))
+    ar = ' <span aria-hidden=true>→</span>' if arrow else ''
+    fine_h = f'<p class=fine>{SU_FINE} <a href="{root}privacy.html">Privacy notice</a>.</p>' if fine else ''
+    return (f'<form class="su {cls}" action="{esc(SUB)}" method=get data-su="{esc(placement)}" data-ep="{esc(SIGNUP_EP)}" data-sk="{esc(TS_KEY)}">{hid}'
+            f'<label class=su-l for={i}>{esc(label)}</label>'
+            f'<div class=su-row><input id={i} class=su-in type=email name=email autocomplete=email inputmode=email required placeholder="you@example.com" aria-describedby="{i}-m">'
+            f'<button class="btn signal-btn su-go" type=submit>{esc(button)}{ar}</button></div>'
+            f'<div class=su-ts></div><p class=su-msg id="{i}-m" role=status aria-live=polite></p>{fine_h}</form>')
+
 def signal_block(root, surface, variant='full', heading_level=2, heading=None, intro=None, content='', source='fullduplex-site', label=None):
-    """One on-brand call to action. Signing up is a link to beehiiv's hosted page, not an embed: an iframe would
-    load third-party cookies and scripts before anyone chose to subscribe, which would make the privacy notice untrue.
-    The first iframe was removed in the 14 Nov 2026 UAT for that reason and because the form theme squashed on phones."""
+    """One on-brand call to action: our own sign-up form (see signup_form). Until Nov 2026 this was a link to beehiiv's hosted page;
+    an embedded beehiiv iframe was removed in the 14 Nov 2026 UAT because it loaded third-party cookies and scripts before anyone chose to subscribe."""
     h = f'h{heading_level}'
-    privacy = f'<p class=fine>Free, one email a week. Opens beehiiv’s sign-up page; your email is used only to send Signal. Unsubscribe any time. <a href="{root}privacy.html">Privacy notice</a>.</p>'
-    btn = f'<a class="btn signal-btn" href="{esc(sub_url(surface, source, content or None))}">Get Signal free <span aria-hidden=true>→</span></a>'
+    form = signup_form(surface, root)
     aria = f' aria-label="{esc(label or "Subscribe to Signal")}"'
     intro_h = f'<p>{intro}</p>' if intro else ''
     if variant == 'mid':
         return (f'<aside class="signal mid"{aria}><p class=kicker>Signal · free weekly briefing</p>'
                 f'<{h} class=signal-h>{heading or "Signal: the weekly direct-to-cell briefing from a mobile network insider with over 13 years in GSM"}</{h}>'
-                f'{intro_h}<p class=signal-cta>{btn}</p>{privacy}</aside>')
+                f'{intro_h}{form}</aside>')
     return (f'<section class=signal{aria}><div class=signal-copy><p class=kicker>Signal · free weekly briefing</p>'
             f'<{h} class=signal-h>{heading or "Get Signal: what changed in satellite-to-phone this week"}</{h}>'
-            f'<p>{intro or "One email a week on direct-to-cell, mobile networks and what it means for you, from a mobile network insider with over 13 years in GSM."}</p></div>'
-            f'<div class=signal-form><p class=issues-h>Recent issues</p>{issues_list()}<p class=signal-cta>{btn}'
-            f'<a class=more href="{esc(SITE["archive_url"])}">Read past issues</a></p>{privacy}</div></section>')
+            f'<p>{intro or "One email a week on direct-to-cell, mobile networks and what it means for you, from a mobile network insider with over 13 years in GSM."}</p>{form}</div>'
+            f'<div class=signal-form><p class=issues-h>Recent issues</p>{issues_list()}<p class=signal-cta>'
+            f'<a class=more href="{esc(SITE["archive_url"])}">Read past issues</a></p></div></section>')
 
 # ---------------------------------------------------------------- chrome
 NAV = [('index.html', 'Home'), ('tracker.html', 'Tracker'), ('check/index.html', 'Check my phone'), ('launches/index.html', 'Launches'), ('articles/index.html', 'Articles'), ('explainers/index.html', 'Explainers'), ('inner-signal/index.html', 'Inner Signal'), ('satellites/index.html', 'Satellites'), ('resources/index.html', 'Resources'), ('search.html', 'Search'), ('about.html', 'About')]
@@ -206,7 +225,8 @@ def header(root, current):
         f'<div class=nav-more-panel role=dialog aria-modal=true aria-labelledby=nav-more-h tabindex=-1>'
         f'<div class=nav-more-head><h2 id=nav-more-h>More</h2><button type=button class=nav-more-x aria-label=Close>×</button></div>'
         f'<ul>{more_links}</ul>'
-        f'<a class="btn pill nav-signal" href="{signal}">{nav_ico("mail")}<span>Get Signal</span></a>'
+        f'<a class="btn pill nav-signal" href="{signal}" data-su-toggle=su-more aria-controls=su-more>{nav_ico("mail")}<span>Get Signal</span></a>'
+        f'<div id=su-more class=nav-su hidden>{signup_form("nav-more", root, "su-compact", "Subscribe", False)}</div>'
         f'</div></div>'
     )
     return (
@@ -214,7 +234,8 @@ def header(root, current):
         f'<header class=site>'
         f'<a class=logo href="{root}index.html">{LOGO_MARK}<span class=logo-t>Full<span>Duplex</span></span></a>'
         f'<nav class=side-nav aria-label="Main"><ul>{items}</ul></nav>'
-        f'<div class=nav-foot><a class="btn pill nav-signal" href="{signal}">{nav_ico("mail")}<span>Get Signal</span></a></div>'
+        f'<div class=nav-foot><div id=su-side class="nav-su nav-su-pop" hidden role=group aria-label="Get Signal"><p class=nav-su-h>Signal · free, every Friday</p>{signup_form("nav-signal", root, "su-compact", "Subscribe", False)}</div>'
+        f'<a class="btn pill nav-signal" href="{signal}" data-su-toggle=su-side aria-controls=su-side>{nav_ico("mail")}<span>Get Signal</span></a></div>'
         f'</header>'
         f'<nav class=tabbar aria-label="Primary">{tabs}'
         f'<button type=button class=tab-more aria-expanded=false aria-controls=nav-more{more_cur}>{nav_ico("more-ico")}<span>More</span></button>'
@@ -780,7 +801,7 @@ tbody = tbody.replace('</div><p class=note>Spotted a change?', '</div></section>
 # Signal sign-up directly under the map (22 Nov 2026), replacing the generic block that sat at the end of the page
 tbody = tbody.replace('</section><section aria-labelledby=tbl-h>', '</section>' + signal_block('', 'tracker', heading='Get told when this map changes',
     intro=f"{C['live']} live services, {NLIVE_C} countries, last checked {TRACK['last_checked']}. Signal is the Friday email when those numbers move.", label='Get told when this map changes') + '<section aria-labelledby=tbl-h>', 1)
-assert 'utm_medium=tracker' in tbody, 'tracker: map section not found for the Signal block'
+assert 'data-su="tracker"' in tbody, 'tracker: map section not found for the Signal block'
 tbody = tbody.replace('<section aria-labelledby=tbl-h>', deal_cards() + '<section aria-labelledby=tbl-h>', 1)
 assert 'id=deals-h' in tbody, 'tracker: deal cards section missing'
 tbody += (f'<section aria-labelledby=bc-h><h2 id=bc-h>Browse by country</h2><div class=cclist>{country_links}</div></section>'
@@ -1961,15 +1982,14 @@ def signal_latest():
     i = SITE['issues'][0]
     bl = ''.join(f'<li>{esc(b)}</li>' for b in i.get('bullets', [])[:3])
     return (f'<section class="dcard sig-latest" aria-labelledby=sl-h><p class=kicker>Latest from Signal · #{esc(i["no"])} · {human(i["date"])}</p>'
-            f'<h2 id=sl-h><a href="{esc(i["url"])}">{esc(i["title"])}</a></h2>' + (f'<ul>{bl}</ul>' if bl else '') +
-            f'<p class=sl-act><a class="btn sm" href="{esc(sub_url("latest-signal"))}">Get Signal free</a><a href="{esc(SITE["archive_url"])}">All past issues</a></p>'
+            f'<h2 id=sl-h><a href="{esc(i["url"])}">{esc(i["title"])}</a></h2>' + (f'<ul>{bl}</ul>' if bl else '')
+            + signup_form('latest-signal', '', 'su-card', 'Get Signal free', False) +
+            f'<p class=sl-act><a href="{esc(SITE["archive_url"])}">All past issues</a></p>'
             f'<p class=d-stamp>New milestones and dashboard changes land in Signal first.</p></section>')
 def hero_signup(cls=''):
-    """Inline sign-up card. Deliberately a link to beehiiv's hosted page, not an email field: an embedded form loads beehiiv scripts and
-    cookies before anyone chooses to subscribe (the 14 Nov 2026 privacy decision in signal_block)."""
+    """Inline sign-up card: our own email box (signup_form), never a beehiiv embed (the 14 Nov 2026 privacy decision in signal_block)."""
     return (f'<div class="hsign {cls}"><p><strong>Get Signal:</strong> the direct-to-cell story, explained by a 13-year GSM insider.</p>'
-            f'<a class="btn hr-primary" href="{esc(sub_url("hero-signup"))}">Get Signal free <span aria-hidden=true>→</span></a>'
-            f'<p class=fine>Free, weekly. Opens beehiiv’s sign-up page. <a href="privacy.html">Privacy</a>.</p></div>')
+            + signup_form('hero-signup', '', 'su-hero') + '</div>')
 def sponsor_slot():
     """'Dashboard supported by …' only when src/site.json has "dashboard_sponsor": {"name", "url"}. Always labelled Sponsored. Hidden today."""
     sp = SITE.get('dashboard_sponsor')
@@ -2075,7 +2095,7 @@ def story():
     sats = ', '.join(f'{i["count"]:,} {i["short"]}' for i in CONST['direct_to_device'] if i['count'])
     lead = board_rows()[0]; msn = len(D['ms'])
     leo = next((i for i in CONST['broadband_only'] if i['id'] == 'amazon-leo'), None)
-    cta = lambda src: f'<p class=hr-cta><a class="btn hr-primary" href="#fy">Check your phone</a><a class="btn ghost" href="{esc(sub_url(src))}">Get Signal free</a></p>'
+    cta = lambda src: f'<p class=hr-cta><a class="btn hr-primary" href="#fy">Check your phone</a><a class="btn ghost" href="#get-signal">Get Signal free</a></p>'  # jumps to the on-site form (Nov 2026)
     race_alt = (f'Animation: Earth in the centre with one cluster of dots per network, one dot per phone-capable satellite, growing month by month from {human(race["frames"][0]["d"], False)} to '
                 f'{human(race["frames"][-1]["d"])}. Today: ' + ', '.join(f'{s["n"]:,} {s["l"]}' for s in D['race']['s'] if s['n']) + '. Then small phones appear for each partner network in our tracker.')
     lede = HOME_DECK or 'Satellites that connect straight to ordinary phones are going up every month. Here’s how it works, who’s winning, and whether yours can join in. Every number is sourced.'
@@ -2114,7 +2134,7 @@ home = (launch_day() + ST1 + orbital_scene() + ST2
         + signal_latest()
         + f'<section aria-labelledby=latest class=front><h2 id=latest class=sec>Latest analysis</h2><div class=front-grid>{art_card(feat, "", 3, "card feature")}'
           f'<div class=grid3>{"".join(art_card(a) for a in rest[:3])}</div></div></section>'
-        + signal_block('', 'home')
+        + signal_block('', 'home').replace('<section class=signal', '<section id=get-signal class=signal', 1)
         + f'<section aria-labelledby=ft-h class=from-tracker><h2 id=ft-h class=sec>From the tracker</h2><div class=two><div>{change_list(CHANGES, "", 5)}<p><a href="tracker/changes/">All tracker changes</a></p></div>'
           f'<div class="card"><h3><a href="tracker.html">Direct-to-cell tracker</a></h3><p>Who’s live, who’s trialling and who’s announced, country by country, with sources. Filter by status, provider and region, or download the CSV.</p>'
           f'<div class=cclist>{"".join(f"<a class=\"cc s-{CLS[best(rs)]}\" href=\"tracker/{country_slug(c)}/\">{esc(c)}</a>" for c, rs in sorted(COUNTRIES.items(), key=lambda kv: -RANK[best(kv[1])])[:8])}</div></div></div></section>'

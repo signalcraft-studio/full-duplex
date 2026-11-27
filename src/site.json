@@ -6,6 +6,8 @@
  "data_license": "https://creativecommons.org/licenses/by/4.0/",
  "subscribe_url": "https://fullduplexhq.beehiiv.com/subscribe",
  "archive_url": "https://fullduplexhq.beehiiv.com/",
+ "signup_endpoint": "https://fullduplex-signup-worker.fullduplexhq.workers.dev",
+ "turnstile_sitekey": "1x00000000000000000000AA",
  "beehiiv_form": "9901d011-3067-4813-a277-b9cc01a364a6",
  "home_headline": "Your phone’s next signal might come from orbit. Here’s who’s live, who’s testing, and what it really does.",
  "home_description": "Full Duplex explains direct-to-cell satellites, GSM and the shake-up coming to mobile networks: the weekly Signal briefing, a live D2C tracker and analysis.",
