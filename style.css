@@ -1330,6 +1330,10 @@ body.nav-more-open{overflow:hidden}
 .deal-src a{color:var(--cyan)}
 .deal:focus-within{border-color:var(--line-2)}
 .deals-filters .chip{font-family:var(--f-ui)}
+.deals-morewrap{margin:.95rem 0 0;display:flex;justify-content:center}
+.deals-fallback{margin:.8rem 0 0;color:var(--muted);font-size:.92rem}
+#deals-more-btn[hidden]{display:none!important}
+
 @media (max-width:699px){
   .deals-count{margin-left:0;width:100%}
   .deal-svc{font-size:.92rem}

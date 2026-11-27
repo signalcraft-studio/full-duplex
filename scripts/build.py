@@ -450,7 +450,10 @@ def deal_card(r, root=''):
     return f'<article class=deal{data}>{head}{meta}{svc}{foot_html}</article>'
 
 def deal_cards(root=''):
-    cards = ''.join(deal_card(r, root) for r in ROWS)
+    n = len(ROWS)
+    preview = 9 if n > 9 else n
+    first = ''.join(deal_card(r, root) for r in ROWS[:preview])
+    rest = ''.join(deal_card(r, root) for r in ROWS[preview:])
     present = {provider(r['satellite']) for r in ROWS if r.get('satellite')}
     order = ['Starlink', 'AST SpaceMobile', 'Skylo', 'Lynk / Elveo', 'Other']
     provs = [p for p in order if p in present] + sorted(present - set(order))
@@ -459,15 +462,25 @@ def deal_cards(root=''):
         f'<button type=button class="chip c-{CLS[s]}" data-deal-status="{s}" aria-pressed=false>{LABEL[s]}</button>' for s in statuses)
     pr_chips = '<button type=button class=chip data-deal-provider=all aria-pressed=true>All providers</button>' + ''.join(
         f'<button type=button class=chip data-deal-provider="{esc(p)}" aria-pressed=false>{esc(p)}</button>' for p in provs)
-    n = len(ROWS)
+    more = ''
+    more_path = ROOT / 'assets' / 'deals-more.html'
+    if rest:
+        more_path.write_text(rest)
+        more = (f'<p class=deals-morewrap>'
+                f'<button type=button class="btn ghost" id=deals-more-btn hidden aria-expanded=false aria-controls=deals-grid data-src="assets/deals-more.html?v={asset_v("assets/deals-more.html")}">Show all {n} deals</button>'
+                f'</p>'
+                f'<noscript><p class=deals-fallback>Only the first {preview} deals are shown here. See all {n} in the <a href="#tbl-h">country table</a>.</p></noscript>')
+    elif more_path.exists():
+        more_path.unlink()
+    shown = f'{preview} of {n} deals' if rest else f'{n} deal{"s" if n != 1 else ""}'
     return (f'<section class=deals id=deals aria-labelledby=deals-h>'
             f'<div class=deals-head><h2 id=deals-h>Every deal, with sources</h2>'
             f'<p class=deals-lede>One card for each operator and satellite partnership in the tracker. Status, services and dates are taken from the source on the card.</p></div>'
             f'<div class=deals-filters role=search aria-label="Filter deals">'
             f'<div class=chips role=group aria-label="Status">{st_chips}</div>'
             f'<div class=chips role=group aria-label="Provider">{pr_chips}</div>'
-            f'<p id=deals-count class=deals-count role=status aria-live=polite>{n} deal{"s" if n != 1 else ""}</p></div>'
-            f'<div class=deals-grid>{cards}</div></section>')
+            f'<p id=deals-count class=deals-count role=status aria-live=polite>{shown}</p></div>'
+            f'<div class=deals-grid id=deals-grid>{first}</div>{more}</section>')
 
 
 def stats_strip(root='', compact=False):
