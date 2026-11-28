@@ -1,13 +1,13 @@
 {
  "_readme": "Written by scripts/daily_refresh.py (daily-refresh.yml). \"date\" is the one shared \"data checked\" stamp; each item keeps its own as_of and only moves when its check passed.",
- "updated": "2026-11-27T15:11:38Z",
- "date": "2026-11-27",
+ "updated": "2026-11-28T14:16:24Z",
+ "date": "2026-11-28",
  "checks": [
   {
    "item": "count:starlink-dtc",
    "status": "verified",
-   "as_of": "2026-11-27",
-   "was_as_of": "2026-11-26"
+   "as_of": "2026-11-28",
+   "was_as_of": "2026-11-27"
   },
   {
    "item": "count:ast",
@@ -18,14 +18,14 @@
   {
    "item": "count:globalstar",
    "status": "verified",
-   "as_of": "2026-11-27",
-   "was_as_of": "2026-11-26"
+   "as_of": "2026-11-28",
+   "was_as_of": "2026-11-27"
   },
   {
    "item": "count:lynk",
    "status": "verified",
-   "as_of": "2026-11-27",
-   "was_as_of": "2026-11-26"
+   "as_of": "2026-11-28",
+   "was_as_of": "2026-11-27"
   },
   {
    "item": "count:skylo",
@@ -35,26 +35,28 @@
   },
   {
    "item": "count:starlink-broadband",
-   "status": "verified",
-   "as_of": "2026-11-27",
-   "was_as_of": "2026-11-26"
+   "status": "updated",
+   "as_of": "2026-11-28",
+   "was_as_of": "2026-11-27",
+   "note": "10545 -> 10538 (McDowell)"
   },
   {
    "item": "count:amazon-leo",
    "status": "verified",
-   "as_of": "2026-11-27",
-   "was_as_of": "2026-11-26"
+   "as_of": "2026-11-28",
+   "was_as_of": "2026-11-27"
   },
   {
    "item": "resources-links",
-   "status": "review",
-   "as_of": "2026-11-26",
-   "note": "1 of 48 links look broken: https://www.o2.co.uk/satellite (404)"
+   "status": "verified",
+   "as_of": "2026-11-28",
+   "was_as_of": "2026-11-26",
+   "note": "48 links OK, 10 block robots"
   },
   {
    "item": "race-chart",
    "status": "verified",
-   "as_of": "2026-11-27"
+   "as_of": "2026-11-28"
   },
   {
    "item": "tracker",

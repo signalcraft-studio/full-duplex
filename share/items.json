@@ -195,12 +195,12 @@
   },
   {
    "slug": "orbit-view",
-   "key": "81a9dcd4e9",
+   "key": "d80901dfd2",
    "kind": "canvas",
    "page": "launches/?nowelcome",
    "sel": "#orbitview",
    "layout": "square",
-   "kicker": "Orbit view · 9 Nov 2026 (AST); others 27 Nov",
+   "kicker": "Orbit view · 9 Nov 2026 (AST); others 28 Nov",
    "title": "688 satellites that can talk to your phone",
    "sub": "One dot = one satellite",
    "chips": [
@@ -224,12 +224,12 @@
   },
   {
    "slug": "race",
-   "key": "8a8b155647",
+   "key": "74fd35d502",
    "kind": "dom",
    "page": "launches/?nowelcome",
    "sel": ".race-chart",
    "layout": "wide",
-   "kicker": "The race so far · 27 Nov 2026",
+   "kicker": "The race so far · 28 Nov 2026",
    "title": "Satellites that can talk to your phone",
    "sub": "Working satellites in orbit, by network"
   },

@@ -1,6 +1,6 @@
 {
  "_readme": "Satellite counts for the /launches/ comparison panel. Every number needs a source URL and an as_of date (YYYY-MM-DD). If a number cannot be sourced, set count to null and it shows as 'Not disclosed'. Never estimate. Phone-capable (direct-to-device) networks and broadband-only constellations are kept in separate lists on purpose.",
- "last_checked": "2026-11-27",
+ "last_checked": "2026-11-28",
  "direct_to_device": [
   {
    "id": "starlink-dtc",
@@ -10,7 +10,7 @@
    "short": "Starlink Direct to Cell",
    "count": 636,
    "count_label": "satellites in orbit and working",
-   "as_of": "2026-11-27",
+   "as_of": "2026-11-28",
    "source": {
     "label": "Jonathan McDowell, Starlink statistics (DTC shells 1 and 2)",
     "url": "https://planet4589.org/space/con/star/stats.html"
@@ -48,7 +48,7 @@
    "short": "Globalstar (iPhone)",
    "count": 32,
    "count_label": "second-generation satellites working",
-   "as_of": "2026-11-27",
+   "as_of": "2026-11-28",
    "source": {
     "label": "Jonathan McDowell, Globalstar statistics",
     "url": "https://planet4589.org/space/con/gbl/stats.html"
@@ -70,7 +70,7 @@
    "short": "Lynk / Elveo",
    "count": 8,
    "count_label": "Lynk satellites in orbit (independent catalogue)",
-   "as_of": "2026-11-27",
+   "as_of": "2026-11-28",
    "source": {
     "label": "Jonathan McDowell, Lynk statistics",
     "url": "https://www.planet4589.org/space/con/lynk/stats.html"
@@ -115,11 +115,11 @@
    "operator": "SpaceX",
    "network": "Starlink broadband",
    "short": "Starlink broadband",
-   "count": 10545,
+   "count": 10538,
    "count_label": "satellites working, not counting the 636 direct-to-cell satellites",
-   "as_of": "2026-11-27",
+   "as_of": "2026-11-28",
    "source": {
-    "label": "Jonathan McDowell, Starlink statistics (11,181 working in total, minus 636 DTC)",
+    "label": "Jonathan McDowell, Starlink statistics (11,174 working in total, minus 636 DTC)",
     "url": "https://planet4589.org/space/con/star/stats.html"
    },
    "note": "Serves Starlink dishes, not phones directly. Includes 26 new V3 satellites still raising their orbits.",
@@ -133,7 +133,7 @@
    "short": "Amazon Leo",
    "count": 428,
    "count_label": "satellites in orbit and working",
-   "as_of": "2026-11-27",
+   "as_of": "2026-11-28",
    "source": {
     "label": "Jonathan McDowell, Amazon Leo (Kuiper) statistics",
     "url": "https://planet4589.org/space/con/kp/stats.html"
