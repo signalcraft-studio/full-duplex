@@ -36,5 +36,5 @@
     if(others.length){ multi.appendChild(el('p',null,'Not shown on the map (multi-country or non-country rows):')); var ul=el('ul');
       others.forEach(function(r){var li=el('li');li.appendChild(el('strong',null,esc(r.satellite)));li.appendChild(el('span',null,' ('+esc(r.country)+', '+esc(r.operator)+'): '));li.appendChild(el('span',r.status==='announced'?'ann':r.status,r.status));li.appendChild(el('span',null,'. '+esc(r.services)));ul.appendChild(li);});
       multi.appendChild(ul); }
-  }).catch(function(){ tip.textContent='The map could not load. All the data is in the table below.'; });
+  }).catch(function(){ tip.textContent='The map could not load. All the data is in the deals below.'; });
 })();

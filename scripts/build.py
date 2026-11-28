@@ -439,10 +439,15 @@ def iso_flag(iso_n3):
         return ''
     return ''.join(chr(0x1F1E6 + ord(c) - 65) for c in code)
 
-def deal_card(r, root=''):
+def deal_card(r, root='', extra=False):
     st = r.get('status') if r.get('status') in LABEL else ''
     prov = provider(r['satellite']) if r.get('satellite') else ''
     data = (f' data-status="{esc(st)}"' if st else '') + (f' data-provider="{esc(prov)}"' if prov else '')
+    data += f' data-region="{esc(region(r))}"'
+    if r.get('checked'):
+        data += f' data-checked="{parse_human(r["checked"])}"'
+    if r.get('country'):
+        data += f' data-country="{esc(r["country"])}"'
     head = '<div class=deal-top>'
     if r.get('operator'):
         head += f'<h3 class=deal-op>{esc(r["operator"])}</h3>'
@@ -468,13 +473,14 @@ def deal_card(r, root=''):
     if r.get('sources'):
         foot.append(f'<span class=deal-src>{sources_html(r)}</span>')
     foot_html = f'<p class=deal-foot>{" ".join(foot)}</p>' if foot else ''
-    return f'<article class=deal{data}>{head}{meta}{svc}{foot_html}</article>'
+    cls = 'deal deal-extra' if extra else 'deal'
+    return f'<article class="{cls}"{data}>{head}{meta}{svc}{foot_html}</article>'
 
 def deal_cards(root=''):
     n = len(ROWS)
     preview = 9 if n > 9 else n
     first = ''.join(deal_card(r, root) for r in ROWS[:preview])
-    rest = ''.join(deal_card(r, root) for r in ROWS[preview:])
+    rest = ''.join(deal_card(r, root, extra=True) for r in ROWS[preview:])
     present = {provider(r['satellite']) for r in ROWS if r.get('satellite')}
     order = ['Starlink', 'AST SpaceMobile', 'Skylo', 'Lynk / Elveo', 'Other']
     provs = [p for p in order if p in present] + sorted(present - set(order))
@@ -483,25 +489,37 @@ def deal_cards(root=''):
         f'<button type=button class="chip c-{CLS[s]}" data-deal-status="{s}" aria-pressed=false>{LABEL[s]}</button>' for s in statuses)
     pr_chips = '<button type=button class=chip data-deal-provider=all aria-pressed=true>All providers</button>' + ''.join(
         f'<button type=button class=chip data-deal-provider="{esc(p)}" aria-pressed=false>{esc(p)}</button>' for p in provs)
+    regs = sorted({region(r) for r in ROWS})
+    opts = ''.join(f'<option>{esc(x)}</option>' for x in regs)
     more = ''
     more_path = ROOT / 'assets' / 'deals-more.html'
-    if rest:
-        more_path.write_text(rest)
-        more = (f'<p class=deals-morewrap>'
-                f'<button type=button class="btn ghost" id=deals-more-btn hidden aria-expanded=false aria-controls=deals-grid data-src="assets/deals-more.html?v={asset_v("assets/deals-more.html")}">Show all {n} deals</button>'
-                f'</p>'
-                f'<noscript><p class=deals-fallback>Only the first {preview} deals are shown here. See all {n} in the <a href="#tbl-h">country table</a>.</p></noscript>')
-    elif more_path.exists():
+    if more_path.exists():
         more_path.unlink()
+    if rest:
+        more = (f'<p class=deals-morewrap>'
+                f'<button type=button class="btn ghost" id=deals-more-btn hidden aria-expanded=false aria-controls=deals-grid>Show all {n} deals</button>'
+                f'</p>')
     shown = f'{preview} of {n} deals' if rest else f'{n} deal{"s" if n != 1 else ""}'
+    tools = (f'<div class=t-tools><a class="btn ghost" href="{root}data/tracker.csv" download>Download CSV</a>'
+             f'<a class="btn ghost" href="{root}data/tracker.json">JSON</a>'
+             + share_btn(f"Direct-to-cell tracker: {C['live']} live services, {C['trial']} trials, {C['announced']} announced. Country by country, with sources.", BASE + 'tracker.html') +
+             f'</div><p class=cite><strong>Cite this tracker:</strong> Full Duplex, “Direct-to-cell tracker”, last checked {TRACK["last_checked"]}, {BASE}tracker.html</p>'
+             f'<p class=cite>Tracker data: <a href="{SITE["data_license"]}" rel="license">CC BY 4.0</a>, credit Full Duplex.</p>')
     return (f'<section class=deals id=deals aria-labelledby=deals-h>'
-            f'<div class=deals-head><h2 id=deals-h>Every deal, with sources</h2>'
+            f'<div class=deals-head id=tbl-h><h2 id=deals-h>Every deal, with sources</h2>'
             f'<p class=deals-lede>One card for each operator and satellite partnership in the tracker. Status, services and dates are taken from the source on the card.</p></div>'
-            f'<div class=deals-filters role=search aria-label="Filter deals">'
-            f'<div class=chips role=group aria-label="Status">{st_chips}</div>'
-            f'<div class=chips role=group aria-label="Provider">{pr_chips}</div>'
-            f'<p id=deals-count class=deals-count role=status aria-live=polite>{shown}</p></div>'
-            f'<div class=deals-grid id=deals-grid>{first}</div>{more}</section>')
+            f'<div class="filters deals-controls" role=search aria-label="Filter deals">'
+            f'<div class=f-row><label class=f-search><span class=sr>Search countries and operators</span>'
+            f'<input id=t-q type=search placeholder="Search a country or operator" autocomplete=off></label>'
+            f'<div class=chips role=group aria-label="Status">{st_chips}</div></div>'
+            f'<div class=f-row><div class=chips role=group aria-label="Provider">{pr_chips}</div></div>'
+            f'<div class=f-row><label>Region <select id=t-reg><option value="">All</option>{opts}</select></label>'
+            f'<label>Sort <select id=t-sort><option value=default>Tracker order</option>'
+            f'<option value=country>Country A to Z</option><option value=checked>Last checked</option>'
+            f'<option value=status>Status</option></select></label>'
+            f'<p id=deals-count class=deals-count role=status aria-live=polite>{shown}</p></div></div>'
+            f'{tools}'
+            f'<div class=deals-grid id=deals-grid>{first}{rest}</div>{more}</section>')
 
 
 def stats_strip(root='', compact=False):
@@ -772,38 +790,20 @@ page(og=('Play', 'Constellation: deploy direct-to-cell satellites'), path='play/
 
 # ---------------------------------------------------------------- tracker
 meta, tbody, tscripts = read_src(SRC / 'pages' / 'tracker.html')
-provs = sorted({provider(r['satellite']) for r in ROWS}); regs = sorted({region(r) for r in ROWS})
-opts = lambda xs: ''.join(f'<option>{esc(x)}</option>' for x in xs)
-controls = (f'<div class=filters role=search aria-label="Filter the tracker"><div class=f-row><label class=f-search><span class=sr>Search countries and operators</span>'
-            f'<input id=t-q type=search placeholder="Search a country or operator" autocomplete=off></label>'
-            f'<div class=chips role=group aria-label="Status"><button type=button class=chip data-status=all aria-pressed=true>All</button>'
-            f'<button type=button class="chip c-live" data-status=live aria-pressed=false>Live</button><button type=button class="chip c-trial" data-status=trial aria-pressed=false>Trial</button>'
-            f'<button type=button class="chip c-ann" data-status=announced aria-pressed=false>Announced</button></div></div>'
-            f'<div class=f-row><label>Provider <select id=t-prov><option value="">All</option>{opts(provs)}</select></label>'
-            f'<label>Region <select id=t-reg><option value="">All</option>{opts(regs)}</select></label>'
-            f'<label>Sort <select id=t-sort><option value=default>Tracker order</option><option value=country>Country A–Z</option><option value=checked>Last checked</option><option value=status>Status</option></select></label>'
-            f'<p id=t-count class=t-count role=status aria-live=polite>{len(ROWS)} entries</p></div></div>')
 country_links = ''.join(f'<a class="cc s-{CLS[best(rs)]}" href="tracker/{country_slug(c)}/">{esc(c)}</a>' for c, rs in sorted(COUNTRIES.items()))
-tools = (f'<div class=t-tools><a class="btn ghost" href="data/tracker.csv" download>Download CSV</a><a class="btn ghost" href="data/tracker.json">JSON</a>'
-         + share_btn(f"Direct-to-cell tracker: {C['live']} live services, {C['trial']} trials, {C['announced']} announced. Country by country, with sources.", BASE + 'tracker.html') +
-         f'</div><p class=cite><strong>Cite this tracker:</strong> Full Duplex, “Direct-to-cell tracker”, last checked {TRACK["last_checked"]}, {BASE}tracker.html</p>'
-         f'<p class=cite>Tracker data: <a href="{SITE["data_license"]}" rel="license">CC BY 4.0</a>, credit Full Duplex.</p>')
-tbody = tbody.replace('<!--TRACKER-TABLE-->', tracker_table())
+# The old country table used to sit under the map as well as the deal cards, so the
+# same 36 partnerships appeared twice. The cards are now the single list: they keep
+# the sources, checked dates, search, region, sort, CSV/JSON and cite tools that
+# only the table used to have. #tbl-h stays on the cards heading so old links still land.
+tbody = tbody.replace('<!--TRACKER-TABLE-->', '')
 tbody = re.sub(r'<span id=tracker-checked>.*?</span>', f"<span id=tracker-checked>{TRACK['last_checked']}</span>", tbody)
-# hero + stats before the intro; filters before the table; extras after
 tbody = tbody.replace('<h1>Direct-to-cell around the world</h1>', '<header class=page-head><p class=kicker>Tracker</p><h1>Direct-to-cell around the world</h1></header>' + stats_strip() + race_board(''), 1)
-# Deal cards sit after the leaderboard and the map, immediately before the country table:
-# the board ranks providers, the map shows geography, the cards unpack every operator deal
-# with its source, and the table remains the dense searchable reference. Keeping the long
-# card grid below the map also keeps the first screen closer to the pre-cards tracker (LCP).
-tbody = tbody.replace('<div class=tablewrap>', f'<section aria-labelledby=tbl-h><h2 id=tbl-h>Every tracked service</h2>{controls}{tools}<div class="tablewrap trackwrap">', 1)
-tbody = tbody.replace('</div><p class=note>Spotted a change?', '</div></section><p class=note>Spotted a change?', 1)
-# Signal sign-up directly under the map (22 Nov 2026), replacing the generic block that sat at the end of the page
-tbody = tbody.replace('</section><section aria-labelledby=tbl-h>', '</section>' + signal_block('', 'tracker', heading='Get told when this map changes',
-    intro=f"{C['live']} live services, {NLIVE_C} countries, last checked {TRACK['last_checked']}. Signal is the Friday email when those numbers move.", label='Get told when this map changes') + '<section aria-labelledby=tbl-h>', 1)
+tbody = tbody.replace('</section><p class=note>Spotted a change?', '</section>' + signal_block('', 'tracker', heading='Get told when this map changes',
+    intro=f"{C['live']} live services, {NLIVE_C} countries, last checked {TRACK['last_checked']}. Signal is the Friday email when those numbers move.", label='Get told when this map changes') + deal_cards() + '<p class=note>Spotted a change?', 1)
 assert 'data-su="tracker"' in tbody, 'tracker: map section not found for the Signal block'
-tbody = tbody.replace('<section aria-labelledby=tbl-h>', deal_cards() + '<section aria-labelledby=tbl-h>', 1)
 assert 'id=deals-h' in tbody, 'tracker: deal cards section missing'
+assert 'id=tbl-h' in tbody, 'tracker: #tbl-h anchor missing on the deal cards'
+assert 'id=tracker-table' not in tbody, 'tracker: old country table should have been removed'
 tbody += (f'<section aria-labelledby=bc-h><h2 id=bc-h>Browse by country</h2><div class=cclist>{country_links}</div></section>'
           f'<p class=note>Next satellites going up: see the <a href="launches/">launch tracker</a> for upcoming SpaceX, AST SpaceMobile and other direct-to-cell launches, and how many phone-capable satellites each operator has in orbit.</p>'
           f'<section aria-labelledby=ch-h><h2 id=ch-h>What changed</h2>{change_list(CHANGES, "", 8)}<p><a href="tracker/changes/">Full change log</a></p></section>')
@@ -812,7 +812,7 @@ ld = [{'@context': 'https://schema.org', '@type': 'Dataset', 'name': 'Full Duple
        'distribution': [{'@type': 'DataDownload', 'encodingFormat': 'text/csv', 'contentUrl': BASE + 'data/tracker.csv'},
                         {'@type': 'DataDownload', 'encodingFormat': 'application/json', 'contentUrl': BASE + 'data/tracker.json'}]}]
 page(og=('Tracker', 'Direct-to-cell around the world', [(f"{C['live']} live", OGC['live']), (f"{C['trial']} trials", OGC['trial']), (f"{C['announced']} announced", OGC['announced']), (f'{NLIVE_C} countries live', OGC['cyan'])]), path='tracker.html', title=meta['title'], description=meta['description'], body=tbody, current='tracker.html', cls='is-tracker',
-     head_extra=meta['head_extra'] + '<link rel="preload" as="image" href="assets/img/tracker-map-640.webp" media="(max-width:699px)"><link rel="preload" as="image" href="assets/img/tracker-map-1280.webp" media="(min-width:700px)">', scripts=tscripts + '<script defer src="assets/tracker-filters.js"></script><script defer src="assets/deal-filters.js"></script>', jsonld=ld, lastmod=parse_human(TRACK['last_checked']), sources=['src/pages/tracker.html', 'data/tracker.json'],
+     head_extra=meta['head_extra'] + '<link rel="preload" as="image" href="assets/img/tracker-map-640.webp" media="(max-width:699px)"><link rel="preload" as="image" href="assets/img/tracker-map-1280.webp" media="(min-width:700px)">', scripts=tscripts + '<script defer src="assets/deal-filters.js"></script>', jsonld=ld, lastmod=parse_human(TRACK['last_checked']), sources=['src/pages/tracker.html', 'data/tracker.json'],
      search_text=meta['description'] + ' ' + ' '.join(f"{r['country']} {r['operator']} {r['satellite']} {r['status']}. {strip_tags(r['services'])}." for r in ROWS))
 
 # country pages
