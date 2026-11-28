@@ -1,16 +1,16 @@
 {
- "fetched_at": "2026-11-28T03:33:24Z",
- "full_fetched_at": "2026-11-28T03:33:24Z",
+ "fetched_at": "2026-11-28T12:25:45Z",
+ "full_fetched_at": "2026-11-28T12:25:45Z",
  "source": "The Space Devs Launch Library 2 (https://ll.thespacedevs.com/2.3.0/launches/upcoming/)",
  "launches": [
   {
    "id": "b0d27def-0a88-44c3-a947-1fd5b8503e2c",
    "slug": "falcon-9-block-5-ussf-380",
    "name": "Falcon 9 Block 5 | USSF-380",
-   "net": "2026-11-29T04:39:00Z",
+   "net": "2026-11-29T04:39:03Z",
    "window_start": "2026-11-29T04:39:00Z",
    "window_end": "2026-11-29T08:39:00Z",
-   "precision": "Minute",
+   "precision": "Second",
    "status": "Go for Launch",
    "status_abbrev": "Go",
    "provider": "SpaceX",
@@ -28,7 +28,7 @@
    "pad_lat": 34.632,
    "pad_lon": -120.611,
    "webcast_live": false,
-   "last_updated": "2026-11-27T18:31:10Z",
+   "last_updated": "2026-11-28T05:57:19Z",
    "ll2_url": "https://ll.thespacedevs.com/2.3.0/launches/b0d27def-0a88-44c3-a947-1fd5b8503e2c/",
    "queries": [
     "spacex"
